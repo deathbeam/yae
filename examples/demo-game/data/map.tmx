@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="50" height="40" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="Ground Sheet" tilewidth="32" tileheight="32" spacing="2" margin="2">
+  <image source="terrain.png" width="256" height="1024"/>
+ </tileset>
+ <layer name="Ground" width="50" height="40">
+  <data encoding="base64" compression="zlib">
+   eJzt1MENgCAQRFHqoED703C3A2syXgnZhaywO2QO/z5PgZJSKowxc4eQ97ZRx92IDr9zhOpo7Z7hkO6e9Q6udpxCqxyPsQiOr8uYZED5H5HO1S73I7qjt8iOmbW+BapDe6PomFcGdNSb0RxZqXaMFtEROc2BYulx7GTx3kgHnkOzeG+jYz+H9y6rxXsLY4yx/3sBbwovNg==
+  </data>
+ </layer>
+ <layer name="Rails" width="50" height="40">
+  <data encoding="base64" compression="zlib">
+   eJztls0NgCAMRrsBY7iAuoQjuP8ecjQemlDsT8J7SY/w+FICFQEAAI2712aoM+OwClfwOi/I4UuTsXu+Gz3V+mElO4f2PrWBfbJz/OUnRy0/OWr5D4mdUb7vk/W/0IjoDQ4cOHDgwLGy4z0/eJXHjAAAAAAwywPS2xZ2
+  </data>
+ </layer>
+ <layer name="Objects" width="50" height="40">
+  <data encoding="base64" compression="zlib">
+   eJztlNENQDAURbuVBRiDtBOILwPYgTHsYSpPUn8itJVeffckJz6KvJMnVmPMWoh/hx1YaO7oRCs6cRSnxDOFoHkfiGjumL8YJBLN+0CEHVg86XA3Z41YpxsnGE37+AO5O87v0ka+J3fHFZW/bi+eQewIIXfH5F3EQezF9uK+u3/mQe6OVLADC3ZgwQ4s2IEFO7BgBxbswIIdWJTWUYI7FziBDw==
+  </data>
+ </layer>
+ <objectgroup name="Collisions" width="50" height="40">
+  <object x="1088" y="256" width="288" height="32"/>
+  <object x="1344" y="256" width="32" height="448"/>
+  <object x="960" y="672" width="416" height="32"/>
+  <object x="960" y="512" width="32" height="192"/>
+  <object x="960" y="512" width="160" height="32"/>
+  <object x="1088" y="384" width="32" height="160"/>
+  <object x="1088" y="256" width="32" height="96"/>
+  <object x="0" y="0" width="32" height="1280"/>
+  <object x="0" y="1248" width="1600" height="32"/>
+  <object x="1568" y="0" width="32" height="1280"/>
+  <object x="0" y="0" width="1600" height="32"/>
+  <object x="352" y="128" width="32" height="128"/>
+  <object x="352" y="128" width="224" height="32"/>
+  <object x="544" y="128" width="32" height="224"/>
+  <object x="544" y="384" width="32" height="128"/>
+  <object x="224" y="480" width="352" height="32"/>
+  <object x="224" y="224" width="32" height="288"/>
+  <object x="224" y="224" width="160" height="32"/>
+  <object x="256" y="448" width="32" height="32"/>
+  <object type="circle" x="384" y="288" width="32" height="32">
+   <ellipse/>
+  </object>
+  <object x="384" y="160" width="160" height="32"/>
+  <object x="480" y="448" width="64" height="32"/>
+  <object x="992" y="544" width="96" height="32"/>
+  <object type="circle" x="1152" y="576" width="32" height="32">
+   <ellipse/>
+  </object>
+  <object x="1312" y="640" width="32" height="32"/>
+  <object x="992" y="640" width="192" height="32"/>
+  <object x="1056" y="384" width="32" height="32"/>
+  <object x="576" y="320" width="32" height="32"/>
+ </objectgroup>
+</map>
