@@ -63,7 +63,7 @@ non.draw = function() {
 ```
 
 In CoffeeScript:
-```javascript
+```coffeescript
 non.init = ->
 	# insert initialization logic here
 
@@ -75,7 +75,7 @@ non.draw = ->
 ```
 
 In TypeScript:
-```javascript
+```typescript
 non.init = () => {
 	// insert initialization logic here
 };
