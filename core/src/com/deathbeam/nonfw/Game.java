@@ -34,6 +34,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.JsonValue;
+import com.deathbeam.nonfw.audio.Audio;
+import com.deathbeam.nonfw.input.Keyboard;
+import com.deathbeam.nonfw.input.Mouse;
+import com.deathbeam.nonfw.math.Math;
+import com.deathbeam.nonfw.input.Touch;
+import com.deathbeam.nonfw.network.Network;
+import com.deathbeam.nonfw.tiled.Tiled;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,7 +48,6 @@ import javax.script.ScriptException;
 
 public class Game implements ApplicationListener {
     public static boolean loaded = false;
-    public static ScriptEngine js;
     
     private final JsonValue conf;
     private Graphics gfx;
@@ -49,19 +55,89 @@ public class Game implements ApplicationListener {
     private String text;
     private float loadingTmr;
     private boolean drawSplash = true;
+    private ScriptRuntime scripting;
+    
+    public Object ready;
+    public Object draw;
+    public Object update;
+    
+    public Audio audio;
+    public Graphics graphics;
+    public Keyboard keyboard;
+    public Mouse mouse;
+    public Touch touch;
+    public Math math;
+    public Network network;
+    public Tiled tiled;
+    
+    public int getFPS() {
+        return Gdx.graphics.getFramesPerSecond();
+    }
+    
+    public float getDelta() {
+        return Gdx.graphics.getDeltaTime();
+    }
+    
+    public void warning(String type, String msg) {
+        Utils.warning(type, msg);
+    }
+    
+    public void error(String type, String msg) {
+        Utils.error(type, msg);
+    }
+    
+    public void log(String type, String msg) {
+        Utils.log(type, msg);
+    }
+    
+    public void debug(String type, String msg) {
+        Utils.debug(type, msg);
+    }
+    
+    public void dump(Object obj) {
+        Utils.dump(obj);
+    }
     
     public Game(JsonValue args) throws ScriptException, IOException {
         conf = args;
     }
     
     private void init() {
+        String[] mods = conf.get("modules").asStringArray();
+        for (String mod : mods) {
+            if ("audio".equals(mod)) audio = new Audio();
+            if ("graphics".equals(mod)) graphics = new Graphics();
+            if ("keyboard".equals(mod)) keyboard = new Keyboard();
+            if ("mouse".equals(mod)) mouse = new Mouse();
+            if ("touch".equals(mod)) touch = new Touch();
+            if ("math".equals(mod)) math = new Math();
+            if ("tiled".equals(mod)) tiled = new Tiled();
+            if ("network".equals(mod)) network = new Network();
+        }
+        
+        String ext = Utils.getExtension(conf.getString("main"));
+        if (ext.equalsIgnoreCase(JavaScript.getExtension())) {
+            scripting = new JavaScript();
+        } else if (ext.equalsIgnoreCase(CoffeeScript.getExtension())) {
+            scripting = new CoffeeScript();
+        } else if (ext.equalsIgnoreCase(TypeScript.getExtension())) {
+            scripting = new TypeScript();
+        } else if (ext.equalsIgnoreCase(Lua.getExtension())) {
+            scripting = new Lua();
+        }
+        
+        scripting.put("non", this);
+        
         try {
-            js = new ScriptEngine();
-            js.eval(Utils.getResource(conf.getString("main")));
-            js.invoke("int_init", conf);
+            scripting.eval(Utils.getResource(conf.getString("main")));
         } catch (IOException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        scripting.put("int_ready", ready);
+        scripting.put("int_draw", draw);
+        scripting.put("int_update", update);
+        scripting.invoke("int_ready");
     }
 
     @Override
@@ -102,13 +178,17 @@ public class Game implements ApplicationListener {
             return;
         }
         
-        js.invoke("int_update");
-        js.invoke("int_draw");
+        scripting.invoke("int_update");
+        if (graphics != null) {
+            graphics.begin();
+            scripting.invoke("int_draw");
+            graphics.end();
+        }
     }
 
     @Override
     public void resize (int width, int height) {
-        if (loaded && js!= null) js.invoke("int_resize");
+        //if (loaded && scripting!= null) scripting.invoke("int_resize");
     }
 
     @Override
@@ -121,7 +201,7 @@ public class Game implements ApplicationListener {
 
     @Override
     public void dispose () {
-        if (loaded && js!= null) js.invoke("int_dispose");
+        //if (loaded && scripting!= null) scripting.invoke("int_dispose");
         Utils.clearCache();
     }
 }

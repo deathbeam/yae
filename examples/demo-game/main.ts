@@ -1,31 +1,11 @@
-declare var client, lastMsg, map, pressed, server;
+declare var map, pressed;
 
-non.init = () => {
+non.ready = () => {
   map = non.tiled.newMap("map.tmx");
   non.audio.play(non.audio.newMusic("music.ogg"));
-  non.network.setHost("localhost").setPort(15600).setListener(non.extend(Listener, {
-    connected: (conn) => {
-      lastMsg = "client connected";
-    },
-    disconnected: (conn, forced) => {
-      lastMsg = "client disconnected";
-    },
-    receive: (data, conn) => {
-      lastMsg = "data received: " + data.read();
-    }
-  }));
-  (server = non.network.newServer()).listen();
-  (client = non.network.newClient()).connect();
-  lastMsg = "Waiting....";
 };
 
 non.update = () => {
-  var buffer;
-  if (non.keyboard.isKeyJustPressed("Space")) {
-    buffer = non.network.newBuffer();
-    buffer.write(1);
-    client.send(buffer);
-  }
   if (non.keyboard.isKeyPressed("Space")) {
     pressed = "Key pressed: Spacebar (release Spacebar to test)";
   } else {
@@ -40,5 +20,4 @@ non.draw = () => {
   non.graphics.draw("Description: In this example we are testing music, input, tmx rendering, images and text displaying.", 10, 58);
   non.graphics.draw(pressed, 10, 82, non.graphics.newColor("cyan"));
   non.graphics.draw("FPS: " + non.getFPS(), 10, 104);
-  non.graphics.draw(lastMsg, 10, 126, non.graphics.newColor("red"));
 };

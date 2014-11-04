@@ -23,12 +23,11 @@
 * JavaScript `.js`
 * [CoffeeScript](http://coffeescript.org/) `.coffee`
 * [TypeScript](http://www.typescriptlang.org/) `.ts`
-* [Roy](http://roy.brianmckenna.org/) `.roy`
-* [Move](http://movelang.com/) `.mv`
+* [Lua](http://lua.org/) `.lua`
 
 ## Configuration
 
-Configuration is done by json configuration file. You can define window title, resolution, main class and add modules through it. Example configuration file (non.cfg)
+Configuration is done by json configuration file `non.cfg`. You can define window title, resolution, main class and add modules through it. Example configuration file:
 ```json
 {
     title: "No Nonsense Game",

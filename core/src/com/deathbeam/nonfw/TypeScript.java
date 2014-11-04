@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2014 Tomas.
+ * Copyright 2014 Thomas Slusny.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,23 +23,30 @@
  */
 package com.deathbeam.nonfw;
 
-/**
- *
- * @author Tomas
- */
+import com.badlogic.gdx.files.FileHandle;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.script.*;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 
-import java.io.IOException;
-
-public class TypeScriptCompiler {
-    private static Scriptable scope;
-    public static boolean LOADED;
-    public static String NAME = "TypeScript";
-    public static String EXTENSION = "ts";
+/**
+ *
+ * @author Thomas Slusny
+ */
+public final class TypeScript extends ScriptRuntime {
+    private Scriptable scope;
     
-    public static void init() {
-        if (LOADED) return;
+    public static String getName() {
+        return "TypeScript";
+    }
+
+    public static String getExtension() {
+        return "ts";
+    }
+    
+    public TypeScript() {
         Context context = Context.enter();
         context.setOptimizationLevel(-1); // Without this, Rhino hits a 64K bytecode limit and fails
         try {
@@ -47,14 +54,41 @@ public class TypeScriptCompiler {
             context.evaluateString(scope, Utils.readFile(Utils.getInternalResource("langs/typescript.js").read()), "typescript.js", 0, null);
             context.evaluateString(scope, Utils.readFile(Utils.getInternalResource("langs/typescript.compile.js").read()), "typescript.compile.js", 0, null);
         } catch (IOException ex) {
-            Utils.error(NAME, ex.getMessage());
+            Utils.error("scripting", ex.getMessage());
         } finally {
             Context.exit();
         }
-        LOADED = true;
+        
+        e = new ScriptEngineManager().getEngineByName("JavaScript");
+        ScriptEngineFactory f = e.getFactory();
+        
+        System.out.println( "Engine name: " +f.getEngineName() );
+        System.out.println( "Engine Version: " +f.getEngineVersion() );
+        System.out.println( "LanguageName: TypeScript" );
+        System.out.println( "Language Version: 0.9.1" );
+    }
+    
+    @Override
+    public void invoke(String funct) {
+        try {
+            e.eval(funct + "();");
+        } catch (ScriptException ex) {
+            Utils.log("scripting", ex.getMessage());
+        }
     }
 
-    public static String compile (String script) {
+    @Override
+    public void eval(FileHandle file) {
+        try {
+            e.eval(compile(Utils.readFile(file.read())));
+        } catch (ScriptException ex) {
+            Logger.getLogger(JavaScript.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(CoffeeScript.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private String compile (String script) {
         Context context = Context.enter();
         try {
             Scriptable compileScope = context.newObject(scope);

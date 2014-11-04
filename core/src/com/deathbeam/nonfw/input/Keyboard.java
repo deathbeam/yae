@@ -25,7 +25,6 @@ package com.deathbeam.nonfw.input;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.deathbeam.nonfw.Utils;
 
 /**
  *
@@ -38,13 +37,11 @@ public class Keyboard {
     
     public boolean isKeyJustPressed(String name) { 
         int key = getKey(name);
-        if (Gdx.input.isKeyJustPressed(key) && key != 0) return true;
-        return false;
+        return Gdx.input.isKeyJustPressed(key) && key != 0;
     }
     
     public boolean isKeyPressed(String name) { 
         int key = getKey(name);
-        if (Gdx.input.isKeyPressed(key) && key != 0) return true;
-        return false;
+        return Gdx.input.isKeyPressed(key) && key != 0;
     }
 }

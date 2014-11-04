@@ -21,53 +21,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.deathbeam.nonfw.math;
+package com.deathbeam.nonfw;
 
-import com.badlogic.gdx.math.*;
+import com.badlogic.gdx.files.FileHandle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.script.ScriptEngine;
+import javax.script.ScriptException;
 
 /**
  *
  * @author Thomas Slusny
  */
-public class Math {
+public abstract class ScriptRuntime {
+    protected ScriptEngine e;
     
-    public Math() {
-        
+    public abstract void invoke(String funct);
+    public abstract void eval(FileHandle file);
+
+    public void eval(String script) {
+        try {
+            e.eval(script);
+        } catch (ScriptException ex) {
+            Logger.getLogger(ScriptRuntime.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
-    public Ellipse newEllipse(float x, float y, float width, float height) {
-        return new Ellipse(x, y, width, height);
+    public void put(String key, Object value) {
+        if (e!=null) e.put(key, value);
     }
-    
-    public Polygon newPolygon(float[] vertices) {
-        return new Polygon(vertices);
-    }
-    
-    public Polyline newPolyline(float[] vertices) {
-        return new Polyline(vertices);
-    }
-    
-    public Vector2 newVector() {
-        return newVector(0, 0);
-    }
-    
-    public Vector2 newVector(float x, float y) {
-        return new Vector2(x, y);
-    }
-    
-    public Rectangle newRectangle() {
-        return newRectangle(0, 0, 0, 0);
-    }
-    
-    public Rectangle newRectangle(float x, float y, float width, float height) {
-        return new Rectangle(x, y, width, height);
-    }
-    
-    public Circle newCircle() {
-        return newCircle(0, 0, 0);
-    }
-    
-    public Circle newCircle(float x, float y, float radius) {
-        return new Circle(x, y, radius);
+
+    public Object get(String key) {
+        if (e==null) return null;
+        return e.get(key);
     }
 }
