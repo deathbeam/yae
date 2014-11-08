@@ -30,7 +30,6 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.deathbeam.nonfw.Game;
 import com.deathbeam.nonfw.Utils;
 import java.io.IOException;
-import javax.script.ScriptException;
 /**
  *
  * @author Thomas Slusny
@@ -38,12 +37,15 @@ import javax.script.ScriptException;
 public class Desktop {
     /**
      * @param args the command line arguments
+     * @throws java.io.IOException
      */
-    public static void main (String[] args) throws IOException, ScriptException {
+    public static void main (String[] args) throws IOException {
         JsonValue arg = Utils.configure();
         int[] size = arg.get("resolution").asIntArray();
+        String title = arg.get("title").asString();
+        
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-        cfg.title = arg.get("title").asString();
+        cfg.title = title;
         cfg.width = size[0];
         cfg.height = size[1];
         cfg.addIcon("assets/icon-256.png", Files.FileType.Classpath);

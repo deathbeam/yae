@@ -30,11 +30,6 @@ import com.badlogic.gdx.math.*;
  * @author Thomas Slusny
  */
 public class Math {
-    
-    public Math() {
-        
-    }
-    
     public Ellipse newEllipse(float x, float y, float width, float height) {
         return new Ellipse(x, y, width, height);
     }

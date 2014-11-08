@@ -1,11 +1,29 @@
-var client, lastMsg, map, pressed, server;
+var map, pressed, testText, client, server, lastMsg;
+non.load("testText.js");
 
 non.ready = function() {
   map = non.tiled.newMap("map.tmx");
   non.audio.play(non.audio.newMusic("music.ogg"));
+  non.network.connected = function(conn) {
+	lastMsg = "client connected: " + conn.toString();
+  };
+  non.network.disconnected = function(conn) {
+	lastMsg = "client disconnected";
+  };
+  non.network.received = function(data, conn) {
+	lastMsg = "data received: " + data.read();
+  };
+  non.network.setHost("localhost").setPort(15600).init();
+  (server = non.network.newServer()).listen();
+  (client = non.network.newClient()).connect();
 };
 
 non.update = function() {
+  if (non.keyboard.isKeyJustPressed("Space")) {
+    var buffer = non.network.newBuffer();
+    buffer.write(1);
+    client.send(buffer);
+  }
   if (non.keyboard.isKeyPressed("Space")) {
     pressed = "Key pressed: Spacebar (release Spacebar to test)";
   } else {
@@ -20,4 +38,5 @@ non.draw = function() {
   non.graphics.draw("Description: In this example we are testing music, input, tmx rendering, images and text displaying.", 10, 58);
   non.graphics.draw(pressed, 10, 82, non.graphics.newColor("cyan"));
   non.graphics.draw("FPS: " + non.getFPS(), 10, 104);
+  non.graphics.draw(lastMsg, 10, 126, non.graphics.newColor("red"));
 };

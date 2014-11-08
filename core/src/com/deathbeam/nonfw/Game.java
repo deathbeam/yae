@@ -42,25 +42,28 @@ import com.deathbeam.nonfw.input.Touch;
 import com.deathbeam.nonfw.network.Network;
 import com.deathbeam.nonfw.tiled.Tiled;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.script.ScriptException;
 
 public class Game implements ApplicationListener {
-    public static boolean loaded = false;
-    
+    // Game configuration holder
     private final JsonValue conf;
+    
+    // Splash screen variables
+    public static boolean loaded = false;
     private Graphics gfx;
     private Image splash;
     private String text;
     private float loadingTmr;
     private boolean drawSplash = true;
-    private ScriptRuntime scripting;
     
+    // Scripting runtime
+    public static ScriptRuntime scripting;
+    
+    // Functions invoked from scripts
     public Object ready;
     public Object draw;
     public Object update;
     
+    // Game modules
     public Audio audio;
     public Graphics graphics;
     public Keyboard keyboard;
@@ -98,42 +101,55 @@ public class Game implements ApplicationListener {
         Utils.dump(obj);
     }
     
-    public Game(JsonValue args) throws ScriptException, IOException {
+    public Object load(String scriptPath) {
+        try {
+            return scripting.eval(Utils.getResource(scriptPath));
+        } catch (IOException ex) {
+            Utils.warning("Resource not found", scriptPath);
+            return null;
+        }
+    }
+    
+    public Game(JsonValue args) {
         conf = args;
     }
     
     private void init() {
+        // Hide splash screen
+        drawSplash = false;
+        gfx.dispose();
+        gfx = null;
+        
+        // Load needed modules
         String[] mods = conf.get("modules").asStringArray();
         for (String mod : mods) {
-            if ("audio".equals(mod)) audio = new Audio();
-            if ("graphics".equals(mod)) graphics = new Graphics();
-            if ("keyboard".equals(mod)) keyboard = new Keyboard();
-            if ("mouse".equals(mod)) mouse = new Mouse();
-            if ("touch".equals(mod)) touch = new Touch();
-            if ("math".equals(mod)) math = new Math();
-            if ("tiled".equals(mod)) tiled = new Tiled();
-            if ("network".equals(mod)) network = new Network();
+            if ("audio".equalsIgnoreCase(mod)) audio = new Audio();
+            else if ("graphics".equalsIgnoreCase(mod)) graphics = new Graphics();
+            else if ("keyboard".equalsIgnoreCase(mod)) keyboard = new Keyboard();
+            else if ("mouse".equalsIgnoreCase(mod)) mouse = new Mouse();
+            else if ("touch".equalsIgnoreCase(mod)) touch = new Touch();
+            else if ("math".equalsIgnoreCase(mod)) math = new Math();
+            else if ("tiled".equalsIgnoreCase(mod)) tiled = new Tiled();
+            else if ("network".equalsIgnoreCase(mod)) network = new Network();
         }
         
+        // Initialize scripting runtime
         String ext = Utils.getExtension(conf.getString("main"));
-        if (ext.equalsIgnoreCase(JavaScript.getExtension())) {
-            scripting = new JavaScript();
-        } else if (ext.equalsIgnoreCase(CoffeeScript.getExtension())) {
-            scripting = new CoffeeScript();
-        } else if (ext.equalsIgnoreCase(TypeScript.getExtension())) {
-            scripting = new TypeScript();
-        } else if (ext.equalsIgnoreCase(Lua.getExtension())) {
-            scripting = new Lua();
-        }
+        if (ext.equalsIgnoreCase(JavaScript.getExtension())) scripting = new JavaScript();
+        else if (ext.equalsIgnoreCase(CoffeeScript.getExtension())) scripting = new CoffeeScript();
+        else if (ext.equalsIgnoreCase(TypeScript.getExtension())) scripting = new TypeScript();
+        else if (ext.equalsIgnoreCase(Lua.getExtension())) scripting = new Lua();
+        else if (ext.equalsIgnoreCase(Python.getExtension())) scripting = new Python();
+        else if (ext.equalsIgnoreCase(Ruby.getExtension())) scripting = new Ruby();
         
+        // Evaluate and run scripts
         scripting.put("non", this);
-        
+        String script = conf.getString("main");
         try {
-            scripting.eval(Utils.getResource(conf.getString("main")));
+            scripting.eval(Utils.getResource(script));
         } catch (IOException ex) {
-            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+            Utils.error("Resource not found", script);
         }
-        
         scripting.put("int_ready", ready);
         scripting.put("int_draw", draw);
         scripting.put("int_update", update);
@@ -147,7 +163,8 @@ public class Game implements ApplicationListener {
         try {
             splash = new Image(Utils.getInternalResource("splash.png"));
         } catch (IOException ex) {
-            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+            Utils.warning("Resource not found", "splash.png");
+            splash = new Image();
         }
         Utils.loadPackage();
     }
@@ -174,7 +191,7 @@ public class Game implements ApplicationListener {
             gfx.draw(splash, Gdx.graphics.getWidth() / 2 - splash.getWidth() / 2, Gdx.graphics.getHeight() / 2 - splash.getHeight() / 2);
             gfx.draw(text, (int) (Gdx.graphics.getWidth() / 2 - gfx.getFont().getBounds(text).width /2), Gdx.graphics.getHeight() / 2 + splash.getHeight() / 2 + 15, Color.BLACK);
             gfx.end();
-            if(loaded) { init(); drawSplash = false; }
+            if(loaded) init();
             return;
         }
         

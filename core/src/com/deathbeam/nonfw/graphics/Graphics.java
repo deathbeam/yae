@@ -39,14 +39,16 @@ import java.io.IOException;
  *
  * @author Thomas Slusny
  */
-public class Graphics {
+public final class Graphics {
     public final SpriteBatch batch;
+    public final Shader shader;
     private final OrthographicCamera camera;
     private BitmapFont font;
     private float rotation, scale;
     private Vector2 translation;
     
     public Graphics() {
+        shader = new Shader();
         batch = new SpriteBatch();
         font = new BitmapFont();
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

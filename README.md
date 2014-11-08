@@ -24,6 +24,8 @@
 * [CoffeeScript](http://coffeescript.org/) `.coffee`
 * [TypeScript](http://www.typescriptlang.org/) `.ts`
 * [Lua](http://lua.org/) `.lua`
+* [Ruby](https://www.ruby-lang.org) `.rb` (experimental)
+* [Python](https://www.python.org/) `.py` (experimental)
 
 ## Configuration
 
@@ -40,7 +42,7 @@ Configuration is done by json configuration file `non.cfg`. You can define windo
 ## Main class
 
 Your game main logic should be divided into 3 functions:
-* `non.init` - Initialization logic, loading of game assets
+* `non.ready` - Initialization logic, loading of game assets
 * `non.update` - Update logic, handling input and timed events
 * `non.draw` - Display logic, handling rendering of loaded assets
 
@@ -48,7 +50,7 @@ Your game main logic should be divided into 3 functions:
 
 In JavaScript:
 ```javascript
-non.init = function() {
+non.ready = function() {
 	// insert initialization logic here
 };
 
@@ -63,7 +65,7 @@ non.draw = function() {
 
 In CoffeeScript:
 ```coffeescript
-non.init = ->
+non.ready = ->
 	# insert initialization logic here
 
 non.update = ->
@@ -75,7 +77,7 @@ non.draw = ->
 
 In TypeScript:
 ```typescript
-non.init = () => {
+non.ready = () => {
 	// insert initialization logic here
 };
 

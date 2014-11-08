@@ -37,13 +37,16 @@ public abstract class ScriptRuntime {
     protected ScriptEngine e;
     
     public abstract void invoke(String funct);
-    public abstract void eval(FileHandle file);
+    public abstract void invoke(String funct, String args);
+    public abstract void invoke(String funct, String arg1, String arg2);
+    public abstract Object eval(FileHandle file);
 
-    public void eval(String script) {
+    public Object eval(String script) {
         try {
-            e.eval(script);
+            return e.eval(script);
         } catch (ScriptException ex) {
-            Logger.getLogger(ScriptRuntime.class.getName()).log(Level.SEVERE, null, ex);
+            Utils.warning("Scripting", ex.getMessage());
+            return null;
         }
     }
     

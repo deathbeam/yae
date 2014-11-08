@@ -45,6 +45,7 @@ import org.zeroturnaround.zip.ZipUtil;
  *
  * @author Thomas Slusny
  */
+
 public class Utils {
     public static String DIR;
     public static File CONFIG;
@@ -106,8 +107,16 @@ public class Utils {
                     CONFIG = file;
                     return new JsonReader().parse(cfg);
                 }
+            } else {
+                File cfg = new File(file.getName() + "/non.cfg");
+                if (cfg.exists()) {
+                    CONFIG = file;
+                    return new JsonReader().parse(new FileInputStream(cfg));
+                }
             }
         }
+        
+        Utils.error("Resource not found", "non.cfg");
         return null;
     }
     

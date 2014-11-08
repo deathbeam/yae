@@ -23,9 +23,12 @@
  */
 package com.deathbeam.nonfw.network;
 
+import com.deathbeam.nonfw.Game;
 import com.deathbeam.nonfw.network.client.ClientConnection;
 import com.deathbeam.nonfw.network.server.Server;
+import com.deathbeam.nonfw.network.server.ServerConnection;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 
 /**
  *
@@ -35,6 +38,10 @@ public class Network {
     private Listener listener;
     private String host;
     private int port;
+    
+    public Object connected;
+    public Object disconnected;
+    public Object received;
     
     public ByteArrayOutputStream newBuffer() {
         return new ByteArrayOutputStream();
@@ -48,8 +55,30 @@ public class Network {
         return new ClientConnection(listener, host, port);
     }
     
-    public Network setListener(Listener listener) {
-        this.listener = listener;
+    public Network init() {
+        Game.scripting.put("int_connected", connected);
+        Game.scripting.put("int_disconnected", disconnected);
+        Game.scripting.put("int_received", received);
+        this.listener = new Listener() {
+            @Override
+            public void disconnected(Connection broken, boolean forced) {
+                Game.scripting.put("int_connection", broken);
+                Game.scripting.invoke("int_disconnected", "int_connection");
+            }
+
+            @Override
+            public void receive(DataInputStream data, Connection from) {
+                Game.scripting.put("int_connection", from);
+                Game.scripting.put("int_data", data);
+                Game.scripting.invoke("int_received", "int_data", "int_connection");
+            }
+
+            @Override
+            public void connected(ServerConnection conn) {
+                Game.scripting.put("int_connection", conn);
+                Game.scripting.invoke("int_connected", "int_connection");
+            }
+        };
         return this;
     }
     

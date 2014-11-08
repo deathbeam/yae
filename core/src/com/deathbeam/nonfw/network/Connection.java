@@ -68,7 +68,6 @@ public abstract class Connection {
         compressor.finish();
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream(data.length);
-        // Compress the data
         byte[] buf = new byte[1024];
         while (!compressor.finished()) {
             int count = compressor.deflate(buf);

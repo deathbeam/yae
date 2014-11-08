@@ -24,8 +24,6 @@
 package com.deathbeam.nonfw;
 
 import com.badlogic.gdx.files.FileHandle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.script.*;
 
 /**
@@ -59,13 +57,32 @@ public final class Lua extends ScriptRuntime {
             Utils.log("scripting", ex.getMessage());
         }
     }
+    
+    @Override
+    public void invoke(String funct, String args) {
+        try {
+            e.eval(funct + "(" + args + ")");
+        } catch (ScriptException ex) {
+            Utils.log("scripting", ex.getMessage());
+        }
+    }
+    
+    @Override
+    public void invoke(String funct, String arg1, String arg2) {
+        try {
+            e.eval(funct + "(" + arg1 + "," + arg2 + ")");
+        } catch (ScriptException ex) {
+            Utils.log("scripting", ex.getMessage());
+        }
+    }
 
     @Override
-    public void eval(FileHandle file) {
+    public Object eval(FileHandle file) {
         try {
             e.eval(file.reader());
         } catch (ScriptException ex) {
-            Logger.getLogger(JavaScript.class.getName()).log(Level.SEVERE, null, ex);
+            Utils.warning("Scripting", ex.getMessage());
         }
+        return null;
     }
 }
