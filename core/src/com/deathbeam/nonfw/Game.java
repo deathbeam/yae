@@ -52,6 +52,7 @@ public class Game implements ApplicationListener {
     private Graphics gfx;
     private Image splash;
     private String text;
+    private int numPeriods;
     private float loadingTmr;
     private boolean drawSplash = true;
     
@@ -156,6 +157,7 @@ public class Game implements ApplicationListener {
     public void create () {
         gfx = new Graphics();
         text = "Loading assets";
+        numPeriods = 0;
         try {
             splash = new Image(Utils.getInternalResource("splash.png"));
         } catch (IOException ex) {
@@ -173,19 +175,12 @@ public class Game implements ApplicationListener {
         if(drawSplash) {
             loadingTmr += Gdx.graphics.getDeltaTime();
             if (loadingTmr > 0.3f) {
-                if ("Loading assets".equals(text))
-                    text = "Loading assets.";
-                else if ("Loading assets.".equals(text))
-                    text = "Loading assets..";
-                else if ("Loading assets..".equals(text))
-                    text = "Loading assets...";
-                else if ("Loading assets...".equals(text))
-                    text = "Loading assets";
+            	numPeriods = (numPeriods + 1) % 4;
                 loadingTmr = 0;
             }
             gfx.begin();
             gfx.draw(splash, Gdx.graphics.getWidth() / 2 - splash.getWidth() / 2, Gdx.graphics.getHeight() / 2 - splash.getHeight() / 2);
-            gfx.draw(text, (int) (Gdx.graphics.getWidth() / 2 - gfx.getFont().getBounds(text).width /2), Gdx.graphics.getHeight() / 2 + splash.getHeight() / 2 + 15, Color.BLACK);
+            gfx.draw(text + Utils.repeat(".", numPeriods), (int) (Gdx.graphics.getWidth() / 2 - gfx.getFont().getBounds(text).width /2), Gdx.graphics.getHeight() / 2 + splash.getHeight() / 2 + 15, Color.BLACK);
             gfx.end();
             if(loaded) init();
             return;
