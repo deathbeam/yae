@@ -101,16 +101,14 @@ public class Utils {
                     return new JsonReader().parse(new FileInputStream(cfg));
                 }
             } else if (isZipFile(file)) {
-                InputStream cfg = findInZip(file, "config.json");
+                InputStream cfg = findInZip(file, "non.cfg");
                 if (cfg != null) {
                     CONFIG = file;
                     return new JsonReader().parse(cfg);
                 }
-            } else {
-                if ("non.cfg".equals(file.getName())) {
-                    CONFIG = file;
-                    return new JsonReader().parse(new FileInputStream(file));
-                }
+            } else if ("non.cfg".equals(file.getName())) {
+                CONFIG = file;
+                return new JsonReader().parse(new FileInputStream(file));
             }
         }
         
