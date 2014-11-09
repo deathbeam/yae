@@ -2,8 +2,8 @@ declare var map, pressed, testText, client, server, lastMsg;
 non.load("testText.ts");
 
 non.ready = () => {
-  map = non.tiled.newMap("map.tmx");
-  non.audio.play(non.audio.newMusic("music.ogg"));
+  map = non.tiled.newMap("../data/map.tmx");
+  non.audio.play(non.audio.newMusic("../data/music.ogg"));
   non.network.connected = (conn) => {
 	lastMsg = "client connected: " + conn.toString();
   };

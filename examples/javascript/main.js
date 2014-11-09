@@ -2,8 +2,8 @@ var map, pressed, testText, client, server, lastMsg;
 non.load("testText.js");
 
 non.ready = function() {
-  map = non.tiled.newMap("map.tmx");
-  non.audio.play(non.audio.newMusic("music.ogg"));
+  map = non.tiled.newMap("../data/map.tmx");
+  non.audio.play(non.audio.newMusic("../data/music.ogg"));
   non.network.connected = function(conn) {
 	lastMsg = "client connected: " + conn.toString();
   };

@@ -134,6 +134,7 @@ public class Game implements ApplicationListener {
         else if (ext.equalsIgnoreCase(Lua.getExtension())) scripting = new Lua();
         else if (ext.equalsIgnoreCase(Python.getExtension())) scripting = new Python();
         else if (ext.equalsIgnoreCase(Ruby.getExtension())) scripting = new Ruby();
+        else if (ext.equalsIgnoreCase(Groovy.getExtension())) scripting = new Groovy();
         
         // Evaluate and run scripts
         scripting.put("non", this);

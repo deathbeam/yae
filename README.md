@@ -24,10 +24,11 @@ non is experimental game framework created for rapid game development and so it 
 
 * JavaScript `.js`
 * [CoffeeScript](http://coffeescript.org/) `.coffee`
-* [TypeScript](http://www.typescriptlang.org/) `.ts`
+* [TypeScript](http://typescriptlang.org/) `.ts`
 * [Lua](http://lua.org/) `.lua`
-* [Ruby](https://www.ruby-lang.org) `.rb` (experimental)
-* [Python](https://www.python.org/) `.py` (experimental)
+* [Ruby](https://ruby-lang.org) `.rb` (experimental)
+* [Python](https://python.org/) `.py` (experimental)
+* [Groovy](http://groovy-lang.org/) `.groovy` (experimental)
 
 ## Configuration
 
@@ -51,3 +52,37 @@ Your game logic should be divided into 3 events:
 Additional usefull events
 * `non.close` - Triggered on game close, unloading of game assets
 * `non.resize` - Triggered on game window resize
+
+## Examples
+
+Drawing things:
+```
+non.ready =>
+	image = non.graphics.newImage("image.png")
+	tiledMap = non.tiled.newMap("map.tmx")
+
+non.draw =>
+	non.graphics.draw(tiledMap)
+	non.graphics.draw(image, 0, 0)
+	non.graphics.draw("Hello World!", 0, 0)
+```
+
+Playing music
+```
+non.ready =>
+	music = non.audio.newMusic("music.ogg")
+	non.audio.play(music)
+```
+
+Client - Server connection
+```
+non.ready =>
+	non.network.connected (connection) => ...
+	non.network.disconnected (connection) => ...
+	non.network.received(data, connection) => ...
+	non.network.setPort(1111).setHost("localhost").init()
+	server = non.network.newServer()
+	server.listen()
+	client = non.network.newClient()
+	client.connect()
+```
