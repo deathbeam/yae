@@ -59,9 +59,7 @@ public class Game implements ApplicationListener {
     public static ScriptRuntime scripting;
     
     // Functions invoked from scripts
-    public Object ready;
-    public Object draw;
-    public Object update;
+    public Object ready, draw, update, resize, close;
     
     // Game modules
     public Audio audio;
@@ -101,13 +99,8 @@ public class Game implements ApplicationListener {
         Utils.dump(obj);
     }
     
-    public Object load(String scriptPath) {
-        try {
-            return scripting.eval(Utils.getResource(scriptPath));
-        } catch (IOException ex) {
-            Utils.warning("Resource not found", scriptPath);
-            return null;
-        }
+    public Object load(String scriptPath) throws IOException {
+        return scripting.eval(Utils.getResource(scriptPath));
     }
     
     public Game(JsonValue args) {
@@ -153,7 +146,9 @@ public class Game implements ApplicationListener {
         scripting.put("int_ready", ready);
         scripting.put("int_draw", draw);
         scripting.put("int_update", update);
-        scripting.invoke("int_ready");
+        scripting.put("int_resize", resize);
+        scripting.put("int_close", close);
+        if (ready!=null) scripting.invoke("int_ready");
     }
 
     @Override
@@ -195,17 +190,17 @@ public class Game implements ApplicationListener {
             return;
         }
         
-        scripting.invoke("int_update");
+        if (update!=null) scripting.invoke("int_update");
         if (graphics != null) {
             graphics.begin();
-            scripting.invoke("int_draw");
+            if (draw!=null) scripting.invoke("int_draw");
             graphics.end();
         }
     }
 
     @Override
     public void resize (int width, int height) {
-        //if (loaded && scripting!= null) scripting.invoke("int_resize");
+        if (resize!=null) scripting.invoke("int_resize");
     }
 
     @Override
@@ -218,7 +213,7 @@ public class Game implements ApplicationListener {
 
     @Override
     public void dispose () {
-        //if (loaded && scripting!= null) scripting.invoke("int_dispose");
+        if (close!=null) scripting.invoke("int_close");
         Utils.clearCache();
     }
 }

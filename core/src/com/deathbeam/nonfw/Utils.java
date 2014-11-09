@@ -23,7 +23,6 @@
  */
 package com.deathbeam.nonfw;
 
-import com.deathbeam.nonfw.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonReader;
@@ -108,10 +107,9 @@ public class Utils {
                     return new JsonReader().parse(cfg);
                 }
             } else {
-                File cfg = new File(file.getName() + "/non.cfg");
-                if (cfg.exists()) {
+                if ("non.cfg".equals(file.getName())) {
                     CONFIG = file;
-                    return new JsonReader().parse(new FileInputStream(cfg));
+                    return new JsonReader().parse(new FileInputStream(file));
                 }
             }
         }
@@ -124,15 +122,21 @@ public class Utils {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if (CONFIG.isDirectory()) {
-                    DIR = CONFIG.getName();
-                } else {
-                    DIR = ".tmp";
-                    File dir = new File(DIR);
-                    dir.mkdir();
-                    ZipUtil.unpack(CONFIG, dir);
+                try {
+                    if (CONFIG.isDirectory()) {
+                        DIR = CONFIG.getName();
+                    } else if (isZipFile(CONFIG)) {
+                        DIR = ".tmp";
+                        File dir = new File(DIR);
+                        dir.mkdir();
+                        ZipUtil.unpack(CONFIG, dir);
+                    } else {
+                        DIR = ".";
+                    }
+                    Game.loaded = true;
+                } catch (IOException ex) {
+                    Utils.error("Resource not found", ex.getMessage());
                 }
-                Game.loaded = true;
             }
         }).start();
     }

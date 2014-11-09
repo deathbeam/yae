@@ -41,14 +41,12 @@ import java.io.IOException;
  */
 public final class Graphics {
     public final SpriteBatch batch;
-    public final Shader shader;
     private final OrthographicCamera camera;
     private BitmapFont font;
     private float rotation, scale;
     private Vector2 translation;
     
     public Graphics() {
-        shader = new Shader();
         batch = new SpriteBatch();
         font = new BitmapFont();
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -61,24 +59,24 @@ public final class Graphics {
     
     public Color newColor(String name) {
         if ("clear".equals(name)) return Color.CLEAR;
-        if ("white".equals(name)) return Color.WHITE;
-        if ("black".equals(name)) return Color.BLACK;
-        if ("red".equals(name)) return Color.RED;
-        if ("green".equals(name)) return Color.GREEN;
-        if ("blue".equals(name)) return Color.BLUE;
-        if ("light gray".equals(name)) return Color.LIGHT_GRAY;
-        if ("gray".equals(name)) return Color.GRAY;
-        if ("dark gray".equals(name)) return Color.DARK_GRAY;
-        if ("pink".equals(name)) return Color.PINK;
-        if ("orange".equals(name)) return Color.ORANGE;
-        if ("yellow".equals(name)) return Color.YELLOW;
-        if ("magenta".equals(name)) return Color.MAGENTA;
-        if ("cyan".equals(name)) return Color.CYAN;
-        if ("olive".equals(name)) return Color.OLIVE;
-        if ("purple".equals(name)) return Color.PURPLE;
-        if ("maroon".equals(name)) return Color.MAROON;
-        if ("teal".equals(name)) return Color.TEAL;
-        if ("navy".equals(name)) return Color.NAVY;
+        else if ("white".equals(name)) return Color.WHITE;
+        else if ("black".equals(name)) return Color.BLACK;
+        else if ("red".equals(name)) return Color.RED;
+        else if ("green".equals(name)) return Color.GREEN;
+        else if ("blue".equals(name)) return Color.BLUE;
+        else if ("light gray".equals(name)) return Color.LIGHT_GRAY;
+        else if ("gray".equals(name)) return Color.GRAY;
+        else if ("dark gray".equals(name)) return Color.DARK_GRAY;
+        else if ("pink".equals(name)) return Color.PINK;
+        else if ("orange".equals(name)) return Color.ORANGE;
+        else if ("yellow".equals(name)) return Color.YELLOW;
+        else if ("magenta".equals(name)) return Color.MAGENTA;
+        else if ("cyan".equals(name)) return Color.CYAN;
+        else if ("olive".equals(name)) return Color.OLIVE;
+        else if ("purple".equals(name)) return Color.PURPLE;
+        else if ("maroon".equals(name)) return Color.MAROON;
+        else if ("teal".equals(name)) return Color.TEAL;
+        else if ("navy".equals(name)) return Color.NAVY;
         return Color.CLEAR;
     }
     
@@ -88,6 +86,10 @@ public final class Graphics {
     
     public Color newColor(float r, float g, float b, float a) {
         return new Color(r, g, b, a);
+    }
+    
+    public ShaderProgram newShader(String vert, String frag) throws IOException {
+        return new ShaderProgram(Utils.getResource(vert), Utils.getResource(frag));
     }
     
     public Image newImage(String file) throws IOException {

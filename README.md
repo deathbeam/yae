@@ -8,15 +8,17 @@
   
 ```
 
+non is experimental game framework created for rapid game development and so it is perfect for game jams, but also for serious projects. non can run on almost any platform, including Windows, Mac and Linux. I am working on support for Android, web and IOS.
+
 ## Features
 
 * Super simple image and text rendering and manipulation
 * TMX map rendering
-* Audio engine (using libGDX again, but with simple usage... again)
-* Input engine (not finished yet)
+* Audio engine
+* Input engine
 * Modules system (check below example configuration)
 * Game packages (supports classic game directory or zipped game data)
-* Simple TCP networking (later I will add also support for UDP)
+* Simple TCP networking
 
 ## Supported languages
 
@@ -33,59 +35,19 @@ Configuration is done by json configuration file `non.cfg`. You can define windo
 ```json
 {
     title: "No Nonsense Game",
-    resolution: [800, 600],
+    resolution: [ 800, 600 ],
     main: "main.js",
-    modules: [audio, graphics, keyboard, mouse, touch, math, tiled, network]
+    modules: [ audio, graphics, keyboard, mouse, touch, math, tiled, network ]
 }
 ```
 
 ## Main class
 
-Your game main logic should be divided into 3 functions:
+Your game logic should be divided into 3 events:
 * `non.ready` - Initialization logic, loading of game assets
 * `non.update` - Update logic, handling input and timed events
 * `non.draw` - Display logic, handling rendering of loaded assets
 
-#### Examples
-
-In JavaScript:
-```javascript
-non.ready = function() {
-	// insert initialization logic here
-};
-
-non.update = function() {
-	// insert game logic here
-};
-
-non.draw = function() {
-	// insert drawing logic here
-};
-```
-
-In CoffeeScript:
-```coffeescript
-non.ready = ->
-	# insert initialization logic here
-
-non.update = ->
-	# insert game logic here
-
-non.draw = ->
-	# insert drawing logic here
-```
-
-In TypeScript:
-```typescript
-non.ready = () => {
-	// insert initialization logic here
-};
-
-non.update = () => {
-	// insert game logic here
-};
-
-non.draw = () => {
-	// insert drawing logic here
-};
-```
+Additional usefull events
+* `non.close` - Triggered on game close, unloading of game assets
+* `non.resize` - Triggered on game window resize
