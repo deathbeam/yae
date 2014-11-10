@@ -23,13 +23,13 @@
  */
 package com.deathbeam.nonfw.tiled;
 
-import com.deathbeam.nonfw.graphics.Graphics;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.deathbeam.nonfw.Utils;
+import com.deathbeam.nonfw.graphics.Graphics;
 import java.io.IOException;
 /**
  *

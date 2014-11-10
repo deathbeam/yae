@@ -41,18 +41,22 @@ public class Desktop {
      */
     public static void main (String[] args) throws IOException {
         JsonValue arg = Utils.configure();
-        int[] size = arg.get("resolution").asIntArray();
-        String title = arg.get("title").asString();
         
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-        cfg.title = title;
-        cfg.width = size[0];
-        cfg.height = size[1];
         cfg.addIcon("assets/icon-256.png", Files.FileType.Classpath);
         cfg.addIcon("assets/icon-192.png", Files.FileType.Classpath);
         cfg.addIcon("assets/icon-64.png", Files.FileType.Classpath);
         cfg.addIcon("assets/icon-32.png", Files.FileType.Classpath);
         cfg.addIcon("assets/icon-16.png", Files.FileType.Classpath);
+        if (arg!= null) {
+            cfg.title = arg.get("title").asString();
+            cfg.width = arg.get("resolution").asIntArray()[0];
+            cfg.height = arg.get("resolution").asIntArray()[1];
+        } else {
+            cfg.title = "Game not found!";
+            cfg.width = 800;
+            cfg.height = 600;
+        }
         new LwjglApplication(new Game(arg), cfg);
     }
 }

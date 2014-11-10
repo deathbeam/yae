@@ -25,7 +25,9 @@ package com.deathbeam.nonfw;
 
 import com.badlogic.gdx.files.FileHandle;
 import java.io.IOException;
-import javax.script.*;
+import javax.script.ScriptEngineFactory;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 
@@ -33,7 +35,7 @@ import org.mozilla.javascript.Scriptable;
  *
  * @author Thomas Slusny
  */
-public final class TypeScript extends ScriptRuntime {
+public class TypeScript extends ScriptRuntime {
     private Scriptable scope;
     
     public static String getName() {

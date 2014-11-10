@@ -30,16 +30,17 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.deathbeam.nonfw.tiled.TiledMap;
 import com.deathbeam.nonfw.Utils;
+import com.deathbeam.nonfw.tiled.TiledMap;
 import java.io.IOException;
 
 /**
  *
  * @author Thomas Slusny
  */
-public final class Graphics {
+public class Graphics {
     public final SpriteBatch batch;
     private final OrthographicCamera camera;
     private BitmapFont font;
@@ -202,13 +203,16 @@ public final class Graphics {
     
     public Graphics draw(Image image, int x, int y, Color color) {
         batch.setColor(color);
+        Vector2 origin = image.getOrigin();
+        Vector2 scale = image.getScale();
+        Rectangle source = image.getSource();
         batch.draw(
                 image, x, y, 
-                image.origin.x, image.origin.y,
-                image.size.x, image.size.y, 
-                image.scale.x, image.scale.y, image.rotation,
-                (int)image.source.x, (int)image.source.y, 
-                (int)image.source.width, (int)image.source.height,
+                origin.x, origin.y,
+                image.getWidth(), image.getHeight(), 
+                scale.x, scale.y, image.getRotation(),
+                (int)source.x, (int)source.y, 
+                (int)source.width, (int)source.height,
                 false, true
         );
         return this;

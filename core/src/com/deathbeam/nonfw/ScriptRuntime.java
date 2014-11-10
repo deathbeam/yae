@@ -24,8 +24,6 @@
 package com.deathbeam.nonfw;
 
 import com.badlogic.gdx.files.FileHandle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 

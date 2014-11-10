@@ -23,10 +23,10 @@
  */
 package com.deathbeam.nonfw.audio;
 
-import com.deathbeam.nonfw.Utils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.deathbeam.nonfw.Utils;
 import java.io.IOException;
 import java.util.HashSet;
 

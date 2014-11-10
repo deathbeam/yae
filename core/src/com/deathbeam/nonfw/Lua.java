@@ -24,13 +24,15 @@
 package com.deathbeam.nonfw;
 
 import com.badlogic.gdx.files.FileHandle;
-import javax.script.*;
+import javax.script.ScriptEngineFactory;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 
 /**
  *
  * @author Thomas Slusny
  */
-public final class Lua extends ScriptRuntime {
+public class Lua extends ScriptRuntime {
     public static String getName() {
         return "Lua";
     }

@@ -111,8 +111,7 @@ public class Utils {
                 return new JsonReader().parse(new FileInputStream(file));
             }
         }
-        
-        Utils.error("Resource not found", "non.cfg");
+
         return null;
     }
     

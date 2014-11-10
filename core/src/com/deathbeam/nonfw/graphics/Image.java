@@ -35,28 +35,61 @@ import java.io.IOException;
  * @author Thomas Slusny
  */
 public class Image extends Texture {
-    public final Vector2 size;
-    public Vector2 origin;
-    public Vector2 scale;
-    public Rectangle source;
-    public float rotation;
+    private Vector2 origin;
+    private Vector2 scale;
+    private Rectangle source;
+    private float rotation;
     
     public Image() {
         super(32, 32, Pixmap.Format.Alpha);
-        size = new Vector2(getWidth(), getHeight());
         init();
     }
     
     public Image(FileHandle handle) throws IOException {
         super(handle);
-        size = new Vector2(getWidth(), getHeight());
         init();
+    }
+    
+    public Vector2 getOrigin() {
+        return origin;
+    }
+    
+    public Image setOrigin(Vector2 origin) {
+        this.origin = origin;
+        return this;
+    }
+    
+    public Vector2 getScale() {
+        return scale;
+    }
+    
+    public Image setScale(Vector2 scale) {
+        this.scale = scale;
+        return this;
+    }
+    
+    public Rectangle getSource() {
+        return source;
+    }
+    
+    public Image setSource(Rectangle source) {
+        this.source = source;
+        return this;
+    }
+    
+    public float getRotation() {
+        return rotation;
+    }
+    
+    public Image setRotation(float rotation) {
+        this.rotation = rotation;
+        return this;
     }
     
     private void init() {
         origin = Vector2.Zero;
         scale = new Vector2(1, 1);
-        source = new Rectangle(0, 0, getWidth(), getHeight());
+        source = new Rectangle(0, 0, super.getWidth(), super.getHeight());
         rotation = 0;
     }
 }

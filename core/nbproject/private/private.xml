@@ -4,7 +4,11 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/E:/gamedev/nonfw/core/src/com/deathbeam/nonfw/Game.java</file>
+            <file>file:/E:/gamedev/nonfw/core/src/com/deathbeam/nonfw/graphics/Image.java</file>
             <file>file:/E:/gamedev/nonfw/core/src/com/deathbeam/nonfw/audio/Audio.java</file>
+            <file>file:/E:/gamedev/nonfw/core/src/com/deathbeam/nonfw/graphics/Graphics.java</file>
+            <file>file:/E:/gamedev/nonfw/core/src/com/deathbeam/nonfw/Utils.java</file>
+            <file>file:/E:/gamedev/nonfw/core/src/com/deathbeam/nonfw/math/Math.java</file>
         </group>
     </open-files>
 </project-private>

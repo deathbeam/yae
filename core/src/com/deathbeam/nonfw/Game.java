@@ -27,18 +27,18 @@ package com.deathbeam.nonfw;
  *
  * @author Thomas Slusny
  */
-import com.deathbeam.nonfw.graphics.Image;
-import com.deathbeam.nonfw.graphics.Graphics;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.JsonValue;
 import com.deathbeam.nonfw.audio.Audio;
+import com.deathbeam.nonfw.graphics.Graphics;
+import com.deathbeam.nonfw.graphics.Image;
 import com.deathbeam.nonfw.input.Keyboard;
 import com.deathbeam.nonfw.input.Mouse;
-import com.deathbeam.nonfw.math.Math;
 import com.deathbeam.nonfw.input.Touch;
+import com.deathbeam.nonfw.math.Math;
 import com.deathbeam.nonfw.network.Network;
 import com.deathbeam.nonfw.tiled.Tiled;
 import java.io.IOException;
@@ -54,7 +54,7 @@ public class Game implements ApplicationListener {
     private String text;
     private int numPeriods;
     private float loadingTmr;
-    private boolean drawSplash = true;
+    private int loadMode;
     
     // Scripting runtime
     public static ScriptRuntime scripting;
@@ -110,7 +110,7 @@ public class Game implements ApplicationListener {
     
     private void init() {
         // Hide splash screen
-        drawSplash = false;
+        loadMode = 0;
         gfx.dispose();
         gfx = null;
         
@@ -156,15 +156,21 @@ public class Game implements ApplicationListener {
     @Override
     public void create () {
         gfx = new Graphics();
-        text = "Loading assets";
-        numPeriods = 0;
         try {
             splash = new Image(Utils.getInternalResource("splash.png"));
         } catch (IOException ex) {
             Utils.warning("Resource not found", "splash.png");
             splash = new Image();
         }
-        Utils.loadPackage();
+        
+        if (conf!=null) {
+            loadMode = 1;
+            text = "Loading assets";
+            Utils.loadPackage();
+        } else {
+            loadMode = 2;
+            text = "Game not found! Try http://deathbeam.github.io/non";
+        }
     }
 
     @Override
@@ -172,17 +178,20 @@ public class Game implements ApplicationListener {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
-        if(drawSplash) {
-            loadingTmr += Gdx.graphics.getDeltaTime();
-            if (loadingTmr > 0.3f) {
-            	numPeriods = (numPeriods + 1) % 4;
-                loadingTmr = 0;
-            }
+        if(loadMode > 0) {
             gfx.begin();
             gfx.draw(splash, Gdx.graphics.getWidth() / 2 - splash.getWidth() / 2, Gdx.graphics.getHeight() / 2 - splash.getHeight() / 2);
             gfx.draw(text + Utils.repeat(".", numPeriods), (int) (Gdx.graphics.getWidth() / 2 - gfx.getFont().getBounds(text).width /2), Gdx.graphics.getHeight() / 2 + splash.getHeight() / 2 + 15, Color.BLACK);
             gfx.end();
-            if(loaded) init();
+            
+            if (loadMode == 1) {
+                loadingTmr += Gdx.graphics.getDeltaTime();
+                if (loadingTmr > 0.3f) {
+                    numPeriods = (numPeriods + 1) % 4;
+                    loadingTmr = 0;
+                }
+                if(loaded) init();
+            }
             return;
         }
         

@@ -2,8 +2,8 @@ package com.deathbeam.nonfw.network.server;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
-import com.badlogic.gdx.net.Socket;
 import com.badlogic.gdx.net.ServerSocket;
+import com.badlogic.gdx.net.Socket;
 import com.deathbeam.nonfw.Utils;
 import com.deathbeam.nonfw.network.Listener;
 import java.io.IOException;

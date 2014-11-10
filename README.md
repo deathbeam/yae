@@ -1,12 +1,4 @@
-```
-   __                     __   
-  / /  _ __   ___  _ __   \ \  
- | |  | '_ \ / _ \| '_ \   | | 
-< <   | | | | (_) | | | |   > >
- | |  |_| |_|\___/|_| |_|  | | 
-  \_\    game framework   /_/  
-  
-```
+![No Nonsense logo](https://raw.githubusercontent.com/deathbeam/non/master/core/src/assets/splash.png)
 
 non is experimental game framework created for rapid game development and so it is perfect for game jams, but also for serious projects. non can run on almost any platform, including Windows, Mac and Linux. I am working on support for Android, web and IOS.
 
@@ -54,16 +46,23 @@ Additional usefull events
 * `non.resize` - Triggered on game window resize
 
 ## Examples
+Code below is not in real programming language, you must transform it to one of supported languages!
+Drawing images:
+```
+non.ready =>
+	image = non.graphics.newImage("texture.png")
 
-Drawing things:
+non.draw =>
+	non.graphics.draw(image, 0, 0)
+```
+
+Drawing text:
 ```
 non.ready =>
 	image = non.graphics.newImage("image.png")
 	tiledMap = non.tiled.newMap("map.tmx")
 
 non.draw =>
-	non.graphics.draw(tiledMap)
-	non.graphics.draw(image, 0, 0)
 	non.graphics.draw("Hello World!", 0, 0)
 ```
 
@@ -72,17 +71,4 @@ Playing music
 non.ready =>
 	music = non.audio.newMusic("music.ogg")
 	non.audio.play(music)
-```
-
-Client - Server connection
-```
-non.ready =>
-	non.network.connected (connection) => ...
-	non.network.disconnected (connection) => ...
-	non.network.received(data, connection) => ...
-	non.network.setPort(1111).setHost("localhost").init()
-	server = non.network.newServer()
-	server.listen()
-	client = non.network.newClient()
-	client.connect()
 ```
