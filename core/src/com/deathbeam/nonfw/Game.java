@@ -40,6 +40,7 @@ import com.deathbeam.nonfw.input.Mouse;
 import com.deathbeam.nonfw.input.Touch;
 import com.deathbeam.nonfw.math.Math;
 import com.deathbeam.nonfw.network.Network;
+import com.deathbeam.nonfw.physics.Physics;
 import com.deathbeam.nonfw.tiled.Tiled;
 import java.io.IOException;
 
@@ -71,6 +72,7 @@ public class Game implements ApplicationListener {
     public Math math;
     public Network network;
     public Tiled tiled;
+    public Physics physics;
     
     public int getFPS() {
         return Gdx.graphics.getFramesPerSecond();
@@ -125,6 +127,7 @@ public class Game implements ApplicationListener {
             else if ("math".equalsIgnoreCase(mod)) math = new Math();
             else if ("tiled".equalsIgnoreCase(mod)) tiled = new Tiled();
             else if ("network".equalsIgnoreCase(mod)) network = new Network();
+            else if ("physics".equalsIgnoreCase(mod)) physics = new Physics();
         }
         
         // Initialize scripting runtime

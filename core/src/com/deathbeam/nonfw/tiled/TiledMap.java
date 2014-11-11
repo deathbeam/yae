@@ -36,7 +36,7 @@ import java.io.IOException;
  * @author Thomas Slusny
  */
 public class TiledMap {
-    private final com.badlogic.gdx.maps.tiled.TiledMap map;
+    public final com.badlogic.gdx.maps.tiled.TiledMap map;
     private TiledMapRenderer renderer;
     public int tileSize;
     public String orientation;

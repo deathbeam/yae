@@ -128,6 +128,10 @@ public class Graphics {
         return batch.getTransformMatrix();
     }
     
+    public Matrix4 getCombined() {
+        return camera.combined;
+    }
+    
     public Graphics rotate(float angle) {
         rotation = angle;
         update();
