@@ -12,6 +12,7 @@ non is experimental game framework created for rapid game development and so it 
 * Game packages (supports classic game directory or zipped game data)
 * Simple TCP networking
 * Physics engine based on Box2D
+* Simple lights engine based on Box2DLights
 
 ## Supported languages
 
@@ -31,7 +32,7 @@ Configuration is done by json configuration file `non.cfg`. You can define windo
     title: "No Nonsense Game",
     resolution: [ 800, 600 ],
     main: "main.js",
-    modules: [ audio, graphics, keyboard, mouse, touch, math, tiled, network, physics ]
+    modules: [ audio, graphics, keyboard, mouse, touch, math, tiled, network, physics, lights ]
 }
 ```
 

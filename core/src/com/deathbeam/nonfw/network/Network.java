@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2014 Tomas.
+ * Copyright 2014 Thomas Slusny.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,16 +32,14 @@ import java.io.DataInputStream;
 
 /**
  *
- * @author Tomas
+ * @author Thomas Slusny
  */
 public class Network {
     private Listener listener;
     private String host;
     private int port;
     
-    public Object connected;
-    public Object disconnected;
-    public Object received;
+    public Object connected, disconnected, received, curData, curConn;
     
     public ByteArrayOutputStream newBuffer() {
         return new ByteArrayOutputStream();
@@ -56,27 +54,24 @@ public class Network {
     }
     
     public Network init() {
-        Game.scripting.put("int_connected", connected);
-        Game.scripting.put("int_disconnected", disconnected);
-        Game.scripting.put("int_received", received);
         this.listener = new Listener() {
             @Override
             public void disconnected(Connection broken, boolean forced) {
-                Game.scripting.put("int_connection", broken);
-                Game.scripting.invoke("int_disconnected", "int_connection");
+                curConn = broken;
+                Game.scripting.invoke("non.network", "disconnected", "non.network.curConn");
             }
 
             @Override
             public void receive(DataInputStream data, Connection from) {
-                Game.scripting.put("int_connection", from);
-                Game.scripting.put("int_data", data);
-                Game.scripting.invoke("int_received", "int_data", "int_connection");
+                curData = data;
+                curConn = from;
+                Game.scripting.invoke("non.network", "received", "non.network.curData, non.network.curConn");
             }
 
             @Override
             public void connected(ServerConnection conn) {
-                Game.scripting.put("int_connection", conn);
-                Game.scripting.invoke("int_connected", "int_connection");
+                curConn = conn;
+                Game.scripting.invoke("non.network", "connected", "non.network.curConn");
             }
         };
         return this;

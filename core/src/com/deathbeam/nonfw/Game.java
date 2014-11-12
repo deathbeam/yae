@@ -38,6 +38,7 @@ import com.deathbeam.nonfw.graphics.Image;
 import com.deathbeam.nonfw.input.Keyboard;
 import com.deathbeam.nonfw.input.Mouse;
 import com.deathbeam.nonfw.input.Touch;
+import com.deathbeam.nonfw.lights.Lights;
 import com.deathbeam.nonfw.math.Math;
 import com.deathbeam.nonfw.network.Network;
 import com.deathbeam.nonfw.physics.Physics;
@@ -57,12 +58,11 @@ public class Game implements ApplicationListener {
     private final JsonValue conf;
     
     // Splash screen variables
-    public static boolean loaded = false;
+    public static boolean LOADED = false;
     private Image splash;
     private String text;
-    private int numPeriods;
     private float loadingTmr;
-    private int loadMode;
+    private int numPeriods, loadMode;
     
     // Scripting runtime
     public static ScriptRuntime scripting;
@@ -71,15 +71,16 @@ public class Game implements ApplicationListener {
     public Object ready, draw, update, resize, close;
     
     // Game modules
-    public Audio audio;
-    public Graphics graphics;
-    public Keyboard keyboard;
-    public Mouse mouse;
-    public Touch touch;
-    public Math math;
-    public Network network;
-    public Tiled tiled;
-    public Physics physics;
+    public static Audio audio;
+    public static Graphics graphics;
+    public static Keyboard keyboard;
+    public static Mouse mouse;
+    public static Touch touch;
+    public static Math math;
+    public static Network network;
+    public static Tiled tiled;
+    public static Physics physics;
+    public static Lights lights;
     
     public int getFPS() {
         return Gdx.graphics.getFramesPerSecond();
@@ -135,6 +136,7 @@ public class Game implements ApplicationListener {
             else if ("tiled".equalsIgnoreCase(mod)) tiled = new Tiled();
             else if ("network".equalsIgnoreCase(mod)) network = new Network();
             else if ("physics".equalsIgnoreCase(mod)) physics = new Physics();
+            else if ("lights".equalsIgnoreCase(mod)) lights = new Lights();
         }
         
         // Initialize scripting runtime
@@ -155,12 +157,7 @@ public class Game implements ApplicationListener {
         } catch (IOException ex) {
             Utils.error("Resource not found", script);
         }
-        scripting.put("int_ready", ready);
-        scripting.put("int_draw", draw);
-        scripting.put("int_update", update);
-        scripting.put("int_resize", resize);
-        scripting.put("int_close", close);
-        if (ready!=null) scripting.invoke("int_ready");
+        if (ready!=null) scripting.invoke("non", "ready");
     }
 
     @Override
@@ -200,22 +197,22 @@ public class Game implements ApplicationListener {
                     numPeriods = (numPeriods + 1) % 4;
                     loadingTmr = 0;
                 }
-                if(loaded) init();
+                if(LOADED) init();
             }
             return;
         }
         
-        if (update!=null) scripting.invoke("int_update");
-        if (graphics != null) {
+        if (update!=null) scripting.invoke("non", "update");
+        if (graphics != null && draw != null) {
             graphics.begin();
-            if (draw!=null) scripting.invoke("int_draw");
+            scripting.invoke("non", "draw");
             graphics.end();
         }
     }
 
     @Override
     public void resize (int width, int height) {
-        if (resize!=null) scripting.invoke("int_resize");
+        if (resize!=null) scripting.invoke("non", "resize");
         if (graphics!=null) graphics.resize().update();
     }
 
@@ -229,7 +226,7 @@ public class Game implements ApplicationListener {
 
     @Override
     public void dispose () {
-        if (close!=null) scripting.invoke("int_close");
+        if (close!=null) scripting.invoke("non", "close");
         if (graphics!=null) graphics.dispose();
         if (physics!=null) physics.dispose();
         Utils.clearCache();

@@ -53,27 +53,18 @@ public class Groovy extends ScriptRuntime {
     }
     
     @Override
-    public void invoke(String funct) {
+    public void invoke(String pack, String funct) {
         try {
-            e.eval(funct + "();");
+            e.eval(pack + "." + funct + "();");
         } catch (ScriptException ex) {
             Utils.log("scripting", ex.getMessage());
         }
     }
     
     @Override
-    public void invoke(String funct, String args) {
+    public void invoke(String pack, String funct, String args) {
         try {
-            e.eval(funct + "(" + args + ");");
-        } catch (ScriptException ex) {
-            Utils.log("scripting", ex.getMessage());
-        }
-    }
-    
-    @Override
-    public void invoke(String funct, String arg1, String arg2) {
-        try {
-            e.eval(funct + "(" + arg1 + "," + arg2 + ");");
+            e.eval(pack + "." + funct + "(" + args + ");");
         } catch (ScriptException ex) {
             Utils.log("scripting", ex.getMessage());
         }
@@ -84,7 +75,7 @@ public class Groovy extends ScriptRuntime {
         try {
             return e.eval(file.reader());
         } catch (ScriptException ex) {
-            Utils.warning("Scripting", ex.getMessage());
+            Utils.warning("scripting", ex.getMessage());
         }
         return null;
     }

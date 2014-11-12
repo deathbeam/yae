@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2014 Tomas.
+ * Copyright 2014 Thomas Slusny.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,7 @@
  */
 package com.deathbeam.nonfw.physics;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
@@ -39,11 +40,11 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import com.deathbeam.nonfw.graphics.Graphics;
+import com.deathbeam.nonfw.Game;
 import com.deathbeam.nonfw.tiled.TiledMap;
 /**
  *
- * @author Tomas
+ * @author Thomas Slusny
  */
 public class Physics {
     private World world;
@@ -51,6 +52,10 @@ public class Physics {
     private boolean sleep = true;
     private float timescale = 1f;
     private Box2DDebugRenderer debugRenderer;
+    
+    public World getWorld() {
+        return world;
+    }
     
     public Physics setGravity(float x, float y) {
         this.gravity = new Vector2(x, y);
@@ -74,14 +79,15 @@ public class Physics {
         return this;
     }
     
-    public void update(float delta) {
-        world.step(Math.min(delta, 0.02f) * timescale, 4, 4);
+    public void update() {
+        world.step(Math.min(Gdx.graphics.getDeltaTime(), 0.02f) * timescale, 4, 4);
     }
     
-    public void draw(Graphics gfx) {
-        gfx.end();
-        debugRenderer.render(world, gfx.getProjection());
-        gfx.begin();
+    public void draw() {
+        if (Game.graphics == null) return;
+        Game.graphics.end();
+        debugRenderer.render(world, Game.graphics.getProjection());
+        Game.graphics.begin();
     }
     
     public Array<Body> newMap(TiledMap map) {

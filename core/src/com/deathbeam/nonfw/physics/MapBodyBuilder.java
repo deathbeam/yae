@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2014 Tomas.
+ * Copyright 2014 Thomas Slusny.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -46,7 +46,7 @@ import com.badlogic.gdx.utils.Array;
 
 /**
  *
- * @author Tomas
+ * @author Thomas Slusny
  */
 public class MapBodyBuilder {
 

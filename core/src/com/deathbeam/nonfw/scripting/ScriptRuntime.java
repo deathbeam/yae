@@ -35,9 +35,8 @@ import javax.script.ScriptException;
 public abstract class ScriptRuntime {
     protected ScriptEngine e;
     
-    public abstract void invoke(String funct);
-    public abstract void invoke(String funct, String args);
-    public abstract void invoke(String funct, String arg1, String arg2);
+    public abstract void invoke(String pack, String funct);
+    public abstract void invoke(String pack, String funct, String args);
     public abstract Object eval(FileHandle file);
 
     public Object eval(String script) {

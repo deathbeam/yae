@@ -130,7 +130,7 @@ public class Utils {
                     } else {
                         DIR = ".";
                     }
-                    Game.loaded = true;
+                    Game.LOADED = true;
                 } catch (IOException ex) {
                     Utils.error("Resource not found", ex.getMessage());
                 }
