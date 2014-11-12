@@ -41,6 +41,14 @@ import com.deathbeam.nonfw.input.Touch;
 import com.deathbeam.nonfw.math.Math;
 import com.deathbeam.nonfw.network.Network;
 import com.deathbeam.nonfw.physics.Physics;
+import com.deathbeam.nonfw.scripting.CoffeeScript;
+import com.deathbeam.nonfw.scripting.Groovy;
+import com.deathbeam.nonfw.scripting.JavaScript;
+import com.deathbeam.nonfw.scripting.Lua;
+import com.deathbeam.nonfw.scripting.Python;
+import com.deathbeam.nonfw.scripting.Ruby;
+import com.deathbeam.nonfw.scripting.ScriptRuntime;
+import com.deathbeam.nonfw.scripting.TypeScript;
 import com.deathbeam.nonfw.tiled.Tiled;
 import java.io.IOException;
 
@@ -50,7 +58,6 @@ public class Game implements ApplicationListener {
     
     // Splash screen variables
     public static boolean loaded = false;
-    private Graphics gfx;
     private Image splash;
     private String text;
     private int numPeriods;
@@ -113,8 +120,8 @@ public class Game implements ApplicationListener {
     private void init() {
         // Hide splash screen
         loadMode = 0;
-        gfx.dispose();
-        gfx = null;
+        graphics.dispose();
+        graphics = null;
         
         // Load needed modules
         String[] mods = conf.get("modules").asStringArray();
@@ -158,7 +165,7 @@ public class Game implements ApplicationListener {
 
     @Override
     public void create () {
-        gfx = new Graphics();
+        graphics = new Graphics();
         try {
             splash = new Image(Utils.getInternalResource("splash.png"));
         } catch (IOException ex) {
@@ -182,10 +189,10 @@ public class Game implements ApplicationListener {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
         if(loadMode > 0) {
-            gfx.begin();
-            gfx.draw(splash, Gdx.graphics.getWidth() / 2 - splash.getWidth() / 2, Gdx.graphics.getHeight() / 2 - splash.getHeight() / 2);
-            gfx.draw(text + Utils.repeat(".", numPeriods), (int) (Gdx.graphics.getWidth() / 2 - gfx.getFont().getBounds(text).width /2), Gdx.graphics.getHeight() / 2 + splash.getHeight() / 2 + 15, Color.BLACK);
-            gfx.end();
+            graphics.begin();
+            graphics.draw(splash, Gdx.graphics.getWidth() / 2 - splash.getWidth() / 2, Gdx.graphics.getHeight() / 2 - splash.getHeight() / 2);
+            graphics.draw(text + Utils.repeat(".", numPeriods), (int) (Gdx.graphics.getWidth() / 2 - graphics.getFont().getBounds(text).width /2), Gdx.graphics.getHeight() / 2 + splash.getHeight() / 2 + 15, Color.BLACK);
+            graphics.end();
             
             if (loadMode == 1) {
                 loadingTmr += Gdx.graphics.getDeltaTime();
@@ -209,6 +216,7 @@ public class Game implements ApplicationListener {
     @Override
     public void resize (int width, int height) {
         if (resize!=null) scripting.invoke("int_resize");
+        if (graphics!=null) graphics.resize().update();
     }
 
     @Override
@@ -222,6 +230,8 @@ public class Game implements ApplicationListener {
     @Override
     public void dispose () {
         if (close!=null) scripting.invoke("int_close");
+        if (graphics!=null) graphics.dispose();
+        if (physics!=null) physics.dispose();
         Utils.clearCache();
     }
 }

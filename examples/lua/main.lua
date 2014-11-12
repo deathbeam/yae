@@ -1,4 +1,4 @@
-local map, pressed, testText, client, server, lastMsg
+local map, pressed, client, server, lastMsg
 non:load("testText.lua")
 
 non.ready = function()
@@ -18,11 +18,12 @@ non.ready = function()
   server:listen()
   client = non.network:newClient()
   client:connect()
-  non.physics:setTimeScale(2):setGravity(non.math:newVector(0, 10)):init()
+  non.physics:setTimeScale(2):setGravity(0,10):init()
   non.physics:newShape(non.math:newRectangle(32,10,20,20))
   non.physics:newShape(non.math:newRectangle(100,10,20,20))
   non.physics:newShape(non.math:newRectangle(0,150,20,20), "static")
-  non.physics:newShape(non.math:newRectangle(0,300,300,20), "static")
+  non.physics:newShape(non.math:newRectangle(240,300,200,20), "static")
+  non.physics?newShape(non.math:newCircle(32,64,20), "dynamic", 0.5, 0.4, 0.6)
 end
 
 non.update = function()

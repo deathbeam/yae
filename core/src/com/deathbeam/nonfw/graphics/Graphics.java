@@ -50,11 +50,11 @@ public class Graphics {
     public Graphics() {
         batch = new SpriteBatch();
         font = new BitmapFont();
-        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.setToOrtho(true);
+        camera = new OrthographicCamera();
         scale = 1;
         rotation = 0;
         translation = Vector2.Zero;
+        resize();
         update();
     }
     
@@ -222,9 +222,9 @@ public class Graphics {
         return this;
     }
     
-    public void dispose() {
-        batch.dispose();
-        font.dispose();
+    public Graphics resize() {
+        camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        return this;
     }
     
     public Graphics update() {
@@ -234,5 +234,10 @@ public class Graphics {
         camera.update();                             
         batch.setProjectionMatrix(camera.combined);
         return this;
+    }
+    
+    public void dispose() {
+        batch.dispose();
+        font.dispose();
     }
 }

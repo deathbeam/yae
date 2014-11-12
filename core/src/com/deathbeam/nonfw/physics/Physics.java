@@ -23,9 +23,21 @@
  */
 package com.deathbeam.nonfw.physics;
 
-import com.badlogic.gdx.math.*;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Shape2D;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Box2D;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.Shape;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.deathbeam.nonfw.graphics.Graphics;
 import com.deathbeam.nonfw.tiled.TiledMap;
@@ -40,8 +52,8 @@ public class Physics {
     private float timescale = 1f;
     private Box2DDebugRenderer debugRenderer;
     
-    public Physics setGravity(Vector2 gravity) {
-        this.gravity = gravity;
+    public Physics setGravity(float x, float y) {
+        this.gravity = new Vector2(x, y);
         return this;
     }
     
@@ -81,45 +93,52 @@ public class Physics {
     }
     
     public Body newShape(Shape2D shape, String type) {
-        return newShape(shape, type, 1f);
+        return newShape(shape, type, 0, 0.2f, 0);
     }
     
-    public Body newShape(Shape2D shape, String type, float density) {
-        BodyDef def = new BodyDef();
+    public Body newShape(Shape2D shape, String type, float density, float friction, float restitution) {
+        BodyDef bodyDef = new BodyDef();
+
+        if (type.equalsIgnoreCase("dynamic")) bodyDef.type = BodyType.DynamicBody;
+        else if (type.equalsIgnoreCase("static")) bodyDef.type = BodyType.StaticBody;
+        else if (type.equalsIgnoreCase("kinematic")) bodyDef.type = BodyType.KinematicBody;
         
-        if (type.equalsIgnoreCase("dynamic")) def.type = BodyType.DynamicBody;
-        else if (type.equalsIgnoreCase("static")) def.type = BodyType.StaticBody;
-        else if (type.equalsIgnoreCase("kinematic")) def.type = BodyType.KinematicBody;
+        Shape s = null;
         
         if (shape instanceof Rectangle) {
             Rectangle cur = (Rectangle)shape;
-            def.position.set(cur.x, cur.y);
-            Body body = world.createBody(def);
-            PolygonShape s = new PolygonShape();
-            s.setAsBox(cur.width, cur.height);
-            body.createFixture(s, density);
-            s.dispose();
-            return body;
+            bodyDef.position.set(cur.x, cur.y);
+            s = new PolygonShape();
+            ((PolygonShape)s).setAsBox(cur.width, cur.height);
         } else if (shape instanceof Circle) {
             Circle cur = (Circle)shape;
-            def.position.set(cur.x, cur.y);
-            Body body = world.createBody(def);
-            CircleShape s = new CircleShape();
-            s.setRadius(cur.radius);
-            body.createFixture(s, density);
-            s.dispose();
-            return body;
+            bodyDef.position.set(cur.x, cur.y);
+            s = new CircleShape();
+            ((CircleShape)s).setRadius(cur.radius);
         } else if (shape instanceof Polygon) {
             Polygon cur = (Polygon)shape;
-            def.position.set(cur.getX(), cur.getY());
-            Body body = world.createBody(def);
-            PolygonShape s = new PolygonShape();
-            s.set(cur.getVertices());
-            body.createFixture(s, density);
+            bodyDef.position.set(cur.getX(), cur.getY());
+            s = new PolygonShape();
+            ((PolygonShape)s).set(cur.getVertices()); 
+        }
+        
+        if (s!=null) {
+            Body body = world.createBody(bodyDef);
+            FixtureDef def = new FixtureDef();
+            def.density = density;
+            def.friction = friction;
+            def.restitution = restitution;
+            def.shape = s;
+            body.createFixture(def);
             s.dispose();
             return body;
         }
         
         return null;
+    }
+    
+    public void dispose() {
+        debugRenderer.dispose();
+        world.dispose();
     }
 }

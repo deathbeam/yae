@@ -21,40 +21,58 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.deathbeam.nonfw;
+package com.deathbeam.nonfw.scripting;
 
 import com.badlogic.gdx.files.FileHandle;
+import com.deathbeam.nonfw.Utils;
+import java.io.IOException;
 import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.Scriptable;
 
 /**
  *
  * @author Thomas Slusny
  */
-public class Lua extends ScriptRuntime {
+public class TypeScript extends ScriptRuntime {
+    private Scriptable scope;
+    
     public static String getName() {
-        return "Lua";
+        return "TypeScript";
     }
 
     public static String getExtension() {
-        return "lua";
+        return "ts";
     }
     
-    public Lua() {
-        e = new ScriptEngineManager().getEngineByName("lua");
+    public TypeScript() {
+        Context context = Context.enter();
+        context.setOptimizationLevel(-1); // Without this, Rhino hits a 64K bytecode limit and fails
+        try {
+            scope = context.initStandardObjects();
+            context.evaluateString(scope, Utils.readFile(Utils.getInternalResource("langs/typescript.js").read()), "typescript.js", 0, null);
+            context.evaluateString(scope, Utils.readFile(Utils.getInternalResource("langs/typescript.compile.js").read()), "typescript.compile.js", 0, null);
+        } catch (IOException ex) {
+            Utils.error("scripting", ex.getMessage());
+        } finally {
+            Context.exit();
+        }
+        
+        e = new ScriptEngineManager().getEngineByName("JavaScript");
         ScriptEngineFactory f = e.getFactory();
         
         System.out.println( "Engine name: " +f.getEngineName() );
         System.out.println( "Engine Version: " +f.getEngineVersion() );
-        System.out.println( "Language Name: " +f.getLanguageName() );
-        System.out.println( "Language Version: " +f.getLanguageVersion() );
+        System.out.println( "LanguageName: TypeScript" );
+        System.out.println( "Language Version: 0.9.1" );
     }
     
     @Override
     public void invoke(String funct) {
         try {
-            e.eval(funct + "()");
+            e.eval(funct + "();");
         } catch (ScriptException ex) {
             Utils.log("scripting", ex.getMessage());
         }
@@ -63,7 +81,7 @@ public class Lua extends ScriptRuntime {
     @Override
     public void invoke(String funct, String args) {
         try {
-            e.eval(funct + "(" + args + ")");
+            e.eval(funct + "(" + args + ");");
         } catch (ScriptException ex) {
             Utils.log("scripting", ex.getMessage());
         }
@@ -72,7 +90,7 @@ public class Lua extends ScriptRuntime {
     @Override
     public void invoke(String funct, String arg1, String arg2) {
         try {
-            e.eval(funct + "(" + arg1 + "," + arg2 + ")");
+            e.eval(funct + "(" + arg1 + "," + arg2 + ");");
         } catch (ScriptException ex) {
             Utils.log("scripting", ex.getMessage());
         }
@@ -81,10 +99,24 @@ public class Lua extends ScriptRuntime {
     @Override
     public Object eval(FileHandle file) {
         try {
-            e.eval(file.reader());
+            e.eval(compile(Utils.readFile(file.read())));
         } catch (ScriptException ex) {
             Utils.warning("Scripting", ex.getMessage());
+        } catch (IOException ex) {
+            Utils.error("Resource not found", ex.getMessage());
         }
         return null;
+    }
+    
+    private String compile (String script) {
+        Context context = Context.enter();
+        try {
+            Scriptable compileScope = context.newObject(scope);
+            compileScope.setParentScope(scope);
+            compileScope.put("script", compileScope, script);
+            return (String)context.evaluateString(compileScope, "TScompile(script);", "TypeScriptCompiler", 1, null);
+        } finally {
+            Context.exit();
+        }
     }
 }

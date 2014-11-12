@@ -1,1 +1,1 @@
-non.log("testText.js", "Hello World log");
+non.log("testText.ts", "Hello World log");

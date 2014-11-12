@@ -21,9 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.deathbeam.nonfw;
+package com.deathbeam.nonfw.scripting;
 
 import com.badlogic.gdx.files.FileHandle;
+import com.deathbeam.nonfw.Utils;
 import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
@@ -32,29 +33,29 @@ import javax.script.ScriptException;
  *
  * @author Thomas Slusny
  */
-public class Groovy extends ScriptRuntime {
+public class Lua extends ScriptRuntime {
     public static String getName() {
-        return "Groovy";
+        return "Lua";
     }
 
     public static String getExtension() {
-        return "groovy";
+        return "lua";
     }
     
-    public Groovy() {
-        e = new ScriptEngineManager().getEngineByName("groovy");
+    public Lua() {
+        e = new ScriptEngineManager().getEngineByName("lua");
         ScriptEngineFactory f = e.getFactory();
         
         System.out.println( "Engine name: " +f.getEngineName() );
         System.out.println( "Engine Version: " +f.getEngineVersion() );
-        System.out.println( "LanguageName: " +f.getLanguageName() );
+        System.out.println( "Language Name: " +f.getLanguageName() );
         System.out.println( "Language Version: " +f.getLanguageVersion() );
     }
     
     @Override
     public void invoke(String funct) {
         try {
-            e.eval(funct + "();");
+            e.eval(funct + "()");
         } catch (ScriptException ex) {
             Utils.log("scripting", ex.getMessage());
         }
@@ -63,7 +64,7 @@ public class Groovy extends ScriptRuntime {
     @Override
     public void invoke(String funct, String args) {
         try {
-            e.eval(funct + "(" + args + ");");
+            e.eval(funct + "(" + args + ")");
         } catch (ScriptException ex) {
             Utils.log("scripting", ex.getMessage());
         }
@@ -72,7 +73,7 @@ public class Groovy extends ScriptRuntime {
     @Override
     public void invoke(String funct, String arg1, String arg2) {
         try {
-            e.eval(funct + "(" + arg1 + "," + arg2 + ");");
+            e.eval(funct + "(" + arg1 + "," + arg2 + ")");
         } catch (ScriptException ex) {
             Utils.log("scripting", ex.getMessage());
         }
@@ -81,7 +82,7 @@ public class Groovy extends ScriptRuntime {
     @Override
     public Object eval(FileHandle file) {
         try {
-            return e.eval(file.reader());
+            e.eval(file.reader());
         } catch (ScriptException ex) {
             Utils.warning("Scripting", ex.getMessage());
         }

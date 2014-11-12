@@ -21,56 +21,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.deathbeam.nonfw;
+package com.deathbeam.nonfw.scripting;
 
 import com.badlogic.gdx.files.FileHandle;
-import java.io.IOException;
+import com.deathbeam.nonfw.Utils;
 import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.Scriptable;
 
 /**
  *
  * @author Thomas Slusny
  */
-public class CoffeeScript extends ScriptRuntime {
-    private Scriptable scope;
-    
+public class Python extends ScriptRuntime {
     public static String getName() {
-        return "CoffeeScript";
+        return "Python";
     }
 
     public static String getExtension() {
-        return "coffee";
+        return "py";
     }
     
-    public CoffeeScript() {
-        Context context = Context.enter();
-        context.setOptimizationLevel(-1);
-        try {
-            scope = context.initStandardObjects();
-            context.evaluateString(scope, Utils.readFile(Utils.getInternalResource("langs/coffeescript.js").read()), "coffeescript.js", 0, null);
-        } catch (IOException ex) {
-            Utils.error("scripting", ex.getMessage());
-        } finally {
-            Context.exit();
-        }
-        
-        e = new ScriptEngineManager().getEngineByName("JavaScript");
+    public Python() {
+        e = new ScriptEngineManager().getEngineByName("python");
         ScriptEngineFactory f = e.getFactory();
         
         System.out.println( "Engine name: " +f.getEngineName() );
         System.out.println( "Engine Version: " +f.getEngineVersion() );
-        System.out.println( "LanguageName: CoffeeScript" );
-        System.out.println( "Language Version: 1.8.0" );
+        System.out.println( "Language Name: " +f.getLanguageName() );
+        System.out.println( "Language Version: " +f.getLanguageVersion() );
     }
     
     @Override
     public void invoke(String funct) {
         try {
-            e.eval(funct + "();");
+            e.eval(funct + "()");
         } catch (ScriptException ex) {
             Utils.log("scripting", ex.getMessage());
         }
@@ -79,7 +64,7 @@ public class CoffeeScript extends ScriptRuntime {
     @Override
     public void invoke(String funct, String args) {
         try {
-            e.eval(funct + "(" + args + ");");
+            e.eval(funct + "(" + args + ")");
         } catch (ScriptException ex) {
             Utils.log("scripting", ex.getMessage());
         }
@@ -88,7 +73,7 @@ public class CoffeeScript extends ScriptRuntime {
     @Override
     public void invoke(String funct, String arg1, String arg2) {
         try {
-            e.eval(funct + "(" + arg1 + "," + arg2 + ");");
+            e.eval(funct + "(" + arg1 + "," + arg2 + ")");
         } catch (ScriptException ex) {
             Utils.log("scripting", ex.getMessage());
         }
@@ -97,24 +82,10 @@ public class CoffeeScript extends ScriptRuntime {
     @Override
     public Object eval(FileHandle file) {
         try {
-            return e.eval(compile(Utils.readFile(file.read())));
+            e.eval(file.reader());
         } catch (ScriptException ex) {
             Utils.warning("Scripting", ex.getMessage());
-        } catch (IOException ex) {
-            Utils.error("Resource not found", ex.getMessage());
         }
         return null;
-    }
-    
-    private String compile (String script) {
-        Context context = Context.enter();
-        try {
-            Scriptable compileScope = context.newObject(scope);
-            compileScope.setParentScope(scope);
-            compileScope.put("script", compileScope, script);
-            return (String)context.evaluateString(compileScope, "CoffeeScript.compile(script);", "CoffeeScriptCompiler", 1, null);
-        } finally {
-            Context.exit();
-        }
     }
 }

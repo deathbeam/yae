@@ -21,9 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.deathbeam.nonfw;
+package com.deathbeam.nonfw.scripting;
 
 import com.badlogic.gdx.files.FileHandle;
+import com.deathbeam.nonfw.Utils;
 import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;

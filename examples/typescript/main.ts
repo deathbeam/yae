@@ -1,4 +1,4 @@
-declare var map, pressed, testText, client, server, lastMsg;
+declare var map, pressed, client, server, lastMsg;
 non.load("testText.ts");
 
 non.ready = () => {
@@ -16,11 +16,12 @@ non.ready = () => {
   non.network.setHost("localhost").setPort(15600).init();
   (server = non.network.newServer()).listen();
   (client = non.network.newClient()).connect();
-  non.physics.setTimeScale(2).setGravity(non.math.newVector(0, 10)).init();
+  non.physics.setTimeScale(2).setGravity(0,10).init();
   non.physics.newShape(non.math.newRectangle(32,10,20,20));
   non.physics.newShape(non.math.newRectangle(100,10,20,20));
   non.physics.newShape(non.math.newRectangle(0,150,20,20), "static");
-  non.physics.newShape(non.math.newRectangle(0,300,300,20), "static");
+  non.physics.newShape(non.math.newRectangle(240,300,200,20), "static");
+  non.physics.newShape(non.math.newCircle(32,64,20), "dynamic", 0.5, 0.4, 0.6);
 };
 
 non.update = () => {
