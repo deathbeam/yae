@@ -1,4 +1,4 @@
-var map, pressed, client, server, lastMsg, light, sunDirection;
+var map, pressed, client, server, lastMsg, mouseLight, circle;
 non.load("testText.js");
 
 non.ready = function() {
@@ -17,19 +17,19 @@ non.ready = function() {
   (server = non.network.newServer()).listen();
   (client = non.network.newClient()).connect();
   non.physics.setTimeScale(2).setGravity(0,10).init();
+  non.physics.newMap(map);
   non.physics.newShape(non.math.newRectangle(32,10,20,20));
   non.physics.newShape(non.math.newRectangle(100,10,20,20));
   non.physics.newShape(non.math.newRectangle(0,150,20,20), "static");
-  non.physics.newShape(non.math.newRectangle(240,300,200,20), "static");
-  non.physics.newShape(non.math.newCircle(32,64,20), "dynamic", 0.5, 0.4, 0.6);
-  non.lights.setBlurNum(3).setAmbient(non.graphics.newColor(0, 0, 0, 0.5)).init();
-  sunDirection = 80;
-  light = non.lights.newDirectionalLight(128, null, sunDirection);
+  non.physics.newShape(non.math.newRectangle(240,300,800,20), "static");
+  circle = non.physics.newShape(non.math.newCircle(32,64,20), "dynamic", 0.5, 0.4, 0.6);
+  non.lights.setShadows(true).init();
+  mouseLight = non.lights.newPointLight(100, non.graphics.newColor("red"), 500, non.mouse.getX(), non.mouse.getY());
 };
 
 non.update = function() {
-  sunDirection += non.getDelta() * 4;
-  light.setDirection(sunDirection);
+  mouseLight.setPosition(non.mouse.getX(), non.mouse.getY());
+  circle.setTransform(non.mouse.getX(), non.mouse.getY(), 0);
   non.physics.update();
   non.lights.update();
   if (non.keyboard.isKeyJustPressed("Space")) {
@@ -47,10 +47,10 @@ non.update = function() {
 non.draw = function() {
   non.graphics.draw(map);
   non.lights.draw();
-  non.physics.draw(); // draw debug physics, do not use this in production
+  non.physics.draw();
   non.graphics.draw("Author: YourBestNightmare", 10, 10, non.graphics.newColor("yellow"));
   non.graphics.draw("Engine: non (no nonsense) framework", 10, 34);
-  non.graphics.draw("Description: In this example we are testing music, input, tmx rendering, images and text displaying.", 10, 58);
+  non.graphics.draw("Mouse pos: [" + non.mouse.getX() + "," + non.mouse.getY() + "] Light pos: [" + mouseLight.getPosition().x + "," + mouseLight.getPosition().y + "]", 10, 58);
   non.graphics.draw(pressed, 10, 82, non.graphics.newColor("cyan"));
   non.graphics.draw("FPS: " + non.getFPS(), 10, 104);
   non.graphics.draw(lastMsg, 10, 126, non.graphics.newColor("red"));

@@ -52,10 +52,10 @@ public class MapBodyBuilder {
 
     // The pixels per tile. If your tiles are 16x16, this is set to 16f
     private static float ppt = 0;
-
+    
     public static Array<Body> buildShapes(Map map, float pixels, World world) {
         ppt = pixels;
-        MapObjects objects = map.getLayers().get("Obstacles").getObjects();
+        MapObjects objects = map.getLayers().get("Collisions").getObjects();
 
         Array<Body> bodies = new Array<Body>();
 

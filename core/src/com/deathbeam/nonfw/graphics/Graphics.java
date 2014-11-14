@@ -51,6 +51,7 @@ public class Graphics {
         batch = new SpriteBatch();
         font = new BitmapFont();
         camera = new OrthographicCamera();
+        camera.setToOrtho(true);
         scale = 1;
         rotation = 0;
         translation = Vector2.Zero;
@@ -139,7 +140,7 @@ public class Graphics {
     }
     
     public Graphics scale(float factor) {
-        scale = factor;
+        scale = 1/factor;
         update();
         return this;
     }
@@ -162,6 +163,7 @@ public class Graphics {
     
     public Graphics begin() {
         batch.begin();
+        update();
         return this;
     }
     
@@ -172,12 +174,7 @@ public class Graphics {
     
     public Graphics draw(TiledMap map) {
         end();
-        camera.setToOrtho(false);
-        camera.translate(0, map.size.y - Gdx.graphics.getHeight());
-        update();
         map.draw(this);
-        camera.setToOrtho(true);
-        update();
         begin();
         return this;
     }

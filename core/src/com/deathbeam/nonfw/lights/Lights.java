@@ -23,8 +23,10 @@
  */
 package com.deathbeam.nonfw.lights;
 
+import box2dLight.ConeLight;
 import box2dLight.DirectionalLight;
 import box2dLight.PointLight;
+import box2dLight.PositionalLight;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.graphics.Color;
 import com.deathbeam.nonfw.Game;
@@ -107,5 +109,9 @@ public class Lights {
     
     public PointLight newPointLight(int rays, Color color, float distance, float x, float y) {
         return new PointLight(handler, rays, color, distance, x, y);
+    }
+    
+    public ConeLight newConeLight(int rays, Color color, float distance, float x, float y, float direction, float cone) {
+        return new ConeLight(handler, rays, color, distance, x, y, direction, cone);
     }
 }

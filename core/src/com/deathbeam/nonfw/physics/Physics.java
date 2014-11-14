@@ -80,7 +80,7 @@ public class Physics {
     }
     
     public void update() {
-        world.step(Math.min(Gdx.graphics.getDeltaTime(), 0.02f) * timescale, 4, 4);
+        world.step(Math.min(Gdx.graphics.getDeltaTime(), 0.02f) * timescale, 6, 2);
     }
     
     public void draw() {
@@ -91,7 +91,7 @@ public class Physics {
     }
     
     public Array<Body> newMap(TiledMap map) {
-        return MapBodyBuilder.buildShapes(map.map, map.tileSize, world);
+        return MapBodyBuilder.buildShapes(map.map, 1, world);
     }
     
     public Body newShape(Shape2D shape) {
