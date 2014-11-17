@@ -55,9 +55,8 @@ nbactions.xml
 nb-configuration.xml
 
 ## Gradle
-
 .gradle
-build/
 
 ## OS Specific
 .DS_Store
+Thumbs.db
