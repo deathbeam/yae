@@ -115,11 +115,11 @@ public class Lights {
         return new ConeLight(handler, rays, color, distance, x, y, direction, cone);
     }
 	
-	public ChainLight newChainLight(int rays, Color color, float distance, float rayDirection) {
+	public ChainLight newChainLight(int rays, Color color, float distance, int rayDirection) {
 		return new ChainLight(handler, rays, color, distance, rayDirection);
 	}
 	
-	public ChainLight newChainLight(int rays, Color color, float distance, float rayDirection, float[] chains) {
+	public ChainLight newChainLight(int rays, Color color, float distance, int rayDirection, float[] chains) {
 		return new ChainLight(handler, rays, color, distance, rayDirection, chains);
 	}
 }
