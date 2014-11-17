@@ -14,11 +14,11 @@ public class DesktopLauncher {
 		JsonValue conf = Utils.configure();
         
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-        cfg.addIcon("assets/icon-256.png", Files.FileType.Classpath);
-        cfg.addIcon("assets/icon-192.png", Files.FileType.Classpath);
-        cfg.addIcon("assets/icon-64.png", Files.FileType.Classpath);
-        cfg.addIcon("assets/icon-32.png", Files.FileType.Classpath);
-        cfg.addIcon("assets/icon-16.png", Files.FileType.Classpath);
+        cfg.addIcon("resources/icon-256.png", Files.FileType.Classpath);
+        cfg.addIcon("resources/icon-192.png", Files.FileType.Classpath);
+        cfg.addIcon("resources/icon-64.png", Files.FileType.Classpath);
+        cfg.addIcon("resources/icon-32.png", Files.FileType.Classpath);
+        cfg.addIcon("resources/icon-16.png", Files.FileType.Classpath);
         if (conf!= null) {
             cfg.title = conf.get("title").asString();
             cfg.width = conf.get("resolution").asIntArray()[0];
