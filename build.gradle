@@ -27,6 +27,8 @@ allprojects {
         jrubyVersion = '1.7.16.1'
         jythonVersion = '2.5.3'
         groovyVersion = '2.3.7'
+		luajVersion = '3.0'
+		bsfVersion = '3.1.3'
     }
 
     repositories {
@@ -38,7 +40,6 @@ allprojects {
 
 project(":desktop") {
     apply plugin: "java"
-
 
     dependencies {
         compile project(":core")
@@ -52,7 +53,7 @@ project(":desktop") {
         compile "org.python:jython-standalone:$jythonVersion"
         compile "org.mozilla:rhino:$rhinoVersion"
         compile "org.codehaus.groovy:groovy-all:$groovyVersion"
-		compile files('../gradle/local/luaj.jar')
+		compile "org.luaj:luaj-jse:$luajVersion"
     }
 }
 
@@ -79,7 +80,7 @@ project(":android") {
         compile "org.python:jython-standalone:$jythonVersion"
         compile "org.mozilla:rhino:$rhinoVersion"
         compile "org.codehaus.groovy:groovy-all:$groovyVersion"
-		compile files('../gradle/local/luaj.jar')
+		compile "org.luaj:luaj-jse:$luajVersion"
     }
 }
 
@@ -101,14 +102,13 @@ project(":ios") {
         compile "org.python:jython-standalone:$jythonVersion"
         compile "org.mozilla:rhino:$rhinoVersion"
         compile "org.codehaus.groovy:groovy-all:$groovyVersion"
-		compile files('../gradle/local/luaj.jar')
+		compile "org.luaj:luaj-jse:$luajVersion"
     }
 }
 
 project(":html") {
     apply plugin: "gwt"
     apply plugin: "war"
-
 
     dependencies {
         compile project(":core")
@@ -126,13 +126,12 @@ project(":html") {
         compile "org.python:jython-standalone:$jythonVersion"
         compile "org.mozilla:rhino:$rhinoVersion"
         compile "org.codehaus.groovy:groovy-all:$groovyVersion"
-		compile files('../gradle/local/luaj.jar')
+		compile "org.luaj:luaj-jse:$luajVersion"
     }
 }
 
 project(":core") {
     apply plugin: "java"
-
 
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
@@ -144,8 +143,8 @@ project(":core") {
         compile "org.python:jython-standalone:$jythonVersion"
         compile "org.mozilla:rhino:$rhinoVersion"
         compile "org.codehaus.groovy:groovy-all:$groovyVersion"
-		compile files('../gradle/local/luaj.jar')
-		compile files('../gradle/local/bsf.jar')
+		compile "org.luaj:luaj-jse:$luajVersion"
+		compile "com.wu-man:android-bsf-api:$bsfVersion:"
     }
 }
 
