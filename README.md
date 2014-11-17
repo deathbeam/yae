@@ -1,4 +1,4 @@
-![No Nonsense logo](https://raw.githubusercontent.com/deathbeam/non/master/core/src/assets/splash.png)
+![No Nonsense logo](https://raw.githubusercontent.com/deathbeam/non/master/android/assets/resources/splash.png)
 
 non is experimental game framework created for rapid game development and so it is perfect for game jams, but also for serious projects. non can run on almost any platform, including Windows, Mac and Linux. I am working on support for Android, web and IOS.
 
@@ -12,7 +12,7 @@ non is experimental game framework created for rapid game development and so it 
 * Game packages (supports classic game directory or zipped game data)
 * Simple TCP networking
 * Physics engine based on Box2D
-* Simple lights engine based on Box2DLights
+* Simple light engine based on Box2DLights
 
 ## Supported languages
 
@@ -60,10 +60,6 @@ non.draw =>
 
 Drawing text:
 ```
-non.ready =>
-	image = non.graphics.newImage("image.png")
-	tiledMap = non.tiled.newMap("map.tmx")
-
 non.draw =>
 	non.graphics.draw("Hello World!", 0, 0)
 ```
