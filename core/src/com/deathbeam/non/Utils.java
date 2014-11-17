@@ -170,7 +170,7 @@ public class Utils {
     }
     
     public static FileHandle getInternalResource(String path) throws IOException {
-        return Gdx.files.classpath("assets/" + path);
+        return Gdx.files.classpath("resources/" + path);
     }
     
     public static FileHandle getResource(String path) throws IOException {
