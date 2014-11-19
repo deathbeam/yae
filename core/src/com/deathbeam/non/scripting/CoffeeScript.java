@@ -53,7 +53,7 @@ public class CoffeeScript extends ScriptRuntime {
         context.setOptimizationLevel(-1);
         try {
             scope = context.initStandardObjects();
-            context.evaluateString(scope, Utils.readFile(Utils.getInternalResource("langs/coffeescript.js").read()), "coffeescript.js", 0, null);
+            context.evaluateString(scope, Utils.readFile(Utils.getInternalResource("coffeescript.js").read()), "coffeescript.js", 0, null);
         } catch (IOException ex) {
             Utils.error("scripting", ex.getMessage());
         } finally {
@@ -72,7 +72,7 @@ public class CoffeeScript extends ScriptRuntime {
     @Override
     public void invoke(String pack, String funct) {
         try {
-            e.eval(pack + "." + funct + "()");
+            e.eval(pack + "." + funct + "();");
         } catch (ScriptException ex) {
             Utils.log("scripting", ex.getMessage());
         }
@@ -81,7 +81,7 @@ public class CoffeeScript extends ScriptRuntime {
     @Override
     public void invoke(String pack, String funct, String args) {
         try {
-            e.eval(pack + "." + funct + "(" + args + ")");
+            e.eval(pack + "." + funct + "(" + args + ");");
         } catch (ScriptException ex) {
             Utils.log("scripting", ex.getMessage());
         }

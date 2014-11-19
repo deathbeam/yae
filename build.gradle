@@ -148,6 +148,86 @@ project(":core") {
     }
 }
 
+task buildAssets {
+    doLast { 
+		println "Building desktop assets..."
+        copy {
+            from "assets"
+            into "android/assets"
+            include "icon-16.png"
+            include "icon-32.png"
+            include "icon-64.png"
+            include "icon-192.png"
+            include "icon-256.png"
+            include "loading.png"
+        }
+		println "Building android assets..."
+        copy {
+			file("android/res/drawable-mdpi").mkdirs()
+            from "assets"
+            into "android/res/drawable-mdpi"
+            include "icon-48.png"
+            rename "icon-48.png", "ic_launcher.png"
+        }
+        copy {
+			file("android/res/drawable-hdpi").mkdirs()
+            from "assets"
+            into "android/res/drawable-hdpi"
+            include "icon-72.png"
+            rename "icon-72.png", "ic_launcher.png"
+        }
+        copy {
+			file("android/res/drawable-xhdpi").mkdirs()
+            from "assets"
+            into "android/res/drawable-xhdpi"
+            include "icon-96.png"
+            rename "icon-96.png", "ic_launcher.png"
+        }
+        copy {
+			file("android/res/drawable-xxhdpi").mkdirs()
+            from "assets"
+            into "android/res/drawable-xxhdpi"
+            include "icon-144.png"
+            rename "icon-144.png", "ic_launcher.png"
+        }
+		println "Building ios assets..."
+		copy {
+			file("ios/data").mkdirs()
+            from "assets"
+            into "ios/data"
+            include "icon-57.png"
+            rename "icon-57.png", "Icon.png"
+			include "icon-72.png"
+            rename "icon-72.png", "Icon-72.png"
+			include "icon-114.png"
+            rename "icon-114.png", "Icon@2x.png"
+			include "icon-144.png"
+            rename "icon-144.png", "Icon-72@2x.png"
+			include "splash-320x480.png"
+            rename "splash-320x480.png", "Default.png"
+			include "splash-640x960.png"
+            rename "splash-640x960.png", "Default@2x.png"
+			include "splash-640x1136.png"
+            rename "splash-640x1136.png", "Default-568h@2x.png"
+			include "splash-750x1334.png"
+            rename "splash-750x1334.png", "Default-375w-667h@2x.png"
+			include "splash-768x1004.png"
+            rename "splash-768x1004.png", "Default~ipad.png"
+			include "splash-1242x2208.png"
+            rename "splash-1242x2208.png", "Default-414w-736h@3x.png"
+			include "splash-1536x2008.png"
+            rename "splash-1536x2008.png", "Default@2x~ipad.png"
+        }
+		println "Building html assets..."
+		copy {
+            from "assets"
+            into "html/webapp"
+            include "icon-16.png"
+            rename "icon-16.png", "favicon.png"
+        }
+    }
+}
+
 tasks.eclipse.doLast {
     delete ".project"
 }

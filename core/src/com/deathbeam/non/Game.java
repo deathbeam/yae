@@ -69,7 +69,7 @@ public class Game implements ApplicationListener {
     public static ScriptRuntime scripting;
     
     // Functions invoked from scripts
-    public Object ready, draw, update, resize, close;
+    public Object ready, draw, update, resize, close, pause, resume;
     
     // Game modules
     public static Audio audio;
@@ -82,6 +82,14 @@ public class Game implements ApplicationListener {
     public static Tiled tiled;
     public static Physics physics;
     public static Lights lights;
+	
+	public int getWidth() {
+		return Gdx.graphics.getWidth();
+	}
+	
+	public int getHeight() {
+		return Gdx.graphics.getHeight();
+	}
     
     public int getFPS() {
         return Gdx.graphics.getFramesPerSecond();
@@ -141,7 +149,8 @@ public class Game implements ApplicationListener {
         }
         
         // Initialize scripting runtime
-        String ext = Utils.getExtension(conf.getString("main"));
+		String script = conf.getString("main");
+        String ext = Utils.getExtension(script);
         if (ext.equalsIgnoreCase(JavaScript.getExtension())) scripting = new JavaScript();
         else if (ext.equalsIgnoreCase(CoffeeScript.getExtension())) scripting = new CoffeeScript();
         else if (ext.equalsIgnoreCase(TypeScript.getExtension())) scripting = new TypeScript();
@@ -152,7 +161,6 @@ public class Game implements ApplicationListener {
         
         // Evaluate and run scripts
         scripting.put("non", this);
-        String script = conf.getString("main");
         try {
             scripting.eval(Utils.getResource(script));
         } catch (IOException ex) {
@@ -165,9 +173,9 @@ public class Game implements ApplicationListener {
     public void create () {
         graphics = new Graphics();
         try {
-            splash = new Image(Utils.getInternalResource("splash.png"));
+            splash = new Image(Utils.getInternalResource("loading.png"));
         } catch (IOException ex) {
-            Utils.warning("Resource not found", "splash.png");
+            Utils.warning("Resource not found", "loading.png");
             splash = new Image();
         }
         
@@ -213,16 +221,18 @@ public class Game implements ApplicationListener {
 
     @Override
     public void resize (int width, int height) {
+		if (graphics!=null) graphics.resize().update();
         if (resize!=null) scripting.invoke("non", "resize");
-        if (graphics!=null) graphics.resize().update();
     }
 
     @Override
     public void pause () {
+		if (pause!=null) scripting.invoke("non", "pause");
     }
 
     @Override
     public void resume () {
+		if (resume!=null) scripting.invoke("non", "resume");
     }
 
     @Override
