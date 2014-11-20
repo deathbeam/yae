@@ -1,4 +1,4 @@
-![No Nonsense logo](https://raw.githubusercontent.com/deathbeam/non/master/android/assets/resources/splash.png)
+![No Nonsense logo](https://raw.githubusercontent.com/deathbeam/non/master/assets/loading.png)
 
 non is experimental game framework created for rapid game development and so it is perfect for game jams, but also for serious projects. non can run on almost any platform, including Windows, Mac and Linux. I am working on support for Android, web and IOS.
 
