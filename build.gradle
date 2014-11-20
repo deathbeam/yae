@@ -13,10 +13,23 @@ buildscript {
 allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
-
     version = '1.0'
+    
+    def name = "$System.env.APP_NAME"
+    def path = "$System.env.ANDROID_HOME"
+    def localProperties = file("local.properties")
+    if (localProperties.exists()) {
+        def properties = new Properties()
+        localProperties.withInputStream { instr -> properties.load(instr) }
+        def tempPath = properties.getProperty('sdk.dir')
+        if (tempPath) { path = tempPath }
+        def tempName = properties.getProperty('app.name')
+        if (tempName) { name = tempName }
+    }
+    
     ext {
-        appName = 'non'
+        appName = name
+        sdkDir = path
         gdxVersion = '1.4.1'
         roboVMVersion = '1.0.0-alpha-04'
         box2DLightsVersion = '1.3'

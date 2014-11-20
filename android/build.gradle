@@ -45,24 +45,7 @@ task copyAndroidNatives() {
 }
 
 task run(type: Exec) {
-    def path
-    def localProperties = project.file("../local.properties")
-    if (localProperties.exists()) {
-        Properties properties = new Properties()
-        localProperties.withInputStream { instr ->
-            properties.load(instr)
-        }
-        def sdkDir = properties.getProperty('sdk.dir')
-        if (sdkDir) {
-            path = sdkDir
-        } else {
-            path = "$System.env.ANDROID_HOME"
-        }
-    } else {
-        path = "$System.env.ANDROID_HOME"
-    }
-
-    def adb = path + "/platform-tools/adb"
+    def adb = sdkDir + "/platform-tools/adb"
     commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.deathbeam.non.android/com.deathbeam.non.android.AndroidLauncher'
 }
 
