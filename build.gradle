@@ -177,6 +177,8 @@ task buildAssets {
         	exclude "splash-768x1004"
         	exclude "splash-1242x2208"
         	exclude "splash-1536x2008"
+            exclude ".DS_Store"
+            exclude "Thumbs.db"
         }
 		println "Building android assets..."
         copy {
