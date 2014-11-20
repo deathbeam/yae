@@ -16,8 +16,8 @@ non.ready = function() {
   non.network.setHost("localhost").setPort(15600).init();
   (server = non.network.newServer()).listen();
   (client = non.network.newClient()).connect();
-  non.physics.setTimeScale(2).setGravity(0,10).init();
-  non.physics.newMap(map);
+  non.physics.setGravity(0,10).init();
+  non.physics.newShape(map);
   non.physics.newShape(non.math.newRectangle(32,10,20,20));
   non.physics.newShape(non.math.newRectangle(100,10,20,20));
   non.physics.newShape(non.math.newRectangle(0,150,20,20), "static");

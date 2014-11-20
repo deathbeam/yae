@@ -48,10 +48,11 @@ import com.deathbeam.non.tiled.TiledMap;
  */
 public class Physics {
     private World world;
+	private Box2DDebugRenderer debugRenderer;
     private Vector2 gravity = Vector2.Zero;
     private boolean sleep = true;
-    private float timescale = 1f;
-    private Box2DDebugRenderer debugRenderer;
+	private float step = 1 / 60f;
+	private float accum = 0f;
     
     public World getWorld() {
         return world;
@@ -66,9 +67,9 @@ public class Physics {
         this.sleep = sleep;
         return this;
     }
-    
-    public Physics setTimeScale(float timescale) {
-        this.timescale = timescale;
+	
+	public Physics setStep(float step) {
+        this.step = step;
         return this;
     }
     
@@ -80,7 +81,11 @@ public class Physics {
     }
     
     public void update() {
-        world.step(Math.min(Gdx.graphics.getDeltaTime(), 0.02f) * timescale, 6, 2);
+		accum += Gdx.graphics.getDeltaTime();
+		while (accum >= step) {
+			world.step(step, 6, 2);
+			accum -= step;
+		}
     }
     
     public void draw() {
@@ -90,7 +95,7 @@ public class Physics {
         Game.graphics.begin();
     }
     
-    public Array<Body> newMap(TiledMap map) {
+    public Array<Body> newShape(TiledMap map) {
         return MapBodyBuilder.buildShapes(map.map, 1, world);
     }
     

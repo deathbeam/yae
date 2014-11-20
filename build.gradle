@@ -150,16 +150,23 @@ project(":core") {
 
 task buildAssets {
     doLast { 
-		println "Building desktop assets..."
+		println "Copying data..."
         copy {
             from "assets"
             into "android/assets"
-            include "icon-16.png"
-            include "icon-32.png"
-            include "icon-64.png"
-            include "icon-192.png"
-            include "icon-256.png"
-            include "loading.png"
+            exclude "icon-48.png"
+            exclude "icon-57.png"
+            exclude "icon-72.png"
+            exclude "icon-96.png"
+            exclude "icon-114.png"
+            exclude "icon-144.png"
+            exclude "splash-320x480"
+            exclude "splash-640x960"
+            exclude "splash-640x1136"
+        	exclude "splash-750x1334"
+        	exclude "splash-768x1004"
+        	exclude "splash-1242x2208"
+        	exclude "splash-1536x2008"
         }
 		println "Building android assets..."
         copy {
