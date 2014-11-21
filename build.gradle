@@ -1,10 +1,10 @@
 ext.tempName = "$System.env.APP_NAME"
 ext.tempPath = "$System.env.ANDROID_HOME"
-def cfgFile = new File("assets/non.cfg")
+def cfgFile = file("assets/non.cfg")
 if (cfgFile.exists()) {
-   	def cfg = new groovy.json.JsonSlurper().parse(cfgFile)
-    tempName = cfg.title
-   	tempPath = cfg.sdk
+    def cfg = new groovy.json.JsonSlurper().parseText(cfgFile.text)
+    ext.tempName = cfg.title
+    ext.tempPath = cfg.sdk
 }
 
 buildscript {
