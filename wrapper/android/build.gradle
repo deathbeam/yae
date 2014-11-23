@@ -1,0 +1,146 @@
+android {
+    buildToolsVersion "20.0.0"
+    compileSdkVersion 21
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src']
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+        }
+
+        instrumentTest.setRoot('tests')
+    }
+}
+
+tasks.withType(com.android.build.gradle.tasks.PackageApplication) { pkgTask ->
+    pkgTask.jniFolders = new HashSet<File>()
+    pkgTask.jniFolders.add(new File(projectDir, 'libs'))
+}
+
+task copyAndroidNatives { 
+    file("libs/armeabi/").mkdirs();
+    file("libs/armeabi-v7a/").mkdirs();
+    file("libs/x86/").mkdirs();
+
+    configurations.natives.files.each { jar ->
+        def outputDir = null
+        if(jar.name.endsWith("natives-armeabi-v7a.jar")) outputDir = file("libs/armeabi-v7a")
+        if(jar.name.endsWith("natives-armeabi.jar")) outputDir = file("libs/armeabi")
+        if(jar.name.endsWith("natives-x86.jar")) outputDir = file("libs/x86")
+        if(outputDir != null) {
+            copy {
+                from zipTree(jar)
+                into outputDir
+                include "*.so"
+            }
+        }
+    }
+}
+
+task run(type: Exec) {
+    def adb = sdkDir + "/platform-tools/adb"
+    commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.deathbeam.non.android/com.deathbeam.non.android.AndroidLauncher'
+}
+
+task dist(dependsOn: assembleRelease) {
+    doLast {
+        println "You can find android-$version.apk in /dist/android"
+    }
+}
+
+task update(dependsOn: ':non:update') {
+    print "Building android assets..."
+    copy {
+        file("res/drawable-mdpi").mkdirs()
+        from "../../project/res"
+        into "."
+        include "icon-512.png"
+        rename "icon-512.png", "ic_launcher-web.png"
+    }
+    copy {
+        file("res/drawable-mdpi").mkdirs()
+        from "../../project/res"
+        into "res/drawable-mdpi"
+        include "icon-48.png"
+        rename "icon-48.png", "ic_launcher.png"
+    }
+    copy {
+        file("res/drawable-hdpi").mkdirs()
+        from "../../project/res"
+        into "res/drawable-hdpi"
+        include "icon-72.png"
+        rename "icon-72.png", "ic_launcher.png"
+    }
+    copy {
+        file("res/drawable-xhdpi").mkdirs()
+        from "../../project/res"
+        into "res/drawable-xhdpi"
+        include "icon-96.png"
+        rename "icon-96.png", "ic_launcher.png"
+    }
+    copy {
+        file("res/drawable-xxhdpi").mkdirs()
+        from "../../project/res"
+        into "res/drawable-xxhdpi"
+        include "icon-144.png"
+        rename "icon-144.png", "ic_launcher.png"
+    }
+	copy {
+        from "../../project/res"
+        into "."
+        include "icon-512.png"
+        rename "icon-512.png", "ic_launcher-web.png"
+    }
+    print " DONE\n"
+}
+
+eclipse {
+    sourceSets {
+        main { java.srcDirs "src", 'gen' }
+    }
+
+    jdt {
+        sourceCompatibility = 1.6
+        targetCompatibility = 1.6
+    }
+
+    classpath {
+        plusConfigurations += [ project.configurations.compile ]        
+        containers 'com.android.ide.eclipse.adt.ANDROID_FRAMEWORK', 'com.android.ide.eclipse.adt.LIBRARIES'       
+    }
+
+    project {
+        name = appName + "-android"
+        natures 'com.android.ide.eclipse.adt.AndroidNature'
+        buildCommands.clear();
+        buildCommand "com.android.ide.eclipse.adt.ResourceManagerBuilder"
+        buildCommand "com.android.ide.eclipse.adt.PreCompilerBuilder"
+        buildCommand "org.eclipse.jdt.core.javabuilder"
+        buildCommand "com.android.ide.eclipse.adt.ApkBuilder"
+    }
+}
+
+idea {
+    module {
+        sourceDirs += file("src");
+        scopes = [ COMPILE: [plus:[project.configurations.compile]]]        
+
+        iml {
+            withXml {
+                def node = it.asNode()
+                def builder = NodeBuilder.newInstance();
+                builder.current = node;
+                builder.component(name: "FacetManager") {
+                    facet(type: "android", name: "Android") {
+                        configuration {
+                            option(name: "UPDATE_PROPERTY_FILES", value:"true")
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
