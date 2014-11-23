@@ -1,16 +1,15 @@
-![No Nonsense logo](https://raw.githubusercontent.com/deathbeam/non/master/assets/loading.png)
+![No Nonsense](https://raw.githubusercontent.com/deathbeam/non/master/wrapper/gen/res/loading.png)
 
 non is experimental game framework created for rapid game development and so it is perfect for game jams, but also for serious projects. non can run on almost any platform, including Windows, Mac and Linux. I am working on support for Android, web and IOS.
 
 ## Features
 
 * Super simple image and text rendering and manipulation
-* TMX map rendering
+* TMX map loading and rendering
 * Audio engine
-* Input engine
+* Keyboard, Touch and Mouse input handlers
 * Modules system (check below example configuration)
-* Game packages (supports classic game directory or zipped game data)
-* Simple TCP networking
+* Simple TCP network manager
 * Physics engine based on Box2D
 * Simple light engine based on Box2DLights
 
@@ -29,10 +28,22 @@ non is experimental game framework created for rapid game development and so it 
 Configuration is done by json configuration file `non.cfg`. You can define window title, resolution, main class and add modules through it. Example configuration file:
 ```json
 {
-    title: "No Nonsense Game",
-    resolution: [ 800, 600 ],
-    main: "main.js",
-    modules: [ audio, graphics, keyboard, mouse, touch, math, tiled, network, physics, lights ]
+    "title": "No Nonsense Game",
+    "resolution": [800, 600],
+    "main": "main.js",
+    "sdk": "Path/To/Your/Android/Sdk",
+    "modules": [ 
+        "audio",
+        "graphics",
+        "tiled",
+        "network",
+        "math",
+        "physics",
+        "lights",
+        "mouse",
+        "touch",
+        "keyboard"
+    ]
 }
 ```
 
@@ -46,27 +57,3 @@ Your game logic should be divided into 3 events:
 Additional usefull events
 * `non.close` - Triggered on game close, unloading of game assets
 * `non.resize` - Triggered on game window resize
-
-## Examples
-Code below is not in real programming language, you must transform it to one of supported languages!
-Drawing images:
-```
-non.ready =>
-	image = non.graphics.newImage("texture.png")
-
-non.draw =>
-	non.graphics.draw(image, 0, 0)
-```
-
-Drawing text:
-```
-non.draw =>
-	non.graphics.draw("Hello World!", 0, 0)
-```
-
-Playing music
-```
-non.ready =>
-	music = non.audio.newMusic("music.ogg")
-	non.audio.play(music)
-```

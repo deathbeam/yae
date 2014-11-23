@@ -1,8 +1,10 @@
+import groovy.json.*
+
 def APP_NAME = "$System.env.APP_NAME"
 def ANDROID_HOME = "$System.env.ANDROID_HOME"
 def cfgf = file("../project/non.cfg")
 if (cfgf.exists()) {
-    def cfg = new groovy.json.JsonSlurper().parseText(cfgf.text)
+    def cfg = new JsonSlurper().parseText(cfgf.text)
     APP_NAME = cfg.title
     ANDROID_HOME = cfg.sdk
 }
@@ -165,12 +167,21 @@ project(":core") {
 task gen << {
     def lang = "js"
     if (project.hasProperty('arg')) { lang = arg; }
+    def map = [ 
+        title: 'non',
+        main: 'main.$lang',
+        resolution: [800, 600],
+        sdk: ANDROID_HOME,
+        modules: ['audio', 'graphics', 'physics', 'lights', 'tiled', 'network', 'math, 'keyboard', 'mouse', 'touch']
+    ]
+    def builder = new JsonBuilder(map)
+    file("../project").mkdir()
+    def ncfg = new File("../project/non.cfg)
+    ncfg.write(builder.toString())
     copy {
-        file("../project").mkdir()
         from "gen"
         into "../project"
         include "main.$lang"
-        include "non.cfg"
         include "**/*.png"
     }
 }

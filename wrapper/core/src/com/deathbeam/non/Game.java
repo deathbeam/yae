@@ -149,7 +149,7 @@ public class Game implements ApplicationListener {
         }
         
         // Initialize scripting runtime
-		String script = conf.getString("main");
+        String script = conf.getString("main");
         String ext = Utils.getExtension(script);
         if (ext.equalsIgnoreCase(JavaScript.getExtension())) scripting = new JavaScript();
         else if (ext.equalsIgnoreCase(CoffeeScript.getExtension())) scripting = new CoffeeScript();

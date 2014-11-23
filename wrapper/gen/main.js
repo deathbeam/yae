@@ -8,5 +8,5 @@ non.update = function() {
 
 non.draw = function() {
   // Insert rendering logic here
-  non.graphics.draw("Hello World!", 360, 280);
+  non.graphics.draw("Hello World!", 15, 15, non.graphics.newColor("red"));
 };

@@ -185,7 +185,7 @@ public class Graphics {
     }
 
     public Graphics draw(CharSequence text, int x, int y) {
-        return draw(text, x, y, Color.WHITE);
+        return draw(text, x, y, Color.BLACK);
     }
     
     public Graphics draw(CharSequence text, int x, int y, Color color) {
