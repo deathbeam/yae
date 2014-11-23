@@ -1,15 +1,13 @@
 ![No Nonsense](https://raw.githubusercontent.com/deathbeam/non/master/wrapper/gen/res/loading.png)
 
-non is experimental game framework created for rapid game development and so it is perfect for game jams, but also for serious projects. non can run on almost any platform, including Windows, Mac and Linux. I am working on support for Android, web and IOS.
+script-based game framework created for rapid game development, perfect for game jams, but also for big projects.
 
-some awesomeness for you (the game developer) includes:
-
-* super simple image and text **rendering** and manipulation
+* image and text **rendering** and manipulation
 * loading and rendering for **tiled maps**
 * audio engine
 * keyboard, touch and mouse **input handlers**
 * **modules** (check below example configuration)
-* TCP **network**ing
+* TCP-based **networking**
 * **physics** engine
 * **simple** lights
 
@@ -55,13 +53,11 @@ Configuration is done by json configuration file `non.cfg`. You can define windo
 }
 ```
 
-## main script
+## events
 
-Your game logic should be divided into 3 events:
+Your game logic should be divided into these events:
 * `non.ready` - Initialization logic, loading of game assets
 * `non.update` - Update logic, handling input and timed events
 * `non.draw` - Display logic, handling rendering of loaded assets
-
-Additional usefull events
 * `non.close` - Triggered on game close, unloading of game assets
 * `non.resize` - Triggered on game window resize
