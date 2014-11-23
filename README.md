@@ -2,20 +2,28 @@
 
 non is experimental game framework created for rapid game development and so it is perfect for game jams, but also for serious projects. non can run on almost any platform, including Windows, Mac and Linux. I am working on support for Android, web and IOS.
 
-## Features
+some awesomeness for you (the game developer) includes:
 
-* Super simple image and text rendering and manipulation
-* TMX map loading and rendering
-* Audio engine
-* Keyboard, Touch and Mouse input handlers
-* Modules system (check below example configuration)
-* Simple TCP network manager
-* Physics engine based on Box2D
-* Simple light engine based on Box2DLights
+* super simple image and text **rendering** and manipulation
+* loading and rendering for **tiled maps**
+* audio engine
+* keyboard, touch and mouse **input handlers**
+* **modules** (check below example configuration)
+* TCP **network**ing
+* **physics** engine
+* **simple** lights
 
-## Supported languages
+## quickstart
 
-* JavaScript `.js`
+```batch
+cd Your/Working/Dir
+git clone git@github.com:deathbeam/non.git
+non gen
+```
+
+## languages
+
+* JavaScript `.js` 
 * [CoffeeScript](http://coffeescript.org/) `.coffee`
 * [TypeScript](http://typescriptlang.org/) `.ts`
 * [Lua](http://lua.org/) `.lua`
@@ -23,7 +31,7 @@ non is experimental game framework created for rapid game development and so it 
 * [Python](https://python.org/) `.py` (experimental)
 * [Groovy](http://groovy-lang.org/) `.groovy` (experimental)
 
-## Configuration
+## config
 
 Configuration is done by json configuration file `non.cfg`. You can define window title, resolution, main class and add modules through it. Example configuration file:
 ```json
@@ -47,7 +55,7 @@ Configuration is done by json configuration file `non.cfg`. You can define windo
 }
 ```
 
-## Main class
+## main script
 
 Your game logic should be divided into 3 events:
 * `non.ready` - Initialization logic, loading of game assets
