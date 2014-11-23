@@ -18,53 +18,50 @@ gwt {
     }
 }
 
-task run(type: de.richsource.gradle.plugins.gwt.GwtSuperDev, dependsOn: draftRun) {
-    doFirst {
-        gwt.modules = gwt.devModules
-    }
-}
-
-task dist(dependsOn: [clean, compileGwt]) {
-    doLast {
-        file("../../dist/html").mkdirs()
-        copy {
-            from "build/gwt/out"
-            into "../../dist/html"
-        }
-        copy {
-            from "webapp"
-            into "../../dist/html"
-            }
-        copy {
-            from "war"
-            into "../../dist/html"
-        }
-    }
-}
-
-task update(dependsOn: ':non:update') {
-    print "Building html assets..."
-    copy {
-        from "../../project/res"
-        into "webapp"
-        include "icon-16.png"
-        rename "icon-16.png", "favicon.png"
-    }
-    print " DONE\n"
-}
-
 task draftRun(type: JettyRunWar, dependsOn: draftWar) {
     dependsOn.remove('war')
     webApp=draftWar.archivePath
     daemon=true
 }
 
-draftWar {
-    from "war"
+task run(type: de.richsource.gradle.plugins.gwt.GwtSuperDev, dependsOn: draftRun) {
+    doFirst {
+        gwt.modules = gwt.devModules
+    }
 }
 
-task addSource {
+task dist(dependsOn: [clean, compileGwt]) << {
+    file("../../dist/html").mkdirs()
+    copy {
+        from "build/gwt/out"
+        into "../../dist/html"
+    }
+    copy {
+        from "webapp"
+        into "../../dist/html"
+    }
+    copy {
+        from "war"
+        into "../../dist/html"
+    }
+}
+
+task update(dependsOn: ':wrapper:update') << {
+    println "Building html assets..."
+    copy {
+        from "../../project/res"
+        into "webapp"
+        include "icon-16.png"
+        rename "icon-16.png", "favicon.png"
+    }
+}
+
+task addSource << {
     sourceSets.main.compileClasspath += files(project(':core').sourceSets.main.allJava.srcDirs)
+}
+
+draftWar {
+    from "war"
 }
 
 tasks.compileGwt.dependsOn(addSource)

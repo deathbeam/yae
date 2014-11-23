@@ -12,11 +12,11 @@ public class DesktopLauncher {
     public static void main (String[] arg) throws IOException {
         JsonValue conf = Utils.configure();
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-        cfg.addIcon("icon-256.png", Files.FileType.Classpath);
-        cfg.addIcon("icon-192.png", Files.FileType.Classpath);
-        cfg.addIcon("icon-64.png", Files.FileType.Classpath);
-        cfg.addIcon("icon-32.png", Files.FileType.Classpath);
-        cfg.addIcon("icon-16.png", Files.FileType.Classpath);
+        cfg.addIcon("res/icon-256.png", Files.FileType.Classpath);
+        cfg.addIcon("res/icon-192.png", Files.FileType.Classpath);
+        cfg.addIcon("res/icon-64.png", Files.FileType.Classpath);
+        cfg.addIcon("res/icon-32.png", Files.FileType.Classpath);
+        cfg.addIcon("res/icon-16.png", Files.FileType.Classpath);
         if (conf != null) {
             cfg.title = conf.get("title").asString();
             cfg.width = conf.get("resolution").asIntArray()[0];

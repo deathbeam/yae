@@ -6,7 +6,7 @@ sourceSets.main.java.srcDirs = [ "src/" ]
 project.ext.mainClassName = "com.deathbeam.non.desktop.DesktopLauncher"
 project.ext.assetsDir = new File("../android/assets");
 
-task run(type: JavaExec, dependsOn: classes) {
+task run(type: JavaExec, dependsOn: classes) << {
     main = project.mainClassName
     classpath = sourceSets.main.runtimeClasspath
     standardInput = System.in
@@ -25,15 +25,15 @@ task dist(type: Jar, dependsOn: classes) {
     }
     
     doLast {
-        println "You can find desktop-$version.jar in /dist/desktop/libs"
+        println "You can find desktop-" + version + ".jar in /dist/desktop/libs"
     }
 }
 
-task update(dependsOn: ':non:update') {
-    print "Building android assets..."
+task update(dependsOn: ':wrapper:update') << {
+    println "Building android assets..."
     copy {
         from "../../project/res"
-        into "../android/assets"
+        into "../android/assets/res"
         include "icon-16.png"
         include "icon-32.png"
         include "icon-64.png"
@@ -41,7 +41,6 @@ task update(dependsOn: ':non:update') {
         include "icon-256.png"
         include "loading.png"
     }
-    print " DONE\n"
 }
 
 eclipse {

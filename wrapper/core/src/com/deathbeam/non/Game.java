@@ -173,7 +173,7 @@ public class Game implements ApplicationListener {
     public void create () {
         graphics = new Graphics();
         try {
-            splash = new Image(Utils.getInternalResource("loading.png"));
+            splash = new Image(Utils.getInternalResource("res/loading.png"));
         } catch (IOException ex) {
             Utils.warning("Resource not found", "loading.png");
             splash = new Image();

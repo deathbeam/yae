@@ -53,7 +53,7 @@ public class CoffeeScript extends ScriptRuntime {
         context.setOptimizationLevel(-1);
         try {
             scope = context.initStandardObjects();
-            context.evaluateString(scope, Utils.readFile(Utils.getInternalResource("coffeescript.js").read()), "coffeescript.js", 0, null);
+            context.evaluateString(scope, Utils.readFile(Utils.getInternalResource("res/coffeescript.js").read()), "coffeescript.js", 0, null);
         } catch (IOException ex) {
             Utils.error("scripting", ex.getMessage());
         } finally {

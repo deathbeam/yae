@@ -53,8 +53,8 @@ public class TypeScript extends ScriptRuntime {
         context.setOptimizationLevel(-1); // Without this, Rhino hits a 64K bytecode limit and fails
         try {
             scope = context.initStandardObjects();
-            context.evaluateString(scope, Utils.readFile(Utils.getInternalResource("typescript.js").read()), "typescript.js", 0, null);
-            context.evaluateString(scope, Utils.readFile(Utils.getInternalResource("typescript.compile.js").read()), "typescript.compile.js", 0, null);
+            context.evaluateString(scope, Utils.readFile(Utils.getInternalResource("res/typescript.js").read()), "typescript.js", 0, null);
+            context.evaluateString(scope, Utils.readFile(Utils.getInternalResource("res/typescript.compile.js").read()), "typescript.compile.js", 0, null);
         } catch (IOException ex) {
             Utils.error("scripting", ex.getMessage());
         } finally {

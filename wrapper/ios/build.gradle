@@ -3,7 +3,7 @@ sourceCompatibility = '1.7'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 ext.mainClassName = "com.deathbeam.non.IOSLauncher"
 
-task copyNatives {
+task copyNatives << {
     file("build/libs/ios/").mkdirs();
     configurations.natives.files.each { jar ->
         def outputDir = null
@@ -18,7 +18,7 @@ task copyNatives {
     }
 }
 
-task updateRoboVMXML(dependsOn: copyNatives) {
+task updateRoboVMXML(dependsOn: copyNatives) << {
     def xml = file('robovm.xml')
     if (!xml.exists()) { return }
   
@@ -39,14 +39,12 @@ task updateRoboVMXML(dependsOn: copyNatives) {
 
 task run(dependsOn: launchIPhoneSimulator)
 
-task dist(dependsOn: createIPA) {
-    doLast {
-        println "You can find ios-$version.ipa in /dist/ios"
-    }
+task dist(dependsOn: createIPA) << {
+    println "You can find ios-" + version + ".ipa in /dist/ios"
 }
 
-task update(dependsOn: ':non:update') {
-    print "Building ios assets..."
+task update(dependsOn: ':wrapper:update') << {
+    println "Building ios assets..."
     copy {
         file("data").mkdirs()
         from "../../project/res"
@@ -74,7 +72,6 @@ task update(dependsOn: ':non:update') {
         include "splash-1536x2008.png"
         rename "splash-1536x2008.png", "Default@2x~ipad.png"
     }
-    print " DONE\n"
 }
 
 build.dependsOn updateRoboVMXML

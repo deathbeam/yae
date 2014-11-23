@@ -4,7 +4,7 @@ def cfgf = file("../project/non.cfg")
 if (cfgf.exists()) {
     def cfg = new groovy.json.JsonSlurper().parseText(cfgf.text)
     APP_NAME = cfg.title
-    ANDRROID_HOME = cfg.sdk
+    ANDROID_HOME = cfg.sdk
 }
 
 buildscript {
@@ -176,7 +176,7 @@ task gen << {
 }
 
 task update << {
-    print "Building data..."
+    println "Building data..."
     copy {
         from "../project"
         into "android/assets"
@@ -202,7 +202,6 @@ task update << {
         exclude ".DS_Store"
         exclude "Thumbs.db"
     }
-    print " DONE\n"
 }
 
 tasks.eclipse.doLast {

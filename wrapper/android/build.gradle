@@ -20,7 +20,7 @@ tasks.withType(com.android.build.gradle.tasks.PackageApplication) { pkgTask ->
     pkgTask.jniFolders.add(new File(projectDir, 'libs'))
 }
 
-task copyAndroidNatives { 
+task copyAndroidNatives << { 
     file("libs/armeabi/").mkdirs();
     file("libs/armeabi-v7a/").mkdirs();
     file("libs/x86/").mkdirs();
@@ -40,19 +40,17 @@ task copyAndroidNatives {
     }
 }
 
-task run(type: Exec) {
+task run(type: Exec) << {
     def adb = sdkDir + "/platform-tools/adb"
     commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.deathbeam.non.android/com.deathbeam.non.android.AndroidLauncher'
 }
 
-task dist(dependsOn: assembleRelease) {
-    doLast {
-        println "You can find android-$version.apk in /dist/android"
-    }
+task dist(dependsOn: assembleRelease) << {
+    println "You can find android-" + version + ".apk in /dist/android"
 }
 
-task update(dependsOn: ':non:update') {
-    print "Building android assets..."
+task update(dependsOn: ':wrapper:update') << {
+    println "Building android assets..."
     copy {
         file("res/drawable-mdpi").mkdirs()
         from "../../project/res"
@@ -94,7 +92,6 @@ task update(dependsOn: ':non:update') {
         include "icon-512.png"
         rename "icon-512.png", "ic_launcher-web.png"
     }
-    print " DONE\n"
 }
 
 eclipse {
