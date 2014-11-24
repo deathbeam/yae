@@ -35,14 +35,6 @@ import javax.script.ScriptException;
  * @author Thomas Slusny
  */
 public class Python extends ScriptRuntime {
-    public static String getName() {
-        return "Python";
-    }
-
-    public static String getExtension() {
-        return "py";
-    }
-    
     public Python() {
         e = new ScriptEngineManager().getEngineByName("python");
         ScriptEngineFactory f = e.getFactory();

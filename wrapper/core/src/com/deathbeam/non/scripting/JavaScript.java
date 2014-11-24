@@ -35,14 +35,6 @@ import javax.script.ScriptException;
  * @author Thomas Slusny
  */
 public class JavaScript extends ScriptRuntime {
-    public static String getName() {
-        return "JavaScript";
-    }
-
-    public static String getExtension() {
-        return "js";
-    }
-    
     public JavaScript() {
         e = new ScriptEngineManager().getEngineByName("JavaScript");
         ScriptEngineFactory f = e.getFactory();

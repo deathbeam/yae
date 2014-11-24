@@ -40,14 +40,6 @@ import org.mozilla.javascript.Scriptable;
 public class TypeScript extends ScriptRuntime {
     private Scriptable scope;
     
-    public static String getName() {
-        return "TypeScript";
-    }
-
-    public static String getExtension() {
-        return "ts";
-    }
-    
     public TypeScript() {
         Context context = Context.enter();
         context.setOptimizationLevel(-1); // Without this, Rhino hits a 64K bytecode limit and fails

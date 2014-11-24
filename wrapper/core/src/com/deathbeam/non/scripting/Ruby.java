@@ -35,14 +35,6 @@ import javax.script.ScriptException;
  * @author Thomas Slusny
  */
 public class Ruby extends ScriptRuntime {
-    public static String getName() {
-        return "Ruby";
-    }
-
-    public static String getExtension() {
-        return "rb";
-    }
-    
     public Ruby() {
         e = new ScriptEngineManager().getEngineByName("ruby");
         ScriptEngineFactory f = e.getFactory();

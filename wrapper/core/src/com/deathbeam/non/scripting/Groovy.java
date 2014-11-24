@@ -35,14 +35,6 @@ import javax.script.ScriptException;
  * @author Thomas Slusny
  */
 public class Groovy extends ScriptRuntime {
-    public static String getName() {
-        return "Groovy";
-    }
-
-    public static String getExtension() {
-        return "groovy";
-    }
-    
     public Groovy() {
         e = new ScriptEngineManager().getEngineByName("groovy");
         ScriptEngineFactory f = e.getFactory();

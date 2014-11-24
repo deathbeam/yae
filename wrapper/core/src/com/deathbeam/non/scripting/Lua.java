@@ -35,14 +35,6 @@ import javax.script.ScriptException;
  * @author Thomas Slusny
  */
 public class Lua extends ScriptRuntime {
-    public static String getName() {
-        return "Lua";
-    }
-
-    public static String getExtension() {
-        return "lua";
-    }
-    
     public Lua() {
         e = new ScriptEngineManager().getEngineByName("lua");
         ScriptEngineFactory f = e.getFactory();

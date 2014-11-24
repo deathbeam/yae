@@ -39,15 +39,7 @@ import org.mozilla.javascript.Scriptable;
  */
 public class CoffeeScript extends ScriptRuntime {
     private Scriptable scope;
-    
-    public static String getName() {
-        return "CoffeeScript";
-    }
 
-    public static String getExtension() {
-        return "coffee";
-    }
-    
     public CoffeeScript() {
         Context context = Context.enter();
         context.setOptimizationLevel(-1);

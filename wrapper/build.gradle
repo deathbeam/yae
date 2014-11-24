@@ -41,6 +41,7 @@ allprojects {
         groovyVersion = '2.3.7'
         luajVersion = '3.0'
         bsfVersion = '3.1.3'
+        reflectionsVersion = '0.9.9'
     }
 
     repositories {
@@ -52,7 +53,6 @@ allprojects {
 
 project(":desktop") {
     apply plugin: "java"
-    buildDir = "../../dist/desktop"
     
     dependencies {
         compile project(":core")
@@ -72,7 +72,6 @@ project(":desktop") {
 
 project(":android") {
     apply plugin: "android"
-    buildDir = "../../dist/android"
     
     configurations { natives }
 
@@ -101,7 +100,6 @@ project(":android") {
 project(":ios") {
     apply plugin: "java"
     apply plugin: "robovm"
-    buildDir = "../../dist/ios"
     
     configurations { natives }
 
@@ -124,7 +122,6 @@ project(":ios") {
 project(":html") {
     apply plugin: "gwt"
     apply plugin: "war"
-    buildDir = "../../dist/html"
     
     dependencies {
         compile project(":core")
@@ -161,6 +158,7 @@ project(":core") {
         compile "org.codehaus.groovy:groovy-all:$groovyVersion"
         compile "org.luaj:luaj-jse:$luajVersion"
         compile "com.wu-man:android-bsf-api:$bsfVersion:"
+        compile "org.reflections:reflections:$reflectionsVersion:"
     }
 }
 
@@ -212,6 +210,14 @@ task update << {
         exclude "splash-1536x2008"
         exclude ".DS_Store"
         exclude "Thumbs.db"
+    }
+}
+
+gradle.projectsEvaluated {
+    println "Loading plugins..."
+    copy {
+        from "../plugins"
+        into "core/src/com/deathbeam/non/plugins"
     }
 }
 

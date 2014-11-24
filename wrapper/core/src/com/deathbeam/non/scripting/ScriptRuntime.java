@@ -34,6 +34,21 @@ import javax.script.ScriptException;
  * @author Thomas Slusny
  */
 public abstract class ScriptRuntime {
+    private static ScriptRuntime current;
+    
+    public static void setCurrent(ScriptRuntime runtime) { current = runtime; }
+    public static void getCurrent() { return current; }
+    
+    public static ScriptRuntime byExtension(String ext) {
+        if ("coffee".equalsIgnoreCase(ext)) return new CoffeeScript();
+        if ("groovy".equalsIgnoreCase(ext)) return new Groovy();
+        if ("js".equalsIgnoreCase(ext)) return new JavaScript();
+        if ("lua".equalsIgnoreCase(ext)) return new Lua();
+        if ("py".equalsIgnoreCase(ext)) return new Python();
+        if ("rb".equalsIgnoreCase(ext)) return new Ruby();
+        if ("ts".equalsIgnoreCase(ext)) return new TypeScript();
+    }
+    
     protected ScriptEngine e;
     
     public abstract void invoke(String pack, String funct);
