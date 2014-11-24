@@ -35,21 +35,21 @@ import org.reflections.Reflections;
 public class PluginManager {
     private static HashMap<String, Plugin> plugins = new HashMap<String, Plugin>();
     
-    public void add(Plugin plugin) {
+    public static void add(Plugin plugin) {
         plugin.loadPlugin();
         plugins.put(plugin.name(), plugin);
         ScriptRuntime.getCurrent().put(plugin.name(), plugin);
     }
     
-    public Plugin get(String plugin) {
+    public static Plugin get(String plugin) {
         return plugins.get(plugin);
     }
     
-    public boolean contains(String plugin) {
+    public static boolean contains(String plugin) {
         return plugins.containsKey(plugin);
     }
     
-    public void load() {
+    public static void load() {
         Reflections reflections = new Reflections("com.deathbeam.non.plugins");    
         Set<Class<? extends Plugin>> classes = reflections.getSubTypesOf(Plugin.class);
         for(Class<? extends Plugin> plugClass: classes)
@@ -57,7 +57,7 @@ public class PluginManager {
         check();
     }
     
-    public void check() {
+    public static void check() {
         for (String key: plugins.keySet()) {
             String[] deps = get(key).dependencies();
             if (deps == null) continue;
