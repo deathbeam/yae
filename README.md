@@ -1,6 +1,8 @@
 ![No Nonsense](https://raw.githubusercontent.com/deathbeam/non/master/wrapper/gen/res/loading.png)
 
-script-based game framework created for rapid game development, perfect for game jams, but also for big projects.
+JavaScript `.js` | [CoffeeScript](http://coffeescript.org/) `.coffee` | [TypeScript](http://typescriptlang.org/) `.ts` | [Lua](http://lua.org/) `.lua` | [Ruby](https://ruby-lang.org) `.rb` | [Python](https://python.org/) `.py` | [Groovy](http://groovy-lang.org/) `.groovy`
+
+Script-based game framework created for rapid game development, perfect for game jams, but also for big projects.
 
 * image and text **rendering** and manipulation
 * loading and rendering for **tiled maps**
@@ -18,16 +20,6 @@ cd Your/Working/Dir
 git clone git@github.com:deathbeam/non.git
 non gen
 ```
-
-## languages
-
-* JavaScript `.js` 
-* [CoffeeScript](http://coffeescript.org/) `.coffee`
-* [TypeScript](http://typescriptlang.org/) `.ts`
-* [Lua](http://lua.org/) `.lua`
-* [Ruby](https://ruby-lang.org) `.rb` (experimental)
-* [Python](https://python.org/) `.py` (experimental)
-* [Groovy](http://groovy-lang.org/) `.groovy` (experimental)
 
 ## config
 
