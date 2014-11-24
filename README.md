@@ -27,20 +27,15 @@ non gen
     "resolution": [800, 600],
     "main": "main.js",
     "sdk": "Path/To/Your/Android/Sdk",
-    "modules": [ 
-        "audio",
-        "graphics",
-        "tiled",
-        "network",
-        "math",
-        "physics",
-        "lights",
-        "mouse",
-        "touch",
-        "keyboard"
-    ]
+    "modules": [ "audio", "graphics", "physics" ]
 }
 ```
+
+* `title` - Application title
+* `resolution` - Resolution (desktop and html only)
+* `sdk` - Path to your Android SDK
+* `modules` - Modules, what non will load. These can be: 
+    * `audio`, `graphics`, `physics`, `tiled`, `network`, `math`, `physics`, `lights`, `mouse`, `touch`, `keyboard`
 
 ## events
 
