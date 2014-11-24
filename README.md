@@ -1,8 +1,6 @@
 ![No Nonsense](https://raw.githubusercontent.com/deathbeam/non/master/wrapper/gen/res/loading.png)
 
-JavaScript `.js` | [CoffeeScript](http://coffeescript.org/) `.coffee` | [TypeScript](http://typescriptlang.org/) `.ts` | [Lua](http://lua.org/) `.lua` | [Ruby](https://ruby-lang.org) `.rb` | [Python](https://python.org/) `.py` | [Groovy](http://groovy-lang.org/) `.groovy`
-
-Script-based game framework created for rapid game development, perfect for game jams, but also for big projects.
+[JavaScript](http://www.ecmascript.org/) `.js` | [CoffeeScript](http://coffeescript.org/) `.coffee` | [TypeScript](http://typescriptlang.org/) `.ts` | [Lua](http://lua.org/) `.lua` | [Ruby](https://ruby-lang.org) `.rb` | [Python](https://python.org/) `.py` | [Groovy](http://groovy-lang.org/) `.groovy`
 
 * image and text **rendering** and manipulation
 * loading and rendering for **tiled maps**
@@ -21,9 +19,8 @@ git clone git@github.com:deathbeam/non.git
 non gen
 ```
 
-## config
+## config `non.cfg`
 
-Configuration is done by json configuration file `non.cfg`. You can define window title, resolution, main class and add modules through it. Example configuration file:
 ```json
 {
     "title": "No Nonsense Game",
@@ -47,9 +44,10 @@ Configuration is done by json configuration file `non.cfg`. You can define windo
 
 ## events
 
-Your game logic should be divided into these events:
 * `non.ready` - Initialization logic, loading of game assets
 * `non.update` - Update logic, handling input and timed events
 * `non.draw` - Display logic, handling rendering of loaded assets
 * `non.close` - Triggered on game close, unloading of game assets
 * `non.resize` - Triggered on game window resize
+* `non.pause` - Triggered on game pause (mobile-only)
+* `non.resume` - Triggered on game resume (mobile-only)
