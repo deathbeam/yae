@@ -39,7 +39,7 @@ public class PluginManager {
     public static void add(Plugin plugin) {
         Utils.log("##### Plugin", "Loading...");
         Utils.log("Name", plugin.name());
-        Utils.log("Class", plugin.toString());
+        Utils.log("Class", plugin.getClass().getSimpleName());
         Utils.log("Author", plugin.author());
         Utils.log("License", plugin.license());
         Utils.log("Description", plugin.description());
