@@ -1,9 +1,9 @@
-package com.deathbeam.non.plugins;
+package com.codeindie.non.plugins;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.deathbeam.non.Utils;
+import com.codeindie.non.Utils;
 import java.io.IOException;
 import java.util.HashSet;
 
@@ -14,7 +14,7 @@ public class Input extends Plugin {
     public String description() { return "Plugin for handling input from keyboard, mouse and touch screen."; }
 
     public class Keyboard {
-        public int getKey(String name) { return Keys.valueOf(name); }
+        public int getKey(String name) { return com.badlogic.gdx.Input.Keys.valueOf(name); }
         public boolean isKeyJustPressed(String name) { int key = getKey(name); return Gdx.input.isKeyJustPressed(key) && key != 0; }
         public boolean isKeyPressed(String name) { int key = getKey(name); return Gdx.input.isKeyPressed(key) && key != 0; }
     }

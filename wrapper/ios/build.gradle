@@ -1,7 +1,7 @@
 sourceSets.main.java.srcDirs = [ "src/" ]
 sourceCompatibility = '1.7'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-ext.mainClassName = "com.deathbeam.non.IOSLauncher"
+ext.mainClassName = "com.codeindie.non.IOSLauncher"
 
 task copyNatives << {
     file("build/libs/ios/").mkdirs();
@@ -43,7 +43,7 @@ task dist(dependsOn: createIPA) << {
     println "You can find ios-" + version + ".ipa in /dist/ios"
 }
 
-task update(dependsOn: ':wrapper:update') << {
+task update(dependsOn: ':update') << {
     println "Building ios assets..."
     copy {
         file("data").mkdirs()

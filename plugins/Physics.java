@@ -1,4 +1,4 @@
-package com.deathbeam.non.plugins;
+package com.codeindie.non.plugins;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapObject;
@@ -82,7 +82,7 @@ public class Physics extends Plugin {
         else if (type.equalsIgnoreCase("static")) bodyDef.type = BodyType.StaticBody;
         else if (type.equalsIgnoreCase("kinematic")) bodyDef.type = BodyType.KinematicBody;
         
-        Shape s;
+        Shape s = null;
         
         if (shape instanceof Rectangle) {
             Rectangle cur = (Rectangle)shape;
@@ -101,7 +101,7 @@ public class Physics extends Plugin {
             ((PolygonShape)s).set(cur.getVertices()); 
         }
         
-        if (s) {
+        if (s!=null) {
             Body body = world.createBody(bodyDef);
             FixtureDef def = new FixtureDef();
             def.density = density;

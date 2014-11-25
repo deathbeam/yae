@@ -1,4 +1,4 @@
-package com.deathbeam.non.plugins;
+package com.codeindie.non.plugins;
 
 import box2dLight.ChainLight;
 import box2dLight.ConeLight;

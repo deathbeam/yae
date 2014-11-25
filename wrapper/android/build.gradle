@@ -42,14 +42,14 @@ task copyAndroidNatives << {
 
 task run(type: Exec) << {
     def adb = sdkDir + "/platform-tools/adb"
-    commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.deathbeam.non.android/com.deathbeam.non.android.AndroidLauncher'
+    commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.codeindie.non.android/com.codeindie.non.android.AndroidLauncher'
 }
 
 task dist(dependsOn: assembleRelease) << {
     println "You can find android-" + version + ".apk in /dist/android"
 }
 
-task update(dependsOn: ':wrapper:update') << {
+task update(dependsOn: ':update') << {
     println "Building android assets..."
     copy {
         file("res/drawable-mdpi").mkdirs()

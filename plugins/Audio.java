@@ -1,9 +1,9 @@
-package com.deathbeam.non.plugins;
+package com.codeindie.non.plugins;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.deathbeam.non.Utils;
+import com.codeindie.non.Utils;
 import java.io.IOException;
 import java.util.HashSet;
 
@@ -30,10 +30,12 @@ public class Audio extends Plugin {
     
     public Audio stopMusic() {
         currentMusic.stop();
+		return this;
     }
     
     public Audio stopSounds() {
         for(Sound sound: sounds) sound.stop();
+		return this;
     }
     
     public Music newMusic(String file) throws IOException {

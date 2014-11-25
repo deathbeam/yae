@@ -35,7 +35,6 @@ allprojects {
         ashleyVersion = '1.3.1'
         aiVersion = '1.4.0'
         rhinoVersion = '1.7R4'
-        ztzipVersion = '1.8'
         jrubyVersion = '1.7.16.1'
         jythonVersion = '2.5.3'
         groovyVersion = '2.3.7'
@@ -61,7 +60,6 @@ project(":desktop") {
         compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-controllers-desktop:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"
-        compile "org.zeroturnaround:zt-zip:$ztzipVersion"
         compile "org.jruby:jruby-complete:$jrubyVersion"
         compile "org.python:jython-standalone:$jythonVersion"
         compile "org.mozilla:rhino:$rhinoVersion"
@@ -88,7 +86,6 @@ project(":android") {
         compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-controllers-android:$gdxVersion"
-        compile "org.zeroturnaround:zt-zip:$ztzipVersion"
         compile "org.jruby:jruby-complete:$jrubyVersion"
         compile "org.python:jython-standalone:$jythonVersion"
         compile "org.mozilla:rhino:$rhinoVersion"
@@ -110,7 +107,6 @@ project(":ios") {
         compile "com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
         natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-ios"
-        compile "org.zeroturnaround:zt-zip:$ztzipVersion"
         compile "org.jruby:jruby-complete:$jrubyVersion"
         compile "org.python:jython-standalone:$jythonVersion"
         compile "org.mozilla:rhino:$rhinoVersion"
@@ -134,7 +130,6 @@ project(":html") {
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion:sources"
         compile "com.badlogicgames.gdx:gdx-controllers-gwt:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-controllers-gwt:$gdxVersion:sources"
-        compile "org.zeroturnaround:zt-zip:$ztzipVersion"
         compile "org.jruby:jruby-complete:$jrubyVersion"
         compile "org.python:jython-standalone:$jythonVersion"
         compile "org.mozilla:rhino:$rhinoVersion"
@@ -151,35 +146,35 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
-        compile "org.zeroturnaround:zt-zip:$ztzipVersion"
         compile "org.jruby:jruby-complete:$jrubyVersion"
         compile "org.python:jython-standalone:$jythonVersion"
         compile "org.mozilla:rhino:$rhinoVersion"
         compile "org.codehaus.groovy:groovy-all:$groovyVersion"
         compile "org.luaj:luaj-jse:$luajVersion"
-        compile "com.wu-man:android-bsf-api:$bsfVersion:"
-        compile "org.reflections:reflections:$reflectionsVersion:"
+        compile "com.wu-man:android-bsf-api:$bsfVersion"
+        compile "org.reflections:reflections:$reflectionsVersion"
     }
 }
 
 task gen << {
     def lang = "js"
-    if (project.hasProperty('arg')) { lang = arg; }
+    if (project.hasProperty('arg')) { lang = arg }
+    def mainClass = "main.$lang"
     def map = [ 
         title: 'non',
-        main: 'main.$lang',
+        main: mainClass,
         resolution: [800, 600],
-        sdk: ANDROID_HOME,
-        modules: ['audio', 'graphics', 'physics', 'lights', 'tiled', 'network', 'math, 'keyboard', 'mouse', 'touch']
+        sdk: ANDROID_HOME
     ]
     def builder = new JsonBuilder(map)
     file("../project").mkdir()
-    def ncfg = new File("../project/non.cfg)
+    def ncfg = new File("../project/non.cfg")
+    ncfg.createNewFile()
     ncfg.write(builder.toString())
     copy {
         from "gen"
         into "../project"
-        include "main.$lang"
+        include mainClass
         include "**/*.png"
     }
 }
@@ -217,7 +212,7 @@ gradle.projectsEvaluated {
     println "Loading plugins..."
     copy {
         from "../plugins"
-        into "core/src/com/deathbeam/non/plugins"
+        into "core/src/com/codeindie/non/plugins"
     }
 }
 

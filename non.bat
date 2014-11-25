@@ -7,7 +7,7 @@
 
 cd wrapper
 if [%2]==[] goto param
-call gradlew "%1" -Parg="="%2"
+call gradlew "%1" -Parg="%2"
 goto end
 :param
 call gradlew "%1"

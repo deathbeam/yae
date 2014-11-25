@@ -1,11 +1,12 @@
-package com.deathbeam.non.plugins;
+package com.codeindie.non.plugins;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
 import com.badlogic.gdx.net.ServerSocket;
 import com.badlogic.gdx.net.Socket;
-import com.deathbeam.non.Game;
-import com.deathbeam.non.Utils;
+import com.codeindie.non.Game;
+import com.codeindie.non.scripting.ScriptRuntime;
+import com.codeindie.non.Utils;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
@@ -144,12 +145,11 @@ public class Network extends Plugin {
                     while (true) {
                         DataInputStream ret = null;
                         try { ret = new DataInputStream(new ByteArrayInputStream(readTCP())); }
-                        catch (Exception e) { Utils.log("Networking", e.getMessage()); break; }
                         catch (IOException e) {
                             if (connected) { connected = false; listener.disconnected(ClientConnection.this, false); }
                             else listener.disconnected(ClientConnection.this, true);
                             break;
-                        }
+                        } catch (Exception e) { Utils.log("Networking", e.getMessage()); break; }
                         listener.receive(ret, ClientConnection.this);
                     }
                 }
@@ -201,7 +201,7 @@ public class Network extends Plugin {
         public boolean isConnected() { return connected; }
         protected InputStream getTCPInputStream() { return input; }
         protected OutputStream getTCPOutputStream() { return output; }
-        public String toString() { return ip;
+        public String toString() { return ip; }
 
         private void startTCPListener() {
             new Thread(new Runnable() {
@@ -209,7 +209,6 @@ public class Network extends Plugin {
                     while (true) {
                         DataInputStream ret;
                         try { ret = new DataInputStream(new ByteArrayInputStream(readTCP())); }
-                        catch (Exception e) { Utils.log("Networking", e.getMessage()); break; }
                         catch (SocketException e) {
                             if (connected) {
                                 connected = false;
@@ -220,7 +219,7 @@ public class Network extends Plugin {
                                 listener.disconnected(ServerConnection.this, true);
                             }
                             break;
-                        } 
+                        } catch (Exception e) { Utils.log("Networking", e.getMessage()); break; }
                         listener.receive(ret, ServerConnection.this);
                     }
                 }
@@ -313,18 +312,18 @@ public class Network extends Plugin {
         this.listener = new Listener() {
             public void disconnected(Connection broken, boolean forced) {
                 curConn = broken;
-                Game.scripting.invoke("non.network", "disconnected", "non.network.curConn");
+                ScriptRuntime.getCurrent().invoke("non.network", "disconnected", "non.network.curConn");
             }
 
             public void receive(DataInputStream data, Connection from) {
                 curData = data;
                 curConn = from;
-                Game.scripting.invoke("non.network", "received", "non.network.curData, non.network.curConn");
+                ScriptRuntime.getCurrent().invoke("non.network", "received", "non.network.curData, non.network.curConn");
             }
 
             public void connected(ServerConnection conn) {
                 curConn = conn;
-                Game.scripting.invoke("non.network", "connected", "non.network.curConn");
+                ScriptRuntime.getCurrent().invoke("non.network", "connected", "non.network.curConn");
             }
         };
         return this;
