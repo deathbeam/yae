@@ -26,23 +26,21 @@ non gen
     "title": "No Nonsense Game",
     "resolution": [800, 600],
     "main": "main.js",
-    "sdk": "Path/To/Your/Android/Sdk",
-    "modules": [ "audio", "graphics", "physics" ]
+    "sdk": "Path/To/Your/Android/Sdk"
 }
 ```
 
 * `title` - Application title
 * `resolution` - Resolution (desktop and html only)
+* `main` - Main script file. Extension of this file also defines what type of scripting engine will be used.
 * `sdk` - Path to your Android SDK
-* `modules` - Modules, what non will load. These can be: 
-    * `audio`, `graphics`, `physics`, `tiled`, `network`, `math`, `physics`, `lights`, `mouse`, `touch`, `keyboard`
 
 ## events
 
-* `non.ready` - Initialization logic, loading of game assets
-* `non.update` - Update logic, handling input and timed events
-* `non.draw` - Display logic, handling rendering of loaded assets
-* `non.close` - Triggered on game close, unloading of game assets
+* `non.ready` - Initialization logic, loading of game assets. Triggered once, at game load.
+* `non.update` - Update logic, handling input and timed events. Trigered every frame.
+* `non.draw` - Display logic, handling rendering of loaded assets. Trigered every frame right after `non.update`.
+* `non.close` - Triggered on game close, unloading of game assets.
 * `non.resize` - Triggered on game window resize
 * `non.pause` - Triggered on game pause (mobile-only)
 * `non.resume` - Triggered on game resume (mobile-only)

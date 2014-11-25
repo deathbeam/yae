@@ -31,18 +31,18 @@ task run(type: de.richsource.gradle.plugins.gwt.GwtSuperDev, dependsOn: draftRun
 }
 
 task dist(dependsOn: [clean, compileGwt]) << {
-    file("../../dist/html/site").mkdirs()
+    file("build/dist").mkdirs()
     copy {
-        from "../../dist/html/gwt/out"
-        into "../../dist/html/site"
+        from "build/gwt/out"
+        into "build/dist"
     }
     copy {
         from "webapp"
-        into "../../dist/html/site"
+        into "build/dist"
     }
     copy {
         from "war"
-        into "../../dist/html/site"
+        into "build/dist"
     }
 }
 

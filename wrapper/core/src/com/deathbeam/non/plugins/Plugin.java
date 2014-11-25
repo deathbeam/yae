@@ -34,19 +34,4 @@ public abstract class Plugin {
     public String license() { return "Public Domain"; }
     public String description() { return "Not specified."; }
     public String[] dependencies { return null; }
-    
-    public void loadPlugin() {
-        Utils.log("## Plugin", name() + " loaded!"
-        Utils.log("Author", author());
-        Utils.log("License", license());
-        Utils.log("Description", description());
-        String[] depArray = dependencies();
-        if (depArray != null) {
-            String dependencies = "";
-            for(String dependency: depArray) dependencies += dependency + ", ";
-            Utils.log("Dependencies", dependencies);   
-        } else {
-            Utils.log("Dependencies", "None");
-        }
-    }
 }

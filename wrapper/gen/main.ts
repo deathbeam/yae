@@ -1,12 +1,12 @@
-non.ready = function() {
+non.ready = () => {
     // Insert initialization logic here
 };
 
-non.update = function() {
+non.update = () => {
     // Insert update logic here
 };
 
-non.draw = function() {
+non.draw = () => {
     // Insert rendering logic here
     graphics.draw("Hello World!", 15, 15);
 };

@@ -36,7 +36,18 @@ public class PluginManager {
     private static HashMap<String, Plugin> plugins = new HashMap<String, Plugin>();
     
     public static void add(Plugin plugin) {
-        plugin.loadPlugin();
+        Utils.log("## Plugin", plugin.name() + " loaded!"
+        Utils.log("Author", plugin.author());
+        Utils.log("License", plugin.license());
+        Utils.log("Description", plugin.description());
+        String[] depArray = plugin.dependencies();
+        if (depArray != null) {
+            String dependencies = "";
+            for(String dependency: depArray) dependencies += dependency + ", ";
+            Utils.log("Dependencies", dependencies);   
+        } else {
+            Utils.log("Dependencies", "None");
+        }
         plugins.put(plugin.name(), plugin);
         ScriptRuntime.getCurrent().put(plugin.name(), plugin);
     }
@@ -52,14 +63,9 @@ public class PluginManager {
     public static void load() {
         Reflections reflections = new Reflections("com.deathbeam.non.plugins");    
         Set<Class<? extends Plugin>> classes = reflections.getSubTypesOf(Plugin.class);
-        for(Class<? extends Plugin> plugClass: classes)
-            add(new plugClass());
-        check();
-    }
-    
-    public static void check() {
-        for (String key: plugins.keySet()) {
-            String[] deps = get(key).dependencies();
+        for(Class<? extends Plugin> plugClass: classes) add(plugClass.newInstance());
+        for (String plugin: plugins.keySet()) {
+            String[] deps = get(plugin).dependencies();
             if (deps == null) continue;
             for (String dep: deps) {
                 if (!contains(dep) Utils.error("Plugin dependency not resolved!");

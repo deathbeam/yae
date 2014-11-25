@@ -110,8 +110,9 @@ public class Game implements ApplicationListener {
             Utils.warning("Resource not found", "loading.png");
             splash = new Sprite(new Texture(32, 32, Pixmap.Format.Alpha));
         }
-        splash.setPosition(getWidth() / 2 - splash.getWidth() / 2, getHeight() / 2 - splash.getHeight() / 2);
         
+        splash.setPosition(getWidth() / 2 - splash.getWidth() / 2, getHeight() / 2 - splash.getHeight() / 2);
+        PluginManager.load();
         if (conf!=null) {
             loadMode = 1;
             text = "Loading assets";
@@ -145,7 +146,7 @@ public class Game implements ApplicationListener {
         }
         
         if (update!=null) ScriptRuntime.getCurrent().invoke("non", "update");
-        if (draw != null) ScriptRuntime.getCurrent().invoke("non", "draw");
+        if (draw!=null) ScriptRuntime.getCurrent().invoke("non", "draw");
     }
 
     @Override
