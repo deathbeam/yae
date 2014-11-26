@@ -312,18 +312,18 @@ public class Network extends Plugin {
         this.listener = new Listener() {
             public void disconnected(Connection broken, boolean forced) {
                 curConn = broken;
-                ScriptRuntime.getCurrent().invoke("non.network", "disconnected", "non.network.curConn");
+                ScriptRuntime.getCurrent().invoke(name(), "disconnected", name() + ".curConn");
             }
 
             public void receive(DataInputStream data, Connection from) {
                 curData = data;
                 curConn = from;
-                ScriptRuntime.getCurrent().invoke("non.network", "received", "non.network.curData, non.network.curConn");
+                ScriptRuntime.getCurrent().invoke(name(), "received", name() + ".curData", name() + ".curConn");
             }
 
             public void connected(ServerConnection conn) {
                 curConn = conn;
-                ScriptRuntime.getCurrent().invoke("non.network", "connected", "non.network.curConn");
+                ScriptRuntime.getCurrent().invoke(name(), "connected", name() + ".curConn");
             }
         };
         return this;

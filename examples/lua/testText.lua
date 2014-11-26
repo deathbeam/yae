@@ -1,1 +1,0 @@
-non:log("testText.lua", "Hello World log")

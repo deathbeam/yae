@@ -1,9 +1,8 @@
 var map, pressed, client, server, msg, light, circle;
-non.load("testText.js");
 
 non.ready = function() {
-    map = non.tiled.newMap("../data/map.tmx");
-    non.audio.play(audio.newMusic("../data/music.ogg"));
+    map = non.tiled.newMap("data/map.tmx");
+    audio.play(audio.newMusic("data/music.ogg"));
     
     network.connected = function(conn) {
         msg = "client connected: " + conn.toString();
@@ -18,12 +17,11 @@ non.ready = function() {
     };
     
     network.setHost("localhost").setPort(15600).init();
-    (server = non.network.newServer()).listen();
-    (client = non.network.newClient()).connect();
+    (server = network.newServer()).listen();
+    (client = network.newClient()).connect();
     
     physics.setGravity(0,10).init();
     physics.newShape(map);
-    
     circle = physics.newShape(math.newCircle(32,64,20), "dynamic", 0.5, 0.4, 0.6);
     lights.setShadows(true).init(physics);
     light = lights.newPointLight(100, graphics.newColor("red"), 500, input.mouse.getX(), input.mouse.getY());
@@ -37,7 +35,7 @@ non.update = function() {
     circle.setTransform(input.mouse.getX(), input.mouse.getY(), 0);
     
     if (input.keyboard.isKeyJustPressed("Space")) {
-        var buffer = non.network.newBuffer();
+        var buffer = network.newBuffer();
         buffer.write(1);
         client.send(buffer);
     }
