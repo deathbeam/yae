@@ -1,32 +1,5 @@
-/*
- * The MIT License
- *
- * Copyright 2014 Thomas Slusny.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-package com.deathbeam.non;
+package com.codeindie.non;
 
-/**
- *
- * @author Thomas Slusny
- */
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -54,23 +27,7 @@ public class Game implements ApplicationListener {
     private int numPeriods, loadMode;
     private SpriteBatch batch;
     private BitmapFont font;
-    
-    // Functions invoked from scripts
-    public Object ready, draw, update, resize, close, pause, resume;
-
-	  public int getWidth() { return Gdx.graphics.getWidth(); }
-    public int getHeight() { return Gdx.graphics.getHeight(); }
-    public int getFPS() { return Gdx.graphics.getFramesPerSecond(); }
-    public float getDelta() { return Gdx.graphics.getDeltaTime(); }
-    public void warning(String type, String msg) { Utils.warning(type, msg); }
-    public void error(String type, String msg) { Utils.error(type, msg); }
-    public void log(String type, String msg) { Utils.log(type, msg); }
-    public void debug(String type, String msg) { Utils.debug(type, msg); }
-    public void dump(Object obj) { Utils.dump(obj); }
-    
-    public Object load(String scriptPath) throws IOException {
-        return ScriptRuntime.getCurrent().eval(Utils.getResource(scriptPath));
-    }
+    private Core non;
     
     public Game(JsonValue args) {
         conf = args;
@@ -88,15 +45,17 @@ public class Game implements ApplicationListener {
         String script = conf.getString("main");
         String ext = Utils.getExtension(script);
         ScriptRuntime.setCurrent(ScriptRuntime.byExtension(ext));
+        
         PluginManager.load();
-        // Evaluate and run scripts
-        ScriptRuntime.getCurrent().put("non", this);
+        non = (Core)PluginManager.get("non");
+        
         try {
             ScriptRuntime.getCurrent().eval(Utils.getResource(script));
         } catch (IOException ex) {
             Utils.error("Resource not found", script);
         }
-        if (ready!=null) ScriptRuntime.getCurrent().invoke("non", "ready");
+        
+        non.invoke("ready");
     }
 
     @Override
@@ -106,7 +65,7 @@ public class Game implements ApplicationListener {
         font.setColor(Color.BLACK);
         
         try {
-            splash = new Sprite(new Texture(Utils.getInternalResource("res/loading.png")));
+            splash = new Sprite(new Texture(Utils.getResource("res/loading.png")));
         } catch (IOException ex) {
             Utils.warning("Resource not found", "loading.png");
             splash = new Sprite(new Texture(32, 32, Pixmap.Format.Alpha));
@@ -116,7 +75,6 @@ public class Game implements ApplicationListener {
         if (conf!=null) {
             loadMode = 1;
             text = "Loading assets";
-			PluginManager.load();
             LOADED = true;
         } else {
             loadMode = 2;
@@ -146,28 +104,28 @@ public class Game implements ApplicationListener {
             return;
         }
         
-        if (update!=null) ScriptRuntime.getCurrent().invoke("non", "update");
-        if (draw!=null) ScriptRuntime.getCurrent().invoke("non", "draw");
+        non.invoke("update");
+        non.invoke("draw");
     }
 
     @Override
     public void resize (int width, int height) {
-        if (resize!=null) ScriptRuntime.getCurrent().invoke("non", "resize");
+        non.invoke("resize");
     }
 
     @Override
     public void pause () {
-        if (pause!=null) ScriptRuntime.getCurrent().invoke("non", "pause");
+        non.invoke("pause");
     }
 
     @Override
     public void resume () {
-        if (resume!=null) ScriptRuntime.getCurrent().invoke("non", "resume");
+        non.invoke("resume");
     }
 
     @Override
     public void dispose () {
-        if (close!=null) ScriptRuntime.getCurrent().invoke("non", "close");
+        non.invoke("close");
         PluginManager.dispose();
     }
 }

@@ -30,12 +30,12 @@ public class Audio extends Plugin {
     
     public Audio stopMusic() {
         currentMusic.stop();
-		return this;
+        return this;
     }
     
     public Audio stopSounds() {
         for(Sound sound: sounds) sound.stop();
-		return this;
+        return this;
     }
     
     public Music newMusic(String file) throws IOException {
