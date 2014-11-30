@@ -1,14 +1,8 @@
-package com.codeindie.non.plugins;
+package com.deathbeam.non.plugins;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
-import com.codeindie.non.Utils;
-import java.io.IOException;
-import java.util.HashSet;
 
 public class Input extends Plugin {
-    public String name() { return "input"; }
     public String author() { return "Thomas Slusny"; }
     public String license() { return "MIT"; }
     public String description() { return "Plugin for handling input from keyboard, mouse and touch screen."; }

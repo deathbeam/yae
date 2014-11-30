@@ -1,4 +1,4 @@
-package com.codeindie.non.plugins;
+package com.deathbeam.non.plugins;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapObject;
@@ -27,7 +27,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
 public class Physics extends Plugin {
-    public String name() { return "physics"; }
     public String author() { return "Thomas Slusny"; }
     public String license() { return "MIT"; }
     public String description() { return "Plugin for handling physics."; }

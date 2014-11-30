@@ -1,12 +1,10 @@
-package com.codeindie.non.plugins;
+package com.deathbeam.non.plugins;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
 import com.badlogic.gdx.net.ServerSocket;
 import com.badlogic.gdx.net.Socket;
-import com.codeindie.non.Game;
-import com.codeindie.non.scripting.ScriptRuntime;
-import com.codeindie.non.Utils;
+import com.deathbeam.non.Non;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
@@ -24,7 +22,6 @@ import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
 public class Network extends Plugin {
-    public String name() { return "network"; }
     public String author() { return "Thomas Slusny"; }
     public String license() { return "MIT"; }
     public String description() { return "Simple TCP networking."; }
@@ -32,7 +29,7 @@ public class Network extends Plugin {
     private Listener listener;
     private String host;
     private int port;
-    public Object connected, disconnected, received, curData, curConn;
+    public Object connected, disconnected, received;
     
     interface Listener {
         public void disconnected(Connection broken, boolean forced);
@@ -53,7 +50,7 @@ public class Network extends Plugin {
         protected abstract OutputStream getTCPOutputStream();
 
         public Connection(Listener listener) {
-            if (listener == null) Utils.warning("network", "You must supply a connection listener.");
+            if (listener == null) Non.warning("network", "You must supply a connection listener.");
             this.listener = listener;
         }
 
@@ -63,7 +60,7 @@ public class Network extends Plugin {
             InputStream tcpInput = getTCPInputStream();
             if (tcpInput.read(headerInput) == -1) return null;
             int magicNumber = ByteBuffer.wrap(headerInput).getInt();
-            if (magicNumber != MAGIC_NUMBER) Utils.warning("network", "Bad magic number: " + magicNumber);
+            if (magicNumber != MAGIC_NUMBER) Non.warning("network", "Bad magic number: " + magicNumber);
             int len = ByteBuffer.wrap(headerInput).getInt(4);
             byte[] data = new byte[len];
             int count = 0;
@@ -132,7 +129,7 @@ public class Network extends Plugin {
 
         public synchronized void connect(int timeout) {
             if (connected) {
-                Utils.warning("Networking", "Tried to connect after already connected!");
+                Non.warning("Networking", "Tried to connect after already connected!");
                 return;
             }
 
@@ -149,7 +146,7 @@ public class Network extends Plugin {
                             if (connected) { connected = false; listener.disconnected(ClientConnection.this, false); }
                             else listener.disconnected(ClientConnection.this, true);
                             break;
-                        } catch (Exception e) { Utils.log("Networking", e.getMessage()); break; }
+                        } catch (Exception e) { Non.log("Networking", e.getMessage()); break; }
                         listener.receive(ret, ClientConnection.this);
                     }
                 }
@@ -159,23 +156,23 @@ public class Network extends Plugin {
 
         public synchronized void send(ByteArrayOutputStream data) {
             if (!connected) {
-                Utils.warning("Networking", "Cannot send message when not connected!");
+                Non.warning("Networking", "Cannot send message when not connected!");
                 return;
             }
 
             try { super.sendTCP(data.toByteArray()); }
-            catch (IOException e) { Utils.warning("Networking", "Error writing TCP data."); }
+            catch (IOException e) { Non.warning("Networking", "Error writing TCP data."); }
         }
 
         public void close() {
             if (!connected) {
-                Utils.warning("Networking", "Cannot close the connection when it is not connected.");
+                Non.warning("Networking", "Cannot close the connection when it is not connected.");
                 return;
             }
 
             socket.dispose();
             try { input.close(); output.close(); }
-            catch (IOException ex) { Utils.log("Networking", ex.getMessage()); }
+            catch (IOException ex) { Non.log("Networking", ex.getMessage()); }
             connected = false;
         }
     }
@@ -219,7 +216,7 @@ public class Network extends Plugin {
                                 listener.disconnected(ServerConnection.this, true);
                             }
                             break;
-                        } catch (Exception e) { Utils.log("Networking", e.getMessage()); break; }
+                        } catch (Exception e) { Non.log("Networking", e.getMessage()); break; }
                         listener.receive(ret, ServerConnection.this);
                     }
                 }
@@ -228,23 +225,23 @@ public class Network extends Plugin {
 
         public synchronized void send(ByteArrayOutputStream data) {
             if (!connected) {
-                Utils.warning("Networking", "Cannot send message when not connected!");
+                Non.warning("Networking", "Cannot send message when not connected!");
                 return;
             }
 
             try { sendTCP(data.toByteArray()); }
-            catch (IOException e) { Utils.warning("Error writing TCP data.", e.getMessage()); }
+            catch (IOException e) { Non.warning("Error writing TCP data.", e.getMessage()); }
         }
 
         public void close() {
             if (!connected) {
-                Utils.warning("Networking", "Cannot close the connection when it is not connected.");
+                Non.warning("Networking", "Cannot close the connection when it is not connected.");
                 return;
             }
 
             socket.dispose();
             try { input.close(); output.close(); }
-            catch (IOException ex) { Utils.log("Networking", ex.getMessage()); }
+            catch (IOException ex) { Non.log("Networking", ex.getMessage()); }
             connected = false;
         }
     }
@@ -264,7 +261,7 @@ public class Network extends Plugin {
 
         public synchronized void listen() {
             if (running) {
-                Utils.warning("Networking", "Cannot start server when already running!");
+                Non.warning("Networking", "Cannot start server when already running!");
                 return;
             }
 
@@ -278,7 +275,7 @@ public class Network extends Plugin {
                             sc = new ServerConnection(Server.this, listener, sock);
                             clients.put(sc.toString(), sc);
                             listener.connected(sc);
-                        } catch (IOException ex) { Utils.log("Networking", ex.getMessage()); }
+                        } catch (IOException ex) { Non.log("Networking", ex.getMessage()); }
                     }
                 }
             }).start();
@@ -311,19 +308,22 @@ public class Network extends Plugin {
     public Network init() {
         this.listener = new Listener() {
             public void disconnected(Connection broken, boolean forced) {
-                curConn = broken;
-                ScriptRuntime.getCurrent().invoke(name(), "disconnected", name() + ".curConn");
+            	HashMap<String, Object> args = new HashMap<String, Object>();
+            	args.put("int_conn", broken);
+                Non.script.invoke("network", "disconnected", args);
             }
 
             public void receive(DataInputStream data, Connection from) {
-                curData = data;
-                curConn = from;
-                ScriptRuntime.getCurrent().invoke(name(), "received", name() + ".curData", name() + ".curConn");
+            	HashMap<String, Object> args = new HashMap<String, Object>();
+            	args.put("int_data", data);
+            	args.put("int_conn", from);
+                Non.script.invoke("network", "received", args);
             }
 
             public void connected(ServerConnection conn) {
-                curConn = conn;
-                ScriptRuntime.getCurrent().invoke(name(), "connected", name() + ".curConn");
+            	HashMap<String, Object> args = new HashMap<String, Object>();
+            	args.put("int_conn", conn);
+                Non.script.invoke("network", "connected", args);
             }
         };
         return this;

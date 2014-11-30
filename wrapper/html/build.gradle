@@ -7,8 +7,8 @@ gwt {
     minHeapSize="1G"
 
     src = files(file("src/")) // Needs to be in front of "modules" below.
-    modules 'com.codeindie.non.GdxDefinition'
-    devModules 'com.codeindie.non.GdxDefinitionSuperdev'
+    modules 'com.deathbeam.non.GdxDefinition'
+    devModules 'com.deathbeam.non.GdxDefinitionSuperdev'
     project.webAppDirName = 'webapp'
 
     compiler {

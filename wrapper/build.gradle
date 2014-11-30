@@ -1,12 +1,10 @@
 import groovy.json.*
 
 def APP_NAME = "$System.env.APP_NAME"
-def ANDROID_HOME = "$System.env.ANDROID_HOME"
 def cfgf = file("../project/non.cfg")
 if (cfgf.exists()) {
     def cfg = new JsonSlurper().parseText(cfgf.text)
     APP_NAME = cfg.title
-    ANDROID_HOME = cfg.sdk
 }
 
 buildscript {
@@ -18,6 +16,7 @@ buildscript {
         classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.5'
         classpath 'com.android.tools.build:gradle:0.13+'
         classpath 'org.robovm:robovm-gradle-plugin:1.0.0-alpha-04'
+        classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.+'
     }
 }
 
@@ -28,18 +27,13 @@ allprojects {
     
     ext {
         appName = APP_NAME
-        sdkDir = ANDROID_HOME
         gdxVersion = '1.4.1'
         roboVMVersion = '1.0.0-alpha-04'
         box2DLightsVersion = '1.3'
         ashleyVersion = '1.3.1'
         aiVersion = '1.4.0'
         rhinoVersion = '1.7R4'
-        jrubyVersion = '1.7.16.1'
-        jythonVersion = '2.5.3'
         groovyVersion = '2.3.7'
-        luajVersion = '3.0'
-        bsfVersion = '3.1.3'
         reflectionsVersion = '0.9.9'
     }
 
@@ -60,15 +54,14 @@ project(":desktop") {
         compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-controllers-desktop:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"
-        compile "org.jruby:jruby-complete:$jrubyVersion"
-        compile "org.python:jython-standalone:$jythonVersion"
         compile "org.mozilla:rhino:$rhinoVersion"
-        compile "org.codehaus.groovy:groovy-all:$groovyVersion"
-        compile "org.luaj:luaj-jse:$luajVersion"
+        compile files("../gradle/luajava-1.1.jar")
+        compile files("../gradle/luajava-natives-desktop.jar")
     }
 }
 
 project(":android") {
+    apply plugin: 'android-sdk-manager'
     apply plugin: "android"
     
     configurations { natives }
@@ -86,11 +79,10 @@ project(":android") {
         compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-controllers-android:$gdxVersion"
-        compile "org.jruby:jruby-complete:$jrubyVersion"
-        compile "org.python:jython-standalone:$jythonVersion"
+        compile "org.reflections:reflections:$reflectionsVersion"
         compile "org.mozilla:rhino:$rhinoVersion"
-        compile "org.codehaus.groovy:groovy-all:$groovyVersion"
-        compile "org.luaj:luaj-jse:$luajVersion"
+        compile files("../gradle/luajava-1.1.jar")
+        natives files("../gradle/luajava-natives-android.jar")
     }
 }
 
@@ -107,11 +99,7 @@ project(":ios") {
         compile "com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
         natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-ios"
-        compile "org.jruby:jruby-complete:$jrubyVersion"
-        compile "org.python:jython-standalone:$jythonVersion"
         compile "org.mozilla:rhino:$rhinoVersion"
-        compile "org.codehaus.groovy:groovy-all:$groovyVersion"
-        compile "org.luaj:luaj-jse:$luajVersion"
     }
 }
 
@@ -130,11 +118,7 @@ project(":html") {
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion:sources"
         compile "com.badlogicgames.gdx:gdx-controllers-gwt:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-controllers-gwt:$gdxVersion:sources"
-        compile "org.jruby:jruby-complete:$jrubyVersion"
-        compile "org.python:jython-standalone:$jythonVersion"
         compile "org.mozilla:rhino:$rhinoVersion"
-        compile "org.codehaus.groovy:groovy-all:$groovyVersion"
-        compile "org.luaj:luaj-jse:$luajVersion"
     }
 }
 
@@ -146,30 +130,26 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
-        compile "org.jruby:jruby-complete:$jrubyVersion"
-        compile "org.python:jython-standalone:$jythonVersion"
-        compile "org.mozilla:rhino:$rhinoVersion"
-        compile "org.codehaus.groovy:groovy-all:$groovyVersion"
-        compile "org.luaj:luaj-jse:$luajVersion"
-        compile "com.wu-man:android-bsf-api:$bsfVersion"
         compile "org.reflections:reflections:$reflectionsVersion"
+        compile "org.mozilla:rhino:$rhinoVersion"
+        compile files("../gradle/luajava-1.1.jar")
     }
 }
 
 task gen << {
     def lang = "js"
     if (project.hasProperty('arg')) { lang = arg }
-    def mainClass = "main.$lang"
+	def mainClass = "main.$lang"
     def map = [ 
         title: 'non',
         main: mainClass,
-        resolution: [800, 600],
-        sdk: ANDROID_HOME
+        resolution: [800, 600]
     ]
+    
     def builder = new JsonBuilder(map)
     file("../project").mkdir()
     def ncfg = new File("../project/non.cfg")
-    ncfg.createNewFile()
+	ncfg.createNewFile()
     ncfg.write(builder.toString())
     copy {
         from "gen"
@@ -179,9 +159,9 @@ task gen << {
     }
 }
 
-task update << {
-    println "Building data..."
+task update() << {
     copy {
+        println "Building data..."
         from "../project"
         into "android/assets"
         exclude "icon-16.png"
@@ -203,8 +183,8 @@ task update << {
         exclude "splash-768x1004"
         exclude "splash-1242x2208"
         exclude "splash-1536x2008"
-        exclude ".DS_Store"
-        exclude "Thumbs.db"
+        exclude "**/*.DS_Store"
+        exclude "**/*Thumbs.db"
     }
 }
 
@@ -212,7 +192,7 @@ gradle.projectsEvaluated {
     println "Loading plugins..."
     copy {
         from "../plugins"
-        into "core/src/com/codeindie/non/plugins"
+        into "core/src/com/deathbeam/non/plugins"
     }
 }
 

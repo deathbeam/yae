@@ -30,11 +30,12 @@ task copyAndroidNatives << {
         if(jar.name.endsWith("natives-armeabi-v7a.jar")) outputDir = file("libs/armeabi-v7a")
         if(jar.name.endsWith("natives-armeabi.jar")) outputDir = file("libs/armeabi")
         if(jar.name.endsWith("natives-x86.jar")) outputDir = file("libs/x86")
+        if(jar.name.endsWith("natives-android.jar")) outputDir = file("libs")
         if(outputDir != null) {
             copy {
                 from zipTree(jar)
                 into outputDir
-                include "*.so"
+                include "**/*.so"
             }
         }
     }
@@ -42,14 +43,14 @@ task copyAndroidNatives << {
 
 task run(type: Exec) << {
     def adb = sdkDir + "/platform-tools/adb"
-    commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.codeindie.non.android/com.codeindie.non.android.AndroidLauncher'
+    commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.deathbeam.non.android/com.deathbeam.non.android.AndroidLauncher'
 }
 
-task dist(dependsOn: assembleRelease) << {
+task dist(dependsOn: [assembleRelease]) << {
     println "You can find android-" + version + ".apk in /dist/android"
 }
 
-task update(dependsOn: ':update') << {
+task update(dependsOn: [':update', ':android:copyAndroidNatives']) << {
     println "Building android assets..."
     copy {
         file("res/drawable-mdpi").mkdirs()

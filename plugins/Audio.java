@@ -1,14 +1,13 @@
-package com.codeindie.non.plugins;
+package com.deathbeam.non.plugins;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.codeindie.non.Utils;
+import com.deathbeam.non.Non;
 import java.io.IOException;
 import java.util.HashSet;
 
 public class Audio extends Plugin {
-    public String name() { return "audio"; }
     public String author() { return "Thomas Slusny"; }
     public String license() { return "MIT"; }
     public String description() { return "Plugin for playing audio and music files."; }
@@ -30,20 +29,20 @@ public class Audio extends Plugin {
     
     public Audio stopMusic() {
         currentMusic.stop();
-        return this;
+		return this;
     }
     
     public Audio stopSounds() {
         for(Sound sound: sounds) sound.stop();
-        return this;
+		return this;
     }
     
     public Music newMusic(String file) throws IOException {
-        return Gdx.audio.newMusic(Utils.getResource(file));
+        return Gdx.audio.newMusic(Non.getResource(file));
     }
     
     public Sound newSound(String file) throws IOException {
-        return Gdx.audio.newSound(Utils.getResource(file));
+        return Gdx.audio.newSound(Non.getResource(file));
     }
     
     public void dispose() {

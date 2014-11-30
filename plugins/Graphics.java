@@ -1,4 +1,4 @@
-package com.codeindie.non.plugins;
+package com.deathbeam.non.plugins;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -12,11 +12,10 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.codeindie.non.Utils;
+import com.deathbeam.non.Non;
 import java.io.IOException;
 
 public class Graphics extends Plugin {
-    public String name() { return "graphics"; }
     public String author() { return "Thomas Slusny"; }
     public String license() { return "MIT"; }
     public String description() { return "Plugin for drawing and rendering of images and text."; }
@@ -55,7 +54,6 @@ public class Graphics extends Plugin {
         batch = new SpriteBatch();
         font = new BitmapFont();
         camera = new OrthographicCamera();
-        camera.setToOrtho(true);
         scale = 1;
         rotation = 0;
         translation = Vector2.Zero;
@@ -95,15 +93,15 @@ public class Graphics extends Plugin {
     }
     
     public ShaderProgram newShader(String vert, String frag) throws IOException {
-        return new ShaderProgram(Utils.getResource(vert), Utils.getResource(frag));
+        return new ShaderProgram(Non.getResource(vert), Non.getResource(frag));
     }
     
     public Image newImage(String file) throws IOException {
-        return new Image(Utils.getResource(file));
+        return new Image(Non.getResource(file));
     }
     
     public BitmapFont newFont(String file) throws IOException {
-        return new BitmapFont(Utils.getResource(file));
+        return new BitmapFont(Non.getResource(file));
     }
     
     public Graphics setFont(BitmapFont fnt) {

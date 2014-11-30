@@ -3,7 +3,7 @@ apply plugin: "java"
 sourceCompatibility = 1.6
 sourceSets.main.java.srcDirs = [ "src/" ]
 
-project.ext.mainClassName = "com.codeindie.non.desktop.DesktopLauncher"
+project.ext.mainClassName = "com.deathbeam.non.desktop.DesktopLauncher"
 project.ext.assetsDir = new File("../android/assets");
 
 task run(type: JavaExec, dependsOn: classes) << {

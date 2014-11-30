@@ -1,4 +1,4 @@
-package com.codeindie.non.plugins;
+package com.deathbeam.non.plugins;
 
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Ellipse;
@@ -8,7 +8,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class Math extends Plugin {
-    public String name() { return "math"; }
     public String author() { return "Thomas Slusny"; }
     public String license() { return "MIT"; }
     public String description() { return "Easy math and geometry."; }

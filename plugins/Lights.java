@@ -1,4 +1,4 @@
-package com.codeindie.non.plugins;
+package com.deathbeam.non.plugins;
 
 import box2dLight.ChainLight;
 import box2dLight.ConeLight;
@@ -8,7 +8,6 @@ import box2dLight.RayHandler;
 import com.badlogic.gdx.graphics.Color;
 
 public class Lights extends Plugin {
-    public String name() { return "lights"; }
     public String author() { return "Thomas Slusny"; }
     public String license() { return "MIT"; }
     public String description() { return "2D dynamic lighting."; }
