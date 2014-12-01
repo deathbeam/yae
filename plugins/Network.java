@@ -1,10 +1,10 @@
-package com.deathbeam.non.plugins;
+package com.codeindie.non.plugins;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
 import com.badlogic.gdx.net.ServerSocket;
 import com.badlogic.gdx.net.Socket;
-import com.deathbeam.non.Non;
+import com.codeindie.non.Non;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;

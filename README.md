@@ -1,9 +1,10 @@
-![No Nonsense](https://raw.githubusercontent.com/deathbeam/non/master/wrapper/gen/res/loading.png)
+![No Nonsense](https://raw.githubusercontent.com/codeindie/non/master/.non/gen/res/loading.png)
 
-[JavaScript](http://www.ecmascript.org/) `.js` | [CoffeeScript](http://coffeescript.org/) `.coffee` | [TypeScript](http://typescriptlang.org/) `.ts` | [Lua](http://lua.org/) `.lua` | [Ruby](https://ruby-lang.org) `.rb` | [Python](https://python.org/) `.py` | [Groovy](http://groovy-lang.org/) `.groovy`
+[JavaScript](http://www.ecmascript.org/) `.js` | [CoffeeScript](http://coffeescript.org/) `.coffee` | [TypeScript](http://typescriptlang.org/) `.ts` | [Lua](http://lua.org/) `.lua`
 
-* image and text **rendering** and manipulation
-* loading and rendering for **tiled maps**
+* **cross-platform** (Windows, Linux, Mac, Android)
+* image/text **rendering** and manipulation
+* loading and rendering of **tiled maps**
 * audio engine
 * keyboard, touch and mouse **input handlers**
 * **modules** (check below example configuration)
@@ -15,8 +16,8 @@
 
 ```batch
 cd Your/Working/Dir
-git clone git@github.com:deathbeam/non.git
-non gen
+git clone git@github.com:codeindie/non.git
+non gen js
 ```
 
 ## config `non.cfg`
@@ -26,14 +27,12 @@ non gen
     "title": "No Nonsense Game",
     "resolution": [800, 600],
     "main": "main.js",
-    "sdk": "Path/To/Your/Android/Sdk"
 }
 ```
 
 * `title` - Application title
 * `resolution` - Resolution (desktop and html only)
 * `main` - Main script file. Extension of this file also defines what type of scripting engine will be used.
-* `sdk` - Path to your Android SDK
 
 ## events
 

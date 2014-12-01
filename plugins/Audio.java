@@ -1,9 +1,9 @@
-package com.deathbeam.non.plugins;
+package com.codeindie.non.plugins;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.deathbeam.non.Non;
+import com.codeindie.non.Non;
 import java.io.IOException;
 import java.util.HashSet;
 

@@ -1,0 +1,69 @@
+apply plugin: "java"
+
+sourceCompatibility = 1.6
+sourceSets.main.java.srcDirs = [ "src/" ]
+
+project.ext.mainClassName = "com.codeindie.non.desktop.DesktopLauncher"
+project.ext.assetsDir = new File("../android/assets");
+
+task run(type: JavaExec, dependsOn: classes) << {
+    main = project.mainClassName
+    classpath = sourceSets.main.runtimeClasspath
+    standardInput = System.in
+    workingDir = project.assetsDir
+    ignoreExitValue = true
+}
+
+task dist(type: Jar, dependsOn: classes) {
+    from files(sourceSets.main.output.classesDir)
+    from files(sourceSets.main.output.resourcesDir)
+    from {configurations.compile.collect {zipTree(it)}}
+    from files(project.assetsDir);
+ 
+    manifest {
+        attributes 'Main-Class': project.mainClassName
+    }
+    
+    doLast {
+        file("../../dist/desktop").mkdirs()
+        copy {
+            from "build/libs"
+            into "../../dist/desktop"
+            include "desktop-${version}.jar"
+            rename "desktop-${version}.jar", "${appName}-${version}.jar"
+        }
+        println "You can find ${appName}-${version}.jar in /dist/desktop"
+    }
+}
+
+task update(dependsOn: ':update') << {
+    println "Building desktop assets..."
+    copy {
+        from "../../project/res"
+        into "../android/assets/res"
+        include "icon-16.png"
+        include "icon-32.png"
+        include "icon-64.png"
+        include "icon-192.png"
+        include "icon-256.png"
+        include "loading.png"
+    }
+}
+
+eclipse {
+    project {
+        name = appName + "-desktop"
+        linkedResource name: 'assets', type: '2', location: 'PARENT-1-PROJECT_LOC/android/assets'
+    }
+}
+
+task afterEclipseImport(description: "Post processing after project generation", group: "IDE") {
+    doLast {
+        def classpath = new XmlParser().parse(file(".classpath"))
+        new Node(classpath, "classpathentry", [ kind: 'src', path: 'assets' ]);
+        def writer = new FileWriter(file(".classpath"))
+        def printer = new XmlNodePrinter(new PrintWriter(writer))
+        printer.setPreserveWhitespace(true)
+        printer.print(classpath)
+    }
+}

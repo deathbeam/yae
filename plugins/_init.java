@@ -1,8 +1,8 @@
-package com.deathbeam.non.plugins;
+package com.codeindie.non.plugins;
 
 public class _init {
-    public void build() {
-        Plugins.add(new com.deathbeam.non.plugins.Non());
+    static {
+        Plugins.add(new Non()); // Core plugin, do not remove!
         Plugins.add(new Audio());
         Plugins.add(new Graphics());
         Plugins.add(new Input());

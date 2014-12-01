@@ -5,7 +5,7 @@
 @rem
 @rem ##########################################################################
 
-cd wrapper
+cd .non
 if [%2]==[] goto param
 call gradlew "%1" -Parg="%2"
 goto end
