@@ -1,6 +1,6 @@
 def cfgf = file("../project/non.cfg")
 if (cfgf.exists()) {
-    def cfg = new groovy.json.JsonSlurper().parseText(cfgf.text)
+    ext.cfg = new groovy.json.JsonSlurper().parseText(cfgf.text)
 }
 
 buildscript {
@@ -159,7 +159,7 @@ task update << {
     try { for(plug in cfg.plugins) text += "new ${plug}(); " } catch(e) { }
     text += "} }"
     
-    def ninit = new File("core/src/com/codeindie/plugins")
+    def ninit = new File("core/src/com/codeindie/plugins/_init.java")
     ninit.createNewFile()
     ninit.write(text)
     
