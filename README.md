@@ -24,14 +24,38 @@ non gen js
 
 ```json
 {
-    "title": "No Nonsense Game",
-    "resolution": [800, 600],
-    "main": "main.js",
+    "name":    "non",
+    "version": "1.0.0",
+    "main":    "main.js",
+
+    "plugins": [ "Graphics", "Audio" ],
+    
+    "ios": { "build": false }, 
+    "web": { "build": false },
+    
+    "desktop": {
+        "configuration": {
+            "resolution": [ 800, 600 ]
+        },
+        
+        "dependencies": {
+            "compile": [ "com.codeindie.plugins:particles:1.7.5" ]
+        }
+    },
+    
+    "android": {
+        "configuration": {
+            "signing": [ "keystore.dat", "123456", "non", "123456" ]
+        },
+        
+        "dependencies": {
+            "compile": [ "com.codeindie.plugins:particles:1.7.5" ]
+        }
+    }
 }
 ```
 
 * `title` - Application title
-* `resolution` - Resolution (desktop and html only)
 * `main` - Main script file. Extension of this file also defines what type of scripting engine will be used.
 
 ## events

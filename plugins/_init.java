@@ -2,14 +2,20 @@ package com.codeindie.non.plugins;
 
 public class _init {
     static {
-        Plugins.add(new Non()); // Core plugin, do not remove!
-        Plugins.add(new Audio());
-        Plugins.add(new Graphics());
-        Plugins.add(new Input());
-        Plugins.add(new Lights());
-        Plugins.add(new Math());
-        Plugins.add(new Network());
-        Plugins.add(new Physics());
-		Plugins.add(new Tiled());
+        new Non();
+        new Audio();
+        new Graphics();
+        new Input();
+        new Lights();
+        new Math();
+        new Network();
+        new Physics();
+        new Tiled();
+    }
+    
+    public void genInit(String[] plugins) {
+        String text = "package com.codeindie.non.plugins; public class _init { static { ";
+        for(String plug: plugins) text += "new " + plug + "(); ";
+        text += "} }";
     }
 }

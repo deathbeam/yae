@@ -13,6 +13,23 @@ android {
 
         instrumentTest.setRoot('tests')
     }
+    
+    try {
+        signingConfigs {
+            releaseSigning {
+                storeFile file(cfg.android.configuration.signing[0])
+                storePassword cfg.android.configuration.signing[1]
+                keyAlias cfg.android.configuration.signing[2]
+                keyPassword cfg.android.configuration.signing[3]
+            }
+        }
+        
+        buildTypes {
+            release {
+                signingConfig signingConfigs.releaseSigning
+            }
+        }
+    } catch(e) { }
 }
 
 tasks.withType(com.android.build.gradle.tasks.PackageApplication) { pkgTask ->
@@ -57,7 +74,7 @@ task dist(dependsOn: [assembleRelease]) << {
     println "You can find ${appName}-${version}.apk in /dist/android"
 }
 
-task update(dependsOn: [':update', ':android:copyAndroidNatives']) << {
+task update(dependsOn: [':update', copyAndroidNatives]) << {
     println "Building android assets..."
     copy {
         file("res/drawable-mdpi").mkdirs()
@@ -94,58 +111,10 @@ task update(dependsOn: [':update', ':android:copyAndroidNatives']) << {
         include "icon-144.png"
         rename "icon-144.png", "ic_launcher.png"
     }
-	copy {
+    copy {
         from "../../project/res"
         into "."
         include "icon-512.png"
         rename "icon-512.png", "ic_launcher-web.png"
-    }
-}
-
-eclipse {
-    sourceSets {
-        main { java.srcDirs "src", 'gen' }
-    }
-
-    jdt {
-        sourceCompatibility = 1.6
-        targetCompatibility = 1.6
-    }
-
-    classpath {
-        plusConfigurations += [ project.configurations.compile ]        
-        containers 'com.android.ide.eclipse.adt.ANDROID_FRAMEWORK', 'com.android.ide.eclipse.adt.LIBRARIES'       
-    }
-
-    project {
-        name = appName + "-android"
-        natures 'com.android.ide.eclipse.adt.AndroidNature'
-        buildCommands.clear();
-        buildCommand "com.android.ide.eclipse.adt.ResourceManagerBuilder"
-        buildCommand "com.android.ide.eclipse.adt.PreCompilerBuilder"
-        buildCommand "org.eclipse.jdt.core.javabuilder"
-        buildCommand "com.android.ide.eclipse.adt.ApkBuilder"
-    }
-}
-
-idea {
-    module {
-        sourceDirs += file("src");
-        scopes = [ COMPILE: [plus:[project.configurations.compile]]]        
-
-        iml {
-            withXml {
-                def node = it.asNode()
-                def builder = NodeBuilder.newInstance();
-                builder.current = node;
-                builder.component(name: "FacetManager") {
-                    facet(type: "android", name: "Android") {
-                        configuration {
-                            option(name: "UPDATE_PROPERTY_FILES", value:"true")
-                        }
-                    }
-                }
-            }
-        }
     }
 }

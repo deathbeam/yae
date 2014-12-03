@@ -1,42 +1,18 @@
-/*
- * The MIT License
- *
- * Copyright 2014 Thomas Slusny.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
 package com.codeindie.non.scripting;
 
 import com.codeindie.non.Non;
 import java.util.HashMap;
 
 public abstract class ScriptRuntime {
-	public static ScriptRuntime byExtension(String ext) {
+    public static ScriptRuntime byExtension(String ext) {
         ScriptRuntime r = null;
         Non.log("ScriptRuntime", "Loading scripting language...");
-		if (JavaScript.extension().equalsIgnoreCase(ext)) r = new JavaScript();        
-        else if (Lua.extension().equalsIgnoreCase(ext)) r = new Lua();
+        if (JavaScript.extension().equalsIgnoreCase(ext)) r = new JavaScript();
         else if (CoffeeScript.extension().equalsIgnoreCase(ext)) r = new CoffeeScript();
         else if (TypeScript.extension().equalsIgnoreCase(ext)) r = new TypeScript();
         Non.log("Language", r.getClass().getSimpleName() + " " + r.version());
         if (r == null) Non.error("Language", "Wrong extension!");
-		return r;
+        return r;
     }
 	
     public String version() { return "Unknown"; }
@@ -49,25 +25,20 @@ public abstract class ScriptRuntime {
     
     public String merge(String object, String method, HashMap<String,Object> args, String methodJoiner, String argJoiner, String left, String right, String end) {
         String result = "";
+        
         if(args != null) {
             Object[] set = args.keySet().toArray();
             String sArgs = (String)set[0];
             if (sArgs.length() > 1) {
-            	for (int i = 1; i < sArgs.length() - 1; i++) {
-            		sArgs += argJoiner + (String)set[i];
-            	}
+                for (int i = 1; i < sArgs.length() - 1; i++) sArgs += argJoiner + (String)set[i];
             }
             
             for(Object key: set) put((String)key, args.get(key));
-            if (object != null)
-                result = object + methodJoiner + method + left + sArgs + right + end;
-            else
-                result = method + left + sArgs + right + end;
+            if (object != null) result = object + methodJoiner + method + left + sArgs + right + end;
+            else result = method + left + sArgs + right + end;
         } else {
-            if (object != null)
-                result = object + methodJoiner + method + left + right + end;
-            else
-                result = method + left + right + end;
+            if (object != null) result = object + methodJoiner + method + left + right + end;
+            else result = method + left + right + end;
         }
 
         return result;

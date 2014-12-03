@@ -57,8 +57,7 @@ public class Graphics extends Plugin {
         scale = 1;
         rotation = 0;
         translation = Vector2.Zero;
-        resize();
-        update();
+        setSize(Non.getWidth(), Non.getHeight());
     }
     
     public Color newColor(String name) {
@@ -211,11 +210,6 @@ public class Graphics extends Plugin {
                 (int)source.width, (int)source.height,
                 false, true
         );
-        return this;
-    }
-    
-    public Graphics resize() {
-        camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         return this;
     }
     

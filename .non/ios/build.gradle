@@ -75,13 +75,7 @@ task update(dependsOn: ':update') << {
 }
 
 build.dependsOn updateRoboVMXML
-tasks.eclipse.dependsOn updateRoboVMXML
 launchIPhoneSimulator.dependsOn build
 launchIPadSimulator.dependsOn build
 launchIOSDevice.dependsOn build
 createIPA.dependsOn build
-
-eclipse.project {
-    name = appName + "-ios"
-    natures 'org.robovm.eclipse.RoboVMNature'
-}

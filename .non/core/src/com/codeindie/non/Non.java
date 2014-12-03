@@ -7,7 +7,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.codeindie.non.scripting.ScriptRuntime;
-import com.codeindie.non.plugins.Plugins;
+import com.codeindie.non.plugins.Plugin;
 import java.io.IOException;
 
 public class Non implements ApplicationListener {
@@ -28,7 +28,7 @@ public class Non implements ApplicationListener {
         return extension;
     }
 
-	public static int getWidth() { return Gdx.graphics.getWidth(); }
+    public static int getWidth() { return Gdx.graphics.getWidth(); }
     public static int getHeight() { return Gdx.graphics.getHeight(); }
     public static int getFPS() { return Gdx.graphics.getFramesPerSecond(); }
     public static float getDelta() { return Gdx.graphics.getDeltaTime(); }
@@ -45,7 +45,7 @@ public class Non implements ApplicationListener {
         args = configure();
         String main = args.getString("main");
         script = ScriptRuntime.byExtension(getExtension(main));
-        Plugins.load();
+        Plugin.loadAll();
         
         script.eval(main);
         script.invoke("non", "ready", null);
@@ -59,18 +59,18 @@ public class Non implements ApplicationListener {
     }
 
     public void resize (int width, int height) {
-    	script.invoke("non", "resize", null);
+        script.invoke("non", "resize", null);
     }
 
     public void pause () {
-    	script.invoke("non", "pause", null);
+        script.invoke("non", "pause", null);
     }
 
     public void resume () {
-    	script.invoke("non", "resume", null);
+        script.invoke("non", "resume", null);
     }
 
     public void dispose () {
-    	script.invoke("non", "close", null);
+        script.invoke("non", "close", null);
     }
 }
