@@ -1,6 +1,6 @@
 ![No Nonsense](https://raw.githubusercontent.com/codeindie/non/master/.non/gen/res/loading.png)
 
-[JavaScript](http://www.ecmascript.org/) `.js` | [CoffeeScript](http://coffeescript.org/) `.coffee` | [TypeScript](http://typescriptlang.org/) `.ts` | [Lua](http://lua.org/) `.lua`
+[JavaScript](http://www.ecmascript.org/) `.js` | [CoffeeScript](http://coffeescript.org/) `.coffee` | [TypeScript](http://typescriptlang.org/) `.ts`
 
 * **cross-platform** (Windows, Linux, Mac, Android)
 * image/text **rendering** and manipulation
@@ -24,9 +24,24 @@ non gen js
 
 ```json
 {
-    "title": "No Nonsense Game",
-    "resolution": [800, 600],
-    "main": "main.js"
+    "name":    "non",
+    "version": "1.0.0",
+    "main":    "main.js",
+
+    "plugins": [ "Graphics", "Audio" ],
+
+    "desktop": {
+        "configuration": {
+            "resolution": [ 800, 600 ],
+            "fullscreen": true
+        }
+    },
+    
+    "android": {
+        "configuration": {
+            "signing": [ "./keystore", "123456", "non", "123456" ]
+        }
+    }
 }
 ```
 
