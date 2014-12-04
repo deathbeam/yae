@@ -1,1 +1,0 @@
-non.log("testText.ts", "Hello World log");

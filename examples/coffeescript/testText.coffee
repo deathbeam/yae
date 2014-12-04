@@ -1,1 +1,0 @@
-non.log "testText.coffee", "Hello World log"

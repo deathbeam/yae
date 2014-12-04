@@ -3,7 +3,7 @@ package com.deathbeam.non.client;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import com.deathbeam.non.Non;
+import com.codeindie.non.Non;
 
 public class HtmlLauncher extends GwtApplication {
 		

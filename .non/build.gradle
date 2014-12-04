@@ -147,46 +147,42 @@ task gen << {
     }
 }
 
-task update << {
-    println "Loading plugins..."
-    copy {
-        from "../plugins"
-        into "core/src/com/codeindie/non/plugins"
-        include "**/*.java"
-    }
-    
+task updatePlugins(type: Copy) << {
+    from "../plugins"
+    into "core/src/com/codeindie/non/plugins"
+    include "**/*.java"
+}
+
+task update(type: Copy, dependsOn: updatePlugins) << {
     def text = "package com.codeindie.non.plugins; public class _init { static { "
     try { for(plug in cfg.plugins) text += "new ${plug}(); " } catch(e) { }
     text += "} }"
     
-    def ninit = new File("core/src/com/codeindie/plugins/_init.java")
+    def ninit = new File("core/src/com/codeindie/non/plugins/_init.java")
     ninit.createNewFile()
     ninit.write(text)
-    
-    println "Building data..."
-    copy {
-        from "../project"
-        into "android/assets"
-        exclude "icon-16.png"
-        exclude "icon-32.png"
-        exclude "icon-64.png"
-        exclude "icon-192.png"
-        exclude "icon-256.png"
-        exclude "loading.png"
-        exclude "icon-48.png"
-        exclude "icon-57.png"
-        exclude "icon-72.png"
-        exclude "icon-96.png"
-        exclude "icon-114.png"
-        exclude "icon-144.png"
-        exclude "splash-320x480"
-        exclude "splash-640x960"
-        exclude "splash-640x1136"
-        exclude "splash-750x1334"
-        exclude "splash-768x1004"
-        exclude "splash-1242x2208"
-        exclude "splash-1536x2008"
-        exclude "**/*.DS_Store"
-        exclude "**/*Thumbs.db"
-    }
+
+    from "../project"
+    into "android/assets"
+    exclude "icon-16.png"
+    exclude "icon-32.png"
+    exclude "icon-64.png"
+    exclude "icon-192.png"
+    exclude "icon-256.png"
+    exclude "loading.png"
+    exclude "icon-48.png"
+    exclude "icon-57.png"
+    exclude "icon-72.png"
+    exclude "icon-96.png"
+    exclude "icon-114.png"
+    exclude "icon-144.png"
+    exclude "splash-320x480"
+    exclude "splash-640x960"
+    exclude "splash-640x1136"
+    exclude "splash-750x1334"
+    exclude "splash-768x1004"
+    exclude "splash-1242x2208"
+    exclude "splash-1536x2008"
+    exclude "**/*.DS_Store"
+    exclude "**/*Thumbs.db"
 }

@@ -43,35 +43,32 @@ task dist(dependsOn: createIPA) << {
     println "You can find ios-" + version + ".ipa in /dist/ios"
 }
 
-task update(dependsOn: ':update') << {
-    println "Building ios assets..."
-    copy {
-        file("data").mkdirs()
-        from "../../project/res"
-        into "data"
-        include "icon-57.png"
-        rename "icon-57.png", "Icon.png"
-        include "icon-72.png"
-        rename "icon-72.png", "Icon-72.png"
-        include "icon-114.png"
-        rename "icon-114.png", "Icon@2x.png"
-        include "icon-144.png"
-        rename "icon-144.png", "Icon-72@2x.png"
-        include "splash-320x480.png"
-        rename "splash-320x480.png", "Default.png"
-        include "splash-640x960.png"
-        rename "splash-640x960.png", "Default@2x.png"
-        include "splash-640x1136.png"
-        rename "splash-640x1136.png", "Default-568h@2x.png"
-        include "splash-750x1334.png"
-        rename "splash-750x1334.png", "Default-375w-667h@2x.png"
-        include "splash-768x1004.png"
-        rename "splash-768x1004.png", "Default~ipad.png"
-        include "splash-1242x2208.png"
-        rename "splash-1242x2208.png", "Default-414w-736h@3x.png"
-        include "splash-1536x2008.png"
-        rename "splash-1536x2008.png", "Default@2x~ipad.png"
-    }
+task update(type: Copy, dependsOn: ':update') << {
+    file("data").mkdirs()
+    from "../../project/res"
+    into "data"
+    include "icon-57.png"
+    rename "icon-57.png", "Icon.png"
+    include "icon-72.png"
+    rename "icon-72.png", "Icon-72.png"
+    include "icon-114.png"
+    rename "icon-114.png", "Icon@2x.png"
+    include "icon-144.png"
+    rename "icon-144.png", "Icon-72@2x.png"
+    include "splash-320x480.png"
+    rename "splash-320x480.png", "Default.png"
+    include "splash-640x960.png"
+    rename "splash-640x960.png", "Default@2x.png"
+    include "splash-640x1136.png"
+    rename "splash-640x1136.png", "Default-568h@2x.png"
+    include "splash-750x1334.png"
+    rename "splash-750x1334.png", "Default-375w-667h@2x.png"
+    include "splash-768x1004.png"
+    rename "splash-768x1004.png", "Default~ipad.png"
+    include "splash-1242x2208.png"
+    rename "splash-1242x2208.png", "Default-414w-736h@3x.png"
+    include "splash-1536x2008.png"
+    rename "splash-1536x2008.png", "Default@2x~ipad.png"
 }
 
 build.dependsOn updateRoboVMXML

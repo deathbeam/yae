@@ -36,16 +36,13 @@ task dist(type: Jar, dependsOn: classes) {
     }
 }
 
-task update(dependsOn: ':update') << {
-    println "Building desktop assets..."
-    copy {
-        from "../../project/res"
-        into "../android/assets/res"
-        include "icon-16.png"
-        include "icon-32.png"
-        include "icon-64.png"
-        include "icon-192.png"
-        include "icon-256.png"
-        include "loading.png"
-    }
+task update(type: Copy, dependsOn: ':update') << {
+    from "../../project/res"
+    into "../android/assets/res"
+    include "icon-16.png"
+    include "icon-32.png"
+    include "icon-64.png"
+    include "icon-192.png"
+    include "icon-256.png"
+    include "loading.png"
 }
