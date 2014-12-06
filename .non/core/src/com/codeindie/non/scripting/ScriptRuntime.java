@@ -10,6 +10,7 @@ public abstract class ScriptRuntime {
         if (JavaScript.extension().equalsIgnoreCase(ext)) r = new JavaScript();
         else if (CoffeeScript.extension().equalsIgnoreCase(ext)) r = new CoffeeScript();
         else if (TypeScript.extension().equalsIgnoreCase(ext)) r = new TypeScript();
+        else if (Lua.extension().equalsIgnoreCase(ext)) r = new Lua();
         Non.log("Language", r.getClass().getSimpleName() + " " + r.version());
         if (r == null) Non.error("Language", "Wrong extension!");
         return r;
