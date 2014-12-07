@@ -17,10 +17,10 @@ android {
     try {
         signingConfigs {
             releaseSigning {
-                storeFile file(cfg.android.configuration.signing[0])
-                storePassword cfg.android.configuration.signing[1]
-                keyAlias cfg.android.configuration.signing[2]
-                keyPassword cfg.android.configuration.signing[3]
+                storeFile file(cfg.android.sign.storeFile)
+                storePassword cfg.android.sign.storePassword
+                keyAlias cfg.android.sign.keyAlias
+                keyPassword cfg.android.sign.keyPassword
             }
         }
         

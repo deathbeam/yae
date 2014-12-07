@@ -1,6 +1,8 @@
 def cfgf = file("../project/non.cfg")
 if (cfgf.exists()) {
     ext.cfg = new groovy.json.JsonSlurper().parseText(cfgf.text)
+} else {
+    ext.cfg = new groovy.json.JsonSlurper().parseText('{ "name":"non", "version":"1.0" }')
 }
 
 buildscript {
@@ -8,6 +10,7 @@ buildscript {
         mavenCentral()
         jcenter()
     }
+    
     dependencies {
         classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.5'
         classpath 'com.android.tools.build:gradle:0.13+'
@@ -48,7 +51,8 @@ project(":desktop") {
         compile "com.badlogicgames.gdx:gdx-controllers-desktop:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"
         compile "org.mozilla:rhino:$rhinoVersion"
-        try { for(dep in cfg.desktop.dependencies.compile) compile dep } catch(e) { }
+        try { for(dep in cfg.desktop.compile) compile dep } catch(e) { }
+        try { for(dep in cfg.desktop.natives) compile dep } catch(e) { }
     }
 }
 
@@ -72,8 +76,8 @@ project(":android") {
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-controllers-android:$gdxVersion"
         compile "org.mozilla:rhino:$rhinoVersion"
-        try { for(dep in cfg.android.dependencies.compile) compile dep } catch(e) { }
-        try { for(dep in cfg.android.dependencies.natives) natives dep } catch(e) { }
+        try { for(dep in cfg.android.compile) compile dep } catch(e) { }
+        try { for(dep in cfg.android.natives) natives dep } catch(e) { }
     }
 }
 
@@ -91,8 +95,8 @@ project(":ios") {
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
         natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-ios"
         compile "org.mozilla:rhino:$rhinoVersion"
-        try { for(dep in cfg.ios.dependencies.compile) compile dep } catch(e) { }
-        try { for(dep in cfg.ios.dependencies.natives) natives dep } catch(e) { }
+        try { for(dep in cfg.ios.compile) compile dep } catch(e) { }
+        try { for(dep in cfg.ios.natives) natives dep } catch(e) { }
     }
 }
 
@@ -112,7 +116,8 @@ project(":html") {
         compile "com.badlogicgames.gdx:gdx-controllers-gwt:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-controllers-gwt:$gdxVersion:sources"
         compile "org.mozilla:rhino:$rhinoVersion"
-        try { for(dep in cfg.html.dependencies.compile) compile dep } catch(e) { }
+        try { for(dep in cfg.html.compile) compile dep } catch(e) { }
+        try { for(dep in cfg.html.natives) compile dep } catch(e) { }
     }
 }
 
@@ -125,13 +130,15 @@ project(":core") {
         compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
         compile "org.mozilla:rhino:$rhinoVersion"
+        try { for(dep in cfg.compile) compile dep } catch(e) { }
+        try { for(dep in cfg.natives) compile dep } catch(e) { }
     }
 }
 
 task gen << {
     def lang = "js"
     if (project.hasProperty('arg')) lang = arg
-    def map = [name: 'non',main: "main.$lang"]
+    def map = [name: "non", version: "1.0", main: "main.$lang"]
     
     def builder = new groovy.json.JsonBuilder(map)
     file("../project").mkdir()
