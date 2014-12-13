@@ -10,5 +10,5 @@ non.draw = ->
     # Insert rendering logic here
     graphics.begin()
     graphics.draw "Hello World!", 15, 15
-    graphics.end()
+    graphics.display()
     return

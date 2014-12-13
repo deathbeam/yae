@@ -1,63 +1,60 @@
 package com.codeindie.non.scripting;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.HashMap;
-import org.mozilla.javascript.*;
+import org.luaj.vm2.*;
+import org.luaj.vm2.lib.jse.*;
 import com.codeindie.non.Non;
 
 public class Lua extends ScriptRuntime {
     public static String extension() { return "lua"; }
-    public String version() { return "5.1.1"; }
+    public String version()          { return "5.1"; }
     
-    private Context engine;
-    private Scriptable scope;
-    private String initializer = 
-        "console = { };" +
-        "non.ready = function() { };" +
-        "non.update = function() { };" +
-        "non.draw = function() { };" +
-        "non.resize = function() { };" +
-        "non.close = function() { };" +
-        "non.pause = function() { };" +
-        "non.resume = function() { };";
-	
+    private final Globals _G;
+    protected String initializer = 
+        "non.ready  = function() \n end \n" +
+        "non.update = function() \n end \n" +
+        "non.draw   = function() \n end \n" +
+        "non.resize = function() \n end \n" +
+        "non.close  = function() \n end \n" +
+        "non.pause  = function() \n end \n" +
+        "non.resume = function() \n end \n";
+    
     public Lua() {
-        engine = Context.enter();
-        engine.setOptimizationLevel(-1);
-        scope = engine.initStandardObjects();
+        _G = JsePlatform.standardGlobals();
     }
 
     public Object invoke(String object, String method, HashMap<String, Object> args) {
-        String script = merge(object, method, args, ".", ",", "(", ")", ";");
-        return engine.evaluateString(scope, script, "Lua", 1, null);
+        String script = merge(object, method, args, ":", ",", "(", ")", "");
+        
+        if (args != null) {
+            Object[] parameters = args.values().toArray();
+            LuaValue[] values = new LuaValue[parameters.length];
+            for (int i = 0; i < parameters.length; i++)
+                values[i] = toLua(parameters[i]);
+            return _G.get(object).get(method).call(LuaValue.listOf(values));
+        } else
+            return _G.get(object).get(method).call();
     }
 
     public Object eval(String script) {
         try {
-            engine.evaluateString(scope, Non.getResource("res/lua+parser.min.js").readString(), "Lua", 1, null);
-            return engine.evaluateString(scope, initializer + compile(Non.getResource(script).readString()), "Lua", 1, null);
+            return _G.load(initializer + Non.getResource(script).readString()).call();
         } catch (IOException e) {
             return Non.error("Resource not found", script);
         }
     }
 
     public void put(String key, Object value) {
-        ScriptableObject.putProperty(scope, key, Context.javaToJS(value, scope));
-    }
-
-    public Object get(String key) {
-        return scope.get(key, scope);
+        _G.set(toLua(key), toLua(value));
     }
     
-    private String compile(String script) {
-        Context context = Context.enter();
-        try {
-            Scriptable compileScope = engine.newObject(scope);
-            compileScope.setParentScope(scope);
-            compileScope.put("script", compileScope, script);
-            return (String)context.evaluateString(compileScope, "lua_load(script);", "LuaCompiler", 1, null);
-        } finally {
-            Context.exit();
-        }
+    private LuaValue toLua(Object javaValue) {
+        return javaValue == null? LuaValue.NIL:
+               javaValue instanceof LuaValue? (LuaValue) javaValue:
+               CoerceJavaToLua.coerce(javaValue);
     }
 }

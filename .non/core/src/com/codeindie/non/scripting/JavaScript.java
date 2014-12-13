@@ -7,17 +7,17 @@ import com.codeindie.non.Non;
 
 public class JavaScript extends ScriptRuntime {
     public static String extension() { return "js"; }
-    public String version() { return "1.7R4"; }
+    public String version()          { return "1.7R4"; }
     
-    private Context engine;
-    private Scriptable scope;
-    private String initializer = 
-        "non.ready = function() { };" +
+    protected Context engine;
+    protected Scriptable scope;
+    protected String initializer = 
+        "non.ready  = function() { };" +
         "non.update = function() { };" +
-        "non.draw = function() { };" +
+        "non.draw   = function() { };" +
         "non.resize = function() { };" +
-        "non.close = function() { };" +
-        "non.pause = function() { };" +
+        "non.close  = function() { };" +
+        "non.pause  = function() { };" +
         "non.resume = function() { };";
 	
     public JavaScript() {
@@ -41,9 +41,5 @@ public class JavaScript extends ScriptRuntime {
 
     public void put(String key, Object value) {
         ScriptableObject.putProperty(scope, key, Context.javaToJS(value, scope));
-    }
-
-    public Object get(String key) {
-        return scope.get(key, scope);
     }
 }

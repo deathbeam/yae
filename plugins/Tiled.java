@@ -29,7 +29,7 @@ public class Tiled extends Plugin {
         }
 
         public void draw(Graphics graphics) {
-            graphics.end();
+            graphics.display();
             if (renderer == null) {
                 if("orthogonal".equals(orientation)) renderer = new OrthogonalTiledMapRenderer(data, 1, graphics.batch);
                 if("isometric".equals(orientation)) renderer = new IsometricTiledMapRenderer(data, 1, graphics.batch);

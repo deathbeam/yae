@@ -13,7 +13,7 @@ import java.io.IOException;
 public class Non implements ApplicationListener {
     public static ScriptRuntime script;
     private static String platform;
-    private JsonValue args;
+    private static JsonValue args;
     
     public static JsonValue configure() {
         try { return new JsonReader().parse(getResource("non.cfg")); }
@@ -27,7 +27,8 @@ public class Non implements ApplicationListener {
         if (i > 0) extension = fileName.substring(i+1);
         return extension;
     }
-
+    
+    public static JsonValue config() { return args; }
     public static int getWidth() { return Gdx.graphics.getWidth(); }
     public static int getHeight() { return Gdx.graphics.getHeight(); }
     public static int getFPS() { return Gdx.graphics.getFramesPerSecond(); }
@@ -37,7 +38,6 @@ public class Non implements ApplicationListener {
     public static Object error(String type, String msg) { Gdx.app.error("NoNonsense", "[" + type + "] " + msg); Gdx.app.exit(); return null; }
     public static Object log(String type, String msg) { Gdx.app.log("NoNonsense", "[" + type + "] " + msg); return null; }
     public static Object debug(String type, String msg) { Gdx.app.debug("NoNonsense", "[" + type + "] " + msg); return null; }
-    
     public static void setPlatform(String platform) { Non.platform = platform; }
     public static FileHandle getResource(String path) throws IOException { return Gdx.files.internal(path); }
 

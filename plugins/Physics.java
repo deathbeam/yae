@@ -61,7 +61,7 @@ public class Physics extends Plugin {
     }
     
     public void draw(Graphics graphics) {
-        graphics.end();
+        graphics.display();
         debugRenderer.render(world, graphics.getProjection());
         graphics.begin();
     }

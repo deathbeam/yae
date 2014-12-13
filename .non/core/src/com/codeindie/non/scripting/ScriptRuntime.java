@@ -22,9 +22,10 @@ public abstract class ScriptRuntime {
     public abstract Object invoke(String object, String method, HashMap<String,Object> args);
     public abstract Object eval(String script);
     public abstract void put(String key, Object value);
-    public abstract Object get(String key);
     
-    public String merge(String object, String method, HashMap<String,Object> args, String methodJoiner, String argJoiner, String left, String right, String end) {
+    public String merge(String object, String method, HashMap<String,Object> args, 
+        String methodJoiner, String argJoiner, String left, String right, String end) {
+        
         String result = "";
         
         if(args != null) {

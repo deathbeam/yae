@@ -168,7 +168,7 @@ public class Graphics extends Plugin {
         return this;
     }
     
-    public Graphics end() {
+    public Graphics display() {
         batch.end();
         return this;
     }

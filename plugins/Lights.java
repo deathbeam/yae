@@ -26,7 +26,7 @@ public class Lights extends Plugin {
     public Lights setLightmaps(boolean isAutomatic) { handler.setLightMapRendering(isAutomatic); return this; }
     
     public void draw(Graphics graphics) {
-        graphics.end();
+        graphics.display();
         handler.setCombinedMatrix(graphics.getProjection());
         handler.render();
         graphics.begin();

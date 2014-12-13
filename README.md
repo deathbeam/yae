@@ -31,23 +31,22 @@ non gen js
     "plugins": [ "Graphics", "Audio" ],
 
     "desktop": {
-        "resolution": [ 800, 600 ],
-        "fullscreen": true
+        "configuration": {
+            "resolution": [ 800, 600 ],
+            "fullscreen": true
+        }
     },
     
     "android": {
-        "sign": {
-            "storeFile": "../keystore", 
-            "storePassword": "123456",
-            "keyAlias": "non",
-            "keyPassword": "123456"
+        "configuration": {
+            "signing": [ "./keystore", "123456", "non", "123456" ]
         }
     }
 }
 ```
 
 * `title` - Application title
-* `version` - Application version
+* `resolution` - Resolution (desktop and html only)
 * `main` - Main script file. Extension of this file also defines what type of scripting engine will be used.
 
 ## events
