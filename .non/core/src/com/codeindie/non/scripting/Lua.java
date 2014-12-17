@@ -1,20 +1,21 @@
 package com.codeindie.non.scripting;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-import java.io.StringReader;
 import java.util.HashMap;
 import org.luaj.vm2.*;
 import org.luaj.vm2.lib.jse.*;
-import com.codeindie.non.Non;
 
 public class Lua extends ScriptRuntime {
     public static String extension() { return "lua"; }
     public String version()          { return "5.1"; }
     
     private final Globals _G;
-    protected String initializer = 
+    
+    public Lua() {
+        _G = JsePlatform.standardGlobals();
+    }
+    
+    public void init() {
+        String script =
         "non.ready  = function() \n end \n" +
         "non.update = function() \n end \n" +
         "non.draw   = function() \n end \n" +
@@ -22,14 +23,10 @@ public class Lua extends ScriptRuntime {
         "non.close  = function() \n end \n" +
         "non.pause  = function() \n end \n" +
         "non.resume = function() \n end \n";
-    
-    public Lua() {
-        _G = JsePlatform.standardGlobals();
+        _G.load(script).call();
     }
 
     public Object invoke(String object, String method, HashMap<String, Object> args) {
-        String script = merge(object, method, args, ":", ",", "(", ")", "");
-        
         if (args != null) {
             Object[] parameters = args.values().toArray();
             LuaValue[] values = new LuaValue[parameters.length];
@@ -41,11 +38,7 @@ public class Lua extends ScriptRuntime {
     }
 
     public Object eval(String script) {
-        try {
-            return _G.load(initializer + Non.getResource(script).readString()).call();
-        } catch (IOException e) {
-            return Non.error("Resource not found", script);
-        }
+        return _G.load(script).call();
     }
 
     public void put(String key, Object value) {

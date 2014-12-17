@@ -10,11 +10,7 @@ public class TypeScript extends JavaScript {
     public String version()          { return "0.9"; }
     
     public Object eval(String script) {
-        try {
-            return engine.evaluateString(scope, initializer + compile(Non.getResource(script).readString()), "TypeScript", 1, null);
-        } catch (IOException e) {
-            return Non.error("Resource not found", script);
-        }
+         return super.eval(compile(script));
     }
     
     private String compile(String script) {

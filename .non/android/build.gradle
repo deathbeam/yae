@@ -37,7 +37,7 @@ tasks.withType(com.android.build.gradle.tasks.PackageApplication) { pkgTask ->
     pkgTask.jniFolders.add(new File(projectDir, 'libs'))
 }
 
-task copyAndroidNatives(type: Copy) << { 
+task copyAndroidNatives() << { 
     file("libs/armeabi/").mkdirs();
     file("libs/armeabi-v7a/").mkdirs();
     file("libs/x86/").mkdirs();
@@ -49,9 +49,11 @@ task copyAndroidNatives(type: Copy) << {
         if(jar.name.endsWith("natives-x86.jar")) outputDir = file("libs/x86")
         if(jar.name.endsWith("natives-android.jar")) outputDir = file("libs")
         if(outputDir != null) {
-            from zipTree(jar)
-            into outputDir
-            include "**/*.so"
+            copy {
+                from zipTree(jar)
+                into outputDir
+                include "**/*.so"
+            }
         }
     }
 }
@@ -61,13 +63,19 @@ task run(type: Exec) << {
     commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.codeindie.non.android/com.codeindie.non.android.AndroidLauncher'
 }
 
-task dist(dependsOn: [assembleRelease]) << {
+task dist(dependsOn: assembleRelease) << {
     file("../../dist/android").mkdirs()
     copy {
         from "build/outputs/apk"
         into "../../dist/android"
         include "android-release.apk"
         rename "android-release.apk", "${appName}-${version}.apk"
+    }
+    copy {
+        from "build/outputs/apk"
+        into "../../dist/android"
+        include "android-debug.apk"
+        rename "android-debug.apk", "${appName}-${version}-debug.apk"
     }
     println "You can find ${appName}-${version}.apk in /dist/android"
 }

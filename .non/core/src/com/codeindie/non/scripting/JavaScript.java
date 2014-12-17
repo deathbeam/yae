@@ -1,9 +1,7 @@
 package com.codeindie.non.scripting;
 
-import java.io.IOException;
 import java.util.HashMap;
 import org.mozilla.javascript.*;
-import com.codeindie.non.Non;
 
 public class JavaScript extends ScriptRuntime {
     public static String extension() { return "js"; }
@@ -11,7 +9,15 @@ public class JavaScript extends ScriptRuntime {
     
     protected Context engine;
     protected Scriptable scope;
-    protected String initializer = 
+    
+    public JavaScript() {
+        engine = Context.enter();
+        engine.setOptimizationLevel(-1);
+        scope = engine.initStandardObjects();
+    }
+    
+    public void init() {
+        String script =
         "non.ready  = function() { };" +
         "non.update = function() { };" +
         "non.draw   = function() { };" +
@@ -19,11 +25,8 @@ public class JavaScript extends ScriptRuntime {
         "non.close  = function() { };" +
         "non.pause  = function() { };" +
         "non.resume = function() { };";
-	
-    public JavaScript() {
-        engine = Context.enter();
-        engine.setOptimizationLevel(-1);
-        scope = engine.initStandardObjects();
+        engine.evaluateString(scope, script, "JavaScript", 1, null);
+        
     }
 
     public Object invoke(String object, String method, HashMap<String, Object> args) {
@@ -32,14 +35,37 @@ public class JavaScript extends ScriptRuntime {
     }
 
     public Object eval(String script) {
-        try {
-            return engine.evaluateString(scope, initializer + Non.getResource(script).readString(), "JavaScript", 1, null);
-        } catch (IOException e) {
-            return Non.error("Resource not found", script);
-        }
+        return engine.evaluateString(scope, script, "JavaScript", 1, null);
     }
 
     public void put(String key, Object value) {
-        ScriptableObject.putProperty(scope, key, Context.javaToJS(value, scope));
+        ScriptableObject.putProperty(scope, key, toJS(value));
+    }
+    
+    private Object toJS(Object javaValue) {
+        return Context.javaToJS(javaValue, scope);
+    }
+    
+    private String merge(String object, String method, HashMap<String,Object> args, 
+        String methodJoiner, String argJoiner, String left, String right, String end) {
+        
+        String result = "";
+        
+        if(args != null) {
+            Object[] set = args.keySet().toArray();
+            String sArgs = (String)set[0];
+            if (sArgs.length() > 1) {
+                for (int i = 1; i < sArgs.length() - 1; i++) sArgs += argJoiner + (String)set[i];
+            }
+            
+            for(Object key: set) put((String)key, args.get(key));
+            if (object != null) result = object + methodJoiner + method + left + sArgs + right + end;
+            else result = method + left + sArgs + right + end;
+        } else {
+            if (object != null) result = object + methodJoiner + method + left + right + end;
+            else result = method + left + right + end;
+        }
+
+        return result;
     }
 }

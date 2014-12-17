@@ -46,8 +46,14 @@ public class Non implements ApplicationListener {
         String main = args.getString("main");
         script = ScriptRuntime.byExtension(getExtension(main));
         Plugin.loadAll();
+        script.init();
         
-        script.eval(main);
+        try {
+            script.eval(Non.getResource(main).readString());
+        } catch (IOException e) {
+            error("Resource not found", main);
+        }
+        
         script.invoke("non", "ready", null);
     }
 

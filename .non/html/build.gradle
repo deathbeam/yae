@@ -46,11 +46,13 @@ task dist(dependsOn: [clean, compileGwt]) << {
     }
 }
 
-task update(type: Copy, dependsOn: ':update') << {
-    from "../../project/res"
-    into "webapp"
-    include "icon-16.png"
-    rename "icon-16.png", "favicon.png"
+task update(dependsOn: ':update') << {
+    copy {
+        from "../../project/res"
+        into "webapp"
+        include "icon-16.png"
+        rename "icon-16.png", "favicon.png"
+    }
 }
 
 task addSource << {
