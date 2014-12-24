@@ -17,7 +17,7 @@
 ```batch
 cd Your/Working/Dir
 git clone git@github.com:codeindie/non.git
-cd dist
+cd bin
 non gen:javascript
 ```
 
