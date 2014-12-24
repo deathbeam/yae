@@ -1,8 +1,8 @@
-![No Nonsense](https://raw.githubusercontent.com/codeindie/non/master/.non/gen/res/loading.png)
+![No Nonsense](https://raw.githubusercontent.com/codeindie/non/master/src/non/gen/res/loading.png)
 
-[Lua](http://lua.org/) `.lua` | [JavaScript](http://www.ecmascript.org/) `.js` | [CoffeeScript](http://coffeescript.org/) `.coffee` | [TypeScript](http://typescriptlang.org/) `.ts`
+[Lua](http://lua.org/) `.lua` | [JavaScript](http://www.ecmascript.org/) `.js`
 
-* **cross-platform** (Windows, Linux, Mac, Android)
+* **cross-platform** (Windows, Linux, Mac, Android, IOS, Web)
 * image/text **rendering** and manipulation
 * loading and rendering of **tiled maps**
 * audio engine
@@ -17,7 +17,8 @@
 ```batch
 cd Your/Working/Dir
 git clone git@github.com:codeindie/non.git
-non gen js
+cd dist
+non gen:javascript
 ```
 
 ## config `non.cfg`
