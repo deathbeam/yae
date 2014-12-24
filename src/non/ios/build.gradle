@@ -1,7 +1,7 @@
 sourceSets.main.java.srcDirs = [ "src/" ]
 sourceCompatibility = '1.7'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-ext.mainClassName = "non.IOSLauncher"
+ext.mainClassName = "non.ios.IOSLauncher"
 
 task copyNatives << {
     file("build/libs/ios/").mkdirs();
@@ -39,8 +39,8 @@ task updateRoboVMXML(dependsOn: copyNatives) << {
 
 task run(dependsOn: launchIPhoneSimulator)
 
-task dist(dependsOn: createIPA) << {
-    println "You can find ios-" + version + ".ipa in /dist/ios"
+task dist(dependsOn: [update, createIPA]) << {
+    println "You can find ${appName}-${version}.ipa in /dist/ios"
 }
 
 task update(dependsOn: ':update') << {

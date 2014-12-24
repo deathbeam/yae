@@ -14,7 +14,7 @@ task run(type: JavaExec, dependsOn: classes) << {
     ignoreExitValue = true
 }
 
-task dist(type: Jar, dependsOn: classes) {
+task dist(type: Jar, dependsOn: [update, classes]) {
     from files(sourceSets.main.output.classesDir)
     from files(sourceSets.main.output.resourcesDir)
     from {configurations.compile.collect {zipTree(it)}}

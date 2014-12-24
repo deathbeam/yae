@@ -63,7 +63,7 @@ task run(type: Exec) << {
     commandLine "$adb", 'shell', 'am', 'start', '-n', 'non.android/non.android.AndroidLauncher'
 }
 
-task dist(dependsOn: assembleRelease) << {
+task dist(dependsOn: [update, assembleRelease]) << {
     file("../../dist/android").mkdirs()
     copy {
         from "build/outputs/apk"

@@ -141,7 +141,7 @@ project(":core") {
     }
 }
 
-task updatePlugins << {
+task update << {
     copy {
         from "../plugins"
         into "core/src/non/plugins"
@@ -155,9 +155,7 @@ task updatePlugins << {
     def ninit = new File("core/src/non/plugins/internal/_init.java")
     ninit.createNewFile()
     ninit.write(text)
-}
-
-task update(dependsOn: updatePlugins) << {
+    
     copy {
         from "../project"
         into "android/assets"

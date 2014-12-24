@@ -30,7 +30,7 @@ task run(type: de.richsource.gradle.plugins.gwt.GwtSuperDev, dependsOn: draftRun
     }
 }
 
-task dist(dependsOn: [clean, compileGwt]) << {
+task dist(dependsOn: [update, clean, compileGwt]) << {
     file("build/dist").mkdirs()
     copy {
         from "build/gwt/out"

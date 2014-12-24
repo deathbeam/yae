@@ -1,11 +1,11 @@
-package com.deathbeam.non;
+package non.ios;
 
 import org.robovm.apple.foundation.NSAutoreleasePool;
 import org.robovm.apple.uikit.UIApplication;
 
 import com.badlogic.gdx.backends.iosrobovm.IOSApplication;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
-import com.codeindie.non.Non;
+import non.Non;
 
 public class IOSLauncher extends IOSApplication.Delegate {
     protected IOSApplication createApplication() {
