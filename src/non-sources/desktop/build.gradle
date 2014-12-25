@@ -14,6 +14,19 @@ task run(type: JavaExec, dependsOn: classes) << {
     ignoreExitValue = true
 }
 
+task update(dependsOn: ':update') << {
+    copy {
+        from "../../project/res"
+        into "../android/assets/res"
+        include "icon-16.png"
+        include "icon-32.png"
+        include "icon-64.png"
+        include "icon-192.png"
+        include "icon-256.png"
+        include "loading.png"
+    }
+}
+
 task dist(type: Jar, dependsOn: [update, classes]) {
     from files(sourceSets.main.output.classesDir)
     from files(sourceSets.main.output.resourcesDir)
@@ -33,18 +46,5 @@ task dist(type: Jar, dependsOn: [update, classes]) {
             rename "desktop-${version}.jar", "${appName}-${version}.jar"
         }
         println "You can find ${appName}-${version}.jar in /dist/desktop"
-    }
-}
-
-task update(dependsOn: ':update') << {
-    copy {
-        from "../../project/res"
-        into "../android/assets/res"
-        include "icon-16.png"
-        include "icon-32.png"
-        include "icon-64.png"
-        include "icon-192.png"
-        include "icon-256.png"
-        include "loading.png"
     }
 }

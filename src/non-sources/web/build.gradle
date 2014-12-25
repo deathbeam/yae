@@ -30,6 +30,15 @@ task run(type: de.richsource.gradle.plugins.gwt.GwtSuperDev, dependsOn: draftRun
     }
 }
 
+task update(dependsOn: ':update') << {
+    copy {
+        from "../../project/res"
+        into "webapp"
+        include "icon-16.png"
+        rename "icon-16.png", "favicon.png"
+    }
+}
+
 task dist(dependsOn: [update, clean, compileGwt]) << {
     file("build/dist").mkdirs()
     copy {
@@ -43,15 +52,6 @@ task dist(dependsOn: [update, clean, compileGwt]) << {
     copy {
         from "war"
         into "build/dist"
-    }
-}
-
-task update(dependsOn: ':update') << {
-    copy {
-        from "../../project/res"
-        into "webapp"
-        include "icon-16.png"
-        rename "icon-16.png", "favicon.png"
     }
 }
 

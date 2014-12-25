@@ -1,1 +1,0 @@
-package non.plugins.internal; import non.plugins.*; public class _init { static { new Non(); new Graphics(); } }

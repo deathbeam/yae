@@ -37,7 +37,12 @@ tasks.withType(com.android.build.gradle.tasks.PackageApplication) { pkgTask ->
     pkgTask.jniFolders.add(new File(projectDir, 'libs'))
 }
 
-task copyAndroidNatives() << { 
+task run(type: Exec) << {
+    def adb = sdkDir + "/platform-tools/adb"
+    commandLine "$adb", 'shell', 'am', 'start', '-n', 'non.android/non.android.AndroidLauncher'
+}
+
+task copyNatives << {
     file("libs/armeabi/").mkdirs();
     file("libs/armeabi-v7a/").mkdirs();
     file("libs/x86/").mkdirs();
@@ -58,9 +63,53 @@ task copyAndroidNatives() << {
     }
 }
 
-task run(type: Exec) << {
-    def adb = sdkDir + "/platform-tools/adb"
-    commandLine "$adb", 'shell', 'am', 'start', '-n', 'non.android/non.android.AndroidLauncher'
+task update(dependsOn: [':update', copyNatives]) << {
+    file("res/drawable-mdpi").mkdirs()
+    copy {
+        from "../../project/res"
+        into "."
+        include "icon-512.png"
+        rename "icon-512.png", "ic_launcher-web.png"
+    }
+    
+    file("res/drawable-mdpi").mkdirs()
+    copy {
+        from "../../project/res"
+        into "res/drawable-mdpi"
+        include "icon-48.png"
+        rename "icon-48.png", "ic_launcher.png"
+    }
+    
+    file("res/drawable-hdpi").mkdirs()
+    copy {
+        from "../../project/res"
+        into "res/drawable-hdpi"
+        include "icon-72.png"
+        rename "icon-72.png", "ic_launcher.png"
+    }
+    
+    file("res/drawable-xhdpi").mkdirs()
+    copy {
+        from "../../project/res"
+        into "res/drawable-xhdpi"
+        include "icon-96.png"
+        rename "icon-96.png", "ic_launcher.png"
+    }
+    
+    file("res/drawable-xxhdpi").mkdirs()
+    copy {
+        from "../../project/res"
+        into "res/drawable-xxhdpi"
+        include "icon-144.png"
+        rename "icon-144.png", "ic_launcher.png"
+    }
+    
+    copy {
+        from "../../project/res"
+        into "."
+        include "icon-512.png"
+        rename "icon-512.png", "ic_launcher-web.png"
+    }
 }
 
 task dist(dependsOn: [update, assembleRelease]) << {
@@ -71,55 +120,13 @@ task dist(dependsOn: [update, assembleRelease]) << {
         include "android-release.apk"
         rename "android-release.apk", "${appName}-${version}.apk"
     }
+    
     copy {
         from "build/outputs/apk"
         into "../../dist/android"
-        include "android-debug.apk"
-        rename "android-debug.apk", "${appName}-${version}-debug.apk"
+        include "android-release-unsigned.apk"
+        rename "android-release-unsigned.apk", "${appName}-${version}-debug.apk"
     }
+    
     println "You can find ${appName}-${version}.apk in /dist/android"
-}
-
-task update(dependsOn: [':update', copyAndroidNatives]) << {
-    copy {
-        file("res/drawable-mdpi").mkdirs()
-        from "../../project/res"
-        into "."
-        include "icon-512.png"
-        rename "icon-512.png", "ic_launcher-web.png"
-    }
-    copy {
-        file("res/drawable-mdpi").mkdirs()
-        from "../../project/res"
-        into "res/drawable-mdpi"
-        include "icon-48.png"
-        rename "icon-48.png", "ic_launcher.png"
-    }
-    copy {
-        file("res/drawable-hdpi").mkdirs()
-        from "../../project/res"
-        into "res/drawable-hdpi"
-        include "icon-72.png"
-        rename "icon-72.png", "ic_launcher.png"
-    }
-    copy {
-        file("res/drawable-xhdpi").mkdirs()
-        from "../../project/res"
-        into "res/drawable-xhdpi"
-        include "icon-96.png"
-        rename "icon-96.png", "ic_launcher.png"
-    }
-    copy {
-        file("res/drawable-xxhdpi").mkdirs()
-        from "../../project/res"
-        into "res/drawable-xxhdpi"
-        include "icon-144.png"
-        rename "icon-144.png", "ic_launcher.png"
-    }
-    copy {
-        from "../../project/res"
-        into "."
-        include "icon-512.png"
-        rename "icon-512.png", "ic_launcher-web.png"
-    }
 }

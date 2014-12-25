@@ -39,10 +39,6 @@ task updateRoboVMXML(dependsOn: copyNatives) << {
 
 task run(dependsOn: launchIPhoneSimulator)
 
-task dist(dependsOn: [update, createIPA]) << {
-    println "You can find ${appName}-${version}.ipa in /dist/ios"
-}
-
 task update(dependsOn: ':update') << {
     copy {
         file("data").mkdirs()
@@ -71,6 +67,10 @@ task update(dependsOn: ':update') << {
         include "splash-1536x2008.png"
         rename "splash-1536x2008.png", "Default@2x~ipad.png"
     }
+}
+
+task dist(dependsOn: [update, createIPA]) << {
+    println "You can find ${appName}-${version}.ipa in /dist/ios"
 }
 
 build.dependsOn updateRoboVMXML

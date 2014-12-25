@@ -32,13 +32,13 @@ public class Network extends Plugin {
     private int port;
     public Object connected, disconnected, received;
     
-    interface Listener {
+    public interface Listener {
         public void disconnected(Connection broken, boolean forced);
         public void receive(DataInputStream data, Connection from);
         public void connected(ServerConnection conn);
     }
     
-    abstract class Connection {
+    public abstract class Connection {
         private static final int MAGIC_NUMBER = 1304231989;
         protected Listener listener;
         private final byte[] headerInput = new byte[8];
@@ -108,7 +108,7 @@ public class Network extends Plugin {
         }
     }
     
-    class ClientConnection extends Connection {
+    public class ClientConnection extends Connection {
         private Socket socket;
         protected final String host;
         protected final int port;
@@ -178,7 +178,7 @@ public class Network extends Plugin {
         }
     }
     
-    class ServerConnection extends Connection {
+    public class ServerConnection extends Connection {
         private final Server controller;
         private final Socket socket;
         private final OutputStream output;
@@ -247,7 +247,7 @@ public class Network extends Plugin {
         }
     }
     
-    class Server {
+    public class Server {
         private final Listener listener;
         private final ServerSocket socket;
         private boolean running = false;

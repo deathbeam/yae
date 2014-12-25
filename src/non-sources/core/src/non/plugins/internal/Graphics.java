@@ -21,7 +21,7 @@ public class Graphics extends Plugin {
     public String license() { return "MIT"; }
     public String description() { return "Plugin for drawing and rendering of images and text."; }
     
-    class Image extends Texture {
+    public class Image extends Texture {
         private Vector2 origin, scale;
         private Rectangle source;
         private float rotation;
@@ -183,8 +183,12 @@ public class Graphics extends Plugin {
     }
     
     public Graphics draw(String text, int x, int y, Color color) {
+        return draw(text, x, y, Color.BLACK, 1);
+    }
+    
+    public Graphics draw(String text, int x, int y, Color color, float size) {
         font.setColor(color);
-        font.setScale(1, -1);
+        font.setScale(size, -size);
         font.draw(batch, text, x, y);
         return this;
     }

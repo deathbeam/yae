@@ -3,6 +3,7 @@
 [Lua](http://lua.org/) `.lua` | [JavaScript](http://www.ecmascript.org/) `.js`
 
 * **cross-platform** (Windows, Linux, Mac, Android, IOS, Web)
+* make games in **JavaScript** and **Lua**
 * image/text **rendering** and manipulation
 * loading and rendering of **tiled maps**
 * audio engine
@@ -10,14 +11,14 @@
 * **plugins** (check below example configuration)
 * TCP-based **networking**
 * **physics** engine
-* **simple** lights
+* simple **lights**
 
 ## quickstart
 
 ```batch
 cd Your/Working/Dir
 git clone git@github.com:codeindie/non.git
-cd bin
+cd non
 non gen:javascript
 ```
 
