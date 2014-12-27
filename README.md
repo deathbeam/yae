@@ -1,4 +1,4 @@
-![No Nonsense](https://raw.githubusercontent.com/codeindie/non/master/src/non/gen/res/loading.png)
+![No Nonsense](https://raw.githubusercontent.com/codeindie/non/master/src/gen/res/loading.png)
 
 [Lua](http://lua.org/) `.lua` | [JavaScript](http://www.ecmascript.org/) `.js`
 
