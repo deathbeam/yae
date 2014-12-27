@@ -1,4 +1,4 @@
-![No Nonsense](https://raw.githubusercontent.com/codeindie/non/master/src/non-sources/gen/res/loading.png)
+![No Nonsense](https://raw.githubusercontent.com/codeindie/non/master/src/non/gen/res/loading.png)
 
 [Lua](http://lua.org/) `.lua` | [JavaScript](http://www.ecmascript.org/) `.js`
 
@@ -18,7 +18,7 @@
 ```batch
 cd Your/Working/Dir
 git clone git@github.com:codeindie/non.git
-cd non
+cd bin
 non gen:javascript
 ```
 
