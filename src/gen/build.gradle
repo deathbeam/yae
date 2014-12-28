@@ -2,8 +2,8 @@ task javascript << {
     def lang = "js"
     
     def map = [
-        name: "non",
-        version: "1.0",
+        name: appName,
+        version: version,
         main: "main.$lang",
         plugins: ["Graphics"]
     ]
@@ -26,8 +26,8 @@ task lua << {
     def lang = "lua"
     
     def map = [
-        name: "non",
-        version: "1.0",
+        name: appName,
+        version: version,
         main: "main.$lang",
         plugins: ["Graphics"]
     ]

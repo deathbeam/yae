@@ -5,6 +5,8 @@
 	<inherits name='com.badlogic.gdx.controllers.controllers-gwt' />
 	<inherits name='com.badlogic.gdx.physics.box2d.box2d-gwt' />
 	<inherits name='Box2DLights' />
+  <inherits name='Rhino' />
+  <inherits name='Luaj' />
 
 	<inherits name='Game' />
 	<entry-point class='non.web.WebLauncher' />
