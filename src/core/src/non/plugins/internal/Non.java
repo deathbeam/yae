@@ -1,5 +1,6 @@
 package non.plugins.internal;
 import non.plugins.Plugin;
+import java.io.IOException;
 
 public class Non extends Plugin {
     public String author()      { return "Thomas Slusny"; }
@@ -17,7 +18,11 @@ public class Non extends Plugin {
     public Object error(String type, String msg)   { return non.Non.error(type, msg); }
     public Object log(String type, String msg)     { return non.Non.log(type, msg); }
     public Object debug(String type, String msg)   { return non.Non.debug(type, msg); }
-    public Object file(String path)                { return non.Non.file(path); }
+    
+    public Object file(String path) { 
+        try { return non.Non.file(path); } 
+        catch(IOException e) { return log("Resource not found", path); }
+    }
     
     public Object ready, draw, update, resize, close, pause, resume;
 }

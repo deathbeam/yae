@@ -93,7 +93,7 @@ public class Graphics extends Plugin {
     }
     
     public ShaderProgram newShader(String vert, String frag) throws IOException {
-        return new ShaderProgram(Non.getResource(vert), Non.getResource(frag));
+        return new ShaderProgram(Non.file(vert), Non.file(frag));
     }
     
     public Image newImage(String file) throws IOException {

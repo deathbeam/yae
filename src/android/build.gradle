@@ -114,18 +114,19 @@ task update(dependsOn: [':update', copyNatives]) << {
 
 task dist(dependsOn: [update, assembleRelease]) << {
     file("../../dist/android").mkdirs()
-    copy {
-        from "build/outputs/apk"
-        into "../../dist/android"
-        include "android-release.apk"
-        rename "android-release.apk", "${appName}-${version}.apk"
-    }
     
     copy {
         from "build/outputs/apk"
         into "../../dist/android"
         include "android-release-unsigned.apk"
-        rename "android-release-unsigned.apk", "${appName}-${version}-debug.apk"
+        rename "android-release-unsigned.apk", "${appName}-${version}.apk"
+    }
+    
+    copy {
+        from "build/outputs/apk"
+        into "../../dist/android"
+        include "android-release.apk"
+        rename "android-release.apk", "${appName}-${version}.apk"
     }
     
     println "You can find ${appName}-${version}.apk in /dist/android"

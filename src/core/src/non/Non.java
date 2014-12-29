@@ -16,7 +16,7 @@ public class Non implements ApplicationListener {
     private static JsonValue args;
     
     public static JsonValue configure() {
-        try { return new JsonReader().parse(getResource("non.cfg")); }
+        try { return new JsonReader().parse(file("non.cfg")); }
         catch(IOException e) { error("Resource not found", "non.cfg"); }
         return null;
     }

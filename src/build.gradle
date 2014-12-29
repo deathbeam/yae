@@ -1,9 +1,9 @@
 def f = file("../project/non.cfg")
 
 if (f.exists()) {
-    cfg = new groovy.json.JsonSlurper().parseText(f.text)
+    ext.cfg = new groovy.json.JsonSlurper().parseText(f.text)
 } else {
-    cfg = new groovy.json.JsonSlurper().parseText('{ "name":"non", "version":"1.0.0" }')
+    ext.cfg = new groovy.json.JsonSlurper().parseText('{ "name":"non", "version":"1.0.0" }')
 }
 
 buildscript {

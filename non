@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-sh java -classpath non.jar launcher
+sh java -classpath non.jar launcher.Main
 cd .non
 sh gradlew "$1"
 cd ../
