@@ -18,8 +18,11 @@
 ```batch
 cd Your/Working/Dir
 git clone git@github.com:codeindie/non.git
-cd bin
+javac src/launcher/Main.java
+jar cf non.jar -C src .
 non gen:javascript
+non desktop:update
+non desktop:run
 ```
 
 ## config `non.cfg`
