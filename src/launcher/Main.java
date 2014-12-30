@@ -8,6 +8,8 @@ import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 public class Main {
     private static String outputDir;
@@ -32,6 +34,20 @@ public class Main {
             System.out.print("DONE\n");
         }
     }
+    
+    private String execute(String command) {
+        StringBuffer output = new StringBuffer();
+        Process p;
+        try {
+            p = Runtime.getRuntime().exec(command);
+            p.waitFor();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String line = "";
+            while ((line = reader.readLine())!= null) output.append(line + "\n");
+        } catch (Exception e) { e.printStackTrace(); }
+        return output.toString();
+    }
+    
     private static void unpack(File zip, File output) {
         unpack(zip, output, new NameMapper() {
             public String map(String name) {

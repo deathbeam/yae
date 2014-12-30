@@ -11,9 +11,11 @@ public class Non extends Plugin {
     public int getHeight()                         { return non.Non.getHeight(); }
     public int getFPS()                            { return non.Non.getFPS(); }
     public float getDelta()                        { return non.Non.getDelta(); }
+    public Object config()                         { return non.Non.config(); }
+    
     public String getPlatform()                    { return non.Non.getPlatform(); }
     public boolean checkPlatform(String p)         { return getPlatform().equalsIgnoreCase(p); }
-    public Object config()                         { return non.Non.config(); }
+    
     public Object warning(String type, String msg) { return non.Non.warning(type, msg); }
     public Object error(String type, String msg)   { return non.Non.error(type, msg); }
     public Object log(String type, String msg)     { return non.Non.log(type, msg); }
@@ -22,6 +24,10 @@ public class Non extends Plugin {
     public Object file(String path) { 
         try { return non.Non.file(path); } 
         catch(IOException e) { return log("Resource not found", path); }
+    }
+    
+    public Object require(String path) {
+        return non.Non.script.eval(non.Non.file(path).readString());
     }
     
     public Object ready, draw, update, resize, close, pause, resume;

@@ -2,7 +2,7 @@
 
 [Lua](http://lua.org/) `.lua` | [JavaScript](http://www.ecmascript.org/) `.js`
 
-* **cross-platform** (Windows, Linux, Mac, Android, IOS, Web)
+* **cross-platform** (Windows, Linux, Mac, Android, IOS)
 * make games in **JavaScript** and **Lua**
 * image/text **rendering** and manipulation
 * loading and rendering of **tiled maps**
