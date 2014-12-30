@@ -27,7 +27,8 @@ public class Non extends Plugin {
     }
     
     public Object require(String path) {
-        return non.Non.script.eval(non.Non.file(path).readString());
+        try { return non.Non.script.eval(non.Non.file(path).readString()); }
+	catch(IOException e) { return log("Resource not found", path); }
     }
     
     public Object ready, draw, update, resize, close, pause, resume;
