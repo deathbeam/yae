@@ -9,10 +9,10 @@ import non.plugins.Plugin;
 public class Audio extends Plugin {
     public String author()      { return "Thomas Slusny"; }
     public String license()     { return "MIT"; }
-    public String description() { return "Plugin for playing audio and music files."; }
+    public String description() { return  "Plugin for playing audio and music files."; }
     
-    public Class music = Music.class;
-    public Class sound = Sound.class;
+    public Class<?> music = Music.class;
+    public Class<?> sound = Sound.class;
     
     public Music newMusic(String file) {
         return newMusic(file, false);

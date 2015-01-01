@@ -1,5 +1,7 @@
 package non;
 
+import com.badlogic.gdx.InputProcessor;
+
 public class InputHandle implements InputProcessor {
     public boolean keyDown (int keycode) {
         Non.script.invoke("non", "keydown", keycode);

@@ -36,8 +36,8 @@ public class Graphics extends Plugin {
     private Vector2 translation;
     private Color background;
     
-    public Class texture = Texture.class;
-    public Class font = BitmapFont.class;
+    public Class<?> texture = Texture.class;
+    public Class<?> font = BitmapFont.class;
     
     public void loadPlugin() {
         batch = new SpriteBatch();
