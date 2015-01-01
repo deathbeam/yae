@@ -12,8 +12,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 public class Main {
-    private static String outputDir;
-    private static NameMapper mapper;
+    static String outputDir;
+    static NameMapper mapper;
     
     interface NameMapper {
         String map(String name);
@@ -35,7 +35,7 @@ public class Main {
         }
     }
     
-    private String execute(String command) {
+    static String execute(String command) {
         StringBuffer output = new StringBuffer();
         Process p;
         try {
@@ -48,7 +48,7 @@ public class Main {
         return output.toString();
     }
     
-    private static void unpack(File zip, File output) {
+    static void unpack(File zip, File output) {
         unpack(zip, output, new NameMapper() {
             public String map(String name) {
                 return name;
@@ -56,7 +56,7 @@ public class Main {
         });
     }
     
-    private static void unpack(File zip, File output, NameMapper m) {
+    static void unpack(File zip, File output, NameMapper m) {
         if (!output.exists()) output.mkdir();
         outputDir = output.getAbsolutePath();
         mapper = m;
@@ -67,9 +67,23 @@ public class Main {
             while (en.hasMoreElements()) {
                 ZipEntry e = (ZipEntry) en.nextElement();
                 InputStream is = zf.getInputStream(e);
-                try { process(is, e); }
-                catch (IOException ze) { System.out.print("\nFailed to unpack zip entry " + e.getName() + "\n"); }
-                finally { closeQuietly(is); }
+                try { 
+                    String name = mapper.map(e.getName());
+                    if (name != null) {
+                        File file = new File(outputDir, name);
+                        if (e.isDirectory()) {
+                            mkdir(file);
+                        } else {
+                            mkdir(file.getParentFile());
+                            copy(is, file);
+                        }
+                    }
+                } catch (IOException ze) {
+                    System.out.print("\nFailed to unpack zip entry " + e.getName() + "\n");
+                } finally {
+                    try { if (is != null) is.close(); }
+                    catch (IOException ioe) { }
+                }
             }
         } catch (IOException e) {
             System.out.print("\n" + e.getMessage() + "\n");
@@ -79,30 +93,7 @@ public class Main {
         }
     }
     
-    private static void process(InputStream in, ZipEntry zipEntry) throws IOException {
-        String name = mapper.map(zipEntry.getName());
-        if (name != null) {
-            File file = new File(outputDir, name);
-            if (zipEntry.isDirectory()) {
-                forceMkdir(file);
-            } else {
-                forceMkdir(file.getParentFile());
-                copy(in, file);
-            }
-        }
-    }
-    
-    private static void closeQuietly(InputStream input) {
-        try { if (input != null) input.close(); }
-        catch (IOException ioe) { }
-    }
-    
-    private static void closeQuietly(OutputStream output) {
-        try { if (output != null) output.close(); }
-        catch (IOException ioe) { }
-    }
-    
-    private static void forceMkdir(File directory) throws IOException {
+    static void mkdir(File directory) throws IOException {
         if (directory.exists()) {
             if (directory.isFile()) throw new IOException("\n" + directory + " exists and is not a directory.\n");
         } else if (!directory.mkdirs()) {
@@ -110,12 +101,15 @@ public class Main {
         }
     }
     
-    private static void copy(InputStream in, File file) throws IOException {
+    static void copy(InputStream in, File file) throws IOException {
         OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
         try {
             byte[] buffer = new byte[1024 * 4];
             int n = 0;
             while (-1 != (n = in.read(buffer))) out.write(buffer, 0, n);
-        } finally { closeQuietly(out); }
+        } finally {
+            try { if (out != null) out.close(); }
+            catch (IOException ioe) { }
+        }
     }
 }

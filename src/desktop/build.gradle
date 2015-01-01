@@ -15,19 +15,30 @@ task run(type: JavaExec, dependsOn: classes) << {
 }
 
 task update(dependsOn: ':update') << {
-    copy {
-        from "../../project/res"
-        into "../android/assets/res"
-        include "icon-16.png"
-        include "icon-32.png"
-        include "icon-64.png"
-        include "icon-192.png"
-        include "icon-256.png"
-        include "loading.png"
+    def src = "../../project/res"
+    def res = "../gen/res"
+    def out = "../android/assets/res"
+    
+    def files = [ "icon-16", "icon-32", "icon-64", "icon-192", "icon-256", "loading" ]
+    
+    for(file in files) {
+        if (file("${src}/${file}.png").exists()) {
+            copy {
+                from src
+                into out
+                include "${file}.png"
+            }
+        } else {
+            copy {
+                from res
+                into out
+                include "${file}.png"
+            }
+        }
     }
 }
 
-task dist(type: Jar, dependsOn: [update, classes]) {
+task dist(type: Jar, dependsOn: classes) {
     from files(sourceSets.main.output.classesDir)
     from files(sourceSets.main.output.resourcesDir)
     from {configurations.compile.collect {zipTree(it)}}

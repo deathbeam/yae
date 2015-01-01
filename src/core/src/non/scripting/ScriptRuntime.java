@@ -9,15 +9,15 @@ public abstract class ScriptRuntime {
         Non.log("ScriptRuntime", "Loading scripting language...");
         if (JavaScript.extension().equalsIgnoreCase(ext)) r = new JavaScript();
         else if (Lua.extension().equalsIgnoreCase(ext)) r = new Lua();
-        Non.log("Language", r.getClass().getSimpleName() + " " + r.version());
+        Non.log("Language", r.getClass().getSimpleName() + " version " + r.version());
         if (r == null) Non.error("Language", "Wrong extension!");
         return r;
     }
-	
-    public String version() { return "Unknown"; }
-    
+
+    public abstract String version();
     public abstract Object invoke(String object, String method, Object... args);
     public abstract Object eval(String script);
+    public abstract Object convert(Object javaValue);
     public abstract void init();
-    public abstract void put(String key, Object value); 
+    public abstract void put(String key, Object value);
 }

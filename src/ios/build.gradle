@@ -40,36 +40,49 @@ task updateRoboVMXML(dependsOn: copyNatives) << {
 task run(dependsOn: launchIPhoneSimulator)
 
 task update(dependsOn: ':update') << {
-    copy {
-        file("data").mkdirs()
-        from "../../project/res"
-        into "data"
-        include "icon-57.png"
-        rename "icon-57.png", "Icon.png"
-        include "icon-72.png"
-        rename "icon-72.png", "Icon-72.png"
-        include "icon-114.png"
-        rename "icon-114.png", "Icon@2x.png"
-        include "icon-144.png"
-        rename "icon-144.png", "Icon-72@2x.png"
-        include "splash-320x480.png"
-        rename "splash-320x480.png", "Default.png"
-        include "splash-640x960.png"
-        rename "splash-640x960.png", "Default@2x.png"
-        include "splash-640x1136.png"
-        rename "splash-640x1136.png", "Default-568h@2x.png"
-        include "splash-750x1334.png"
-        rename "splash-750x1334.png", "Default-375w-667h@2x.png"
-        include "splash-768x1004.png"
-        rename "splash-768x1004.png", "Default~ipad.png"
-        include "splash-1242x2208.png"
-        rename "splash-1242x2208.png", "Default-414w-736h@3x.png"
-        include "splash-1536x2008.png"
-        rename "splash-1536x2008.png", "Default@2x~ipad.png"
+    def src = "../../project/res"
+    def res = "../gen/res"
+    def out = "data"
+    file(out).mkdirs()
+    
+    def files = [
+        [ 
+            "icon-57", "icon-72", "icon-114", "icon-144", "splash-320x480", "splash-640x960", 
+            "splash-640x1136", "splash-750x1134", "splash-768x1004", "splash-1242x2208",
+            "splash-1536x2008"
+        ],
+        [
+            "Icon", "Icon-72", "Icon@2x", "Icon-72@2x", "Default", "Default@2x",
+            "Default-568h@2x", "Default-375w-667h@2x", "Default~ipad", "Default-414w-736h@3x",
+            "Default@2x~ipad"
+        ]
+    ]
+    
+    def total = files[0].lenght()
+    
+    for(i in 0..total) {
+        def file = files[0][i]
+        def newFile = files[1][i]
+        
+        if (file("${src}/${file}.png").exists()) {
+            copy {
+                from src
+                into out
+                include "${file}.png"
+                rename "${file}.png", "${newFile}.png"
+            }
+        } else {
+            copy {
+                from res
+                into out
+                include "${file}.png"
+                rename "${file}.png", "${newFile}.png"
+            }
+        }
     }
 }
 
-task dist(dependsOn: [update, createIPA]) << {
+task dist(dependsOn: createIPA) << {
     println "You can find ${appName}-${version}.ipa in /dist/ios"
 }
 

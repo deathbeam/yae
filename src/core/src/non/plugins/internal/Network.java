@@ -23,8 +23,8 @@ import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
 public class Network extends Plugin {
-    public String author() { return "Thomas Slusny"; }
-    public String license() { return "MIT"; }
+    public String author()      { return "Thomas Slusny"; }
+    public String license()     { return "MIT"; }
     public String description() { return "Simple TCP networking."; }
     
     private Listener listener;
@@ -306,7 +306,7 @@ public class Network extends Plugin {
     public Server newServer() { return new Server(listener, port); }
     public ClientConnection newClient() { return new ClientConnection(listener, host, port); }
     
-    public Network init() {
+    public void loadPlugin() {
         this.listener = new Listener() {
             public void disconnected(Connection broken, boolean forced) {
                 Non.script.invoke("network", "disconnected", broken);
@@ -319,7 +319,6 @@ public class Network extends Plugin {
             public void connected(ServerConnection conn) {
                 Non.script.invoke("network", "connected", conn);
             }
-        };
-        return this;
+        };   
     }
 }

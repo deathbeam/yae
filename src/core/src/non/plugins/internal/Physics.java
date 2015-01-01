@@ -28,32 +28,35 @@ import com.badlogic.gdx.utils.Array;
 import non.plugins.Plugin;
 
 public class Physics extends Plugin {
-    public String author() { return "Thomas Slusny"; }
-    public String license() { return "MIT"; }
-    public String description() { return "Plugin for handling physics."; }
-    public String[] dependencies() { return new String[] { "graphics" }; }
+    public String author()         { return "Thomas Slusny"; }
+    public String license()        { return "MIT"; }
+    public String description()    { return "Plugin for handling physics."; }
+    public String[] dependencies() { return new String[] { "graphics", "math" }; }
     
     private World world;
-    private Box2DDebugRenderer debugRenderer;
-    private Vector2 gravity = Vector2.Zero;
-    private boolean sleep = true;
-    private float step = 1 / 60f;
-    private float accum = 0f;
-    private float ppt =  1;
+    private Box2DDebugRenderer renderer;
+    private boolean debug;
+    private float step, accum, ppt;
     
     public World getWorld() { return world; }
-    public Physics setGravity(float x, float y) { gravity = new Vector2(x, y); return this; }
-    public Physics setSleep(boolean sleep) { this.sleep = sleep; return this; }
     public Physics setStep(float step) { this.step = step; return this; }
-
-    public Physics init() {
+    public Physics setDebug(boolean debug) { this.debug = debug; }
+    
+    public void loadPlugin() {
         Box2D.init();
-        world = new World(gravity, sleep);
-        debugRenderer = new Box2DDebugRenderer();
-        return this;
+        renderer = new Box2DDebugRenderer();
+        debug = false;
+        step = 1 / 60f;
+        accum = 0;
+        ppt = 1;
     }
     
-    public void update() {
+    public void unloadPlugin() {
+        if (world != null) world.dispose();
+        if (renderer != null) renderer.dispose();
+    }
+    
+    public void updatePluginBefore() {
         accum += Gdx.graphics.getDeltaTime();
         while (accum >= step) {
             world.step(step, 6, 2);
@@ -61,10 +64,17 @@ public class Physics extends Plugin {
         }
     }
     
-    public void draw(Graphics graphics) {
-        graphics.display();
-        debugRenderer.render(world, graphics.getProjection());
-        graphics.begin();
+    public void updatePluginAfter() {
+        if (!debug) return;
+        if (renderer != null)
+            renderer.render(world, (Graphics)(Plugin.get("graphics")).getProjection());
+        else
+            renderer = new Box2DDebugRenderer();
+    }
+
+    public Physics init(Vector2 gravity) {
+        world = new World(gravity, true);
+        return this;
     }
     
     public Body newShape(Shape2D shape) {
@@ -114,36 +124,6 @@ public class Physics extends Plugin {
         }
         
         return null;
-    }
-    
-    public Array<Body> newShape(MapObjects objects) {
-        Array<Body> bodies = new Array<Body>();
-
-        for(MapObject object : objects) {
-            if (object instanceof TextureMapObject) continue;
-
-            Shape shape;
-            
-            if (object instanceof RectangleMapObject) shape = getRectangle((RectangleMapObject)object);
-            else if (object instanceof PolygonMapObject) shape = getPolygon((PolygonMapObject)object);
-            else if (object instanceof PolylineMapObject) shape = getPolyline((PolylineMapObject)object);
-            else if (object instanceof CircleMapObject) shape = getCircle((CircleMapObject)object);
-            else continue;
-
-            BodyDef bd = new BodyDef();
-            bd.type = BodyType.StaticBody;
-            Body body = world.createBody(bd);
-            body.createFixture(shape, 1);
-            bodies.add(body);
-            shape.dispose();
-        }
-        
-        return bodies;
-    }
-    
-    public void dispose() {
-        debugRenderer.dispose();
-        world.dispose();
     }
 
     private PolygonShape getRectangle(RectangleMapObject rectangleObject) {

@@ -1,64 +1,63 @@
 package non.plugins.internal;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.TextureRegion;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import non.Non;
 import non.plugins.Plugin;
-import java.io.IOException;
 
 public class Graphics extends Plugin {
-    public String author() { return "Thomas Slusny"; }
-    public String license() { return "MIT"; }
+    public String author()      { return "Thomas Slusny"; }
+    public String license()     { return "MIT"; }
     public String description() { return "Plugin for drawing and rendering of images and text."; }
     
-    public class Image extends Texture {
-        private Vector2 origin, scale;
-        private Rectangle source;
-        private float rotation;
-
-        public Image() { super(32, 32, Pixmap.Format.Alpha); init(); }
-        public Image(FileHandle handle) throws IOException { super(handle); init(); }
-        public Vector2 getOrigin() { return origin; }
-        public Image setOrigin(Vector2 origin) { this.origin = origin; return this; }
-        public Vector2 getScale() { return scale; }
-        public Image setScale(Vector2 scale) { this.scale = scale; return this; }
-        public Rectangle getSource() { return source; }
-        public Image setSource(Rectangle source) { this.source = source; return this; }
-        public float getRotation() { return rotation; }
-        public Image setRotation(float rotation) { this.rotation = rotation; return this; }
-
-        private void init() {
-            origin = Vector2.Zero;
-            scale = new Vector2(1, 1);
-            source = new Rectangle(0, 0, super.getWidth(), super.getHeight());
-            rotation = 0;
-        }
-    }
-    
-    public final SpriteBatch batch;
-    private final OrthographicCamera camera;
+    private SpriteBatch batch;
+    private OrthographicCamera camera;
     private BitmapFont font;
     private float rotation, scale;
     private Vector2 translation;
+    private Color background;
     
-    public Graphics() {
+    public Class texture = Texture.class;
+    public Class font = BitmapFont.class;
+    
+    public void loadPlugin() {
         batch = new SpriteBatch();
         font = new BitmapFont();
         camera = new OrthographicCamera();
         scale = 1;
         rotation = 0;
         translation = Vector2.Zero;
+        backgroundColor = Color.BLACK;
         setSize(Non.getWidth(), Non.getHeight());
+    }
+    
+    public void unloadPlugin() {
+        batch.dispose();
+        font.dispose();
+    }
+    
+    public void updatePluginBefore() {
+        Gdx.gl.glClearColor(background.r, background.g, background.b, background.a);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
     
     public Color newColor(String name) {
@@ -92,35 +91,35 @@ public class Graphics extends Plugin {
         return new Color(r, g, b, a);
     }
     
-    public ShaderProgram newShader(String vert, String frag) throws IOException {
+    public ShaderProgram newShader(String vert, String frag) {
         return new ShaderProgram(Non.file(vert), Non.file(frag));
     }
     
-    public Image newImage(String file) throws IOException {
-        return new Image(Non.file(file));
+    public Texture newTexture(String file) {
+        return newImage(file, false);
     }
     
-    public BitmapFont newFont(String file) throws IOException {
-        return new BitmapFont(Non.file(file));
+    public Texture newTexture(String file, boolean raw) {
+        return (raw) ? new Texture(Non.file(file)) : Non.assets.get(file, texture);
     }
     
-    public Graphics setFont(BitmapFont fnt) {
-        font = fnt;
-        return this;
+    public Sprite newSprite(Texture tex) {
+        return newSprite(tex, 0, 0, tex.getWidth(), tex.getHeight());
     }
     
-    public BitmapFont getFont() {
-        return font;
+    public Sprite newSprite(Texture tex, int sourceX, int sourceY, int sourceW, int sourceH) {
+        return new Sprite(tex, sourceX, sourceY, sourceW, sourceH);
     }
     
-    public Graphics setShader(ShaderProgram shader) {
-        batch.setShader(shader);
-        return this;
+    public BitmapFont newFont(String file) {
+        return newFont(file, false);
+    
+    public BitmapFont newFont(String file, boolean raw) {
+        return (raw) ? new BitmapFont(Non.file(file)) : Non.assets.get(file, font);
     }
     
-    public Graphics setBlending(int src, int dest) {
-        batch.setBlendFunction(src, dest);
-        return this;
+    public SpriteBatch getBatch() {
+        return batch;
     }
     
     public Matrix4 getProjection() {
@@ -135,6 +134,43 @@ public class Graphics extends Plugin {
         return camera.combined;
     }
     
+    public Vector2 getSize() {
+        return new Vector2(camera.viewportWidth, camera.viewportHeight);
+    }
+    
+    public BitmapFont getFont() {
+        return font;
+    }
+    
+    public Graphics setFont(BitmapFont fnt) {
+        font = fnt;
+        return this;
+    }
+    
+    public Graphics setShader(ShaderProgram shader) {
+        batch.setShader(shader);
+        return this;
+    }
+    
+    public Graphics setBlending(int src, int dest) {
+        batch.setBlendFunction(src, dest);
+        return this;
+    }
+    
+    public Graphics setBackgroundColor(Color color) {
+        background = color;
+    }
+    
+    public Graphics setColor(Color color) {
+        batch.setColor(color);
+        font.setColor(color);
+    }
+    
+    public Graphics resetColor() {
+        batch.setColor(Color.WHITE);
+        font.setColor(Color.WHITE);
+    }
+    
     public Graphics rotate(float angle) {
         rotation = angle;
         update();
@@ -147,78 +183,35 @@ public class Graphics extends Plugin {
         return this;
     }
     
+    public Graphics translate(int x, int y) {
+        return translate(new Vector2(x, y));
+    }
+    
     public Graphics translate(Vector2 position) {
         translation = position;
         update();
         return this;
     }
     
-    public Vector2 getSize() {
-        return new Vector2(camera.viewportWidth, camera.viewportHeight);
-    }
-    
-    public Graphics setSize(int x, int y) {
-        camera.setToOrtho(true, x, y);
+    public Graphics resize(int w, int h) {
+        camera.setToOrtho(true, w, h);
         update();
         return this;
     }
     
     public Graphics begin() {
         batch.begin();
+        resetColor();
         update();
         return this;
     }
     
-    public Graphics display() {
+    public Graphics end() {
         batch.end();
         return this;
     }
     
-    public Graphics draw(String text) {
-        return draw(text, 0, 0);
-    }
-
-    public Graphics draw(String text, int x, int y) {
-        return draw(text, x, y, Color.BLACK);
-    }
-    
-    public Graphics draw(String text, int x, int y, Color color) {
-        return draw(text, x, y, Color.BLACK, 1);
-    }
-    
-    public Graphics draw(String text, int x, int y, Color color, float size) {
-        font.setColor(color);
-        font.setScale(size, -size);
-        font.draw(batch, text, x, y);
-        return this;
-    }
-    
-    public Graphics draw(Image image) {
-        return draw(image, 0, 0);
-    }
-    
-    public Graphics draw(Image image, int x, int y) {
-        return draw(image, x, y, Color.WHITE);
-    }
-    
-    public Graphics draw(Image image, int x, int y, Color color) {
-        batch.setColor(color);
-        Vector2 origin = image.getOrigin();
-        Vector2 scale = image.getScale();
-        Rectangle source = image.getSource();
-        batch.draw(
-                image, x, y, 
-                origin.x, origin.y,
-                image.getWidth(), image.getHeight(), 
-                scale.x, scale.y, image.getRotation(),
-                (int)source.x, (int)source.y, 
-                (int)source.width, (int)source.height,
-                false, true
-        );
-        return this;
-    }
-    
-    public Graphics update() {
+    private Graphics update() {
         camera.rotate(rotation);
         camera.translate(translation);
         camera.zoom = scale;
@@ -227,8 +220,59 @@ public class Graphics extends Plugin {
         return this;
     }
     
-    public void dispose() {
-        batch.dispose();
-        font.dispose();
+    public Graphics print(String text) {
+        return draw(text, 0, 0);
+    }
+    
+    public Graphics print(String text, int x, int y) {
+        return draw(text, x, y, 1);
+    }
+    
+    public Graphics print(String text, int x, int y, float scale) {
+        font.setScale(scale, -scale);
+        font.draw(batch, text, x, y);
+        return this;
+    }
+    
+    public Graphics draw(Sprite sprite) {
+        sprite.draw(batch);
+        return this;
+    }
+    
+    public Graphics draw(Texture tex) {
+        return draw(tex, 0, 0);
+    }
+    
+    public Graphics draw(Texture tex, float x, float y) {
+        
+        return draw(tex, x, y, 0, 0, tex.getWidth(), tex.getHeight());
+    }
+    
+    public Graphics draw(Texture tex, float x, float y, int sourceX, int sourceY, int sourceW, int sourceH) {
+        
+        return draw(tex, x, y, tex.getWidth(), tex.getHeight(), sourceX, sourceY, sourceW, sourceH);
+    }
+    
+    public Graphics draw(Texture tex, float x, float y, float width, float height,
+                         int sourceX, int sourceY, int sourceW, int sourceH) {
+        
+        return draw(tex, x, y, 0, 0, width, height, 1, 1, 0, sourceX, sourceY, sourceW, sourceH);
+    }
+    
+    public Graphics draw(Texture tex, float x, float y, float originX, float originY, float width,
+                         float height, float scaleX, float scaleY, float rotation,
+                         int sourceX, int sourceY, int sourceW, int sourceH) {
+        
+        batch.draw(
+                tex, x, y, 
+                originX, originY,
+                width, height, 
+                scaleX, scaleY, rotation,
+                sourceX, sourceY, 
+                sourceW, sourceH,
+                false, true
+        );
+        
+        return this;
     }
 }

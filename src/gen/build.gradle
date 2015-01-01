@@ -9,6 +9,7 @@ task javascript << {
     ]
     
     def builder = new groovy.json.JsonBuilder(map)
+    
     file("../../project").mkdir()
     def ncfg = file("../../project/non.cfg")
     ncfg.createNewFile()
@@ -18,7 +19,6 @@ task javascript << {
         from "."
         into "../../project"
         include "main.$lang"
-        include "**/*.png"
     }
 }
 
@@ -33,6 +33,7 @@ task lua << {
     ]
     
     def builder = new groovy.json.JsonBuilder(map)
+    
     file("../../project").mkdir()
     def ncfg = file("../../project/non.cfg")
     ncfg.createNewFile()
@@ -42,6 +43,5 @@ task lua << {
         from "."
         into "../../project"
         include "main.$lang"
-        include "**/*.png"
     }
 }
