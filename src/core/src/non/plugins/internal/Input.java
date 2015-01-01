@@ -29,19 +29,6 @@ public class Input extends Plugin {
         accelerometer = new Accelerometer();
     }
     
-    public int getButton(String name) {
-        if ("Left".equals(name)) return com.badlogic.gdx.Input.Buttons.LEFT;
-        if ("Right".equals(name)) return com.badlogic.gdx.Input.Buttons.RIGHT;
-        if ("Middle".equals(name)) return com.badlogic.gdx.Input.Buttons.MIDDLE;
-        if ("Back".equals(name)) return com.badlogic.gdx.Input.Buttons.BACK;
-        if ("Forward".equals(name)) return com.badlogic.gdx.Input.Buttons.FORWARD;
-        return -1;
-    }
-    
-    public int getKey(String name) {
-        return com.badlogic.gdx.Input.Keys.valueOf(name);
-    }
-    
     public void showTextDialog(String title, String defaultValue) {
         text = "";
         Gdx.input.getTextInput(new TextInputListener() {
