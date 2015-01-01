@@ -61,6 +61,7 @@ public class Graphics extends Plugin {
     }
     
     public Color newColor(String name) {
+        if name.startsWith("#") return Color.valueOf(name.replace("#",""));
         if ("clear".equals(name)) return Color.CLEAR;
         else if ("white".equals(name)) return Color.WHITE;
         else if ("black".equals(name)) return Color.BLACK;
