@@ -16,14 +16,22 @@ public class Lua extends ScriptRuntime {
     
     public void init() {
         String script =
-        "non.load   = function(res) \n end \n" +
-        "non.ready  = function() \n end \n" +
-        "non.update = function(dt) \n end \n" +
-        "non.draw   = function() \n end \n" +
-        "non.resize = function(w, h) \n end \n" +
-        "non.close  = function() \n end \n" +
-        "non.pause  = function() \n end \n" +
-        "non.resume = function() \n end \n";
+		"non.load = function(a) \n end \n" +
+		"non.ready = function() \n end \n" +
+		"non.update = function(a) \n end \n" +
+		"non.draw = function() \n end \n" +
+		"non.resize = function(a,b) \n end \n" +
+		"non.pause = function() \n end \n" +
+		"non.resume = function() \n end \n" +
+		"non.close = function() \n end \n" +
+		"non.keydown = function(a) \n end \n" +
+		"non.keyup = function(a) \n end \n" +
+		"non.keytyped = function(a) \n end \n" +
+		"non.touchdown = function(a,b,c) \n end \n" +
+		"non.touchup = function(a,b,c) \n end \n" +
+		"non.touchdragged = function(a,b) \n end \n" +
+		"non.mousemoved = function(a) \n end \n" +
+		"non.scrolled = function(a) \n end \n";
         eval(script);
     }
 
@@ -33,7 +41,14 @@ public class Lua extends ScriptRuntime {
         if (args != null) {
             LuaValue[] values = new LuaValue[args.length];
             for (int i = 0; i < args.length; i++) values[i] = (LuaValue)convert(args[i]);
-            return func.call(LuaValue.listOf(values));
+			
+			switch(values.length) {
+				case 1: return func.call(values[0]);
+				case 2: return func.call(values[0], values[1]);
+				case 3: return func.call(values[0], values[1], values[2]);
+			}
+			
+			return func.call(LuaValue.listOf(values));
         } else {
             return func.call();
         }

@@ -19,20 +19,20 @@ task update(dependsOn: ':update') << {
     def res = "../gen/res"
     def out = "../android/assets/res"
     
-    def files = [ "icon-16", "icon-32", "icon-64", "icon-192", "icon-256", "loading" ]
+    def files = [ "icon-16", "icon-32", "icon-64", "icon-192", "icon-256"]
     
-    for(file in files) {
-        if (file("${src}/${file}.png").exists()) {
+    for(fl in files) {
+        if (file("${src}/${fl}.png").exists()) {
             copy {
                 from src
                 into out
-                include "${file}.png"
+                include "${fl}.png"
             }
         } else {
             copy {
                 from res
                 into out
-                include "${file}.png"
+                include "${fl}.png"
             }
         }
     }

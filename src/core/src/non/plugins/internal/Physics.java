@@ -40,7 +40,7 @@ public class Physics extends Plugin {
     
     public World getWorld() { return world; }
     public Physics setStep(float step) { this.step = step; return this; }
-    public Physics setDebug(boolean debug) { this.debug = debug; }
+    public Physics setDebug(boolean debug) { this.debug = debug; return this; }
     
     public void loadPlugin() {
         Box2D.init();
@@ -66,8 +66,9 @@ public class Physics extends Plugin {
     
     public void updatePluginAfter() {
         if (!debug) return;
+		Graphics graphics = (Graphics)Plugin.get("graphics");
         if (renderer != null)
-            renderer.render(world, (Graphics)(Plugin.get("graphics")).getProjection());
+            renderer.render(world, graphics.getProjection());
         else
             renderer = new Box2DDebugRenderer();
     }

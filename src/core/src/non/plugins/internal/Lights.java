@@ -41,7 +41,7 @@ public class Lights extends Plugin {
     
     public void draw() {
         Graphics graphics = (Graphics)Plugin.get("graphics");
-        graphics.end();
+        graphics.display();
         handler.setCombinedMatrix(graphics.getProjection());
         handler.render();
         graphics.begin();

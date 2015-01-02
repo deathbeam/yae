@@ -130,6 +130,28 @@ task update << {
     def ninit = new File("core/src/non/plugins/internal/_init.java")
     ninit.createNewFile()
     ninit.write(text)
+	
+	def src = "../project/res"
+    def res = "gen/res"
+    def out = "android/assets/res"
+    
+    def files = [ "loading", "loading_bg", "loading_bar", "loading_bar_bg" ]
+    
+    for(fl in files) {
+        if (file("${src}/${fl}.png").exists()) {
+            copy {
+                from src
+                into out
+                include "${fl}.png"
+            }
+        } else {
+            copy {
+                from res
+                into out
+                include "${fl}.png"
+            }
+        }
+    }
     
     copy {
         from "../project"

@@ -1,15 +1,17 @@
 package non;
 
 import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
+import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.Vector2;
 import non.scripting.ScriptRuntime;
 import non.plugins.Plugin;
 import java.io.IOException;
@@ -20,11 +22,13 @@ public class Non implements ApplicationListener {
     private static String platform;
     private static JsonValue args;
     
-    private static ready;
+	// loading screen
+    public static boolean ready;
     private static SpriteBatch loadingBatch;
-    private static Texture loadingImage;
-    private static BitmapFont loadingFont;
-    private static String loadingText;
+    private static Texture loadingBg, loadingImage, loadingBar, loadingBarBg;
+	private static Vector2 loadingPos, loadingBarPos;
+	private float percent;
+	private float barWidth;
     
     public static String getExtension(String fileName) {
         String extension = "";
@@ -79,21 +83,20 @@ public class Non implements ApplicationListener {
     }
     
     public static void setPlatform(String platform) {
-        this.platform = platform;
+        Non.platform = platform;
     }
     
     public static FileHandle file(String path) {
-        try { return Gdx.files.internal(path); }
-        catch(IOException e) { return error("Resource not found", path); }
-        
+        return Gdx.files.internal(path);
     }
     
     public void create () {
         ready = false;
         loadingBatch = new SpriteBatch();
-        loadingFont = new BitmapFont();
-        loadingImage = new Texture(file("res/loading.png");
-        loadingText = "Loading...";
+		loadingBg = new Texture(file("res/loading_bg.png"));
+        loadingImage = new Texture(file("res/loading.png"));
+		loadingBar = new Texture(file("res/loading_bar.png"));
+		loadingBarBg = new Texture(file("res/loading_bar_bg.png"));
         
         assets = new AssetManager();
         args = new JsonReader().parse(file("non.cfg"));
@@ -110,44 +113,62 @@ public class Non implements ApplicationListener {
     public void render () {        
         if(assets.update()) {
             if (!ready) {
-                loadingText = "Touch screen to continue...";
-                
                 if (Gdx.input.isTouched()) {
                     script.invoke("non", "ready");
                     ready = true;
                 }
-                
-                return;
-            }
-            
-            Plugin.updateBefore();
-            script.invoke("non", "update", getDelta());
-            script.invoke("non", "draw");
-            Plugin.updateAfter();
+            } else {
+				Plugin.updateBefore();
+				script.invoke("non", "update", getDelta());
+				script.invoke("non", "draw");
+				Plugin.updateAfter();
+			}
         }
         
-        if (!ready)
-            Gdx.gl.glClearColor(1, 1, 1, 1);
+        if (!ready) {
+            Gdx.gl.glClearColor(0, 0, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-            
-            loadingText = "Loading: " + assets.getProgress();
+			
             loadingBatch.begin();
-            loadingFont.setColor(Color.BLACK);
-            loadingFont.draw(loadingBatch, loadingText, 15, 15);
-            loadingBatch.draw(loadingImage,
-                getWidth()/2 - loadingImage.getWidth()/2,
-                getHeight()/2 - loadingImage.getHeight()/2);
-                
+			loadingBatch.draw(loadingBg, 0, 0, getWidth(), getHeight(), 0, 0, loadingBg.getWidth(), loadingBg.getHeight());
+            loadingBatch.draw(loadingImage, loadingPos.x, loadingPos.y);
+            loadingBatch.draw(loadingBarBg, loadingBarPos.x, loadingBarPos.y);
+			
+			percent = Interpolation.linear.apply(percent, assets.getProgress(), 0.1f);
+			barWidth = loadingBar.getWidth() * percent;
+            
+			loadingBatch.draw(loadingBar,
+				loadingBarPos.x, loadingBarPos.y, 
+				barWidth, loadingBar.getHeight(),
+				0, 0, barWidth, loadingBar.getHeight());
+			
             loadingBatch.end();
         }
     }
 
-    public void resize (int width, int height) { script.invoke("non", "resize", width, height); }
-    public void pause ()                       { script.invoke("non", "pause"); }
-    public void resume ()                      { script.invoke("non", "resume"); }
+    public void resize(int width, int height) { 
+		if (ready) { 
+			script.invoke("non", "resize", width, height);
+		} else {
+			loadingBatch.setProjectionMatrix(loadingBatch.getProjectionMatrix().setToOrtho2D(0, 0, width, height));
+			loadingBarPos = new Vector2(
+				(width - loadingBar.getWidth())/2,
+				(height - loadingBar.getHeight())/2);
+		
+			loadingPos = new Vector2((width - loadingImage.getWidth())/2, (height + loadingBar.getHeight())/2);
+		}
+	}
+	
+    public void pause() {
+		if (ready) script.invoke("non", "pause"); 
+	}
+	
+    public void resume() {
+		if (ready) script.invoke("non", "resume");
+	}
     
     public void dispose () { 
-        script.invoke("non", "close");
+        if (ready) script.invoke("non", "close");
         Plugin.dispose();
         assets.dispose();
     }

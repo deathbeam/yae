@@ -1,6 +1,7 @@
 package non.plugins.internal;
 import non.plugins.Plugin;
-import java.io.IOException;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.JsonValue;
 
 public class Non extends Plugin {
     public String author()      { return "Thomas Slusny"; }
@@ -11,7 +12,7 @@ public class Non extends Plugin {
     public int getHeight()                         { return non.Non.getHeight(); }
     public int getFPS()                            { return non.Non.getFPS(); }
     public float getDelta()                        { return non.Non.getDelta(); }
-    public Object getConfig()                      { return non.Non.getConfig(); }
+    public JsonValue getConfig()                      { return non.Non.getConfig(); }
     
     public String getPlatform()                    { return non.Non.getPlatform(); }
     public boolean checkPlatform(String p)         { return getPlatform().equalsIgnoreCase(p); }
@@ -21,14 +22,10 @@ public class Non extends Plugin {
     public Object log(String type, String msg)     { return non.Non.log(type, msg); }
     public Object debug(String type, String msg)   { return non.Non.debug(type, msg); }
     
-    public Object file(String path) { 
-        try { return non.Non.file(path); } 
-        catch(IOException e) { return log("Resource not found", path); }
-    }
+    public FileHandle file(String path) { return non.Non.file(path); }
+    public Object require(String path) { return non.Non.script.eval(file(path).readString()); }
     
-    public Object require(String path) {
-        return non.Non.script.eval((FileHandle)file(path).readString());
-    }
-    
-    public Object load, ready, draw, update, resize, close, pause, resume;
+    public Object 
+		load, ready, draw, update, resize, close, pause, resume, 
+		keydown, keyup, keytyped, touchdown, touchup, touchdragged, mousemoved, scrolled;
 }

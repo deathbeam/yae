@@ -17,14 +17,22 @@ public class JavaScript extends ScriptRuntime {
     
     public void init() {
         String script =
-        "non.load   = function(res) { };" +
-        "non.ready  = function() { };" +
-        "non.update = function(dt) { };" +
-        "non.draw   = function() { };" +
-        "non.resize = function(w, h) { };" +
-        "non.close  = function() { };" +
-        "non.pause  = function() { };" +
-        "non.resume = function() { };";
+        "non.load = function(a) {};" +
+		"non.ready = function() {};" +
+		"non.update = function(a) {};" +
+		"non.draw = function() {};" +
+		"non.resize = function(a,b) {};" +
+		"non.pause = function() {};" +
+		"non.resume = function() {};" +
+		"non.close = function() {};" +
+		"non.keydown = function(a) {};" +
+		"non.keyup = function(a) {};" +
+		"non.keytyped = function(a) {};" +
+		"non.touchdown = function(a,b,c) {};" +
+		"non.touchup = function(a,b,c) {};" +
+		"non.touchdragged = function(a,b) {};" +
+		"non.mousemoved = function(a) {};" +
+		"non.scrolled = function(a) {};";
         eval(script);
         
     }

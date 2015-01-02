@@ -23,21 +23,9 @@ public class Input extends Plugin {
     }
     
     public Accelerometer accelerometer;
-    public String text;
     
     public void loadPlugin() {
         accelerometer = new Accelerometer();
-    }
-    
-    public void showTextDialog(String title, String defaultValue) {
-        text = "";
-        Gdx.input.getTextInput(new TextInputListener() {
-            public void input (String text) {
-                (Input)Plugin.get("input").text = text;
-            }
-
-            public void canceled () { }
-        }, title, defaultValue);
     }
     
     public void showKeyboard()                  { Gdx.input.setOnscreenKeyboardVisible(true); }
@@ -46,5 +34,4 @@ public class Input extends Plugin {
     public void fixCursor()                     { Gdx.input.setCursorCatched(true); }
     public void releaseCursor()                 { Gdx.input.setCursorCatched(false); }
     public void vibrate(int duration)           { Gdx.input.vibrate(duration); }
-    public String getLastText()                 { return text; }
 }

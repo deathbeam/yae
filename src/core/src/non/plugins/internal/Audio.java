@@ -18,15 +18,15 @@ public class Audio extends Plugin {
         return newMusic(file, false);
     }
     
-    public Music newMusic(String file, boolean raw)
-        return (raw) ? Gdx.audio.newMusic(Non.file(file)) : Non.assets.get(file, music);
+    public Music newMusic(String file, boolean raw) {
+        return (raw) ? Gdx.audio.newMusic(Non.file(file)) : (Music)Non.assets.get(file, music);
     }
     
-    public Music newSound(String file) {
+    public Sound newSound(String file) {
         return newSound(file, false);
     }
     
-    public Music newSound(String file, boolean raw)
-        return (raw) ? Gdx.audio.newSound(Non.file(file)) : Non.assets.get(file, sound);
+    public Sound newSound(String file, boolean raw) {
+        return (raw) ? Gdx.audio.newSound(Non.file(file)) : (Sound)Non.assets.get(file, sound);
     }
 }

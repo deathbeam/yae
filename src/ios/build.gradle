@@ -61,22 +61,22 @@ task update(dependsOn: ':update') << {
     def total = files[0].lenght()
     
     for(i in 0..total) {
-        def file = files[0][i]
+        def fl = files[0][i]
         def newFile = files[1][i]
         
-        if (file("${src}/${file}.png").exists()) {
+        if (file("${src}/${fl}.png").exists()) {
             copy {
                 from src
                 into out
-                include "${file}.png"
-                rename "${file}.png", "${newFile}.png"
+                include "${fl}.png"
+                rename "${fl}.png", "${newFile}.png"
             }
         } else {
             copy {
                 from res
                 into out
-                include "${file}.png"
-                rename "${file}.png", "${newFile}.png"
+                include "${fl}.png"
+                rename "${fl}.png", "${newFile}.png"
             }
         }
     }

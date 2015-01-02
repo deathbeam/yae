@@ -53,7 +53,7 @@ public abstract class Plugin {
         return plugins.get(name);
     }
     
-    public static void updateBefore() { { for(Plugin plugin: plugins.values()) plugin.updatePluginBefore(); }
-    public static void updateAfter() { { for(Plugin plugin: plugins.values()) plugin.updatePluginAfter(); }
+    public static void updateBefore() { for(Plugin plugin: plugins.values()) plugin.updatePluginBefore(); }
+    public static void updateAfter() { for(Plugin plugin: plugins.values()) plugin.updatePluginAfter(); }
     public static void dispose() { for(Plugin plugin: plugins.values()) plugin.unloadPlugin(); }
 }

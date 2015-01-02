@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.TextureRegion;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -31,7 +30,7 @@ public class Graphics extends Plugin {
     
     private SpriteBatch batch;
     private OrthographicCamera camera;
-    private BitmapFont font;
+    private BitmapFont curFont;
     private float rotation, scale;
     private Vector2 translation;
     private Color background;
@@ -41,18 +40,18 @@ public class Graphics extends Plugin {
     
     public void loadPlugin() {
         batch = new SpriteBatch();
-        font = new BitmapFont();
+        curFont = new BitmapFont();
         camera = new OrthographicCamera();
         scale = 1;
         rotation = 0;
         translation = Vector2.Zero;
-        backgroundColor = Color.BLACK;
-        setSize(Non.getWidth(), Non.getHeight());
+        background = Color.BLACK;
+        resize(Non.getWidth(), Non.getHeight());
     }
     
     public void unloadPlugin() {
         batch.dispose();
-        font.dispose();
+        curFont.dispose();
     }
     
     public void updatePluginBefore() {
@@ -61,7 +60,7 @@ public class Graphics extends Plugin {
     }
     
     public Color newColor(String name) {
-        if name.startsWith("#") return Color.valueOf(name.replace("#",""));
+        if (name.startsWith("#")) return Color.valueOf(name.replace("#",""));
         if ("clear".equals(name)) return Color.CLEAR;
         else if ("white".equals(name)) return Color.WHITE;
         else if ("black".equals(name)) return Color.BLACK;
@@ -97,11 +96,11 @@ public class Graphics extends Plugin {
     }
     
     public Texture newTexture(String file) {
-        return newImage(file, false);
+        return newTexture(file, false);
     }
     
     public Texture newTexture(String file, boolean raw) {
-        return (raw) ? new Texture(Non.file(file)) : Non.assets.get(file, texture);
+        return (raw) ? new Texture(Non.file(file)) : (Texture)Non.assets.get(file, texture);
     }
     
     public Sprite newSprite(Texture tex) {
@@ -114,9 +113,10 @@ public class Graphics extends Plugin {
     
     public BitmapFont newFont(String file) {
         return newFont(file, false);
-    
+    }
+	
     public BitmapFont newFont(String file, boolean raw) {
-        return (raw) ? new BitmapFont(Non.file(file)) : Non.assets.get(file, font);
+        return (raw) ? new BitmapFont(Non.file(file)) : (BitmapFont)Non.assets.get(file, font);
     }
     
     public SpriteBatch getBatch() {
@@ -140,11 +140,11 @@ public class Graphics extends Plugin {
     }
     
     public BitmapFont getFont() {
-        return font;
+        return curFont;
     }
     
     public Graphics setFont(BitmapFont fnt) {
-        font = fnt;
+        curFont = fnt;
         return this;
     }
     
@@ -160,16 +160,19 @@ public class Graphics extends Plugin {
     
     public Graphics setBackgroundColor(Color color) {
         background = color;
+		return this;
     }
     
     public Graphics setColor(Color color) {
         batch.setColor(color);
-        font.setColor(color);
+        curFont.setColor(color);
+		return this;
     }
     
     public Graphics resetColor() {
         batch.setColor(Color.WHITE);
-        font.setColor(Color.WHITE);
+        curFont.setColor(Color.WHITE);
+		return this;
     }
     
     public Graphics rotate(float angle) {
@@ -207,7 +210,7 @@ public class Graphics extends Plugin {
         return this;
     }
     
-    public Graphics end() {
+    public Graphics display() {
         batch.end();
         return this;
     }
@@ -222,16 +225,16 @@ public class Graphics extends Plugin {
     }
     
     public Graphics print(String text) {
-        return draw(text, 0, 0);
+        return print(text, 0, 0);
     }
     
     public Graphics print(String text, int x, int y) {
-        return draw(text, x, y, 1);
+        return print(text, x, y, 1);
     }
     
     public Graphics print(String text, int x, int y, float scale) {
-        font.setScale(scale, -scale);
-        font.draw(batch, text, x, y);
+        curFont.setScale(scale, -scale);
+        curFont.draw(batch, text, x, y);
         return this;
     }
     
