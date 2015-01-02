@@ -89,9 +89,31 @@ public class Non implements ApplicationListener {
     public static FileHandle file(String path) {
         return Gdx.files.internal(path);
     }
+	
+	public static void exit() {
+		Gdx.app.exit();
+	}
     
     public void create () {
         ready = false;
+		args = new JsonReader().parse(file("non.cfg"));
+		
+		int width = 800;
+		int height = 600;
+		boolean fullscreen = false;
+		
+		if (args.has("desktop")) {
+			JsonValue desktop = args.get("desktop");
+			if (desktop.has("display")) {
+				JsonValue display = desktop.get("display");
+				if (display.has("width")) width = display.get("width").asInt();
+				if (display.has("height")) height = display.get("height").asInt();
+				if (display.has("fullscreen")) fullscreen = display.get("fullscreen").asBoolean();
+			}
+		}
+		
+		Gdx.graphics.setDisplayMode(width, height, fullscreen);
+		
         loadingBatch = new SpriteBatch();
 		loadingBg = new Texture(file("res/loading_bg.png"));
         loadingImage = new Texture(file("res/loading.png"));
@@ -99,7 +121,7 @@ public class Non implements ApplicationListener {
 		loadingBarBg = new Texture(file("res/loading_bar_bg.png"));
         
         assets = new AssetManager();
-        args = new JsonReader().parse(file("non.cfg"));
+        
         String main = args.getString("main");
         script = ScriptRuntime.byExtension(getExtension(main));
         Plugin.loadAll();

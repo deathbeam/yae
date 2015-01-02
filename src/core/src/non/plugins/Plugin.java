@@ -10,7 +10,13 @@ public abstract class Plugin {
     public String license()        { return "Public Domain"; }
     public String description()    { return "Not specified."; }
     public String[] dependencies() { return null; }
-    
+	
+	public String name() { 
+		String name = this.getClass().getSimpleName();
+        String subStr = name.substring(0, 1);
+        return name.replaceFirst(subStr, subStr.toLowerCase());
+    }
+	
     public Plugin() { load(this); }
     public void updatePluginBefore() { }
     public void updatePluginAfter() { }
@@ -20,11 +26,7 @@ public abstract class Plugin {
     private static HashMap<String, Plugin> plugins = new HashMap<String, Plugin>();
     
     public static void load(Plugin plugin) {
-        String name = plugin.getClass().getSimpleName();
-        String subStr = name.substring(0, 1);
-        name = name.replaceFirst(subStr, subStr.toLowerCase());
-        
-        Non.log("Name", name);
+        Non.log("Name", plugin.name());
         Non.log("Author", plugin.author());
         Non.log("License", plugin.license());
         Non.log("Description", plugin.description());
@@ -39,8 +41,8 @@ public abstract class Plugin {
             Non.log("Dependencies", "None");
         }
         
-        plugins.put(name, plugin);
-        Non.script.put(name, plugin);
+        plugins.put(plugin.name(), plugin);
+        Non.script.put(plugin.name(), plugin);
     }
     
     public static void loadAll() {

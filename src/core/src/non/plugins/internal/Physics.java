@@ -39,11 +39,16 @@ public class Physics extends Plugin {
     private float step, accum, ppt;
     
     public World getWorld() { return world; }
+    public Physics setGravity(float x, float y) { world.setGravity(new Vector2(x,y)); return this; }
     public Physics setStep(float step) { this.step = step; return this; }
     public Physics setDebug(boolean debug) { this.debug = debug; return this; }
+	
+	public Physics() {
+		Box2D.init();
+		world = new World(new Vector2(0,0), true);
+	}
     
     public void loadPlugin() {
-        Box2D.init();
         renderer = new Box2DDebugRenderer();
         debug = false;
         step = 1 / 60f;
@@ -74,7 +79,7 @@ public class Physics extends Plugin {
     }
 
     public Physics init(Vector2 gravity) {
-        world = new World(gravity, true);
+        
         return this;
     }
     

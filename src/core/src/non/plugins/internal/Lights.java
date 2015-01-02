@@ -17,7 +17,6 @@ public class Lights extends Plugin {
     
     private RayHandler handler;
 
-    public Lights setWorld(World world) { handler.setWorld(world); return this; }
     public Lights setGammaCorrection(boolean wanted) { RayHandler.setGammaCorrection(wanted); return this; }
     public Lights setDiffuseLight(boolean use) { RayHandler.useDiffuseLight(use); return this; }
     public Lights setAmbient(Color color) { handler.setAmbientLight(color); return this; }
@@ -29,6 +28,8 @@ public class Lights extends Plugin {
     
     public void loadPlugin() {
         handler = new RayHandler(null);
+		Physics physics = (Physics)Plugin.get("physics");
+		handler.setWorld(physics.getWorld());
     }
     
     public void unloadPlugin() {
