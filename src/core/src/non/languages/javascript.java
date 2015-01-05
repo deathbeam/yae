@@ -1,15 +1,15 @@
-package non.scripting;
+package non.languages;
 
 import org.mozilla.javascript.*;
 
-public class JavaScript extends ScriptRuntime {
-    public static String extension() { return "js"; }
-    public String version()          { return "1.7R4"; }
+public class javascript extends Language {
+    public String extension() { return "js"; }
+    public String version()   { return "1.7R4"; }
     
     private final Context engine;
     private final Scriptable scope;
     
-    public JavaScript() {
+    public javascript() {
         engine = Context.enter();
         engine.setOptimizationLevel(-1);
         scope = engine.initStandardObjects();
@@ -18,23 +18,22 @@ public class JavaScript extends ScriptRuntime {
     public void init() {
         String script =
         "non.load = function(a) {};" +
-		"non.ready = function() {};" +
-		"non.update = function(a) {};" +
-		"non.draw = function() {};" +
-		"non.resize = function(a,b) {};" +
-		"non.pause = function() {};" +
-		"non.resume = function() {};" +
-		"non.close = function() {};" +
-		"non.keydown = function(a) {};" +
-		"non.keyup = function(a) {};" +
-		"non.keytyped = function(a) {};" +
-		"non.touchdown = function(a,b,c) {};" +
-		"non.touchup = function(a,b,c) {};" +
-		"non.touchdragged = function(a,b) {};" +
-		"non.mousemoved = function(a) {};" +
-		"non.scrolled = function(a) {};";
+        "non.ready = function() {};" +
+        "non.update = function(a) {};" +
+        "non.draw = function() {};" +
+        "non.resize = function(a,b) {};" +
+        "non.pause = function() {};" +
+        "non.resume = function() {};" +
+        "non.close = function() {};" +
+        "non.keydown = function(a) {};" +
+        "non.keyup = function(a) {};" +
+        "non.keytyped = function(a) {};" +
+        "non.touchdown = function(a,b,c) {};" +
+        "non.touchup = function(a,b,c) {};" +
+        "non.touchdragged = function(a,b) {};" +
+        "non.mousemoved = function(a) {};" +
+        "non.scrolled = function(a) {};";
         eval(script);
-        
     }
     
     public Object invoke(String object, String method, Object... args) {

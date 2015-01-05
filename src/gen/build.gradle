@@ -1,47 +1,19 @@
-task javascript << {
-    def lang = "js"
-    
-    def map = [
-        name: appName,
-        version: version,
-        main: "main.$lang",
-        plugins: ["Graphics"]
-    ]
-    
-    def builder = new groovy.json.JsonBuilder(map)
-    
-    file("../../project").mkdir()
-    def ncfg = file("../../project/non.cfg")
-    ncfg.createNewFile()
-    ncfg.write(builder.toString())
-    
+file("../../project").mkdir()
+
+task hello << {
     copy {
-        from "."
+        from "hello"
         into "../../project"
-        include "main.$lang"
+        exclude "**/*.DS_Store"
+        exclude "**/*Thumbs.db"
     }
 }
 
-task lua << {
-    def lang = "lua"
-    
-    def map = [
-        name: appName,
-        version: version,
-        main: "main.$lang",
-        plugins: ["Graphics"]
-    ]
-    
-    def builder = new groovy.json.JsonBuilder(map)
-    
-    file("../../project").mkdir()
-    def ncfg = file("../../project/non.cfg")
-    ncfg.createNewFile()
-    ncfg.write(builder.toString())
-    
+task pong << {
     copy {
-        from "."
+        from "pong"
         into "../../project"
-        include "main.$lang"
+        exclude "**/*.DS_Store"
+        exclude "**/*Thumbs.db"
     }
 }

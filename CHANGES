@@ -1,0 +1,44 @@
+[0.3.0]
+- added drawing of various shapes to graphics plugin
+- added new method to graphics plugin for drawing formatted text (printf)
+- added new method to graphics plugin for drawing texture quad (drawq)
+- added 2 new examples to gen task: Hello World and Pong
+- added line and quad to math plugin
+- added support for custom scripting languages
+- changed non.cfg "main" to "language" and changed its functionality
+- removed input.keyboard.isKeyJustPressed
+- removed input.touch.isJustTouched
+- removed input.mouse.isJustClicked
+- renamed graphics.texture to graphics.imageLoader
+- renamed graphics.font to graphics.fontLoader
+- renamed audio.sound to audio.soundLoader
+- renamed audio.music to audio.musicLoader
+- renamed graphics.newTexture to graphics.image
+- renamed graphics.newFont to graphics.color
+- renamed graphics.newShader to graphics.shader
+- renamed graphics.newColor to graphics.color
+- renamed graphics.setBackground to graphics.clear
+- renamed graphics.setColor to graphics.tint
+- renamed input.keyboard.isKeyPressed to input.keyboard.isDown
+- renamed input.touch.isTouched to input.touch.isDown
+- renamed input.mouse.isClicked to input.mouse.isDown
+- renamed math.newVector to math.vector
+- renamed math.newRectangle to math.rectangle
+- renamed math.newCircle to math.circle
+- renamed math.newPolygon to math.polygon
+- renamed math.newPolyline to math.polyline
+- renamed network.newServer and network.newClient to network.server and network.client
+- renamed physics.newShape to physics.shape
+- removed need for using graphics.begin and graphics.display when drawing anything
+- fixed graphics.translate and graphics.rotate
+- fixed calling of resize event
+
+[0.2.0]
+- added asynchromous resource loading (use non.load(assets) event) along with super sexy loading screen what is displayed during loading 
+- removed TILED support (sorry, I wasn´t able to make it work with normal coordinate system)
+- totally revamped graphics, audio and input plugin
+- added some new events for handling input
+- removed need of entire res/ folder for new projects
+- fixed major bug with Lua integration what I do not noticed before
+- added non.exit method what will quit current game
+- added option for changing display mode for desktop from non.cfg

@@ -64,6 +64,15 @@ task copyNatives << {
 }
 
 task update(dependsOn: [':update', copyNatives]) << {
+    def xml = file("res/values/strings.xml")
+    def config = new groovy.util.XmlParser().parse(xml)
+    config.children().clear()
+    config.appendNode("string", [ name: "app_name" ], appName)
+    def writer = new FileWriter(xml)
+    def printer = new XmlNodePrinter(new PrintWriter(writer))
+    printer.setPreserveWhitespace true
+    printer.print(config)
+    
     def src = "../../project/res"
     def res = "../gen/res"
     

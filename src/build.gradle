@@ -118,12 +118,18 @@ project(":core") {
 
 task update << {
     copy {
+        from "../languages"
+        into "core/src/non/languages"
+        include "**/*.java"
+    }
+    
+    copy {
         from "../plugins"
         into "core/src/non/plugins"
         include "**/*.java"
     }
     
-    def text = "package non.plugins.internal; import non.plugins.*; public class _init { static { new Non(); "
+    def text = "package non.plugins.internal; import non.plugins.*; public class _init { static { new non(); "
     try { for(plug in cfg.plugins) text += "new ${plug}(); " } catch(e) { }
     text += "} }"
         
@@ -131,7 +137,7 @@ task update << {
     ninit.createNewFile()
     ninit.write(text)
 	
-	def src = "../project/res"
+    def src = "../project/res"
     def res = "gen/res"
     def out = "android/assets/res"
     

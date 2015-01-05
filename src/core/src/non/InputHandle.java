@@ -4,7 +4,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
 
 public class InputHandle implements InputProcessor {
-    public String getButton(int code) {
+    public static String getButton(int code) {
         if (code == com.badlogic.gdx.Input.Buttons.LEFT) return "left";
         if (code == com.badlogic.gdx.Input.Buttons.RIGHT) return "right";
         if (code == com.badlogic.gdx.Input.Buttons.MIDDLE) return "middle";
@@ -13,8 +13,21 @@ public class InputHandle implements InputProcessor {
         return "unknown";
     }
     
-    public String getKey(int code) {
+    public static int getButton(String name) {
+       if ("left".equalsIgnoreCase(name)) return com.badlogic.gdx.Input.Buttons.LEFT;
+       if ("right".equalsIgnoreCase(name)) return com.badlogic.gdx.Input.Buttons.RIGHT;
+       if ("middle".equalsIgnoreCase(name)) return com.badlogic.gdx.Input.Buttons.MIDDLE;
+       if ("back".equalsIgnoreCase(name)) return com.badlogic.gdx.Input.Buttons.BACK;
+       if ("forward".equalsIgnoreCase(name)) return com.badlogic.gdx.Input.Buttons.FORWARD;
+       return -1;
+    }
+    
+    public static String getKey(int code) {
         return com.badlogic.gdx.Input.Keys.toString(code).toLowerCase();
+    }
+    
+    public static int getKey(String name) {
+        return com.badlogic.gdx.Input.Keys.valueOf(name);
     }
     
     public boolean keyDown (int keycode) {

@@ -22,7 +22,7 @@ import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
-public class Network extends Plugin {
+public class network extends Plugin {
     public String author()      { return "Thomas Slusny"; }
     public String license()     { return "MIT"; }
     public String description() { return "Simple TCP networking."; }
@@ -300,13 +300,13 @@ public class Network extends Plugin {
         }
     }
     
-    public Network setHost(String host) { this.host = host; return this; }
-    public Network setPort(int port) { this.port = port; return this; }
+    public network setHost(String host) { this.host = host; return this; }
+    public network setPort(int port) { this.port = port; return this; }
     public ByteArrayOutputStream newBuffer() { return new ByteArrayOutputStream(); }
-    public Server newServer() { return new Server(listener, port); }
-    public ClientConnection newClient() { return new ClientConnection(listener, host, port); }
+    public Server server() { return new Server(listener, port); }
+    public ClientConnection cient() { return new ClientConnection(listener, host, port); }
     
-    public void loadPlugin() {
+    public void plugin_load() {
         this.listener = new Listener() {
             public void disconnected(Connection broken, boolean forced) {
                 Non.script.invoke("network", "disconnected", broken);

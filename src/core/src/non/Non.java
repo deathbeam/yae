@@ -12,23 +12,23 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
-import non.scripting.ScriptRuntime;
+import non.languages.Language;
 import non.plugins.Plugin;
 import java.io.IOException;
 
 public class Non implements ApplicationListener {
-    public static ScriptRuntime script;
+    public static Language script;
     public static AssetManager assets;
     private static String platform;
     private static JsonValue args;
     
-	// loading screen
+    // loading screen
     public static boolean ready;
     private static SpriteBatch loadingBatch;
     private static Texture loadingBg, loadingImage, loadingBar, loadingBarBg;
-	private static Vector2 loadingPos, loadingBarPos;
-	private float percent;
-	private float barWidth;
+    private static Vector2 loadingPos, loadingBarPos;
+    private float percent;
+    private float barWidth;
     
     public static String getExtension(String fileName) {
         String extension = "";
@@ -61,6 +61,10 @@ public class Non implements ApplicationListener {
         return platform;
     }
     
+    public boolean checkPlatform(String p) {
+        return getPlatform().equalsIgnoreCase(p);
+    }
+    
     public static Object warning(String type, String msg) {
         Gdx.app.error("NoNonsense", "[" + type + "] " + msg);
         return null;
@@ -68,7 +72,7 @@ public class Non implements ApplicationListener {
     
     public static Object error(String type, String msg) {
         Gdx.app.error("NoNonsense", "[" + type + "] " + msg);
-        Gdx.app.exit();
+        quit();
         return null;
     }
     
@@ -90,104 +94,113 @@ public class Non implements ApplicationListener {
         return Gdx.files.internal(path);
     }
 	
-	public static void exit() {
-		Gdx.app.exit();
-	}
+    public static void quit() {
+        Gdx.app.exit();
+    }
     
     public void create () {
         ready = false;
-		args = new JsonReader().parse(file("non.cfg"));
-		
-		int width = 800;
-		int height = 600;
-		boolean fullscreen = false;
-		
-		if (args.has("desktop")) {
-			JsonValue desktop = args.get("desktop");
-			if (desktop.has("display")) {
-				JsonValue display = desktop.get("display");
-				if (display.has("width")) width = display.get("width").asInt();
-				if (display.has("height")) height = display.get("height").asInt();
-				if (display.has("fullscreen")) fullscreen = display.get("fullscreen").asBoolean();
-			}
-		}
-		
-		Gdx.graphics.setDisplayMode(width, height, fullscreen);
+        args = new JsonReader().parse(file("non.cfg"));
+        
+        if (checkPlatform("desktop")) {
+            int width = 800;
+            int height = 600;
+            boolean fullscreen = false;
+    		
+            if (args.has("desktop")) {
+                JsonValue desktop = args.get("desktop");
+                if (desktop.has("display")) {
+                    JsonValue display = desktop.get("display");
+                    if (display.has("width")) width = display.get("width").asInt();
+                    if (display.has("height")) height = display.get("height").asInt();
+                    if (display.has("fullscreen")) fullscreen = display.get("fullscreen").asBoolean();
+                }
+            }
+    		
+            Gdx.graphics.setDisplayMode(width, height, fullscreen);
+        }
 		
         loadingBatch = new SpriteBatch();
-		loadingBg = new Texture(file("res/loading_bg.png"));
+        loadingBg = new Texture(file("res/loading_bg.png"));
         loadingImage = new Texture(file("res/loading.png"));
-		loadingBar = new Texture(file("res/loading_bar.png"));
-		loadingBarBg = new Texture(file("res/loading_bar_bg.png"));
+        loadingBar = new Texture(file("res/loading_bar.png"));
+        loadingBarBg = new Texture(file("res/loading_bar_bg.png"));
         
         assets = new AssetManager();
         
-        String main = args.getString("main");
-        script = ScriptRuntime.byExtension(getExtension(main));
+        script = Language.init(args.getString("language"));
         Plugin.loadAll();
         
-        script.init();
         Gdx.input.setInputProcessor(new InputHandle());
-        script.eval(file(main).readString());
+        script.init();
+        script.eval(Non.file("main." + script.extension()).readString());
         script.invoke("non", "load", assets);
     }
 
-    public void render () {        
+    public void render () {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        
         if(assets.update()) {
             if (!ready) {
                 if (Gdx.input.isTouched()) {
                     script.invoke("non", "ready");
                     ready = true;
+                    resize(getWidth(), getHeight());
                 }
             } else {
-				Plugin.updateBefore();
-				script.invoke("non", "update", getDelta());
-				script.invoke("non", "draw");
-				Plugin.updateAfter();
-			}
+                Plugin.updateBefore();
+                script.invoke("non", "update", getDelta());
+                script.invoke("non", "draw");
+                Plugin.updateAfter();
+            }
         }
         
         if (!ready) {
-            Gdx.gl.glClearColor(0, 0, 0, 1);
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-			
             loadingBatch.begin();
-			loadingBatch.draw(loadingBg, 0, 0, getWidth(), getHeight(), 0, 0, loadingBg.getWidth(), loadingBg.getHeight());
+            loadingBatch.draw(loadingBg, 
+                0, 0, getWidth(), getHeight(), 
+                0, 0, loadingBg.getWidth(), loadingBg.getHeight());
             loadingBatch.draw(loadingImage, loadingPos.x, loadingPos.y);
             loadingBatch.draw(loadingBarBg, loadingBarPos.x, loadingBarPos.y);
 			
-			percent = Interpolation.linear.apply(percent, assets.getProgress(), 0.1f);
-			barWidth = loadingBar.getWidth() * percent;
+            percent = Interpolation.linear.apply(percent, assets.getProgress(), 0.1f);
+            barWidth = loadingBar.getWidth() * percent;
             
-			loadingBatch.draw(loadingBar,
-				loadingBarPos.x, loadingBarPos.y, 
-				barWidth, loadingBar.getHeight(),
-				0, 0, barWidth, loadingBar.getHeight());
+            loadingBatch.draw(loadingBar,
+                loadingBarPos.x, loadingBarPos.y, 
+                barWidth, loadingBar.getHeight(),
+                0, 0, barWidth, loadingBar.getHeight());
 			
             loadingBatch.end();
         }
     }
 
     public void resize(int width, int height) { 
-		if (ready) { 
-			script.invoke("non", "resize", width, height);
-		} else {
-			loadingBatch.setProjectionMatrix(loadingBatch.getProjectionMatrix().setToOrtho2D(0, 0, width, height));
-			loadingBarPos = new Vector2(
-				(width - loadingBar.getWidth())/2,
-				(height - loadingBar.getHeight())/2);
+        if (ready) {
+            Plugin.resize(); 
+            script.invoke("non", "resize", width, height);
+        } else {
+            loadingBatch.setProjectionMatrix(
+                loadingBatch.getProjectionMatrix().setToOrtho2D(0, 0, width, height));
+                
+            loadingBarPos = new Vector2(
+                (width - loadingBar.getWidth())/2,
+                (height - loadingBar.getHeight())/2);
 		
-			loadingPos = new Vector2((width - loadingImage.getWidth())/2, (height + loadingBar.getHeight())/2);
-		}
-	}
+            loadingPos = new Vector2(
+                (width - loadingImage.getWidth())/2,
+                (height + loadingBar.getHeight())/2);
+        }
+    }
 	
     public void pause() {
-		if (ready) script.invoke("non", "pause"); 
-	}
+        if (ready) script.invoke("non", "pause"); 
+    }
 	
     public void resume() {
-		if (ready) script.invoke("non", "resume");
-	}
+        if (ready) script.invoke("non", "resume");
+    }
     
     public void dispose () { 
         if (ready) script.invoke("non", "close");
