@@ -1,4 +1,9 @@
-[0.3.0]
+[3.1.0]
+- added non.buffer used for reading and writing data to and from byte array
+- added LibGDX tween engine to math.tween
+- replaced hacky networking with KryoNet
+
+[3.0.0]
 - added drawing of various shapes to graphics plugin
 - added new method to graphics plugin for drawing formatted text (printf)
 - added new method to graphics plugin for drawing texture quad (drawq)
@@ -33,7 +38,7 @@
 - fixed graphics.translate and graphics.rotate
 - fixed calling of resize event
 
-[0.2.0]
+[2.0.0]
 - added asynchromous resource loading (use non.load(assets) event) along with super sexy loading screen what is displayed during loading 
 - removed TILED support (sorry, I wasn´t able to make it work with normal coordinate system)
 - totally revamped graphics, audio and input plugin

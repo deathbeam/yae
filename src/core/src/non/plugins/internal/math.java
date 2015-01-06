@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Polyline;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Interpolation;
 import non.plugins.Plugin;
 
 public class math extends Plugin {
@@ -91,6 +92,7 @@ public class math extends Plugin {
         return new Ellipse(x, y, width, height);
     }
     
+    public final Interpolation tween = Interpolation;
     public float abs(float num) { return Math.abs(num); }
     public float random() { return MathUtils.random(); }
     public float random(float range) { return MathUtils.random(range); }

@@ -46,8 +46,6 @@ public class graphics extends Plugin {
         shapes.setAutoShapeType(true);
         curFont = new BitmapFont();
         camera = new OrthographicCamera();
-        plugin_resize();
-        reset();
     }
     
     public void plugin_unload() {
@@ -55,8 +53,8 @@ public class graphics extends Plugin {
         curFont.dispose();
     }
 
-    public void plugin_update_after() {
-        reset();
+    public void plugin_update_before() {
+        reset().flush();
     }
     
     public void plugin_resize() {
@@ -238,7 +236,7 @@ public class graphics extends Plugin {
     
     public graphics printf(String text, int x, int y, int limit) {
         return printf(text, x, y, limit, "left");
-	}
+    }
     
     public graphics printf(String text, int x, int y, int limit, String align) {
         checkBatch();

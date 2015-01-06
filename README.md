@@ -1,4 +1,4 @@
-![Non Logo](https://raw.githubusercontent.com/codeindie/non/master/src/gen/res/loading.png)
+![logo](https://raw.githubusercontent.com/codeindie/non/master/src/gen/res/loading.png)
 
 Non is a cross-platform game and visualization development engine. It currently supports Windows, Linux, Mac OS X, Android and iOS as target platforms.
 
@@ -10,34 +10,28 @@ Non is something between engine and framework, as it looks like library but Non 
 
 ### Features ###
 
-* **cross-platform** (Windows, Linux, Mac, Android, IOS)
-* both **JavaScript** and **Lua** language support
-* rendering engine with support for blending, matrices, shaders, image batching, text rendering...
-* audio engine with support for most music and sound formats
-* keyboard, touch, accelerometer and mouse support
-* fast and stable **networking** engine
-* physics and lights engine based on Box2D
-* **extensibility** (plugins and custom languages)
+  * **Cross-platform** (Windows, Linux, Mac, Android, IOS)
+  * Both **JavaScript** and **Lua** language support
+  * Rendering engine with support for blending, matrices, shaders, image batching, text rendering...
+  * Audio engine with support for most music and sound formats
+  * Keyboard, touch, accelerometer and mouse support
+  * Fast and stable **networking** engine
+  * Physics and lights engine based on Box2D
+  * **Extensibility** (plugins and custom scripting languages)
 
-### Quickstart ###
+### Getting Started ###
 
-```shell
-git clone git@github.com:codeindie/non.git
-cd non
-javac src/launcher/Main.java
-jar cf non.jar -C src .
-non gen:hello
-non desktop:update
-non desktop:dist
-```
+  * [Create your first Non project](https://github.com/codeindie/non/wiki/Getting-started)
+    * [Run, Manage and Package your project]( https://github.com/codeindie/non/wiki/Non-CLI)
+  * [Read the Wiki](https://github.com/codeindie/non/wiki)
 
-### Downloads
+### Downloads ###
+
 You can get Non from the [IndieDB](http://indiedb.com/engines/no-nonsense) or here from GitHub [releases](http://github.com/codeindie/non/releases) page.
 
 ### Documentation ###
 
-The [Wiki](https://github.com/codeindie/non/wiki) contains all the information you'll need to write a 
-Non game. You can contribute to the Wiki directly here on GitHub!
+The [Wiki](https://github.com/codeindie/non/wiki) contains all the information you'll need to write a Non game. You can contribute to the Wiki directly here on GitHub!
 
 ### Reporting Issues ###
 

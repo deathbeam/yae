@@ -1,5 +1,6 @@
 package non.plugins.internal;
 import non.Non;
+import non.NonBuffer;
 import non.plugins.Plugin;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonValue;
@@ -24,6 +25,8 @@ public class non extends Plugin {
     public Object debug(String type, String msg)   { return Non.debug(type, msg); }
     
     public FileHandle file(String path)            { return Non.file(path); }
+    public NonBuffer buffer()                      { return new NonBuffer(); }
+    public NonBuffer buffer(byte[] data)           { return new NonBuffer(data); }
     public Object require(String path)             { return Non.script.eval(file(path).readString()); }
     public void quit()                             { Non.quit(); }
     
