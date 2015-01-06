@@ -1,6 +1,5 @@
 [3.1.0]
 - added non.buffer used for reading and writing data to and from byte array
-- added LibGDX tween engine to math.tween
 - replaced hacky networking with KryoNet
 
 [3.0.0]

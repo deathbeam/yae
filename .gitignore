@@ -50,3 +50,5 @@ Thumbs.db
 ## NON
 .non/
 dist/
+project/
+non.jar

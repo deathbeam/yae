@@ -5,6 +5,7 @@ import non.NonBuffer;
 import non.plugins.Plugin;
 
 import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.kryonet.EndPoint;
@@ -16,7 +17,7 @@ public class network extends Plugin {
     public String license()     { return "MIT"; }
     public String description() { return "Simple networking plugin."; }
     
-    public class ScriptListener implements Listener {
+    public class ScriptListener extends Listener {
         public void connected (Connection connection) {
             Non.script.invoke("network", "connected", connection);
         }

@@ -91,8 +91,7 @@ public class math extends Plugin {
     public Ellipse ellipse(float x, float y, float width, float height) {
         return new Ellipse(x, y, width, height);
     }
-    
-    public final Interpolation tween = Interpolation;
+
     public float abs(float num) { return Math.abs(num); }
     public float random() { return MathUtils.random(); }
     public float random(float range) { return MathUtils.random(range); }

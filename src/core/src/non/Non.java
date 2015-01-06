@@ -61,7 +61,7 @@ public class Non implements ApplicationListener {
         return platform;
     }
     
-    public boolean checkPlatform(String p) {
+    public static boolean checkPlatform(String p) {
         return getPlatform().equalsIgnoreCase(p);
     }
     
