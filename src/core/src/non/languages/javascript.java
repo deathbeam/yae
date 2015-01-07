@@ -15,30 +15,16 @@ public class javascript extends Language {
         scope = engine.initStandardObjects();
     }
     
-    public void init() {
-        String script =
-        "non.load = function(a) {};" +
-        "non.ready = function() {};" +
-        "non.update = function(a) {};" +
-        "non.draw = function() {};" +
-        "non.resize = function(a,b) {};" +
-        "non.pause = function() {};" +
-        "non.resume = function() {};" +
-        "non.close = function() {};" +
-        "non.keydown = function(a) {};" +
-        "non.keyup = function(a) {};" +
-        "non.keytyped = function(a) {};" +
-        "non.touchdown = function(a,b,c) {};" +
-        "non.touchup = function(a,b,c) {};" +
-        "non.touchdragged = function(a,b) {};" +
-        "non.mousemoved = function(a) {};" +
-        "non.scrolled = function(a) {};";
-        eval(script);
-    }
-    
     public Object invoke(String object, String method, Object... args) {
-        Scriptable obj = (Scriptable)scope.get(object, scope);
-        Function func = (Function)obj.get(method, obj);
+        Function func;
+        if (method != null) {
+            Scriptable obj = (Scriptable)scope.get(object, scope);
+            func = (Function)obj.get(method, obj);
+        } else {
+            func = (Function)scope.get(object, scope);
+        }
+        
+        if (func == null) return null;
         
         if (args != null) {
             Object[] values = new Object[args.length];
@@ -55,6 +41,10 @@ public class javascript extends Language {
 
     public void put(String key, Object value) {
         ScriptableObject.putProperty(scope, key, convert(value));
+    }
+    
+    public Object get(String key) {
+        return scope.get(key, scope);
     }
     
     public Object convert(Object javaValue) {

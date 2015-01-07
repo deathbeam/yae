@@ -23,6 +23,6 @@ public abstract class Language {
     public abstract Object invoke(String object, String method, Object... args);
     public abstract Object eval(String script);
     public abstract Object convert(Object javaValue);
-    public abstract void init();
+    public abstract Object get(String key);
     public abstract void put(String key, Object value);
 }

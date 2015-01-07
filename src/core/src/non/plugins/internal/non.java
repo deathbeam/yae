@@ -4,6 +4,7 @@ import non.NonBuffer;
 import non.plugins.Plugin;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonValue;
+import com.badlogic.gdx.utils.Array;
 
 public class non extends Plugin {
     public String author()      { return "Thomas Slusny"; }
@@ -25,10 +26,11 @@ public class non extends Plugin {
     public Object debug(String type, String msg)   { return Non.debug(type, msg); }
     
     public FileHandle file(String path)            { return Non.file(path); }
-    public NonBuffer buffer()                      { return new NonBuffer(); }
-    public NonBuffer buffer(byte[] data)           { return new NonBuffer(data); }
     public Object require(String path)             { return Non.script.eval(file(path).readString()); }
     public void quit()                             { Non.quit(); }
+    
+    public NonBuffer buffer()                      { return new NonBuffer(); }
+    public NonBuffer buffer(byte[] data)           { return new NonBuffer(data); }
     
     public Object 
         load, ready, draw, update, resize, close, pause, resume, 

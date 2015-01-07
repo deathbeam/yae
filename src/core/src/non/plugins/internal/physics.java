@@ -1,59 +1,84 @@
 package non.plugins.internal;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.MapObjects;
-import com.badlogic.gdx.maps.objects.CircleMapObject;
-import com.badlogic.gdx.maps.objects.PolygonMapObject;
-import com.badlogic.gdx.maps.objects.PolylineMapObject;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Shape2D;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.Box2D;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.ChainShape;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.Shape;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.JointDef.JointType;
 import com.badlogic.gdx.utils.Array;
+import non.Non;
+import non.Line;
 import non.plugins.Plugin;
 
 public class physics extends Plugin {
     public String author()         { return "Thomas Slusny"; }
     public String license()        { return "MIT"; }
     public String description()    { return "Plugin for handling physics."; }
-    public String[] dependencies() { return new String[] { "graphics", "maths" }; }
+    public String[] dependencies() { return new String[] { "graphics", "math" }; }
     
+    public class Definition {
+        public float angle = 0;
+        public Vector2 linearVelocity = new Vector2();
+        public float angularVelocity = 0;
+        public float linearDamping = 0;
+        public float angularDamping = 0;
+        public boolean fixedRotation = false;
+        public boolean bullet = false;
+        public boolean active = true;
+        public float gravityScale = 1;
+        
+        public float friction = 0.2f;
+        public float restitution = 0;
+        public float density = 0;
+    }
+    
+    public class ScriptContactListener implements ContactListener {
+        public void beginContact(Contact contact) {
+            Non.script.invoke("physics", "beginContact", contact);
+        }
+            
+        public void endContact(Contact contact) {
+            Non.script.invoke("physics", "endContact", contact);
+        }
+            
+        public void preSolve(Contact contact, Manifold oldManifold) {
+            Non.script.invoke("physics", "preSolve", contact, oldManifold);
+        }
+            
+        public void postSolve(Contact contact, ContactImpulse impulse) {
+            Non.script.invoke("physics", "postSolve", contact, impulse);
+        }
+    }
+        
     private World world;
     private Box2DDebugRenderer renderer;
     private boolean debug;
-    private float step, accum, ppt;
+    private float step, accum, ppt, speed;
+    public Object beginContact, endContact, preSolve, postSolve;
     
     public World getWorld() { return world; }
-    public physics setGravity(float x, float y) { world.setGravity(new Vector2(x,y)); return this; }
+    public Vector2 getGravity() { return new Vector2(world.getGravity().x, -world.getGravity().y); }
+    public physics setGravity(float x, float y) { world.setGravity(new Vector2(x,-y)); return this; }
     public physics setStep(float step) { this.step = step; return this; }
     public physics setDebug(boolean debug) { this.debug = debug; return this; }
+    public physics setSpeed(float speed) { this.speed = speed; return this; }
 	
     public physics() {
         Box2D.init();
-        world = new World(new Vector2(0,0), true);
+        world = new World(new Vector2(), true);
     }
     
     public void plugin_load() {
-        renderer = new Box2DDebugRenderer();
         debug = false;
         step = 1 / 60f;
         accum = 0;
         ppt = 1;
+        speed = 1;
+        
+        world.setContactListener(new ScriptContactListener());
     }
     
     public void plugin_unload() {
@@ -62,7 +87,7 @@ public class physics extends Plugin {
     }
     
     public void plugin_update_before() {
-        accum += Gdx.graphics.getDeltaTime();
+        accum += Non.getDelta() * speed;
         while (accum >= step) {
             world.step(step, 6, 2);
             accum -= step;
@@ -78,20 +103,49 @@ public class physics extends Plugin {
             renderer = new Box2DDebugRenderer();
     }
     
-    public Body shape(Shape2D shape) {
-        return shape(shape, "dynamic");
+    public Array<Body> bodies() {
+        Array<Body> bodies = new Array();
+        world.getBodies(bodies);
+        return bodies;
     }
     
-    public Body shape(Shape2D shape, String type) {
-        return shape(shape, type, 0, 0.2f, 0);
+    public Array<Joint> joints() {
+        Array<Joint> joints = new Array();
+        world.getJoints(joints);
+        return joints;
     }
     
-    public Body shape(Shape2D shape, String type, float density, float friction, float restitution) {
+    public Joint joint(String type, Body a, Body b) {
+        JointDef jointDef = new JointDef();
+        
+        jointDef.type = jointType(type);
+        jointDef.bodyA = a;
+        jointDef.bodyB = b;
+        return world.createJoint(jointDef);
+    }
+    
+    public Definition definition() {
+        return new Definition();
+    }
+    
+    public Body body(String type, Shape2D shape) {
+        return body(type, shape, new Definition());
+    }
+    
+    public Body body(String type, Shape2D shape, Definition def) {
         BodyDef bodyDef = new BodyDef();
-
-        if (type.equalsIgnoreCase("dynamic")) bodyDef.type = BodyType.DynamicBody;
-        else if (type.equalsIgnoreCase("static")) bodyDef.type = BodyType.StaticBody;
-        else if (type.equalsIgnoreCase("kinematic")) bodyDef.type = BodyType.KinematicBody;
+        
+        bodyDef.type = bodyType(type);
+        bodyDef.angle = def.angle;
+        bodyDef.linearVelocity.x = def.linearVelocity.x;
+        bodyDef.linearVelocity.y = def.linearVelocity.y;
+        bodyDef.angularVelocity = def.angularVelocity;
+        bodyDef.linearDamping = def.linearDamping;
+        bodyDef.angularDamping = def.angularDamping;
+        bodyDef.fixedRotation = def.fixedRotation;
+        bodyDef.bullet = def.bullet;
+        bodyDef.active = def.active;
+        bodyDef.gravityScale = def.gravityScale;
         
         Shape s = null;
         
@@ -110,54 +164,47 @@ public class physics extends Plugin {
             bodyDef.position.set(cur.getX(), cur.getY());
             s = new PolygonShape();
             ((PolygonShape)s).set(cur.getVertices()); 
+        } else if (shape instanceof Line) {
+            Line cur = (Line)shape;
+            bodyDef.position.set(cur.x1, cur.y1);
+            s = new EdgeShape();
+            ((EdgeShape)s).set(cur.x1, cur.y1, cur.x2, cur.y2); 
         }
         
         if (s!=null) {
             Body body = world.createBody(bodyDef);
-            FixtureDef def = new FixtureDef();
-            def.density = density;
-            def.friction = friction;
-            def.restitution = restitution;
-            def.shape = s;
-            body.createFixture(def);
+            FixtureDef fixtureDef = new FixtureDef();
+            fixtureDef.density = def.density;
+            fixtureDef.friction = def.friction;
+            fixtureDef.restitution = def.restitution;
+            fixtureDef.shape = s;
+            body.createFixture(fixtureDef);
             s.dispose();
             return body;
         }
         
         return null;
     }
-
-    private PolygonShape getRectangle(RectangleMapObject rectangleObject) {
-        Rectangle rectangle = rectangleObject.getRectangle();
-        PolygonShape polygon = new PolygonShape();
-        Vector2 size = new Vector2((rectangle.x + rectangle.width * 0.5f) / ppt, (rectangle.y + rectangle.height * 0.5f ) / ppt);
-        polygon.setAsBox(rectangle.width * 0.5f / ppt, rectangle.height * 0.5f / ppt, size, 0.0f);
-        return polygon;
+    
+    private BodyType bodyType(String type) {
+        if (type.equalsIgnoreCase("dynamic")) return BodyType.DynamicBody;
+        else if (type.equalsIgnoreCase("static")) return BodyType.StaticBody;
+        else if (type.equalsIgnoreCase("kinematic")) return BodyType.KinematicBody;
+        return BodyType.StaticBody;
     }
-
-    private CircleShape getCircle(CircleMapObject circleObject) {
-        Circle circle = circleObject.getCircle();
-        CircleShape circleShape = new CircleShape();
-        circleShape.setRadius(circle.radius / ppt);
-        circleShape.setPosition(new Vector2(circle.x / ppt, circle.y / ppt));
-        return circleShape;
-    }
-
-    private PolygonShape getPolygon(PolygonMapObject polygonObject) {
-        PolygonShape polygon = new PolygonShape();
-        float[] vertices = polygonObject.getPolygon().getTransformedVertices();
-        float[] worldVertices = new float[vertices.length];
-        for (int i = 0; i < vertices.length; ++i) worldVertices[i] = vertices[i] / ppt;
-        polygon.set(worldVertices);
-        return polygon;
-    }
-
-    private ChainShape getPolyline(PolylineMapObject polylineObject) {
-        float[] vertices = polylineObject.getPolyline().getTransformedVertices();
-        Vector2[] worldVertices = new Vector2[vertices.length / 2];
-        for (int i = 0; i < vertices.length / 2; ++i) worldVertices[i] = new Vector2(vertices[i * 2] / ppt, vertices[i * 2 + 1] / ppt);
-        ChainShape chain = new ChainShape(); 
-        chain.createChain(worldVertices);
-        return chain;
+    
+    private JointType jointType(String type) {
+        if (type.equalsIgnoreCase("revolute")) return JointType.RevoluteJoint;
+        else if (type.equalsIgnoreCase("prismatic")) return JointType.PrismaticJoint;
+        else if (type.equalsIgnoreCase("distance")) return JointType.DistanceJoint;
+        else if (type.equalsIgnoreCase("pulley")) return JointType.PulleyJoint;
+        else if (type.equalsIgnoreCase("mouse")) return JointType.MouseJoint;
+        else if (type.equalsIgnoreCase("gear")) return JointType.GearJoint;
+        else if (type.equalsIgnoreCase("wheel")) return JointType.WheelJoint;
+        else if (type.equalsIgnoreCase("weld")) return JointType.WeldJoint;
+        else if (type.equalsIgnoreCase("friction")) return JointType.FrictionJoint;
+        else if (type.equalsIgnoreCase("rope")) return JointType.RopeJoint;
+        else if (type.equalsIgnoreCase("motor")) return JointType.MotorJoint;
+        return JointType.Unknown;
     }
 }

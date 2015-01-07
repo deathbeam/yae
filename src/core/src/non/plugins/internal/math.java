@@ -9,6 +9,9 @@ import com.badlogic.gdx.math.Polyline;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Interpolation;
+
+import non.Line;
+import non.Quad;
 import non.plugins.Plugin;
 
 public class math extends Plugin {
@@ -16,39 +19,15 @@ public class math extends Plugin {
     public String license()     { return "MIT"; }
     public String description() { return "Easy math and geometry."; }
     
-    public class Quad {
-        public int sx, sy, sw, sh, w, h;
-        
-        public Quad (int x1, int y1, int x2, int y2, int x3, int y3) {
-            sx = x1;
-            sy = y1;
-            sw = x2;
-            sh = y2;
-            w = x3;
-            h = y3;
-        }
-    }
-	
-    public class Line implements Shape2D {
-        public float x1, y1, x2, y2;
-		
-        public Line(float x1, float y1, float x2, float y2) {
-            this.x1 = x1;
-            this.y1 = y1;
-            this.x2 = x2;
-            this.y2 = y2;
-        }
-    }
-    
-    public Line line (float x1, float y1, float x2, float y2) {
+    public Line line(float x1, float y1, float x2, float y2) {
         return new Line(x1, y1, x2, y2);
     }
     
-    public Quad quad (int sx, int sy, int sw, int sh) {
+    public Quad quad(int sx, int sy, int sw, int sh) {
         return quad(sx,sy,sw,sh,sw,sh);
     }
     
-    public Quad quad (int sx, int sy, int sw, int sh, int w, int h) {
+    public Quad quad(int sx, int sy, int sw, int sh, int w, int h) {
         return new Quad(sx,sy,sw,sh,w,h);
     }
     
@@ -93,11 +72,31 @@ public class math extends Plugin {
     }
 
     public float abs(float num) { return Math.abs(num); }
+    public float sin(float rad) { return MathUtils.sin(rad); }
+    public float sinDeg(float deg) { return MathUtils.sinDeg(deg); }
+    public float cos(float rad) { return MathUtils.cos(rad); }
+    public float cosDeg(float deg) { return MathUtils.cosDeg(deg); }
+    public float atan2(float y, float x) { return MathUtils.atan2(y, x); }
+    public float log(float a, float x) { return MathUtils.log(a, x); }
+    public float log2(float x) { return MathUtils.log2(x); }
+    public float lerp(float from, float to, float prog) { return MathUtils.lerp(from, to, prog); }
+    
+    public int floor(float x) { return MathUtils.floor(x); }
+    public int ceil(float x) { return MathUtils.ceil(x); }
+    public int round(float x) { return MathUtils.round(x); }
+    
     public float random() { return MathUtils.random(); }
     public float random(float range) { return MathUtils.random(range); }
     public float random(float start, float end) { return MathUtils.random(start, end); }
     public int random(int range) { return MathUtils.random(range); }
     public int random(int start, int end) { return MathUtils.random(start, end); }
+    
+    public boolean randomBoolean() { return MathUtils.randomBoolean(); }
+    public boolean randomBoolean(float chance) { return MathUtils.randomBoolean(chance); }
+    
+    public float clamp(float value, float min, float max) { return MathUtils.clamp(value, min, max); }
+    public int clamp(int value, int min, int max) { return MathUtils.clamp(value, min, max); }
+        
     public boolean isPowerOfTwo(int num) { return MathUtils.isPowerOfTwo(num); }
     public int nextPowerOfTwo(int num) { return MathUtils.nextPowerOfTwo(num); }
 }

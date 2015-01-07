@@ -32,6 +32,7 @@ allprojects {
         rhinoVersion = '1.7R4'
         luajVersion = '3.0'
         kryonetVersion = '2.22.0-RC1'
+        niftyVersion = '1.4.1-SNAPSHOT'
     }
 
     repositories {

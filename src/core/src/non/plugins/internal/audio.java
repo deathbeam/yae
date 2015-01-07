@@ -13,20 +13,12 @@ public class audio extends Plugin {
     
     public Class<?> musicLoader = Music.class;
     public Class<?> soundLoader = Sound.class;
-    
+
     public Music music(String file) {
-        return music(file, false);
-    }
-    
-    public Music music(String file, boolean raw) {
-        return (raw) ? Gdx.audio.newMusic(Non.file(file)) : (Music)Non.assets.get(file, musicLoader);
+        return (Non.assets.isLoaded(file)) ? (Music)Non.assets.get(file, musicLoader) : Gdx.audio.newMusic(Non.file(file));
     }
     
     public Sound sound(String file) {
-        return sound(file, false);
-    }
-    
-    public Sound sound(String file, boolean raw) {
-        return (raw) ? Gdx.audio.newSound(Non.file(file)) : (Sound)Non.assets.get(file, soundLoader);
+        return (Non.assets.isLoaded(file)) ? (Sound)Non.assets.get(file, soundLoader) : Gdx.audio.newSound(Non.file(file));
     }
 }

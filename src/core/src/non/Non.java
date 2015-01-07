@@ -17,18 +17,17 @@ import non.plugins.Plugin;
 import java.io.IOException;
 
 public class Non implements ApplicationListener {
+    public static boolean ready;
     public static Language script;
     public static AssetManager assets;
     private static String platform;
     private static JsonValue args;
     
     // loading screen
-    public static boolean ready;
-    private static SpriteBatch loadingBatch;
-    private static Texture loadingBg, loadingImage, loadingBar, loadingBarBg;
-    private static Vector2 loadingPos, loadingBarPos;
-    private float percent;
-    private float barWidth;
+    private SpriteBatch loadingBatch;
+    private Texture loadingBg, loadingImage, loadingBar, loadingBarBg;
+    private Vector2 loadingPos, loadingBarPos;
+    private float percent, barWidth;
     
     public static String getExtension(String fileName) {
         String extension = "";
@@ -86,8 +85,8 @@ public class Non implements ApplicationListener {
         return null;
     }
     
-    public static void setPlatform(String platform) {
-        Non.platform = platform;
+    public static void setPlatform(String value) {
+        platform = value;
     }
     
     public static FileHandle file(String path) {
@@ -127,13 +126,12 @@ public class Non implements ApplicationListener {
         loadingBarBg = new Texture(file("res/loading_bar_bg.png"));
         
         assets = new AssetManager();
+        Gdx.input.setInputProcessor(new InputHandle());
         
         script = Language.init(args.getString("language"));
         Plugin.loadAll();
-        
-        Gdx.input.setInputProcessor(new InputHandle());
-        script.init();
-        script.eval(Non.file("main." + script.extension()).readString());
+
+        script.eval(file("main." + script.extension()).readString());
         script.invoke("non", "load", assets);
     }
 

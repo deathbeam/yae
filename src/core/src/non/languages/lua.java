@@ -13,30 +13,16 @@ public class lua extends Language {
     public lua() {
         _G = JsePlatform.standardGlobals();
     }
-    
-    public void init() {
-        String script =
-        "non.load = function(a) \n end \n" +
-        "non.ready = function() \n end \n" +
-        "non.update = function(a) \n end \n" +
-        "non.draw = function() \n end \n" +
-        "non.resize = function(a,b) \n end \n" +
-        "non.pause = function() \n end \n" +
-        "non.resume = function() \n end \n" +
-        "non.close = function() \n end \n" +
-        "non.keydown = function(a) \n end \n" +
-        "non.keyup = function(a) \n end \n" +
-        "non.keytyped = function(a) \n end \n" +
-        "non.touchdown = function(a,b,c) \n end \n" +
-        "non.touchup = function(a,b,c) \n end \n" +
-        "non.touchdragged = function(a,b) \n end \n" +
-        "non.mousemoved = function(a) \n end \n" +
-        "non.scrolled = function(a) \n end \n";
-        eval(script);
-    }
 
     public Object invoke(String object, String method, Object... args) {
-        LuaValue func = _G.get(object).get(method);
+        LuaValue func;
+        if (method != null) {
+            func = _G.get(object).get(method);
+        } else {
+            func = _G.get(object);
+        }
+
+        if (func == LuaValue.NIL) return LuaValue.NIL;
         
         if (args != null) {
             LuaValue[] values = new LuaValue[args.length];
@@ -60,6 +46,10 @@ public class lua extends Language {
 
     public void put(String key, Object value) {
         _G.set((LuaValue)convert(key), (LuaValue)convert(value));
+    }
+    
+    public Object get(String key) {
+        return _G.get(key);
     }
     
     public Object convert(Object javaValue) {

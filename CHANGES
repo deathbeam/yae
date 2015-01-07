@@ -1,6 +1,12 @@
 [3.1.0]
-- added non.buffer used for reading and writing data to and from byte array
-- replaced hacky networking with KryoNet
+- added non.buffer what can be used for reading and writing data to and from byte array
+- added checks for not existing functions to scripting
+- added more features to math plugin
+- added get() method to scripting
+- revamped physics plugin
+- removed "raw" argument for loading assets, now it is automatically determined if file should be loaded directly or via asset loader
+- removed init() method from scripting
+- replaced hacky networking with KryoNet (still WIP, some threading issues with scripting)
 
 [3.0.0]
 - added drawing of various shapes to graphics plugin

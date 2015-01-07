@@ -23,7 +23,8 @@ public class network extends Plugin {
         }
         
         public void received (Connection connection, Object object) {
-            Non.script.invoke("network", "received", connection, (byte[])object);
+            if (object instanceof byte[])
+                Non.script.invoke("network", "received", connection, (byte[])object);
         }
 
         public void disconnected (Connection connection) {

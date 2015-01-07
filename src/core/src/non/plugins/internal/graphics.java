@@ -18,6 +18,8 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import non.Non;
+import non.Quad;
+import non.Line;
 import non.plugins.Plugin;
 
 public class graphics extends Plugin {
@@ -97,21 +99,13 @@ public class graphics extends Plugin {
     public ShaderProgram shader(String vert, String frag) {
         return new ShaderProgram(Non.file(vert), Non.file(frag));
     }
-    
+
     public Texture image(String file) {
-        return image(file, false);
+        return (Non.assets.isLoaded(file)) ? (Texture)Non.assets.get(file, imageLoader) : new Texture(Non.file(file));
     }
-    
-    public Texture image(String file, boolean raw) {
-        return (raw) ? new Texture(Non.file(file)) : (Texture)Non.assets.get(file, imageLoader);
-    }
-    
+
     public BitmapFont font(String file) {
-        return font(file, false);
-    }
-	
-    public BitmapFont font(String file, boolean raw) {
-        return (raw) ? new BitmapFont(Non.file(file)) : (BitmapFont)Non.assets.get(file, fontLoader);
+        return (Non.assets.isLoaded(file)) ? (BitmapFont)Non.assets.get(file, fontLoader) : new BitmapFont(Non.file(file));
     }
     
     public graphics clear(float r, float g, float b) {
@@ -285,8 +279,8 @@ public class graphics extends Plugin {
         } else if (shape instanceof Polygon) {
             Polygon cur = (Polygon)shape;
             shapes.polygon(cur.getVertices());
-        } else if (shape instanceof math.Line) {
-            math.Line cur = (math.Line)shape;
+        } else if (shape instanceof Line) {
+            Line cur = (Line)shape;
             shapes.rectLine(cur.x1, cur.y1, cur.x2, cur.y2, 1);
         }
 		
@@ -312,19 +306,19 @@ public class graphics extends Plugin {
         return this;
     }
     
-    public graphics drawq(Texture img, math.Quad q, float x, float y) {;
+    public graphics drawq(Texture img, Quad q, float x, float y) {;
         return drawq(img, q, x, y, 0);
     }
     
-    public graphics drawq(Texture img, math.Quad q, float x, float y, float r) {;
+    public graphics drawq(Texture img, Quad q, float x, float y, float r) {;
         return drawq(img, q, x, y, r, 1, 1);
     }
     
-    public graphics drawq(Texture img, math.Quad q, float x, float y, float r, float sx, float sy) {;
+    public graphics drawq(Texture img, Quad q, float x, float y, float r, float sx, float sy) {;
         return drawq(img, q, x, y, r, sx, sy, 0, 0);
     }
     
-    public graphics drawq(Texture img, math.Quad q, float x, float y, float r, float sx, float sy, float ox, float oy) {
+    public graphics drawq(Texture img, Quad q, float x, float y, float r, float sx, float sy, float ox, float oy) {
         writeQuad(img, x, y, ox, oy, q.w, q.h, sx, sy, r, q.sx, q.sy, q.sw, q.sh);
         return this;
     }
