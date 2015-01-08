@@ -1,17 +1,37 @@
-apply plugin: "java"
-
 sourceCompatibility = 1.6
 sourceSets.main.java.srcDirs = [ "src/" ]
 
 project.ext.mainClassName = "${packageName}.desktop.DesktopLauncher"
 project.ext.assetsDir = new File("../android/assets");
 
-task run(type: JavaExec, dependsOn: classes) << {
+task run(type: JavaExec, dependsOn: classes) {
     main = project.mainClassName
     classpath = sourceSets.main.runtimeClasspath
     standardInput = System.in
     workingDir = project.assetsDir
     ignoreExitValue = true
+}
+
+task dist(type: Jar, dependsOn: classes) {
+    from files(sourceSets.main.output.classesDir)
+    from files(sourceSets.main.output.resourcesDir)
+    from {configurations.compile.collect {zipTree(it)}}
+    from files(project.assetsDir);
+ 
+    manifest {
+        attributes 'Main-Class': project.mainClassName
+    }
+    
+    doLast {
+        file("../../dist/desktop").mkdirs()
+        copy {
+            from "build/libs"
+            into "../../dist/desktop"
+            include "desktop-${version}.jar"
+            rename "desktop-${version}.jar", "${appName}-${version}.jar"
+        }
+        println "You can find ${appName}-${version}.jar in /dist/desktop"
+    }
 }
 
 task update(dependsOn: ':update') << {
@@ -35,27 +55,5 @@ task update(dependsOn: ':update') << {
                 include "${fl}.png"
             }
         }
-    }
-}
-
-task dist(type: Jar, dependsOn: classes) {
-    from files(sourceSets.main.output.classesDir)
-    from files(sourceSets.main.output.resourcesDir)
-    from {configurations.compile.collect {zipTree(it)}}
-    from files(project.assetsDir);
- 
-    manifest {
-        attributes 'Main-Class': project.mainClassName
-    }
-    
-    doLast {
-        file("../../dist/desktop").mkdirs()
-        copy {
-            from "build/libs"
-            into "../../dist/desktop"
-            include "desktop-${version}.jar"
-            rename "desktop-${version}.jar", "${appName}-${version}.jar"
-        }
-        println "You can find ${appName}-${version}.jar in /dist/desktop"
     }
 }
