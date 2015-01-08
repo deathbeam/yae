@@ -1,5 +1,6 @@
 package non;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.Gdx;
@@ -20,7 +21,6 @@ public class Non implements ApplicationListener {
     public static boolean ready;
     public static Language script;
     public static AssetManager assets;
-    private static String platform;
     private static JsonValue args;
     
     // loading screen
@@ -57,7 +57,13 @@ public class Non implements ApplicationListener {
     }
     
     public static String getPlatform() {
-        return platform;
+        ApplicationType type = Gdx.app.getType();
+        if (type == ApplicationType.Desktop) return "desktop";
+        if (type == ApplicationType.Android) return "android";
+        if (type == ApplicationType.iOS) return "ios";
+        if (type == ApplicationType.Applet) return "applet";
+        if (type == ApplicationType.WebGL) return "web";
+        return "desktop";
     }
     
     public static boolean checkPlatform(String p) {
@@ -83,10 +89,6 @@ public class Non implements ApplicationListener {
     public static Object debug(String type, String msg) {
         Gdx.app.debug("NoNonsense", "[" + type + "] " + msg);
         return null;
-    }
-    
-    public static void setPlatform(String value) {
-        platform = value;
     }
     
     public static FileHandle file(String path) {

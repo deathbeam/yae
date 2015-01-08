@@ -12,40 +12,103 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 public class Main {
-    static String outputDir;
-    static NameMapper mapper;
-    
     interface NameMapper {
         String map(String name);
+    }
+    
+    interface CharCallback {
+        void character(char c);
     }
 
     public static void main(String[] args) throws IOException {
         System.out.println("> Welcome to no nonsense command-line interface.");
-        File f = new File(".non");
-        if (!f.exists()) {
+        
+        if (args.length == 0) {
+            System.out.println("Usage: java -jar non.jar <task-name>");
+            System.exit(-1);
+        }
+        
+        String arg = args[0];
+        
+        if (args.length > 1) {
+            for(int i = 1; i < args.length; i++) {
+                arg += " " + args[i];
+            }
+        }
+        
+        File outputDir = new File(".non");
+        
+        if (!outputDir.exists()) {
             System.out.print("Building cache... ");
-            unpack(new File("non.jar"), f, new NameMapper() {
+            
+            unpack(new File("non.jar"), outputDir, new NameMapper() {
                 public String map(String name) {
                     if (name.contains("launcher/")) return null;
                     if (name.contains("META-INF/")) return null;
                     return name;
                 }
             });
+            
             System.out.print("DONE\n");
         }
+        
+        String windowsFile = "gradlew.bat";
+        String unixFile = "gradlew";
+        CharCallback callback = new CharCallback() {
+            public void character(char c) {
+                System.out.print(c);
+            }
+        };
+            
+        execute(outputDir, windowsFile, unixFile, arg, callback);
     }
-    
-    static String execute(String command) {
-        StringBuffer output = new StringBuffer();
-        Process p;
+
+    static boolean execute (File workingDir, String windowsFile, String unixFile, String parameters, CharCallback callback) {
+        
+        String exec = workingDir.getAbsolutePath() + "/" + (System.getProperty("os.name").contains("Windows") ? windowsFile : unixFile);
+        String log = "Executing '" + exec + " " + parameters + "'";
+        
+        for(int i = 0; i < log.length(); i++) {
+            callback.character(log.charAt(i));
+        }
+        
+        callback.character('\n');
+		
+        String[] params = parameters.split(" ");
+        String[] commands = new String[params.length + 1];
+        commands[0] = exec;
+        
+        for (int i = 0; i < params.length; i++) {
+            commands[i + 1] = params[i];
+        }
+		
+        return startProcess(commands, workingDir, callback);
+    }
+
+    static boolean startProcess (String[] commands, File directory, final CharCallback callback) {
         try {
-            p = Runtime.getRuntime().exec(command);
-            p.waitFor();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            String line = "";
-            while ((line = reader.readLine())!= null) output.append(line + "\n");
-        } catch (Exception e) { e.printStackTrace(); }
-        return output.toString();
+            final Process process = new ProcessBuilder(commands).redirectErrorStream(true).directory(directory).start();
+
+            Thread t = new Thread(new Runnable() {
+                public void run () {
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()), 1);
+                    try {
+                        int c = 0;
+                        while ((c = reader.read()) != -1) {
+                            callback.character((char)c);						
+                        }
+                    } catch (IOException e) { }
+                }
+            });
+            t.setDaemon(true);
+            t.start();
+            process.waitFor();
+            t.interrupt();
+            return process.exitValue() == 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
     
     static void unpack(File zip, File output) {
@@ -58,8 +121,7 @@ public class Main {
     
     static void unpack(File zip, File output, NameMapper m) {
         if (!output.exists()) output.mkdir();
-        outputDir = output.getAbsolutePath();
-        mapper = m;
+
         ZipFile zf = null;
         try {
             zf = new ZipFile(zip);
@@ -68,9 +130,9 @@ public class Main {
                 ZipEntry e = (ZipEntry) en.nextElement();
                 InputStream is = zf.getInputStream(e);
                 try { 
-                    String name = mapper.map(e.getName());
+                    String name = m.map(e.getName());
                     if (name != null) {
-                        File file = new File(outputDir, name);
+                        File file = new File(output.getAbsolutePath(), name);
                         if (e.isDirectory()) {
                             mkdir(file);
                         } else {

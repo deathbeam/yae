@@ -1,7 +1,7 @@
 sourceSets.main.java.srcDirs = [ "src/" ]
 sourceCompatibility = '1.7'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-ext.mainClassName = "non.ios.IOSLauncher"
+ext.mainClassName = "${packageName}.ios.IOSLauncher"
 
 task copyNatives << {
     file("build/libs/ios/").mkdirs();
@@ -40,10 +40,6 @@ task updateRoboVMXML(dependsOn: copyNatives) << {
 task run(dependsOn: launchIPhoneSimulator)
 
 task update(dependsOn: ':update') << {
-    def config = file("robovm.properties")
-    def txt = config.text
-    config.write(txt.replace("app.version=1.0", "app.version=$version").replace("app.name=non", "app.name=$appName"))
-
     def src = "../../project/res"
     def res = "../gen/res"
     def out = "data"
@@ -62,7 +58,7 @@ task update(dependsOn: ':update') << {
         ]
     ]
     
-    def total = files[0].length
+    def total = files[0].size() - 1
     
     for(i in 0..total) {
         def fl = files[0][i]
@@ -87,9 +83,6 @@ task update(dependsOn: ':update') << {
 }
 
 task dist(dependsOn: createIPA) << {
-    def config = file("robovm.properties")
-    def txt = config.text
-    config.write(txt.replace("app.version=$version", "app.version=1.0").replace("app.name=$appName", "app.name=non"))
     println "You can find ${appName}-${version}.ipa in /dist/ios"
 }
 

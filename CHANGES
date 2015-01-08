@@ -1,3 +1,10 @@
+[3.2.0]
+- revamped Non launcher, now only non.jar is required (this also changed some commands, so please read again Non CLI tutorial on Wiki
+- fixed bug what caused that mobile devices thought that all apps made by non are same (so when you tried to install 2 different Non projects on your device, second one simply replaced first one)
+- added "package" property to non.cfg
+- added sqrt() to math plugin
+- added pow() to math plugin
+
 [3.1.0]
 - added non.buffer what can be used for reading and writing data to and from byte array
 - added checks for not existing functions to scripting

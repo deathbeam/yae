@@ -39,7 +39,7 @@ tasks.withType(com.android.build.gradle.tasks.PackageApplication) { pkgTask ->
 
 task run(type: Exec) << {
     def adb = sdkDir + "/platform-tools/adb"
-    commandLine "$adb", 'shell', 'am', 'start', '-n', 'non.android/non.android.AndroidLauncher'
+    commandLine "$adb", 'shell', 'am', 'start', '-n', "${packageName}.android/${packageName}.android.AndroidLauncher"
 }
 
 task copyNatives << {
@@ -64,20 +64,11 @@ task copyNatives << {
 }
 
 task update(dependsOn: [':update', copyNatives]) << {
-    def xml = file("res/values/strings.xml")
-    def config = new groovy.util.XmlParser().parse(xml)
-    config.children().clear()
-    config.appendNode("string", [ name: "app_name" ], appName)
-    def writer = new FileWriter(xml)
-    def printer = new XmlNodePrinter(new PrintWriter(writer))
-    printer.setPreserveWhitespace true
-    printer.print(config)
-    
     def src = "../../project/res"
     def res = "../gen/res"
     
     file("res/drawable-mdpi").mkdirs()
-	def fl = (file("${src}/icon-48.png").exists()) ? src : res
+    def fl = (file("${src}/icon-48.png").exists()) ? src : res
     copy {
         from fl
         into "res/drawable-mdpi"
@@ -86,7 +77,7 @@ task update(dependsOn: [':update', copyNatives]) << {
     }
     
     file("res/drawable-hdpi").mkdirs()
-	fl = (file("${src}/icon-72.png").exists()) ? src : res
+    fl = (file("${src}/icon-72.png").exists()) ? src : res
     copy {
         from fl
         into "res/drawable-hdpi"
@@ -95,7 +86,7 @@ task update(dependsOn: [':update', copyNatives]) << {
     }
     
     file("res/drawable-xhdpi").mkdirs()
-	fl = (file("${src}/icon-96.png").exists()) ? src : res
+    fl = (file("${src}/icon-96.png").exists()) ? src : res
     copy {
         from fl
         into "res/drawable-xhdpi"
@@ -104,7 +95,7 @@ task update(dependsOn: [':update', copyNatives]) << {
     }
     
     file("res/drawable-xxhdpi").mkdirs()
-	fl = (file("${src}/icon-144.png").exists()) ? src : res
+    fl = (file("${src}/icon-144.png").exists()) ? src : res
     copy {
         from fl
         into "res/drawable-xxhdpi"
@@ -112,7 +103,7 @@ task update(dependsOn: [':update', copyNatives]) << {
         rename "icon-144.png", "ic_launcher.png"
     }
     
-	fl = (file("${src}/icon-512.png").exists()) ? src : res
+    fl = (file("${src}/icon-512.png").exists()) ? src : res
     copy {
         from fl
         into "."

@@ -1,10 +1,4 @@
-def f = file("../project/non.cfg")
-
-if (f.exists()) {
-    ext.cfg = new groovy.json.JsonSlurper().parseText(f.text)
-} else {
-    ext.cfg = new groovy.json.JsonSlurper().parseText('{ "name":"non", "version":"1.0.0" }')
-}
+configure()
 
 buildscript {
     repositories {
@@ -26,6 +20,8 @@ allprojects {
     ext {
         cfg = cfg
         appName = cfg.name
+        packageName = cfg.package
+        packageDir = cfg.package.replace('.', '/')
         gdxVersion = '1.4.1'
         roboVMVersion = '1.0.0-alpha-04'
         box2DLightsVersion = '1.3'
@@ -54,7 +50,6 @@ project(":desktop") {
         compile "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"
 
         try { for(dep in cfg.desktop.libraries) compile dep } catch(e) { }
-        try { for(dep in cfg.desktop.natives) compile dep } catch(e) { }
     }
 }
 
@@ -79,7 +74,6 @@ project(":android") {
         compile "com.badlogicgames.gdx:gdx-controllers-android:$gdxVersion"
 
         try { for(dep in cfg.android.libraries) compile dep } catch(e) { }
-        try { for(dep in cfg.android.natives) natives dep } catch(e) { }
     }
 }
 
@@ -98,7 +92,6 @@ project(":ios") {
         natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-ios"
 
         try { for(dep in cfg.ios.libraries) compile dep } catch(e) { }
-        try { for(dep in cfg.ios.natives) natives dep } catch(e) { }
     }
 }
 
@@ -115,35 +108,27 @@ project(":core") {
         compile "com.esotericsoftware:kryonet:$kryonetVersion"
 
         try { for(dep in cfg.libraries) compile dep } catch(e) { }
-        try { for(dep in cfg.natives) compile dep } catch(e) { }
     }
 }
 
 task update << {
-    copy {
-        from "../languages"
-        into "core/src/non/languages"
-        include "**/*.java"
-    }
+    initPlugins()
     
-    copy {
-        from "../plugins"
-        into "core/src/non/plugins"
-        include "**/*.java"
-    }
+    def vals = [
+        [ "%APP_NAME%", "%PACKAGE%", "%PACKAGE_DIR%" ],
+        [ appName, packageName, packageDir ]
+    ]
     
-    def text = "package non.plugins.internal; import non.plugins.*; public class _init { static { new non(); "
-    try { for(plug in cfg.plugins) text += "new ${plug}(); " } catch(e) { }
-    text += "} }"
-        
-    def ninit = new File("core/src/non/plugins/internal/_init.java")
-    ninit.createNewFile()
-    ninit.write(text)
-	
+    copyAndReplace("templates/android/strings.xml", "android/res/values/strings.xml", vals)
+    copyAndReplace("templates/android/AndroidManifest.xml", "android/AndroidManifest.xml", vals)
+    copyAndReplace("templates/android/AndroidLauncher.java", "android/src/$packageDir/android/AndroidLauncher.java", vals)
+    copyAndReplace("templates/ios/robovm.properties", "ios/robovm.properties", vals)
+    copyAndReplace("templates/ios/IOSLauncher.java", "ios/src/$packageDir/ios/IOSLauncher.java", vals)
+    copyAndReplace("templates/desktop/DesktopLauncher.java", "desktop/src/$packageDir/desktop/DesktopLauncher.java", vals)
+    
     def src = "../project/res"
     def res = "gen/res"
     def out = "android/assets/res"
-    
     def files = [ "loading", "loading_bg", "loading_bar", "loading_bar_bg" ]
     
     for(fl in files) {
@@ -160,6 +145,18 @@ task update << {
                 include "${fl}.png"
             }
         }
+    }
+    
+    copy {
+        from "../languages"
+        into "core/src/non/languages"
+        include "**/*.java"
+    }
+    
+    copy {
+        from "../plugins"
+        into "core/src/non/plugins"
+        include "**/*.java"
     }
     
     copy {
@@ -186,4 +183,40 @@ task update << {
         exclude "**/*.DS_Store"
         exclude "**/*Thumbs.db"
     }
+}
+
+def configure() {
+    def f = file("../project/non.cfg")
+
+    if (f.exists()) {
+        ext.cfg = new groovy.json.JsonSlurper().parseText(f.text)
+    } else {
+        ext.cfg = new groovy.json.JsonSlurper().parseText('{ "name":"non", "package":"non", "version":"1.0.0" }')
+    }
+}
+
+def initPlugins() {
+    def text = "package non.plugins.internal; import non.plugins.*; public class _init { static { new non(); "
+    try { for(plug in cfg.plugins) text += "new ${plug}(); " } catch(e) { }
+    text += "} }"
+        
+    def ninit = new File("core/src/non/plugins/internal/_init.java")
+    ninit.createNewFile()
+    ninit.write(text)
+}
+
+def copyAndReplace(input, out, values) {
+    println(input)
+    println(out)
+    def total = values[0].size() - 1
+    def txt = file(input).text
+    
+    for(i in 0..total-1) {
+        txt = txt.replace(values[0][i], values[1][i])
+    }
+    
+    out = new File(out)
+    out.getParentFile().mkdirs()
+    out.createNewFile()
+    out.write(txt)
 }
