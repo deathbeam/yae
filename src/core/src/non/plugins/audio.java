@@ -1,10 +1,10 @@
-package non.plugins.internal;
+package non.plugins;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+
 import non.Non;
-import non.plugins.Plugin;
 
 public class audio extends Plugin {
     public String author()      { return "Thomas Slusny"; }

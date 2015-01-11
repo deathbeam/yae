@@ -1,4 +1,4 @@
-package non.plugins.internal;
+package non.plugins;
 
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Polygon;
@@ -9,9 +9,9 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.JointDef.JointType;
 import com.badlogic.gdx.utils.Array;
+
 import non.Non;
 import non.Line;
-import non.plugins.Plugin;
 
 public class physics extends Plugin {
     public String author()         { return "Thomas Slusny"; }

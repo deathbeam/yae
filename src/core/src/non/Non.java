@@ -18,6 +18,12 @@ import non.plugins.Plugin;
 import java.io.IOException;
 
 public class Non implements ApplicationListener {
+    public static final String TAG = "No Nonsense";
+    public static final String E_RESOURCE = "Resource not found - ";
+    public static final String E_ARGUMENT = "Argument not found - ";
+    public static final String E_PLUGIN = "Plugin not found - ";
+    public static final String E_LANGUAGE = "Incorrect scripting language - ";
+    
     public static boolean ready;
     public static Language script;
     public static AssetManager assets;
@@ -70,25 +76,16 @@ public class Non implements ApplicationListener {
         return getPlatform().equalsIgnoreCase(p);
     }
     
-    public static Object warning(String type, String msg) {
-        Gdx.app.error("NoNonsense", "[" + type + "] " + msg);
-        return null;
+    public static void error(String type, String msg) {
+        Gdx.app.error(type, msg);
     }
     
-    public static Object error(String type, String msg) {
-        Gdx.app.error("NoNonsense", "[" + type + "] " + msg);
-        quit();
-        return null;
+    public static void log(String type, String msg) {
+        Gdx.app.log(type, msg);
     }
     
-    public static Object log(String type, String msg) {
-        Gdx.app.log("NoNonsense", "[" + type + "] " + msg);
-        return null;
-    }
-    
-    public static Object debug(String type, String msg) {
-        Gdx.app.debug("NoNonsense", "[" + type + "] " + msg);
-        return null;
+    public static void debug(String type, String msg) {
+        Gdx.app.debug(type, msg);
     }
     
     public static FileHandle file(String path) {
@@ -103,6 +100,19 @@ public class Non implements ApplicationListener {
         ready = false;
         args = new JsonReader().parse(file("non.cfg"));
         
+        if (args.has("logging")) {
+            String logLevel = args.getString("logging");
+            
+            if ("none".equalsIgnoreCase(logLevel)
+                Gdx.app.setLogLevel(0);
+            else if ("error".equalsIgnoreCase(logLevel)
+                Gdx.app.setLogLevel(1);
+            else if ("info".equalsIgnoreCase(logLevel)
+                Gdx.app.setLogLevel(2);
+            else if ("debug".equalsIgnoreCase(logLevel)
+                Gdx.app.setLogLevel(3);
+        }
+        
         if (checkPlatform("desktop")) {
             int width = 800;
             int height = 600;
@@ -112,9 +122,9 @@ public class Non implements ApplicationListener {
                 JsonValue desktop = args.get("desktop");
                 if (desktop.has("display")) {
                     JsonValue display = desktop.get("display");
-                    if (display.has("width")) width = display.get("width").asInt();
-                    if (display.has("height")) height = display.get("height").asInt();
-                    if (display.has("fullscreen")) fullscreen = display.get("fullscreen").asBoolean();
+                    if (display.has("width")) width = display.getInt("width");
+                    if (display.has("height")) height = display.getInt("height");
+                    if (display.has("fullscreen")) fullscreen = display.getBoolean("fullscreen");
                 }
             }
     		
@@ -122,18 +132,65 @@ public class Non implements ApplicationListener {
         }
 		
         loadingBatch = new SpriteBatch();
-        loadingBg = new Texture(file("res/loading_bg.png"));
-        loadingImage = new Texture(file("res/loading.png"));
-        loadingBar = new Texture(file("res/loading_bar.png"));
-        loadingBarBg = new Texture(file("res/loading_bar_bg.png"));
+        
+        FileHandle fl = file("res/loading.png");
+        
+        if (fl.exists()) {
+            loadingImage = new Texture(fl);
+        } else {
+            error(TAG, E_RESOURCE + fl.name();
+            quit();
+        }
+        
+        fl = file("res/loading_bg.png");
+        
+        if (fl.exists()) {
+            loadingBg = new Texture(fl);
+        } else {
+            error(TAG, E_RESOURCE + fl.name();
+            quit();
+        }
+        
+        fl = file("res/loading_bar.png");
+        
+        if (fl.exists()) {
+            loadingBar = new Texture(fl);
+        } else {
+            error(TAG, E_RESOURCE + fl.name();
+            quit();
+        }
+        
+        fl = file("res/loading_bar_bg.png");
+        
+        if (fl.exists()) {
+            loadingBarBg = new Texture(fl);
+        } else {
+            error(TAG, E_RESOURCE + fl.name();
+            quit();
+        }
         
         assets = new AssetManager();
         Gdx.input.setInputProcessor(new InputHandle());
         
-        script = Language.init(args.getString("language"));
-        Plugin.loadAll();
-
-        script.eval(file("main." + script.extension()).readString());
+        if args.has("language") {
+            script = Language.init(args.getString("language"));
+        } else {
+            error(TAG, E_ARGUMENT + "language");
+        }
+        
+        if (args.has("plugins")) {
+            Plugin.init(args.get("plugins").asStringArray());
+        }
+        
+        FileHandle main = file("main." + script.extension());
+        
+        if (main.exists()) {
+            script.eval(main.readString());
+        } else {
+            error(TAG, E_RESOURCE + main.name());
+            quit();
+        }
+        
         script.invoke("non", "load", assets);
     }
 

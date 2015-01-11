@@ -1,12 +1,12 @@
-package non.plugins.internal;
+package non.plugins;
 
 import box2dLight.ChainLight;
 import box2dLight.ConeLight;
 import box2dLight.DirectionalLight;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
+
 import com.badlogic.gdx.graphics.Color;
-import non.plugins.Plugin;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class lights extends Plugin {

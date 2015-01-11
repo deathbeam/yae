@@ -28,7 +28,6 @@ allprojects {
         rhinoVersion = '1.7R4'
         luajVersion = '3.0'
         kryonetVersion = '2.22.0-RC1'
-        niftyVersion = '1.4.1-SNAPSHOT'
     }
 
     repositories {
@@ -112,7 +111,8 @@ project(":core") {
 }
 
 task update << {
-    initPlugins()
+    clearPlugins()
+    clearLanguages()
     
     def vals = [
         [ "%APP_NAME%", "%PACKAGE%", "%PACKAGE_DIR%" ],
@@ -162,24 +162,7 @@ task update << {
     copy {
         from "../project"
         into "android/assets"
-        exclude "res/icon-16.png"
-        exclude "res/icon-32.png"
-        exclude "res/icon-64.png"
-        exclude "res/icon-192.png"
-        exclude "res/icon-256.png"
-        exclude "res/icon-48.png"
-        exclude "res/icon-57.png"
-        exclude "res/icon-72.png"
-        exclude "res/icon-96.png"
-        exclude "res/icon-114.png"
-        exclude "res/icon-144.png"
-        exclude "res/splash-320x480"
-        exclude "res/splash-640x960"
-        exclude "res/splash-640x1136"
-        exclude "res/splash-750x1334"
-        exclude "res/splash-768x1004"
-        exclude "res/splash-1242x2208"
-        exclude "res/splash-1536x2008"
+        exclude "res/"
         exclude "**/*.DS_Store"
         exclude "**/*Thumbs.db"
     }
@@ -195,19 +178,43 @@ def configure() {
     }
 }
 
-def initPlugins() {
-    def text = "package non.plugins.internal; import non.plugins.*; public class _init { static { new non(); "
-    try { for(plug in cfg.plugins) text += "new ${plug}(); " } catch(e) { }
-    text += "} }"
+def clearPlugins() {
+    def f = new File("core/src/non/plugins");
+    def plugins = f.listFiles()
+    
+    for (plugin in plugins) {
+        def name = plugin.getName()
         
-    def ninit = new File("core/src/non/plugins/internal/_init.java")
-    ninit.createNewFile()
-    ninit.write(text)
+        if (name.equals("Plugin.java") continue
+        if (name.equals("audio.java") continue
+        if (name.equals("graphics.java") continue
+        if (name.equals("input.java") continue
+        if (name.equals("lights.java") continue
+        if (name.equals("math.java") continue
+        if (name.equals("network.java") continue
+        if (name.equals("non.java") continue
+        if (name.equals("physics.java") continue
+        
+        plugin.delete()
+    }
+}
+
+def clearLanguages() {
+    def f = new File("core/src/non/languages");
+    def languages = f.listFiles()
+    
+    for (language in languages) {
+        def name = language.getName()
+        
+        if (name.equals("Language.java") continue
+        if (name.equals("javascript.java") continue
+        if (name.equals("lua.java") continue
+        
+        language.delete()
+    }
 }
 
 def copyAndReplace(input, out, values) {
-    println(input)
-    println(out)
     def total = values[0].size() - 1
     def txt = file(input).text
     

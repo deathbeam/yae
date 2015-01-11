@@ -1,9 +1,11 @@
 package non.plugins;
 
-import non.Non;
-import non.plugins.internal._init;
+import com.badlogic.gdx.utils.reflect.ClassReflection;
+
 import java.util.HashMap;
 import java.util.Set;
+
+import non.Non;
 
 public abstract class Plugin {
     public String author()         { return "Unknown"; }
@@ -11,8 +13,7 @@ public abstract class Plugin {
     public String description()    { return "Not specified."; }
     public String[] dependencies() { return null; }
     public String name()           { return this.getClass().getSimpleName(); }
-	
-    public Plugin() { load(this); }
+
     public void plugin_load() { }
     public void plugin_unload() { }
     public void plugin_resize() { }
@@ -21,20 +22,30 @@ public abstract class Plugin {
     
     private static HashMap<String, Plugin> plugins = new HashMap<String, Plugin>();
     
+    public static void init(String[] plugins) {
+        for(String plugin: plugins) {
+            try {
+                load((Plugin)ClassReflection.newInstance(ClassReflection.forName("non.plugins." + plugin)));
+            } catch(Exception e) {
+                Non.error(Non.TAG, Non.E_PLUGIN + name);
+            }
+        }
+        
+        for(Plugin plugin: plugins.values()) plugin.plugin_load();
+    }
+    
     public static void load(Plugin plugin) {
-        Non.log("Name", plugin.name());
-        Non.log("Author", plugin.author());
-        Non.log("License", plugin.license());
-        Non.log("Description", plugin.description());
+        Non.log(Non.TAG, "Loading plugin " + plugin.name());
+        Non.log(Non.TAG, "> author - " + plugin.author());
+        Non.log(Non.TAG, "> license - " + plugin.license());
+        Non.log(Non.TAG, "> description - " + plugin.description());
         
         String[] depArray = plugin.dependencies();
 
         if (depArray != null) {
             String dependencies = "";
             for(String dependency: depArray) dependencies += dependency + ", ";
-            Non.log("Dependencies", dependencies);   
-        } else {
-            Non.log("Dependencies", "None");
+            Non.log(Non.TAG, "> dependencies - " + dependencies);
         }
         
         plugins.put(plugin.name(), plugin);
@@ -42,13 +53,13 @@ public abstract class Plugin {
     }
     
     public static Plugin get(String name) {
-        return plugins.get(name);
-    }
-    
-    public static void loadAll() {
-        Non.log("PluginManager", "Loading plugins...");
-        new _init();
-        for(Plugin plugin: plugins.values()) plugin.plugin_load();
+        if (plugins.containsKey(name) {
+            return plugins.get(name);
+        } else {
+            Non.error(Non.TAG, Non.E_PLUGIN + name);
+            Non.quit();
+            return null;
+        }
     }
     
     public static void updateBefore() { for(Plugin plugin: plugins.values()) plugin.plugin_update_before(); }

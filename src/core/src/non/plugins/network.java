@@ -1,8 +1,4 @@
-package non.plugins.internal;
-
-import non.Non;
-import non.NonBuffer;
-import non.plugins.Plugin;
+package non.plugins;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Connection;
@@ -10,7 +6,9 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.esotericsoftware.kryonet.Listener;
-import com.esotericsoftware.kryonet.Listener.ThreadedListener;
+
+import non.Non;
+import non.NonBuffer;
 
 public class network extends Plugin {
     public String author()      { return "Thomas Slusny"; }
@@ -23,8 +21,8 @@ public class network extends Plugin {
         }
         
         public void received (Connection connection, Object object) {
-            if (object instanceof byte[])
-                Non.script.invoke("network", "received", connection, (byte[])object);
+            if (!object instanceof byte[]) return;
+            Non.script.invoke("network", "received", connection, (byte[])object);
         }
 
         public void disconnected (Connection connection) {
@@ -36,18 +34,16 @@ public class network extends Plugin {
     
     public Client client() { 
         Client client = new Client();
-        client.start();
         register(client);
-        client.addListener(new ThreadedListener(new ScriptListener()));
+        client.addListener(new ScriptListener());
         
         return client;
     }
     
     public Server server() { 
         Server server = new Server();
-        server.start();
         register(server);
-        server.addListener(new ThreadedListener(new ScriptListener()));
+        server.addListener(new ScriptListener());
 
         return server;
     }

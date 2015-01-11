@@ -1,4 +1,4 @@
-package non.plugins.internal;
+package non.plugins;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Shape2D;
@@ -8,11 +8,9 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Polyline;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Interpolation;
 
 import non.Line;
 import non.Quad;
-import non.plugins.Plugin;
 
 public class math extends Plugin {
     public String author()      { return "Thomas Slusny"; }

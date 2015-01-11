@@ -1,7 +1,6 @@
-package non.plugins.internal;
+package non.plugins;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Color;
@@ -17,10 +16,11 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+
 import non.Non;
 import non.Quad;
 import non.Line;
-import non.plugins.Plugin;
 
 public class graphics extends Plugin {
     public String author()      { return "Thomas Slusny"; }
@@ -60,8 +60,8 @@ public class graphics extends Plugin {
     }
     
     public void plugin_resize() {
-        camera.setToOrtho(true, Non.getWidth(), Non.getHeight());
-        update();
+        camera.setToOrtho(true);
+        updateMatrices();
     }
     
     public Color color(String name) {
@@ -120,6 +120,24 @@ public class graphics extends Plugin {
         return clear(color(color));
     }
     
+    public Vector2 project(Vector2 pos) {
+        return project(pos.x, pos.y);
+    }
+    
+    public Vector2 project(float x, float y) {
+        Vector3 temp = camera.project(new Vector3(x, y, 0));
+        return new Vector2(temp.x, temp.y);
+    }
+    
+    public Vector2 unproject(Vector2 pos) {
+        return project(pos.x, pos.y);
+    }
+    
+    public Vector2 unproject(float x, float y) {
+        Vector3 temp = camera.unproject(new Vector3(x, y, 0));
+        return new Vector2(temp.x, temp.y);
+    }
+    
     public graphics clear(Color color) {
         Gdx.gl.glClearColor(color.r, color.g, color.b, color.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -153,7 +171,8 @@ public class graphics extends Plugin {
         if (rotation != degrees) {
             rotation = degrees - rotation;
             camera.rotate(rotation, x, y, z);
-            update();
+            camera.update();
+            updateMatrices();
         }
         
         return this;
@@ -164,7 +183,8 @@ public class graphics extends Plugin {
         if (scale != factor) {
             scale = factor;
             camera.zoom = scale;
-            update();
+            camera.update();
+            updateMatrices();
         }
         
         return this;
@@ -179,7 +199,8 @@ public class graphics extends Plugin {
             tx = x - tx;
             ty = y - ty;
             camera.translate(-tx, -ty);
-            update();
+            camera.update();
+            updateMatrices();
         }
 
         return this;
@@ -204,12 +225,11 @@ public class graphics extends Plugin {
 	
     public graphics resetTransform() {
         scale = 1;
-        camera.zoom = scale;
-        camera.rotate(-rotation);
-        camera.translate(tx, ty);
         tx = 0;
         ty = 0;
         rotation = 0;
+        camera.zoom = scale;
+        camera.setToOrtho(true);
         return this;
     }
 
@@ -349,8 +369,7 @@ public class graphics extends Plugin {
         if (!shapes.isDrawing()) shapes.begin();
     }
     
-    private void update() {
-        camera.update();
+    private void updateMatrices() {
         shapes.setProjectionMatrix(camera.combined);
         batch.setProjectionMatrix(camera.combined);
     }

@@ -1,8 +1,8 @@
-package non.plugins.internal;
+package non.plugins;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import non.plugins.Plugin;
+
 import non.InputHandle;
 
 public class input extends Plugin {
