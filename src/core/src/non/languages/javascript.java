@@ -16,22 +16,27 @@ public class javascript extends Language {
     }
     
     public Object invoke(String object, String method, Object... args) {
-        Function func;
-        if (method != null) {
-            Scriptable obj = (Scriptable)scope.get(object, scope);
-            func = (Function)obj.get(method, obj);
-        } else {
-            func = (Function)scope.get(object, scope);
-        }
-        
-        if (func == null) return null;
-        
-        if (args != null) {
-            Object[] values = new Object[args.length];
-            for (int i = 0; i < args.length; i++) values[i] = convert(args[i]);
-            return func.call(engine, scope, scope, values);
-        } else {
-            return func.call(engine, scope, scope, null);
+        Context context = Context.enter();
+        try {
+            Function func;
+            if (method != null) {
+                Scriptable obj = (Scriptable)scope.get(object, scope);
+                func = (Function)obj.get(method, obj);
+            } else {
+                func = (Function)scope.get(object, scope);
+            }
+            
+            if (func == null) return null;
+            
+            if (args != null) {
+                Object[] values = new Object[args.length];
+                for (int i = 0; i < args.length; i++) values[i] = convert(args[i]);
+                return func.call(context, scope, scope, values);
+            } else {
+                return func.call(context, scope, scope, null);
+            }
+        } finally {
+            Context.exit();
         }
     }
 
@@ -48,7 +53,7 @@ public class javascript extends Language {
     }
     
     public Object convert(Object javaValue) {
-        return javaValue == null? null:
+        return javaValue == null? UniqueTag.NULL_VALUE:
                javaValue instanceof Scriptable? javaValue:
                Context.javaToJS(javaValue, scope);
     }

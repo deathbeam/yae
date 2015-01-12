@@ -12,6 +12,13 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 public class Main {
+    public static boolean noError = true;
+    public static boolean draw = true;
+    public static String errorLog = "";
+    public static String taskLog = "";
+    
+    static Thread waiting;
+    
     interface NameMapper {
         String map(String name);
     }
@@ -21,12 +28,29 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
-        System.out.println("> Welcome to no nonsense command-line interface.");
-        
+        long start = System.currentTimeMillis();
+
         if (args.length == 0) {
-            System.out.println("Usage: java -jar non.jar <task-name>");
+            System.out.println("Usage: java -jar non.jar <task-name> <task-arguments>");
             System.exit(-1);
         }
+        
+        waiting = new Thread(new Runnable() {
+            public void run() {
+                while(Main.noError) {
+                    try {
+                        if (Main.draw) {
+                            Thread.sleep(100);
+                            System.out.print(".");
+                        }
+                    } catch(InterruptedException e) {
+                        Main.noError = false;
+                    }
+                }
+            }
+        });
+        
+        waiting.start();
         
         String arg = args[0];
         
@@ -38,9 +62,9 @@ public class Main {
         
         File outputDir = new File(".non");
         
+        wait("Building cache");
+        
         if (!outputDir.exists()) {
-            System.out.print("Building cache... ");
-            
             unpack(new File("non.jar"), outputDir, new NameMapper() {
                 public String map(String name) {
                     if (name.contains("launcher/")) return null;
@@ -48,31 +72,65 @@ public class Main {
                     return name;
                 }
             });
-            
-            System.out.print("DONE\n");
         }
         
-        String windowsFile = "gradlew.bat";
-        String unixFile = "gradlew";
+        finish();
+        
         CharCallback callback = new CharCallback() {
             public void character(char c) {
-                System.out.print(c);
+                errorLog += c;
             }
         };
-            
-        execute(outputDir, windowsFile, unixFile, arg, callback);
+        
+        wait("Executing 'gradlew " + arg + "'");
+        execute(outputDir, arg, callback);
+        finish();
+        
+        waiting.interrupt();
+        
+        checkErrors();
+        
+        long end = (System.currentTimeMillis() - start) / 1000;
+        
+        if (end > 59) {
+            end = end / 60;
+            if (end > 59) System.out.print("Total time: " + end / 60 + " hours");
+            else System.out.print("Total time: " + end + " minutes");
+        } else {
+            System.out.print("Total time: " + end + " seconds");
+        }
+    }
+    
+    static void wait(String msg) {
+        System.out.print("> " + msg);
+        draw = true;
+    }
+    
+    static void finish() {
+        draw = false;
+        if (noError) System.out.println(" DONE");
+        else System.out.println(" FAILED");
+    }
+    
+    static void error(String error) {
+        noError = false;
+        errorLog = error;
+    }
+    
+    static void checkErrors() {
+        if (!noError) {
+            int i = errorLog.lastIndexOf("BUILD");
+            if (i >= 0) System.out.println("\n" + errorLog.substring(0, i));
+            else System.out.println("\n" + errorLog);
+            System.out.println("\nBUILD FAILED");
+        } else {
+            System.out.println("\nBUILD SUCCESFULL");
+        }
     }
 
-    static boolean execute (File workingDir, String windowsFile, String unixFile, String parameters, CharCallback callback) {
-        
-        String exec = workingDir.getAbsolutePath() + "/" + (System.getProperty("os.name").contains("Windows") ? windowsFile : unixFile);
-        String log = "Executing '" + exec + " " + parameters + "'";
-        
-        for(int i = 0; i < log.length(); i++) {
-            callback.character(log.charAt(i));
-        }
-        
-        callback.character('\n');
+    static void execute (File workingDir, String parameters, CharCallback callback) {
+        String targetFile = (System.getProperty("os.name").contains("Windows") ? "gradlew.bat" : "gradlew");
+        String exec = (workingDir.getAbsolutePath() + "/" + targetFile).replace("\\", "/");
 		
         String[] params = parameters.split(" ");
         String[] commands = new String[params.length + 1];
@@ -82,10 +140,10 @@ public class Main {
             commands[i + 1] = params[i];
         }
 		
-        return startProcess(commands, workingDir, callback);
+        startProcess(commands, workingDir, callback);
     }
 
-    static boolean startProcess (String[] commands, File directory, final CharCallback callback) {
+    static void startProcess (String[] commands, File directory, final CharCallback callback) {
         try {
             final Process process = new ProcessBuilder(commands).redirectErrorStream(true).directory(directory).start();
 
@@ -95,7 +153,7 @@ public class Main {
                     try {
                         int c = 0;
                         while ((c = reader.read()) != -1) {
-                            callback.character((char)c);						
+                            Main.taskLog += (char)c;						
                         }
                     } catch (IOException e) { }
                 }
@@ -104,10 +162,10 @@ public class Main {
             t.start();
             process.waitFor();
             t.interrupt();
-            return process.exitValue() == 0;
+            
+            if (process.exitValue() != 0) error(taskLog);
         } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+            error(e.getMessage());
         }
     }
     
@@ -141,7 +199,7 @@ public class Main {
                         }
                     }
                 } catch (IOException ze) {
-                    System.out.print("\nFailed to unpack zip entry " + e.getName() + "\n");
+                    error("Failed to unpack zip entry " + e.getName());
                 } finally {
                     try { if (is != null) is.close(); }
                     catch (IOException ioe) { }
@@ -157,9 +215,9 @@ public class Main {
     
     static void mkdir(File directory) throws IOException {
         if (directory.exists()) {
-            if (directory.isFile()) throw new IOException("\n" + directory + " exists and is not a directory.\n");
+            if (directory.isFile()) throw new IOException(directory + " exists and is not a directory.");
         } else if (!directory.mkdirs()) {
-            throw new IOException("\nUnable to create directory " + directory + "\n");
+            throw new IOException("Unable to create directory " + directory);
         }
     }
     

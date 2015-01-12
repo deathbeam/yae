@@ -2,6 +2,7 @@ package non.plugins;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -37,6 +38,7 @@ public class graphics extends Plugin {
     public Class<?> fontLoader = BitmapFont.class;
     
     public SpriteBatch getBatch() { return batch; }
+    public OrthographicCamera getCamera() { return camera; }
     public BitmapFont getFont() { return curFont; }
     public graphics setFont(BitmapFont fnt) { curFont = fnt; return this; }
     public graphics setShader(ShaderProgram shader) { batch.setShader(shader); return this; }
@@ -108,18 +110,6 @@ public class graphics extends Plugin {
         return (Non.assets.isLoaded(file)) ? (BitmapFont)Non.assets.get(file, fontLoader) : new BitmapFont(Non.file(file));
     }
     
-    public graphics clear(float r, float g, float b) {
-        return clear(color(r,g,b));
-    }
-    
-    public graphics clear(float r, float g, float b, float a) {
-        return clear(color(r,g,b,a));
-    }
-    
-    public graphics clear(String color) {
-        return clear(color(color));
-    }
-    
     public Vector2 project(Vector2 pos) {
         return project(pos.x, pos.y);
     }
@@ -136,6 +126,18 @@ public class graphics extends Plugin {
     public Vector2 unproject(float x, float y) {
         Vector3 temp = camera.unproject(new Vector3(x, y, 0));
         return new Vector2(temp.x, temp.y);
+    }
+    
+    public graphics clear(float r, float g, float b) {
+        return clear(color(r,g,b));
+    }
+    
+    public graphics clear(float r, float g, float b, float a) {
+        return clear(color(r,g,b,a));
+    }
+    
+    public graphics clear(String color) {
+        return clear(color(color));
     }
     
     public graphics clear(Color color) {
@@ -169,7 +171,7 @@ public class graphics extends Plugin {
     
     public graphics rotate(float degrees, float x, float y, float z) {
         if (rotation != degrees) {
-            rotation = degrees - rotation;
+            rotation = degrees;
             camera.rotate(rotation, x, y, z);
             camera.update();
             updateMatrices();
@@ -196,8 +198,8 @@ public class graphics extends Plugin {
     
     public graphics translate(float x, float y) {
         if ((tx != x) && (ty != y)) {
-            tx = x - tx;
-            ty = y - ty;
+            tx = x;
+            ty = y;
             camera.translate(-tx, -ty);
             camera.update();
             updateMatrices();

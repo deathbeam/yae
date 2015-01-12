@@ -185,15 +185,15 @@ def clearPlugins() {
     for (plugin in plugins) {
         def name = plugin.getName()
         
-        if (name.equals("Plugin.java") continue
-        if (name.equals("audio.java") continue
-        if (name.equals("graphics.java") continue
-        if (name.equals("input.java") continue
-        if (name.equals("lights.java") continue
-        if (name.equals("math.java") continue
-        if (name.equals("network.java") continue
-        if (name.equals("non.java") continue
-        if (name.equals("physics.java") continue
+        if (name.equals("Plugin.java")) continue
+        if (name.equals("audio.java")) continue
+        if (name.equals("graphics.java")) continue
+        if (name.equals("input.java")) continue
+        if (name.equals("lights.java")) continue
+        if (name.equals("math.java")) continue
+        if (name.equals("network.java")) continue
+        if (name.equals("non.java")) continue
+        if (name.equals("physics.java")) continue
         
         plugin.delete()
     }
@@ -206,9 +206,9 @@ def clearLanguages() {
     for (language in languages) {
         def name = language.getName()
         
-        if (name.equals("Language.java") continue
-        if (name.equals("javascript.java") continue
-        if (name.equals("lua.java") continue
+        if (name.equals("Language.java")) continue
+        if (name.equals("javascript.java")) continue
+        if (name.equals("lua.java")) continue
         
         language.delete()
     }

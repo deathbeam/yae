@@ -103,13 +103,13 @@ public class Non implements ApplicationListener {
         if (args.has("logging")) {
             String logLevel = args.getString("logging");
             
-            if ("none".equalsIgnoreCase(logLevel)
+            if ("none".equalsIgnoreCase(logLevel))
                 Gdx.app.setLogLevel(0);
-            else if ("error".equalsIgnoreCase(logLevel)
+            else if ("error".equalsIgnoreCase(logLevel))
                 Gdx.app.setLogLevel(1);
-            else if ("info".equalsIgnoreCase(logLevel)
+            else if ("info".equalsIgnoreCase(logLevel))
                 Gdx.app.setLogLevel(2);
-            else if ("debug".equalsIgnoreCase(logLevel)
+            else if ("debug".equalsIgnoreCase(logLevel))
                 Gdx.app.setLogLevel(3);
         }
         
@@ -138,7 +138,7 @@ public class Non implements ApplicationListener {
         if (fl.exists()) {
             loadingImage = new Texture(fl);
         } else {
-            error(TAG, E_RESOURCE + fl.name();
+            error(TAG, E_RESOURCE + fl.name());
             quit();
         }
         
@@ -147,7 +147,7 @@ public class Non implements ApplicationListener {
         if (fl.exists()) {
             loadingBg = new Texture(fl);
         } else {
-            error(TAG, E_RESOURCE + fl.name();
+            error(TAG, E_RESOURCE + fl.name());
             quit();
         }
         
@@ -156,7 +156,7 @@ public class Non implements ApplicationListener {
         if (fl.exists()) {
             loadingBar = new Texture(fl);
         } else {
-            error(TAG, E_RESOURCE + fl.name();
+            error(TAG, E_RESOURCE + fl.name());
             quit();
         }
         
@@ -165,14 +165,14 @@ public class Non implements ApplicationListener {
         if (fl.exists()) {
             loadingBarBg = new Texture(fl);
         } else {
-            error(TAG, E_RESOURCE + fl.name();
+            error(TAG, E_RESOURCE + fl.name());
             quit();
         }
         
         assets = new AssetManager();
         Gdx.input.setInputProcessor(new InputHandle());
         
-        if args.has("language") {
+        if (args.has("language")) {
             script = Language.init(args.getString("language"));
         } else {
             error(TAG, E_ARGUMENT + "language");

@@ -7,7 +7,6 @@ import box2dLight.PointLight;
 import box2dLight.RayHandler;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.physics.box2d.World;
 
 public class lights extends Plugin {
     public String author()         { return "Thomas Slusny"; }

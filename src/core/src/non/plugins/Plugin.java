@@ -23,15 +23,21 @@ public abstract class Plugin {
     private static HashMap<String, Plugin> plugins = new HashMap<String, Plugin>();
     
     public static void init(String[] plugins) {
+        try {
+            load((Plugin)ClassReflection.newInstance(ClassReflection.forName("non.plugins.non")));
+        } catch(Exception e) {
+            Non.error(Non.TAG, Non.E_PLUGIN + "non");
+        }
+            
         for(String plugin: plugins) {
             try {
                 load((Plugin)ClassReflection.newInstance(ClassReflection.forName("non.plugins." + plugin)));
             } catch(Exception e) {
-                Non.error(Non.TAG, Non.E_PLUGIN + name);
+                Non.error(Non.TAG, Non.E_PLUGIN + plugin);
             }
         }
         
-        for(Plugin plugin: plugins.values()) plugin.plugin_load();
+        for(Plugin plugin: Plugin.plugins.values()) plugin.plugin_load();
     }
     
     public static void load(Plugin plugin) {
@@ -53,7 +59,7 @@ public abstract class Plugin {
     }
     
     public static Plugin get(String name) {
-        if (plugins.containsKey(name) {
+        if (plugins.containsKey(name)) {
             return plugins.get(name);
         } else {
             Non.error(Non.TAG, Non.E_PLUGIN + name);
