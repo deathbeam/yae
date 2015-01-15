@@ -26,12 +26,12 @@ public class input extends Plugin {
     }
     
     public class Mouse {
-        public void fix() {
-            Gdx.input.setCursorCatched(true);
+        public void show() {
+            Gdx.input.setCursorCatched(false);
         }
         
-        public void release() {
-            Gdx.input.setCursorCatched(false);
+        public void hide() {
+            Gdx.input.setCursorCatched(true);
         }
         
         public float getX() {
@@ -74,6 +74,14 @@ public class input extends Plugin {
         
         public float getY(int index) {
             return Gdx.input.getY(index);
+        }
+        
+        public Vector2 getPosition() {
+            return new Vector2(Gdx.input.getY(), Gdx.input.getY());
+        }
+        
+        public Vector2 getPosition(int index) {
+            return new Vector2(Gdx.input.getY(index), Gdx.input.getY(index));
         }
         
         public boolean isDown() {

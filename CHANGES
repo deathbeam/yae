@@ -1,3 +1,9 @@
+[3.2.2]
+- added proper loading animation for Non command line
+- added getPosition method to input.touch
+- added option for hiding mouse (desktop only) with show() and hide() methods
+- added automatic dependency loading to plugins
+
 [3.2.1]
 - simplified logging of non.jar CLI
 - added support for multi-threading for JavaScript, not yet working on Lua

@@ -27,6 +27,7 @@ public class graphics extends Plugin {
     public String author()      { return "Thomas Slusny"; }
     public String license()     { return "MIT"; }
     public String description() { return "Plugin for drawing and rendering of images and text."; }
+    public String[] dependencies() { return new String[] { "math" }; }
     
     private SpriteBatch batch;
     private ShapeRenderer shapes;
@@ -266,7 +267,7 @@ public class graphics extends Plugin {
         return this;
     }
 	
-	public graphics fill(String type, Vector2 shape) {
+    public graphics fill(String type, Vector2 shape) {
         checkShapes();
 		
         if (type.equalsIgnoreCase("line")) {

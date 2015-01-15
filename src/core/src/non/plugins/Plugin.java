@@ -22,40 +22,49 @@ public abstract class Plugin {
     
     private static HashMap<String, Plugin> plugins = new HashMap<String, Plugin>();
     
-    public static void init(String[] plugins) {
+    private static void initPlugin(String name) {
         try {
-            load((Plugin)ClassReflection.newInstance(ClassReflection.forName("non.plugins.non")));
+            plugins.put(
+                name,
+                (Plugin)ClassReflection.newInstance(ClassReflection.forName("non.plugins." + name))
+            );
         } catch(Exception e) {
-            Non.error(Non.TAG, Non.E_PLUGIN + "non");
+            Non.error(Non.TAG, Non.E_PLUGIN + name);
+            Non.quit();
         }
-            
-        for(String plugin: plugins) {
-            try {
-                load((Plugin)ClassReflection.newInstance(ClassReflection.forName("non.plugins." + plugin)));
-            } catch(Exception e) {
-                Non.error(Non.TAG, Non.E_PLUGIN + plugin);
-            }
-        }
-        
-        for(Plugin plugin: Plugin.plugins.values()) plugin.plugin_load();
     }
     
-    public static void load(Plugin plugin) {
+    public static void init(String[] plugins) {
+        load("non");
+            
+        for(String plugin: plugins) {
+            load(plugin);
+        }
+    }
+    
+    public static void load(String name) {
+        if (plugins.containsKey(name)) return;
+        
+        initPlugin(name);
+        
+        Plugin plugin = get(name);
+        
         Non.log(Non.TAG, "Loading plugin " + plugin.name());
         Non.log(Non.TAG, "> author - " + plugin.author());
         Non.log(Non.TAG, "> license - " + plugin.license());
         Non.log(Non.TAG, "> description - " + plugin.description());
+
+        Non.script.put(plugin.name(), plugin);
         
         String[] depArray = plugin.dependencies();
 
         if (depArray != null) {
-            String dependencies = "";
-            for(String dependency: depArray) dependencies += dependency + ", ";
-            Non.log(Non.TAG, "> dependencies - " + dependencies);
+            for(String dependency: depArray) {
+                load(dependency);
+            }
         }
         
-        plugins.put(plugin.name(), plugin);
-        Non.script.put(plugin.name(), plugin);
+        plugin.plugin_load();
     }
     
     public static Plugin get(String name) {
@@ -63,7 +72,6 @@ public abstract class Plugin {
             return plugins.get(name);
         } else {
             Non.error(Non.TAG, Non.E_PLUGIN + name);
-            Non.quit();
             return null;
         }
     }

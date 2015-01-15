@@ -16,6 +16,7 @@ public class Main {
     public static boolean draw = true;
     public static String errorLog = "";
     public static String taskLog = "";
+    public static String loadString = "   ";
     
     static Thread waiting;
     
@@ -40,8 +41,14 @@ public class Main {
                 while(Main.noError) {
                     try {
                         if (Main.draw) {
-                            Thread.sleep(100);
-                            System.out.print(".");
+                            if (Main.loadString == "   ") Main.loadString = ".  ";
+                            else if(Main.loadString == ".  ") Main.loadString = ".. ";
+                            else if(Main.loadString == ".. ") Main.loadString = "...";
+                            else if(Main.loadString == "...") Main.loadString = "   ";
+
+                            System.out.print(Main.loadString + "\b\b\b");
+                            
+                            Thread.sleep(250);
                         }
                     } catch(InterruptedException e) {
                         Main.noError = false;

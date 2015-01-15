@@ -9,7 +9,7 @@ import non.Non;
 public class audio extends Plugin {
     public String author()      { return "Thomas Slusny"; }
     public String license()     { return "MIT"; }
-    public String description() { return  "Plugin for playing audio and music files."; }
+    public String description() { return "Plugin for playing audio and music files."; }
     
     public Class<?> musicLoader = Music.class;
     public Class<?> soundLoader = Sound.class;
