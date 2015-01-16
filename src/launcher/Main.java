@@ -1,47 +1,36 @@
 package launcher;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+
+import java.io.*;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 
 public class Main {
-    public static boolean noError = true;
-    public static boolean draw = true;
-    public static String errorLog = "";
-    public static String taskLog = "";
-    public static String loadString = "   ";
+    public static boolean error, draw;
+    public static String errorLog, taskLog, loadString;
     
+    static long start;
     static Thread waiting;
     
     interface NameMapper {
         String map(String name);
     }
-    
-    interface CharCallback {
-        void character(char c);
-    }
 
     public static void main(String[] args) throws IOException {
-        long start = System.currentTimeMillis();
-
         if (args.length == 0) {
             System.out.println("Usage: java -jar non.jar <task-name> <task-arguments>");
             System.exit(-1);
         }
         
+        start = System.currentTimeMillis();
+        
         waiting = new Thread(new Runnable() {
             public void run() {
-                while(Main.noError) {
+                while(!Main.error) {
                     try {
                         if (Main.draw) {
-                            if (Main.loadString == "   ") Main.loadString = ".  ";
+                            if (Main.loadString == "") Main.loadString = "   ";
+                            else if (Main.loadString == "   ") Main.loadString = ".  ";
                             else if(Main.loadString == ".  ") Main.loadString = ".. ";
                             else if(Main.loadString == ".. ") Main.loadString = "...";
                             else if(Main.loadString == "...") Main.loadString = "   ";
@@ -51,13 +40,15 @@ public class Main {
                             Thread.sleep(250);
                         }
                     } catch(InterruptedException e) {
-                        Main.noError = false;
+                        Main.error(e.getMessage());
                     }
                 }
             }
         });
         
         waiting.start();
+        
+        wait("Building cache");
         
         String arg = args[0];
         
@@ -69,8 +60,6 @@ public class Main {
         
         File outputDir = new File(".non");
         
-        wait("Building cache");
-        
         if (!outputDir.exists()) {
             unpack(new File("non.jar"), outputDir, new NameMapper() {
                 public String map(String name) {
@@ -79,24 +68,20 @@ public class Main {
                     return name;
                 }
             });
+            
+            new File(outputDir.getAbsolutePath(), "gradlew").setExecutable(true);
         }
         
         finish();
         
-        CharCallback callback = new CharCallback() {
-            public void character(char c) {
-                errorLog += c;
-            }
-        };
-        
         wait("Executing 'gradlew " + arg + "'");
-        execute(outputDir, arg, callback);
+        execute(outputDir, arg);
         finish();
         
-        waiting.interrupt();
-        
-        checkErrors();
-        
+        success();
+    }
+    
+    static void time() {
         long end = (System.currentTimeMillis() - start) / 1000;
         
         if (end > 59) {
@@ -108,6 +93,23 @@ public class Main {
         }
     }
     
+    static void success() {
+        waiting.interrupt();
+        System.out.println("\nBUILD SUCCESFULL");
+        time();
+        System.exit(-1);
+    }
+    
+    static void fail() {
+        waiting.interrupt();
+        int i = errorLog.lastIndexOf("BUILD");
+        if (i >= 0) System.out.println("\n" + errorLog.substring(0, i));
+        else System.out.println("\n" + errorLog);
+        System.out.println("\nBUILD FAILED");
+        time();
+        System.exit(-1);
+    }
+    
     static void wait(String msg) {
         System.out.print("> " + msg);
         draw = true;
@@ -115,27 +117,20 @@ public class Main {
     
     static void finish() {
         draw = false;
-        if (noError) System.out.println(" DONE");
-        else System.out.println(" FAILED");
-    }
-    
-    static void error(String error) {
-        noError = false;
-        errorLog = error;
-    }
-    
-    static void checkErrors() {
-        if (!noError) {
-            int i = errorLog.lastIndexOf("BUILD");
-            if (i >= 0) System.out.println("\n" + errorLog.substring(0, i));
-            else System.out.println("\n" + errorLog);
-            System.out.println("\nBUILD FAILED");
+        if (!error) {
+            System.out.println(" DONE");
         } else {
-            System.out.println("\nBUILD SUCCESFULL");
+            System.out.println(" FAILED");
+            fail();
         }
     }
+    
+    static void error(String message) {
+        error = true;
+        errorLog += message;
+    }
 
-    static void execute (File workingDir, String parameters, CharCallback callback) {
+    static void execute (File workingDir, String parameters) {
         String targetFile = (System.getProperty("os.name").contains("Windows") ? "gradlew.bat" : "gradlew");
         String exec = (workingDir.getAbsolutePath() + "/" + targetFile).replace("\\", "/");
 		
@@ -147,10 +142,10 @@ public class Main {
             commands[i + 1] = params[i];
         }
 		
-        startProcess(commands, workingDir, callback);
+        startProcess(commands, workingDir);
     }
 
-    static void startProcess (String[] commands, File directory, final CharCallback callback) {
+    static void startProcess (String[] commands, File directory) {
         try {
             final Process process = new ProcessBuilder(commands).redirectErrorStream(true).directory(directory).start();
 

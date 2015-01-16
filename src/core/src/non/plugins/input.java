@@ -43,7 +43,7 @@ public class input extends Plugin {
         }
         
         public Vector2 getPosition() {
-            return new Vector2(Gdx.input.getY(), Gdx.input.getY());
+            return new Vector2(Gdx.input.getX(), Gdx.input.getY());
         }
         
         public void setPosition(float x, float y) {
@@ -77,11 +77,11 @@ public class input extends Plugin {
         }
         
         public Vector2 getPosition() {
-            return new Vector2(Gdx.input.getY(), Gdx.input.getY());
+            return new Vector2(Gdx.input.getX(), Gdx.input.getY());
         }
         
         public Vector2 getPosition(int index) {
-            return new Vector2(Gdx.input.getY(index), Gdx.input.getY(index));
+            return new Vector2(Gdx.input.getX(index), Gdx.input.getY(index));
         }
         
         public boolean isDown() {

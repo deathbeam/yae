@@ -65,11 +65,6 @@ public class physics extends Plugin {
     public physics setStep(float step) { this.step = step; return this; }
     public physics setDebug(boolean debug) { this.debug = debug; return this; }
     public physics setSpeed(float speed) { this.speed = speed; return this; }
-	
-    public physics() {
-        Box2D.init();
-        world = new World(new Vector2(), true);
-    }
     
     public void plugin_load() {
         debug = false;
@@ -78,6 +73,8 @@ public class physics extends Plugin {
         ppt = 1;
         speed = 1;
         
+        Box2D.init();
+        world = new World(new Vector2(), true);
         world.setContactListener(new ScriptContactListener());
     }
     

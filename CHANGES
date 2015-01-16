@@ -1,3 +1,12 @@
+[3.2.3]
+- fixed android:run task (read Running and packaging a project section on Wiki)
+- fixed loading of physics plugin
+- fixed bug where gradlew was not recognized as executable on Unix systems
+- fixed major bug with handling mouse and touch input
+- optimized console launcher a bit
+- fixed bug when task fails, it was not recognizing it until all tasks ended
+- console now properly ignores fake errors from LuaJ and Rhino libraries (Lua and JavaScript)
+
 [3.2.2]
 - added proper loading animation for Non command line
 - added getPosition method to input.touch
