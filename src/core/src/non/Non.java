@@ -72,10 +72,6 @@ public class Non implements ApplicationListener {
         return "desktop";
     }
     
-    public static boolean checkPlatform(String p) {
-        return getPlatform().equalsIgnoreCase(p);
-    }
-    
     public static void error(String type, String msg) {
         Gdx.app.error(type, msg);
     }
@@ -113,7 +109,7 @@ public class Non implements ApplicationListener {
                 Gdx.app.setLogLevel(3);
         }
         
-        if (checkPlatform("desktop")) {
+        if (getPlatform().equalsIgnoreCase("desktop")) {
             int width = 800;
             int height = 600;
             boolean fullscreen = false;

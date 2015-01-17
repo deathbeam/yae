@@ -7,9 +7,8 @@ buildscript {
     }
     
     dependencies {
-        classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.5'
-        classpath 'com.android.tools.build:gradle:0.13+'
-        classpath 'org.robovm:robovm-gradle-plugin:1.0.0-alpha-04'
+        classpath 'com.android.tools.build:gradle:0.14.4'
+        classpath 'org.robovm:robovm-gradle-plugin:1.0.0-beta-03'
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.+'
     }
 }
@@ -22,8 +21,8 @@ allprojects {
         appName = cfg.name
         packageName = cfg.package
         packageDir = cfg.package.replace('.', '/')
-        gdxVersion = '1.4.1'
-        roboVMVersion = '1.0.0-alpha-04'
+        gdxVersion = '1.5.3'
+        roboVMVersion = '1.0.0-beta-03'
         box2DLightsVersion = '1.3'
         rhinoVersion = '1.7R4'
         luajVersion = '3.0'

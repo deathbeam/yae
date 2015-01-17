@@ -69,7 +69,7 @@ public class math extends Plugin {
         return new Ellipse(x, y, width, height);
     }
     
-    public float sqrt(double a){ return (float)Math.sqrt(a); }
+    public float sqrt(float a){ return (float)Math.sqrt(a); }
     public float pow(float a, float b){ return (float)Math.pow(a, b); }
     public float abs(float num) { return Math.abs(num); }
     public float sin(float rad) { return MathUtils.sin(rad); }

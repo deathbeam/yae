@@ -1,4 +1,17 @@
-[3.2.3]
+[3.3.0]
+- updated Gradle Android to 0.14.4
+- updated RoboVM to 1.0.0-beta-03
+- updated LibGDX to 1.5.3
+- updated Gradle to 2.2
+- revamped physics plugin again (read Physics and Box2D section on Wiki)
+- added support for fixtures to physics plugin
+- renamed non.getWidth to non.width
+- renamed non.getHeight to non.height
+- renamed non.getConfig to non.config
+- renamed non.getDelta to non.delta
+- renamed non.getFPS to non.fps
+- renamed non.checkPlatform to non.platform
+- removed non.getPlatform
 - fixed android:run task (read Running and packaging a project section on Wiki)
 - fixed loading of physics plugin
 - fixed bug where gradlew was not recognized as executable on Unix systems

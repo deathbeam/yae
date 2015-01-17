@@ -7,7 +7,9 @@ import java.util.zip.ZipFile;
 
 public class Main {
     public static boolean error, draw;
-    public static String errorLog, taskLog, loadString;
+    public static String errorLog = "";
+    public static String taskLog = "";
+    public static String loadString = "";
     
     static long start;
     static Thread waiting;
