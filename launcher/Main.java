@@ -32,7 +32,7 @@ public class Main {
         
         try {
             runner.wait("Checking for latest version");
-            FileHandle toCheck = new FileHandle(new Download("https://raw.githubusercontent.com/"+repo+"/"+branch+"/VERSION" ).get());
+            FileHandle toCheck = new FileHandle(new Download("https://raw.githubusercontent.com/"+repo+"/"+branch+"non/VERSION" ).get());
             newVer = toCheck.read().trim();
             new FileHandle("VERSION").file().delete();
             if (!outputDir.exists()) {
