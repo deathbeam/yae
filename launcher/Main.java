@@ -1,7 +1,8 @@
 public class Main {
     static final String repo   = "non-dev/non";
     static final String branch = "master";
-    static final String dir    = "non";
+    static final String dir    = ".non";
+    static final String subdir = "non";
     
     static final String[] excludes = new String[] {
         "launcher/", ".gitignore", "LICENSE", "README.md"
@@ -28,19 +29,16 @@ public class Main {
         
         boolean upToDate = true;
         String newVer = "0.0.0";
-        FileHandle outputDir = new FileHandle(dir);
+        FileHandle outputDir = new FileHandle(dir + "/" + subdir);
         
         try {
             runner.wait("Checking for latest version");
-            
+            FileHandle toCheck = new FileHandle(new Download("https://raw.githubusercontent.com/"+repo+"/"+branch+"/VERSION" ).get());
+            newVer = toCheck.read().trim();
             if (!outputDir.exists()) {
                 upToDate = false;
             } else {
-                String curVer = new FileHandle(outputDir.file(), "VERSION").read().trim();
-                FileHandle toCheck = new FileHandle(new Download(
-                    "https://raw.githubusercontent.com/"+repo+"/"+branch+"/"+dir+"/VERSION" ).get());
-                newVer = toCheck.read().trim();
-                
+                String curVer = new FileHandle(dir, "VERSION").read().trim();
                 upToDate = curVer.equals(newVer);
             }
         } catch(Exception e) {
@@ -54,8 +52,7 @@ public class Main {
                 runner.wait("Downloading non " + newVer);
                 
                 outputDir.deldir();
-                FileHandle download = new FileHandle(new Download(
-                    "https://github.com/"+repo+"/archive/"+branch+".zip").get());
+                FileHandle download = new FileHandle(new Download("https://github.com/"+repo+"/archive/"+branch+".zip").get());
                 
                 new Zip(download.file()).unpack(".", new Zip.NameMapper() {
                     public String map(String name) {
@@ -67,7 +64,9 @@ public class Main {
                     }
                 });
                 
-                new FileHandle(dir).file().renameTo(new FileHandle("." + dir).file());
+                new FileHandle("master.zip").file().delete();
+                new FileHandle("VERSION").file().delete();
+                new FileHandle("non-master").file().renameTo(new FileHandle(dir).file());
             } catch(Exception e) {
                 runner.error(e);
             } finally {

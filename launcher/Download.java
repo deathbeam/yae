@@ -12,30 +12,34 @@ public class Download {
     }
 
     public File get() throws Exception {
-        File file = null;
-        ReadableByteChannel rbc = null;
-        FileOutputStream fos = null;
-        
-        try {
-            URL url = new URL(urlString);
-            if (url.getFile().length() < 2) throw new Exception(urlString + " is not a file.");
-            file = new File(url.getFile());
-            
-            rbc = Channels.newChannel(url.openStream()); 
-            fos = new FileOutputStream(file);
-            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-        } finally {
-            if (rbc != null) {
-                try { rbc.close(); }
-                catch (Exception e) { }
-            }
-            
-            if (fos != null) {
-                try { fos.close(); }
-                catch (Exception e) { }
-            }
-            
-            return file;
+        String link = urlString;
+        URL url  = new URL(link);
+        HttpURLConnection http = (HttpURLConnection)url.openConnection();
+        Map< String, List< String >> header = http.getHeaderFields();
+        while(isRedirected( header )) {
+            link = header.get( "Location" ).get( 0 );
+            url = new URL(link);
+            http = (HttpURLConnection)url.openConnection();
+            header = http.getHeaderFields();
         }
+        
+        InputStream input  = http.getInputStream();
+        byte[] buffer = new byte[4096];
+        int n = -1;
+        File file = new File(link.substring(link.lastIndexOf('/') + 1, link.length()));
+        OutputStream output = new FileOutputStream(file);
+        while ((n = input.read(buffer)) != -1) {
+            output.write( buffer, 0, n );
+        }
+        output.close();
+        return file;
+    }
+    
+    private boolean isRedirected( Map<String, List<String>> header ) {
+        for( String hv : header.get( null )) {
+            if(   hv.contains( " 301 " ) || hv.contains( " 302 " )) return true;
+        }
+        
+        return false;
     }
 }
