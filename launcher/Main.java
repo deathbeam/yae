@@ -2,8 +2,7 @@ public class Main {
     static final String repo   = "non-dev/non";
     static final String branch = "master";
     static final String dir    = ".non";
-    static final String subdir = "non";
-    
+
     static final String[] excludes = new String[] {
         "launcher/", ".gitignore", "LICENSE", "README.md"
     };
@@ -29,12 +28,13 @@ public class Main {
         
         boolean upToDate = true;
         String newVer = "0.0.0";
-        FileHandle outputDir = new FileHandle(dir + "/" + subdir);
+        FileHandle outputDir = new FileHandle(dir);
         
         try {
             runner.wait("Checking for latest version");
             FileHandle toCheck = new FileHandle(new Download("https://raw.githubusercontent.com/"+repo+"/"+branch+"/VERSION" ).get());
             newVer = toCheck.read().trim();
+            new FileHandle("VERSION").file().delete();
             if (!outputDir.exists()) {
                 upToDate = false;
             } else {
@@ -65,8 +65,8 @@ public class Main {
                 });
                 
                 new FileHandle("master.zip").file().delete();
-                new FileHandle("VERSION").file().delete();
-                new FileHandle("non-master").file().renameTo(new FileHandle(dir).file());
+                new FileHandle("non-master/non").copyDirectory(dir);
+                new FileHandle("non-master").deldir();
             } catch(Exception e) {
                 runner.error(e);
             } finally {

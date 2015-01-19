@@ -88,4 +88,39 @@ public class FileHandle {
         in.close();
         return sBuffer.toString();
     }
+    
+    public void copyDirectory(String targetLocation) throws IOException {
+        copyDirectory(file, new File(targetLocation));
+    }
+    
+    public void copyDirectory(File targetLocation) throws IOException {
+        copyDirectory(file, targetLocation);
+    }
+    
+    private void copyDirectory(File file, File targetLocation) throws IOException {
+        if (file.isDirectory()) {
+            if (!targetLocation.exists()) {
+                targetLocation.mkdir();
+            }
+
+            String[] children = file.list();
+            for (int i=0; i<children.length; i++) {
+                copyDirectory(new File(file, children[i]),
+                        new File(targetLocation, children[i]));
+            }
+        } else {
+
+            InputStream in = new FileInputStream(file);
+            OutputStream out = new FileOutputStream(targetLocation);
+
+            // Copy the bits from instream to outstream
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf)) > 0) {
+                out.write(buf, 0, len);
+            }
+            in.close();
+            out.close();
+        }
+    }
 }

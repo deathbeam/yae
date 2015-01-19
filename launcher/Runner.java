@@ -14,8 +14,8 @@ public class Runner implements Runnable {
     }
 
     public void run() {
-        if (error || !draw) return;
-
+        if (error && !draw) return;
+        
         if (loadString == "") loadString = "   ";
         else if (loadString == "   ") loadString = ".  ";
         else if(loadString == ".  ") loadString = ".. ";
@@ -38,8 +38,6 @@ public class Runner implements Runnable {
     }
 
     public void wait(String msg) {
-        if (error) return;
-        
         System.out.print("> " + msg);
         draw = true;
     }
