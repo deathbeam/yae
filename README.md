@@ -1,4 +1,4 @@
-![logo](https://raw.githubusercontent.com/non-dev/non/master/src/gen/res/loading.png)
+![logo](https://raw.githubusercontent.com/non-dev/non/master/non/gen/res/loading.png)
 
 Non is a cross-platform game and visualization development engine. It currently supports Windows, Linux, Mac OS X, Android and iOS as target platforms.
 
