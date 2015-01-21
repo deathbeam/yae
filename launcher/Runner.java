@@ -1,34 +1,29 @@
-public class Runner {
-    private static boolean draw = false;
-    private static boolean error = false;
-    private static String errorLog = "";
-    private static Thread thread;
+public class Runner implements Runnable {
+    private boolean draw = false;
+    private boolean error = false;
+    private String errorLog = "";
+    private Thread thread;
     
     private long start;
     
-    public Runner() {
-        thread = new Thread(new Runnable() {
-            public void run() {
-                String loadString = "";
+    public void run() {
+        String loadString = "";
                 
-                while (draw) {
-                    if (loadString == "") loadString = "   ";
-                    else if (loadString == "   ") loadString = ".  ";
-                    else if (loadString == ".  ") loadString = ".. ";
-                    else if (loadString == ".. ") loadString = "...";
-                    else if (loadString == "...") loadString = "   ";
+        while (draw) {
+            if (loadString == "") loadString = "   ";
+            else if (loadString == "   ") loadString = ".  ";
+            else if (loadString == ".  ") loadString = ".. ";
+            else if (loadString == ".. ") loadString = "...";
+            else if (loadString == "...") loadString = "   ";
             
-                    System.out.print(loadString + "\b\b\b");
+            System.out.print(loadString + "\b\b\b");
                     
-                    try { thread.sleep(250); } catch (Exception e) { }
-               }
-            }
-        });
+            try { thread.sleep(250); } catch (Exception e) { }
+        }
     }
     
     public void start() {
         start = System.currentTimeMillis();
-        thread.start();
     }
     
     public void stop() {
@@ -62,10 +57,13 @@ public class Runner {
     public void wait(String msg) {
         System.out.print("> " + msg);
         draw = true;
+        thread = new Thread(this);
+        thread.start();
     }
 
     public void finish() {
         draw = false;
+        thread.interrupt();
         
         if (!error) {
             System.out.println(" DONE");

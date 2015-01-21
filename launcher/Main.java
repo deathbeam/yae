@@ -29,14 +29,14 @@ public class Main {
         if (v != null && v.isLower()) {
             try {
                 runner.wait("Downloading non " + v.toString());
-                
-                FileHandle download = new Download("https://github.com/"+REPO+"/archive/"+BRANCH+".zip").get();
+                String release = v.toString();
+                FileHandle download = new Download("https://github.com/non-dev/non/archive/"+release+".zip").get();
                 
                 outputDir.deldir();
                 new Zip(download).unpack();
-                new FileHandle("master.zip").delete();
-                new FileHandle("non-master/"+DIR).copydir(TEMP);
-                new FileHandle("non-master").deldir();
+                new FileHandle(v.toString()+".zip").delete();
+                new FileHandle("non-"+release+"/"+DIR).copydir(TEMP);
+                new FileHandle("non-"+release).deldir();
             } catch(Exception e) {
                 runner.error(e);
             } finally {
@@ -51,7 +51,7 @@ public class Main {
             
             gradle.execute("update");
         } catch(Exception e) {
-            runner.error(e);
+            System.out.println("  - dependency update failed, using cached resources");
         } finally {
             runner.finish();
         }
@@ -67,7 +67,7 @@ public class Main {
                
             runner.wait("Executing 'gradlew " + arg + "'");
             
-            gradle.execute(arg);
+            gradle.execute(arg + " --offline");
         } catch(Exception e) {
             runner.error(e);
         } finally {

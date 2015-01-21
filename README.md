@@ -11,7 +11,8 @@ Non is a cross-platform game and visualization development engine. It currently 
 
 ### Downloads ###
 
-You can get Non from the [IndieDB](http://indiedb.com/engines/no-nonsense/downloads) or here from GitHub [releases](http://github.com/non-dev/non/releases) page.
+You can download Non launcher from [official website](http://non-dev.github.io) or from [IndieDB](http://indiedb.com/engines/no-nonsense/downloads).
+To download latest source code, go to [releases](http://github.com/non-dev/non/releases) page.
 
 ### Documentation ###
 
