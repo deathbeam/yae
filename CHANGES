@@ -1,5 +1,6 @@
 [3.4.0]
 - revamped Non launcher, now it automatically updates your Non version
+- renamed hello task from gen:hello to hello
 
 [3.3.0]
 - updated Gradle Android to 0.14.4

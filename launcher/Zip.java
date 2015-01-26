@@ -11,11 +11,11 @@ public class Zip {
     private File zip;
     
     public Zip(String zipFile) {
-        zip = new File(zipFile);
+        this(new FileHandle(zipFile));
     }
     
-    public Zip(File file) {
-        zip = file;
+    public Zip(FileHandle file) {
+        zip = file.file();
     }
     
     public InputStream find(String toSearch) throws Exception {
@@ -36,6 +36,10 @@ public class Zip {
             catch (IOException e) { }
             return null;
         }
+    }
+    
+    public void unpack() {
+        unpack(".");
     }
 		
     public void unpack(String outputFile) throws Exception {

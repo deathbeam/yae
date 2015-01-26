@@ -5,13 +5,27 @@ import java.net.*;
 import java.util.*;
 
 public class Download {
+    public static boolean isInternetReachable() { 
+        try { 
+            URL url = new URL("http://www.google.com"); 
+            HttpURLConnection urlConnect = (HttpURLConnection)url.openConnection(); 
+            urlConnect.getContent();
+        } catch (UnknownHostException e) {
+            return false;
+        } catch (IOException e) { 
+            return false; 
+        }
+        
+        return true;
+    }
+    
     private String urlString;
     
     public Download(String url) {
         this.urlString = url;
     }
 
-    public File get() throws Exception {
+    public FileHandle get() throws Exception {
         String link = urlString;
         URL url  = new URL(link);
         HttpURLConnection http = (HttpURLConnection)url.openConnection();
@@ -32,7 +46,7 @@ public class Download {
             output.write( buffer, 0, n );
         }
         output.close();
-        return file;
+        return new FileHandle(file);
     }
     
     private boolean isRedirected( Map<String, List<String>> header ) {

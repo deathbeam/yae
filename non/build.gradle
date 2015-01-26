@@ -109,6 +109,14 @@ project(":core") {
     }
 }
 
+task hello << {
+    copy {
+        from "gen/hello"
+        into "../project"
+    }
+}
+
+
 task update << {
     clearPlugins()
     clearLanguages()

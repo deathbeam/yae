@@ -1,11 +1,8 @@
 public class Main {
     static final String repo   = "non-dev/non";
     static final String branch = "master";
-    static final String dir    = ".non";
-
-    static final String[] excludes = new String[] {
-        "launcher/", ".gitignore", "LICENSE", "README.md"
-    };
+    static final String dir    = "non";
+    static final String temp   = ".non";
     
     public static void main(String[] args) {
         if (args.length == 0) {
@@ -13,32 +10,26 @@ public class Main {
             System.exit(-1);
         }
         
-        long start = System.currentTimeMillis();
-        
-        String arg = args[0];
-        
-        if (args.length > 1) {
-            for(int i = 1; i < args.length; i++) {
-                arg += " " + args[i];
-            }
-        }
-        
         Runner runner = new Runner();
         runner.start();
         
-        boolean upToDate = true;
-        String newVer = "0.0.0";
-        FileHandle outputDir = new FileHandle(dir);
+        FileHandle outputDir = new FileHandle(temp);
+        String curVer = new FileHandle(dir, "VERSION").read().trim();
+        String newVer = curVer;
+        boolean upToDate;
         
         try {
             runner.wait("Checking for latest version");
-            FileHandle toCheck = new FileHandle(new Download("https://raw.githubusercontent.com/"+repo+"/"+branch+"non/VERSION" ).get());
-            newVer = toCheck.read().trim();
-            new FileHandle("VERSION").file().delete();
+            
+            try {
+                FileHandle toCheck = new Download("https://raw.githubusercontent.com/"+repo+"/"+branch+"/"+dir+"/VERSION" ).get();
+                newVer = toCheck.read().trim();
+                new FileHandle("VERSION").delete();
+            } catch(Exception e) { }
+            
             if (!outputDir.exists()) {
                 upToDate = false;
             } else {
-                String curVer = new FileHandle(dir, "VERSION").read().trim();
                 upToDate = curVer.equals(newVer);
             }
         } catch(Exception e) {
@@ -51,21 +42,12 @@ public class Main {
             try {
                 runner.wait("Downloading non " + newVer);
                 
+                FileHandle download = new Download("https://github.com/"+repo+"/archive/"+branch+".zip").get();
+                
                 outputDir.deldir();
-                FileHandle download = new FileHandle(new Download("https://github.com/"+repo+"/archive/"+branch+".zip").get());
-                
-                new Zip(download.file()).unpack(".", new Zip.NameMapper() {
-                    public String map(String name) {
-                        for(String exc: excludes) {
-                            if (name.contains(exc)) return null;
-                        }
-                        
-                        return name;
-                    }
-                });
-                
-                new FileHandle("master.zip").file().delete();
-                new FileHandle("non-master/non").copyDirectory(dir);
+                new Zip(download).unpack();
+                new FileHandle("master.zip").delete();
+                new FileHandle("non-master/"+dir).copydir(temp);
                 new FileHandle("non-master").deldir();
             } catch(Exception e) {
                 runner.error(e);
@@ -74,10 +56,30 @@ public class Main {
             }
         }
         
-        try {          
+        Gradle gradle = new Gradle(outputDir);
+        
+        try {
+            runner.wait("Checking dependencies and updating data");
+            
+            gradle.execute("update");
+        } catch(Exception e) {
+            runner.error(e);
+        } finally {
+            runner.finish();
+        }
+        
+        try {
+            String arg = args[0];
+        
+            if (args.length > 1) {
+                for(int i = 1; i < args.length; i++) {
+                    arg += " " + args[i];
+                }
+            }
+               
             runner.wait("Executing 'gradlew " + arg + "'");
             
-            new Gradle(outputDir.file()).execute(arg);
+            gradle.execute(arg);
         } catch(Exception e) {
             runner.error(e);
         } finally {
@@ -85,23 +87,5 @@ public class Main {
         }
               
         runner.stop();
-        
-        if (runner.isError()) {
-            System.out.println("\nBUILD FAILED");
-        } else {
-            System.out.println("\nBUILD SUCCESFULL");
-        }
-        
-        long end = (System.currentTimeMillis() - start) / 1000;
-        
-        if (end > 59) {
-            end = end / 60;
-            if (end > 59) System.out.print("Total time: " + end / 60 + " hours");
-            else System.out.print("Total time: " + end + " minutes");
-        } else {
-            System.out.print("Total time: " + end + " seconds");
-        }
-        
-        System.exit(runner.isError() ? -1 : 0);
     }
 }

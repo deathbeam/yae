@@ -31,6 +31,10 @@ public class FileHandle {
         return file.exists();
     }
     
+    public void delete() {
+        file.delete();
+    {
+    
     public void mkdir() throws Exception {
         if (file.exists()) {
             if (file.isFile()) throw new Exception(file.getName() + " exists and is not a directory.");
@@ -89,15 +93,15 @@ public class FileHandle {
         return sBuffer.toString();
     }
     
-    public void copyDirectory(String targetLocation) throws IOException {
-        copyDirectory(file, new File(targetLocation));
+    public void copydir(String targetLocation) throws IOException {
+        copydir(file, new File(targetLocation));
     }
     
-    public void copyDirectory(File targetLocation) throws IOException {
-        copyDirectory(file, targetLocation);
+    public void copydir(File targetLocation) throws IOException {
+        copydir(file, targetLocation);
     }
     
-    private void copyDirectory(File file, File targetLocation) throws IOException {
+    private void copydir(File file, File targetLocation) throws IOException {
         if (file.isDirectory()) {
             if (!targetLocation.exists()) {
                 targetLocation.mkdir();
@@ -105,15 +109,14 @@ public class FileHandle {
 
             String[] children = file.list();
             for (int i=0; i<children.length; i++) {
-                copyDirectory(new File(file, children[i]),
+                copydir(new File(file, children[i]),
                         new File(targetLocation, children[i]));
             }
         } else {
 
             InputStream in = new FileInputStream(file);
             OutputStream out = new FileOutputStream(targetLocation);
-
-            // Copy the bits from instream to outstream
+            
             byte[] buf = new byte[1024];
             int len;
             while ((len = in.read(buf)) > 0) {

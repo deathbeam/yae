@@ -8,12 +8,11 @@ public class Gradle {
     private File workingDir;
 
     public Gradle(String working) {
-        workingDir = new File(working);
-        new File(workingDir, unixFile).setExecutable(true);
+        this(new FileHandle(working));
     }
     
-    public Gradle(File working) {
-        workingDir = working;
+    public Gradle(FileHandle working) {
+        workingDir = working.file();
         new File(workingDir, unixFile).setExecutable(true);
     }
 

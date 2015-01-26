@@ -1,14 +1,5 @@
 file("../../project").mkdir()
 
-task hello << {
-    copy {
-        from "hello"
-        into "../../project"
-        exclude "**/*.DS_Store"
-        exclude "**/*Thumbs.db"
-    }
-}
-
 task pong << {
     copy {
         from "pong"
