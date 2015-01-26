@@ -33,7 +33,7 @@ public class FileHandle {
     
     public void delete() {
         file.delete();
-    {
+    }
     
     public void mkdir() throws Exception {
         if (file.exists()) {
