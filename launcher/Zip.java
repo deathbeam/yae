@@ -38,7 +38,7 @@ public class Zip {
         }
     }
     
-    public void unpack() {
+    public void unpack() throws Exception {
         unpack(".");
     }
 		

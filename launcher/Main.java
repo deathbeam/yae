@@ -1,8 +1,8 @@
 public class Main {
-    static final String repo   = "non-dev/non";
-    static final String branch = "master";
-    static final String dir    = "non";
-    static final String temp   = ".non";
+    public static final String REPO   = "non-dev/non";
+    public static final String BRANCH = "master";
+    public static final String DIR    = "non";
+    public static final String TEMP   = ".non";
     
     public static void main(String[] args) {
         if (args.length == 0) {
@@ -13,41 +13,29 @@ public class Main {
         Runner runner = new Runner();
         runner.start();
         
-        FileHandle outputDir = new FileHandle(temp);
-        String curVer = new FileHandle(dir, "VERSION").read().trim();
-        String newVer = curVer;
-        boolean upToDate;
+        FileHandle outputDir = new FileHandle(TEMP);
+        Version v = null;
         
         try {
             runner.wait("Checking for latest version");
             
-            try {
-                FileHandle toCheck = new Download("https://raw.githubusercontent.com/"+repo+"/"+branch+"/"+dir+"/VERSION" ).get();
-                newVer = toCheck.read().trim();
-                new FileHandle("VERSION").delete();
-            } catch(Exception e) { }
-            
-            if (!outputDir.exists()) {
-                upToDate = false;
-            } else {
-                upToDate = curVer.equals(newVer);
-            }
+            v = new Version();
         } catch(Exception e) {
             runner.error(e);
         } finally {
             runner.finish();
         }
         
-        if (!upToDate) {
+        if (v != null && v.isLower()) {
             try {
-                runner.wait("Downloading non " + newVer);
+                runner.wait("Downloading non " + v.toString());
                 
-                FileHandle download = new Download("https://github.com/"+repo+"/archive/"+branch+".zip").get();
+                FileHandle download = new Download("https://github.com/"+REPO+"/archive/"+BRANCH+".zip").get();
                 
                 outputDir.deldir();
                 new Zip(download).unpack();
                 new FileHandle("master.zip").delete();
-                new FileHandle("non-master/"+dir).copydir(temp);
+                new FileHandle("non-master/"+DIR).copydir(TEMP);
                 new FileHandle("non-master").deldir();
             } catch(Exception e) {
                 runner.error(e);
