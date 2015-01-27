@@ -10,7 +10,11 @@ public class Main {
             System.exit(-1);
         }
         
-        Runner runner = new Runner();
+        Runner runner = new Runner(new Runner.OutputListener() {
+            public void print(String msg) {
+                System.out.print(msg);
+            }
+        });
         runner.start();
         
         FileHandle outputDir = new FileHandle(TEMP);
@@ -51,7 +55,7 @@ public class Main {
             
             gradle.execute("update");
         } catch(Exception e) {
-            System.out.println("  - dependency update failed, using cached resources");
+            runner.warn("Dependency update failed, using cached resources.");
         } finally {
             runner.finish();
         }
