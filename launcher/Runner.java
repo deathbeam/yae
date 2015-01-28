@@ -40,9 +40,9 @@ public class Runner implements Runnable {
         
         if (error) {
             listener.print(errorLog + "\n");
-            listener.print("BUILD FAILED\n");
+            listener.print("\nBUILD FAILED\n");
         } else {
-            listener.print("BUILD SUCCESFULL\n");
+            listener.print("\nBUILD SUCCESFULL\n");
         }
         
         long end = (System.currentTimeMillis() - start) / 1000;
@@ -79,9 +79,9 @@ public class Runner implements Runnable {
         thread.interrupt();
         
         if (!error) {
-            listener.print(" DONE\n");
+            listener.print("TASK DONE\n");
         } else {
-            listener.print(" FAILED\n");
+            listener.print("TASK FAILED\n");
             stop();
         }
     }

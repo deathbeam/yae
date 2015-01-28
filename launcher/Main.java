@@ -1,4 +1,4 @@
-public class Main {
+public class Main implements Runner.OutputListener {
     public static final String REPO   = "non-dev/non";
     public static final String BRANCH = "master";
     public static final String DIR    = "non";
@@ -10,18 +10,14 @@ public class Main {
             System.exit(-1);
         }
         
-        Runner runner = new Runner(new Runner.OutputListener() {
-            public void print(String msg) {
-                System.out.print(msg);
-            }
-        });
+        Runner runner = new Runner(this);
         runner.start();
         
         FileHandle outputDir = new FileHandle(TEMP);
         Version v = null;
         
         try {
-            runner.wait("Checking for latest version");
+            runner.wait("Checking for latest version ");
             
             v = new Version();
         } catch(Exception e) {
@@ -32,7 +28,7 @@ public class Main {
         
         if (v != null && v.isLower()) {
             try {
-                runner.wait("Downloading non " + v.toString());
+                runner.wait("Downloading non " + v.toString() + " ");
                 String release = v.toString();
                 FileHandle download = new Download("https://github.com/non-dev/non/archive/"+release+".zip").get();
                 
@@ -48,10 +44,10 @@ public class Main {
             }
         }
         
-        Gradle gradle = new Gradle(outputDir);
+        Gradle gradle = new Gradle(outputDir, this);
         
         try {
-            runner.wait("Checking dependencies and updating data");
+            runner.wait("Checking dependencies and updating data\n");
             
             gradle.execute("update");
         } catch(Exception e) {
@@ -69,7 +65,7 @@ public class Main {
                 }
             }
                
-            runner.wait("Executing 'gradlew " + arg + "'");
+            runner.wait("Executing 'gradlew " + arg + "'\n");
             
             gradle.execute(arg + " --offline");
         } catch(Exception e) {
@@ -79,5 +75,9 @@ public class Main {
         }
               
         runner.stop();
+    }
+    
+    public void print(String msg) {
+        System.out.print(msg);
     }
 }

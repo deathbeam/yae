@@ -3,16 +3,17 @@ import java.io.*;
 public class Gradle {
     private static final String windowsFile = "gradlew.bat";
     private static final String unixFile = "gradlew";
-    
-    private static String log = "";
-    private File workingDir;
 
-    public Gradle(String working) {
-        this(new FileHandle(working));
+    private File workingDir;
+    private Runner.OutputListener listener;
+    
+    public Gradle(String working, Runner.OutputListener listener) {
+        this(new FileHandle(working), listener);
     }
     
-    public Gradle(FileHandle working) {
+    public Gradle(FileHandle working, Runner.OutputListener listener) {
         workingDir = working.file();
+        this.listener = listener;
         new File(workingDir, unixFile).setExecutable(true);
     }
 
@@ -38,9 +39,19 @@ public class Gradle {
                 public void run () {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()), 1);
                     try {
-                        int c = 0;
-                        while ((c = reader.read()) != -1) {
-                            log += (char)c;           
+                        String c = null;
+                        boolean dexWarning = false;
+                        while ((c = reader.readLine()) != null) {
+                            if (c.startsWith("BUILD") ||
+                                c.startsWith("Total time:") ||
+                                c.startsWith("Configuration on demand is an incubating feature.") ||
+                                c.trim().equals("")) 
+                                continue;
+                            
+                            if (c.startsWith(":android:preDexReleasewarning")) dexWarning = true;
+                            if (dexWarning && c.startsWith(":android:dexRelease")) dexWarning = false;
+                            
+                            if (!dexWarning) listener.print(c + "\n");           
                         }
                     } catch (IOException e) { }
                 }
@@ -51,6 +62,6 @@ public class Gradle {
         process.waitFor();
         t.interrupt();
 
-        if (process.exitValue() != 0) throw new Exception(log);
+        if (process.exitValue() != 0) throw new Exception("Task finished with non-zero result");
     }
 }
