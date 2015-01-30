@@ -5,6 +5,10 @@ public class Main implements Runner.OutputListener {
     public static final String TEMP   = ".non";
     
     public static void main(String[] args) {
+        new Main(args);
+    }
+    
+    public Main(String[] args) {
         if (args.length == 0) {
             System.out.println("Usage: java -jar non.jar <task-name> <task-arguments>");
             System.exit(-1);

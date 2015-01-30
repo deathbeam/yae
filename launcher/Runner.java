@@ -59,7 +59,7 @@ public class Runner implements Runnable {
     }
     
     public void warn(String msg) {
-        listener.print("\n " + msg + "\n");
+        listener.print(msg + "\n");
     }
 
     public void error(Exception e) {

@@ -1,6 +1,8 @@
 [3.4.2]
 - more output logs from gradle
 - changed some previous output logs to be more clear
+- fixed weird whitespace with warnings
+- removed logging of dexing warnings
 
 [3.4.1]
 - fixed desktop:run task finally

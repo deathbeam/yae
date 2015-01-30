@@ -42,16 +42,23 @@ public class Zip {
         unpack(".");
     }
 		
-    public void unpack(String outputFile) throws Exception {
-        unpack(outputFile, new NameMapper() {
+    public void unpack(String output) throws Exception {
+        unpack(new FileHandle(output));
+    }
+    
+    public void unpack(FileHandle output) throws Exception {
+        unpack(output, new NameMapper() {
             public String map(String name) {
                 return name;
             }
         });
     }
     
-    public void unpack(String outputFile, NameMapper m) throws Exception {
-        FileHandle output = new FileHandle(outputFile);
+    public void unpack(String output, NameMapper m) throws Exception {
+        unpack(new FileHandle(output), m);
+    }
+    
+    public void unpack(FileHandle output, NameMapper m) throws Exception {
         output.mkdir();
         ZipFile zf = null;
         
