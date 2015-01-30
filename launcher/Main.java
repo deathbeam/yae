@@ -71,7 +71,7 @@ public class Main implements Runner.OutputListener {
                
             runner.wait("Executing 'gradlew " + arg + "'\n");
             
-            gradle.execute(arg + " --offline");
+            gradle.execute(arg);
         } catch(Exception e) {
             runner.error(e);
         } finally {
