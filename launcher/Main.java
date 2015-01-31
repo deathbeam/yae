@@ -51,11 +51,21 @@ public class Main implements Runner.OutputListener {
         Gradle gradle = new Gradle(outputDir, this);
         
         try {
-            runner.wait("Checking dependencies and updating data\n");
+            runner.wait("Checking dependencies\n");
             
-            gradle.execute("update");
+            gradle.execute("resolveDependencies");
         } catch(Exception e) {
             runner.warn("Dependency update failed, using cached resources.");
+        } finally {
+            runner.finish();
+        }
+        
+        try {
+            runner.wait("Updating data\n");
+            
+            gradle.execute("update --offline");
+        } catch(Exception e) {
+            runner.error(e);
         } finally {
             runner.finish();
         }
@@ -69,9 +79,9 @@ public class Main implements Runner.OutputListener {
                 }
             }
                
-            runner.wait("Executing 'gradlew " + arg + "'\n");
+            runner.wait("Executing 'gradle " + arg + "'\n");
             
-            gradle.execute(arg);
+            gradle.execute(arg + " --offline");
         } catch(Exception e) {
             runner.error(e);
         } finally {

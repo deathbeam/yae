@@ -1,3 +1,6 @@
+[3.4.3]
+- fixed major dependency resolving bug (thanks to Murii for finding it)
+
 [3.4.2]
 - more output logs from gradle
 - changed some previous output logs to be more clear
