@@ -23,7 +23,6 @@ public class non extends Plugin {
     public void debug(String type, String msg) { Non.debug(type, msg); }
     
     public FileHandle file(String path)        { return Non.file(path); }
-    public Object require(String path)         { return Non.script.eval(file(path).readString()); }
     public void quit()                         { Non.quit(); }
     
     public NonBuffer buffer()                  { return new NonBuffer(); }

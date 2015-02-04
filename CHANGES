@@ -1,3 +1,12 @@
+[3.5.0]
+- added awesome module engine similar to node.js but better ;)
+- removed non.require as it was never working
+- moved launcher source code to separate repository to decrease amount of downloaded data for each update and to split versioning of launcher and Non
+- added checks for outdated non.jar version
+- replaced Lua support with CoffeeScript and optional JavaScript
+- removed support for custom scripting languages (sorry folks :/)
+- removed need of adding "language" to non.cfg
+
 [3.4.3]
 - fixed major dependency resolving bug (thanks to Murii for finding it)
 

@@ -34,9 +34,7 @@ public abstract class Plugin {
         }
     }
     
-    public static void init(String[] plugins) {
-        load("non");
-            
+    public static void init(String[] plugins) {  
         for(String plugin: plugins) {
             load(plugin);
         }

@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
-import non.languages.Language;
+import non.script.CoffeeScript;
 import non.plugins.Plugin;
 import java.io.IOException;
 
@@ -22,10 +22,9 @@ public class Non implements ApplicationListener {
     public static final String E_RESOURCE = "Resource not found - ";
     public static final String E_ARGUMENT = "Argument not found - ";
     public static final String E_PLUGIN = "Plugin not found - ";
-    public static final String E_LANGUAGE = "Incorrect scripting language - ";
     
     public static boolean ready;
-    public static Language script;
+    public static CoffeeScript script;
     public static AssetManager assets;
     private static JsonValue args;
     
@@ -95,6 +94,10 @@ public class Non implements ApplicationListener {
     public void create () {
         ready = false;
         args = new JsonReader().parse(file("non.cfg"));
+        loadingBatch = new SpriteBatch();
+        assets = new AssetManager();
+        script = new CoffeeScript();
+        Gdx.input.setInputProcessor(new InputHandle());
         
         if (args.has("logging")) {
             String logLevel = args.getString("logging");
@@ -126,8 +129,13 @@ public class Non implements ApplicationListener {
     		
             Gdx.graphics.setDisplayMode(width, height, fullscreen);
         }
-		
-        loadingBatch = new SpriteBatch();
+        
+        Plugin.load("non");
+        script.eval(file("res/require.js").readString());
+        
+        if (args.has("plugins")) {
+            Plugin.init(args.get("plugins").asStringArray());
+        }
         
         FileHandle fl = file("res/loading.png");
         
@@ -165,25 +173,12 @@ public class Non implements ApplicationListener {
             quit();
         }
         
-        assets = new AssetManager();
-        Gdx.input.setInputProcessor(new InputHandle());
+        fl = file("main.js");
         
-        if (args.has("language")) {
-            script = Language.init(args.getString("language"));
+        if (fl.exists()) {
+            script.eval(fl.readString());
         } else {
-            error(TAG, E_ARGUMENT + "language");
-        }
-        
-        if (args.has("plugins")) {
-            Plugin.init(args.get("plugins").asStringArray());
-        }
-        
-        FileHandle main = file("main." + script.extension());
-        
-        if (main.exists()) {
-            script.eval(main.readString());
-        } else {
-            error(TAG, E_RESOURCE + main.name());
+            error(TAG, E_RESOURCE + fl.name());
             quit();
         }
         

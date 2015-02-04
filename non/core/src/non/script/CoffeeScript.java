@@ -1,18 +1,20 @@
-package non.languages;
+package non.script;
 
 import org.mozilla.javascript.*;
+import java.io.*;
+import non.Non;
+import non.plugins.Plugin;
 
-public class javascript extends Language {
-    public String extension() { return "js"; }
-    public String version()   { return "1.7R4"; }
-    
-    private final Context engine;
+public class CoffeeScript {
     private final Scriptable scope;
     
-    public javascript() {
-        engine = Context.enter();
-        engine.setOptimizationLevel(-1);
-        scope = engine.initStandardObjects();
+    public CoffeeScript() {
+        Context context = Context.enter();
+        try {
+            scope = context.initStandardObjects();
+        } finally {
+            Context.exit(); 
+        }
     }
     
     public Object invoke(String object, String method, Object... args) {
@@ -41,7 +43,14 @@ public class javascript extends Language {
     }
 
     public Object eval(String script) {
-        return engine.evaluateString(scope, script, "JavaScript", 1, null);
+        Context context = Context.enter();
+        
+        try {
+            context.setOptimizationLevel(-1);
+            return context.evaluateString(scope, script, "CoffeeScript", 1, null);
+        } finally {
+            Context.exit();
+        }
     }
 
     public void put(String key, Object value) {
@@ -53,8 +62,14 @@ public class javascript extends Language {
     }
     
     public Object convert(Object javaValue) {
-        return javaValue == null? UniqueTag.NULL_VALUE:
-               javaValue instanceof Scriptable? javaValue:
-               Context.javaToJS(javaValue, scope);
+        Context.enter();
+        
+        try {
+            return javaValue == null? UniqueTag.NULL_VALUE:
+                   javaValue instanceof Scriptable? javaValue:
+                   Context.javaToJS(javaValue, scope);
+        } finally {
+            Context.exit();
+        }
     }
 }
