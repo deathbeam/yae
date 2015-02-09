@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
@@ -21,8 +22,9 @@ import com.badlogic.gdx.math.Vector3;
 import org.mozilla.javascript.Scriptable;
 
 import non.Non;
-import non.Quad;
+import non.BlendMode;
 import non.Line;
+import non.script.Arguments;
 
 public class NonGraphics extends Module {
     private SpriteBatch batch;
@@ -36,10 +38,29 @@ public class NonGraphics extends Module {
     
     public SpriteBatch getBatch() { return batch; }
     public OrthographicCamera getCamera() { return camera; }
+    public Color getTint() { return batch.getColor(); }
     public BitmapFont getFont() { return curFont; }
     public NonGraphics setFont(BitmapFont fnt) { curFont = fnt; return this; }
     public NonGraphics setShader(ShaderProgram shader) { batch.setShader(shader); return this; }
     public NonGraphics setBlending(int src, int dest) { batch.setBlendFunction(src, dest); return this; }
+    
+    public TextBounds measureText(String text) {
+        TextBounds bounds = curFont.getBounds(text);
+        bounds.height = -bounds.height;
+        return bounds;
+    }
+    
+    public TextBounds measureText(String text, float wrap) {
+        TextBounds bounds = curFont.getWrappedBounds(text, wrap);
+        bounds.height = -bounds.height;
+        return bounds;
+    }
+    
+    public NonGraphics setBlending(String name) {
+        int[] blendMode = BlendMode.getOpenGLBlendMode(name);
+        batch.setBlendFunction(blendMode[0], blendMode[1]);
+        return this;
+    }
     
     public NonGraphics() {
         batch = new SpriteBatch();
@@ -52,6 +73,10 @@ public class NonGraphics extends Module {
     public void dispose() {
         batch.dispose();
         curFont.dispose();
+    }
+    
+    public void updateAfter(float dt) {
+        reset().flush();
     }
     
     public void resize(float width, float height) {
@@ -136,7 +161,6 @@ public class NonGraphics extends Module {
     public NonGraphics clear(Color color) {
         Gdx.gl.glClearColor(color.r, color.g, color.b, color.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        reset().flush();
         return this;
     }
     
@@ -229,52 +253,36 @@ public class NonGraphics extends Module {
         return this;
     }
 
-    public NonGraphics print(String text, int x, int y) {
-        return print(text, x, y, 1);
-    }
-    
-    public NonGraphics print(String text, int x, int y, float scale) {
-        return print(text, x, y, scale, scale);
-    }
-    
-    public NonGraphics print(String text, int x, int y, float sx, float sy) {
+    public NonGraphics print(Scriptable rhinoArgs) {
+        Arguments args = new Arguments(rhinoArgs);
+        if (!args.has("text")) return this;
+        
+        String text = args.getString("text", "");
+        String align = args.getString("align", "left");
+        float scale[] = args.getNumArray("scale", new float[]{1,1});
+        float wrap = args.getNum("wrap", curFont.getBounds(text).width);
+        float position[] = args.getNumArray("position", new float[]{0,0});
+        
         checkBatch();
-        curFont.setScale(sx, -sx);
-        curFont.draw(batch, text, x, y);
-        return this;
-    }
-    
-    public NonGraphics printf(String text, int x, int y, int limit) {
-        return printf(text, x, y, limit, "left");
-    }
-    
-    public NonGraphics printf(String text, int x, int y, int limit, String align) {
-        checkBatch();
-        curFont.setScale(1, -1);
+        
+        curFont.setScale(scale[0], -scale[1]);
         if ("left".equalsIgnoreCase(align)) 
-            curFont.drawMultiLine(batch, text, x, y, limit, BitmapFont.HAlignment.LEFT);
+            curFont.drawWrapped(batch, text, position[0], position[1], wrap, BitmapFont.HAlignment.LEFT);
         else if ("right".equalsIgnoreCase(align)) 
-            curFont.drawMultiLine(batch, text, x, y, limit, BitmapFont.HAlignment.RIGHT);
+            curFont.drawWrapped(batch, text, position[0], position[1], wrap, BitmapFont.HAlignment.RIGHT);
         else if ("center".equalsIgnoreCase(align)) 
-            curFont.drawMultiLine(batch, text, x, y, limit, BitmapFont.HAlignment.CENTER);
+            curFont.drawWrapped(batch, text, position[0], position[1], wrap, BitmapFont.HAlignment.CENTER);
+        
         return this;
     }
 	
-    public NonGraphics fill(String type, Vector2 shape) {
-        checkShapes();
-		
-        if (type.equalsIgnoreCase("line")) {
-            shapes.set(ShapeRenderer.ShapeType.Line);
-        } else if (type.equalsIgnoreCase("fill")) {
-            shapes.set(ShapeRenderer.ShapeType.Filled);
-        }
-		
-        shapes.point(shape.x, shape.y, 0);
-		
-        return this;
-    }
-	
-    public NonGraphics fill(String type, Shape2D shape) {
+    public NonGraphics fill(Scriptable rhinoArgs) {
+        Arguments args = new Arguments(rhinoArgs);
+        if (!args.has("shape")) return this;
+        
+        Object shape = args.get("shape", null);
+        String type = args.getString("mode", "line");
+        
         checkShapes();
 		
         if (type.equalsIgnoreCase("line")) {
@@ -298,61 +306,38 @@ public class NonGraphics extends Module {
         } else if (shape instanceof Line) {
             Line cur = (Line)shape;
             shapes.rectLine(cur.x1, cur.y1, cur.x2, cur.y2, 1);
+        } else if (shape instanceof Vector2) {
+            Vector2 cur = (Vector2)shape;
+            shapes.point(cur.x, cur.y, 0);
         }
 		
         return this;
     }
     
-    public NonGraphics draw(Texture img, float x, float y) {;
-        return draw(img, x, y, 0);
-    }
-    
-    public NonGraphics draw(Texture img, float x, float y, float r) {;
-        return draw(img, x, y, r, 1, 1);
-    }
-    
-    public NonGraphics draw(Texture img, float x, float y, float r, float sx, float sy) {;
-        return draw(img, x, y, r, sx, sy, 0, 0);
-    }
-    
-    public NonGraphics draw(Texture img, float x, float y, float r, float sx, float sy, float ox, float oy) {
-        final float w = img.getWidth();
-        final float h = img.getHeight();
-        writeQuad(img, x, y, ox, oy, w, h, sx, sy, r, 0, 0, (int)w, (int)h);
-        return this;
-    }
-    
-    public NonGraphics drawq(Texture img, Quad q, float x, float y) {;
-        return drawq(img, q, x, y, 0);
-    }
-    
-    public NonGraphics drawq(Texture img, Quad q, float x, float y, float r) {;
-        return drawq(img, q, x, y, r, 1, 1);
-    }
-    
-    public NonGraphics drawq(Texture img, Quad q, float x, float y, float r, float sx, float sy) {;
-        return drawq(img, q, x, y, r, sx, sy, 0, 0);
-    }
-    
-    public NonGraphics drawq(Texture img, Quad q, float x, float y, float r, float sx, float sy, float ox, float oy) {
-        writeQuad(img, x, y, ox, oy, q.w, q.h, sx, sy, r, q.sx, q.sy, q.sw, q.sh);
-        return this;
-    }
-    
-    private void writeQuad(Texture img, float x, float y, float originX, float originY, float width,
-                         float height, float scaleX, float scaleY, float rotation,
-                         int sourceX, int sourceY, int sourceW, int sourceH) {
-		
+    public NonGraphics draw(Scriptable rhinoArgs) {
+        Arguments args = new Arguments(rhinoArgs);
+        if (!args.has("image")) return this;
+        
+        Texture image = (Texture)args.get("image", null);
+        float[] position = args.getNumArray("position", new float[]{0,0});
+        float[] origin = args.getNumArray("origin", new float[]{0,0});
+        float[] size = args.getNumArray("size", new float[]{image.getWidth(),image.getHeight()});
+        float[] scale = args.getNumArray("scale", new float[]{1,1});
+        float rotation = args.getNum("rotation", 0f);
+        float[] source = args.getNumArray("source", new float[]{0,0,image.getWidth(),image.getHeight()});
+        
         checkBatch();
         batch.draw(
-                img, x, y, 
-                originX, originY,
-                width, height, 
-                scaleX, scaleY, rotation,
-                sourceX, sourceY, 
-                sourceW, sourceH,
+                image, position[0], position[1], 
+                origin[0], origin[1],
+                size[0], size[1], 
+                scale[0], scale[1], rotation,
+                (int)source[0], (int)source[1], 
+                (int)source[2], (int)source[3],
                 false, true
         );
+        
+        return this;
     }
 	
     private void checkBatch() {

@@ -18,5 +18,5 @@ non.update = function(deltaTime) {
 // Event used for drawing images, text and objects
 non.draw = function() {
     graphics.clear('black'); // clears the screen with black color
-    graphics.print('Hello World', 10, 15); // draws Hello World text on x:10 and y:15 with default color (white)
+    graphics.print({text: 'Hello World', position: [10, 15]}); // draws Hello World text on x:10 and y:15 with default color (white)
 };

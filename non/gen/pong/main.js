@@ -1,3 +1,8 @@
+var graphics = require('non.graphics');
+var math = require('non.math');
+var keyboard = require('non.keyboard');
+var touch = require('non.touch');
+
 var speed = 3;
 var ball = { x: 0, y: 0, vx: -speed, vy: speed };
 var pad1 = 0;
@@ -13,23 +18,23 @@ non.resize = function(w, h) {
 };
 
 non.update = function(dt) {
-    if (input.keyboard.isDown("Q")) pad1 += 7;
-    if (input.keyboard.isDown("W")) pad1 -= 7;
+    if (keyboard.isDown('Q')) pad1 += 7;
+    if (keyboard.isDown('W')) pad1 -= 7;
     
     for (var i = 0; i <= 1; i++) {
-        if (input.touch.isDown(i) && input.touch.getX(i) < width/2)
-            pad1 = input.touch.getY(i) - height/2;
+        if (touch.isDown(i) && touch.getX(i) < width/2)
+            pad1 = touch.getY(i) - height/2;
     }
     
     if (pad1 < -(height/2 - 50)) pad1 = -(height/2 - 50);
     if (pad1 > (height/2 - 50)) pad1 = (height/2 - 50);
 
-    if (input.keyboard.isDown("O")) pad2 += 7;
-    if (input.keyboard.isDown("P")) pad2 -= 7;
+    if (keyboard.isDown('O')) pad2 += 7;
+    if (keyboard.isDown('P')) pad2 -= 7;
     
     for (var i = 0; i <= 1; i++) {
-        if (input.touch.isDown(i) && input.touch.getX(i) > width/2)
-            pad2 = input.touch.getY(i) - height/2;
+        if (touch.isDown(i) && touch.getX(i) > width/2)
+            pad2 = touch.getY(i) - height/2;
     }
     
     if (pad2 < -(height/2 - 50)) pad2 = -(height/2 - 50);
@@ -74,13 +79,13 @@ non.update = function(dt) {
 };
 
 non.draw = function() {
-    graphics.clear("#1A1A1A");
-    graphics.tint("#E8ACE5");
+    graphics.clear('#1A1A1A');
+    graphics.tint('#E8ACE5');
     graphics.translate(width/2, height/2);
-    graphics.fill("fill", math.line(0, -height/2, 0, height/2));
-    graphics.fill("fill", math.rectangle(-(width/2-45), pad1 - 50, 20, 100));
-    graphics.fill("fill", math.rectangle(width/2-60, pad2 - 50, 20, 100));
-    graphics.fill("fill", math.circle(ball.x, ball.y, 15));
-    graphics.print(score1, -(width/2-20) , -(height/2-20));
-    graphics.print(score2, width/2-30 , -(height/2-20));
+    graphics.fill({mode: 'fill', shape: math.line(0, -height/2, 0, height/2)});
+    graphics.fill({mode: 'fill', shape: math.rectangle(-(width/2-45), pad1 - 50, 20, 100)});
+    graphics.fill({mode: 'fill', shape: math.rectangle(width/2-60, pad2 - 50, 20, 100)});
+    graphics.fill({mode: 'fill', shape: math.circle(ball.x, ball.y, 15)});
+    graphics.print({text: 'Player 1: ' + score1, position: [-(width/2-20) , -(height/2-20)]});
+    graphics.print({text: 'Player 2: ' + score2, position: [width/2 + 20 , -(height/2-20)]});
 };

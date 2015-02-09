@@ -1,3 +1,20 @@
+[3.9.0]
+- created GUI sample (usage java -jar non.jar gen:gui)
+- added setVisible(boolean) method to keyboard and mouse modules
+- added measureText(text) and measureText(text, width) methods to graphics module
+- started working on GUI system (for now only button, label and text box)
+- overhauled physics and graphics module (read wiki again please)
+- fixed Pong example
+- speeded up engine (at start it is slower than before, but after "warming up" it is a bit faster)
+- changed non.touchdown(position, pointer, button) to non.touchdown(x, y, pointer, button)
+- changed non.touchup(position, pointer, button) to non.touchup(x, y, pointer, button)
+- changed non.touchdragged(position, pointer) to non.touchdragged(x, y, pointer)
+- changed non.mousemoved(position) to non.mousemoved(x, y)
+- fixed non.keytyped(character) event
+- added support for setBlending from strings (additive, alpha, subtractive, multiplicative, premultiplied, replace, screen)
+- added uniqueNumber and uniqueString methods to math module
+- added getTint() method to graphics module
+
 [3.6.0]
 - added destroy(..) method for destroying bodies and joints to physics (usage physics.destroy(joint) or physics.destroy(body))
 - added many new methods to physics module for different types of joints and joint definitions

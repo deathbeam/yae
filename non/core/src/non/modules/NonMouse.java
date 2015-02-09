@@ -13,6 +13,10 @@ public class NonMouse extends Module {
     public void hide() {
         Gdx.input.setCursorCatched(true);
     }
+    
+    public void setVisible(boolean val) {
+        Gdx.input.setCursorCatched(!val);
+    }
         
     public float getX() {
         return Gdx.input.getX();

@@ -13,6 +13,10 @@ public class NonKeyboard extends Module {
     public void hide() {
         Gdx.input.setOnscreenKeyboardVisible(false);
     }
+    
+    public void setVisible(boolean val) {
+        Gdx.input.setOnscreenKeyboardVisible(val);
+    }
         
     public boolean isDown(String name) {
         int key = Non.getKey(name);

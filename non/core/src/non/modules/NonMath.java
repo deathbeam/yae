@@ -9,20 +9,12 @@ import com.badlogic.gdx.math.Polyline;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
+import java.util.UUID;
 import non.Line;
-import non.Quad;
 
 public class NonMath extends Module {
     public Line line(float x1, float y1, float x2, float y2) {
         return new Line(x1, y1, x2, y2);
-    }
-    
-    public Quad quad(int sx, int sy, int sw, int sh) {
-        return quad(sx,sy,sw,sh,sw,sh);
-    }
-    
-    public Quad quad(int sx, int sy, int sw, int sh, int w, int h) {
-        return new Quad(sx,sy,sw,sh,w,h);
     }
     
     public Polygon polygon(float[] vertices) {
@@ -65,6 +57,8 @@ public class NonMath extends Module {
         return new Ellipse(x, y, width, height);
     }
     
+    public String uniqueString() { return UUID.randomUUID().toString(); }
+    public int uniqueNumber() { return UUID.randomUUID().hashCode(); }
     public float sqrt(float a){ return (float)Math.sqrt(a); }
     public float pow(float a, float b){ return (float)Math.pow(a, b); }
     public float abs(float num) { return Math.abs(num); }

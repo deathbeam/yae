@@ -20,3 +20,10 @@ task require << {
         into "../../project"
     }
 }
+
+task gui << {
+    copy {
+        from "gui"
+        into "../../project"
+    }
+}

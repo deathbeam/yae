@@ -217,6 +217,7 @@ public class Non implements ApplicationListener, InputProcessor {
                 Module.updateAll(getDelta());
                 script.invoke("non", "update", getDelta());
                 script.invoke("non", "draw");
+                Module.updateAfterAll(getDelta());
             }
         }
         
@@ -269,43 +270,49 @@ public class Non implements ApplicationListener, InputProcessor {
     }
     
     public boolean keyDown(int keycode) {
-        if (ready) script.invoke("non", "keydown", getKey(keycode));
-        return true;
+        if (ready) {
+            Module.keyPressedAll(keycode);
+            script.invoke("non", "keydown", getKey(keycode));
+        }
+        return false;
     }
 
     public boolean keyUp(int keycode) {
         if (ready) script.invoke("non", "keyup", getKey(keycode));
-        return true;
+        return false;
     }
 
     public boolean keyTyped (char character) {
-        if (ready) script.invoke("non", "keytyped", character);
-        return true;
+        if (ready) {
+            Module.keyTypedAll(character);
+            script.invoke("non", "keytyped", ""+character);
+        }
+        return false;
     }
    
     public boolean touchDown (int x, int y, int pointer, int button) {
-        if (ready) script.invoke("non", "touchdown", new Vector2(x, y), pointer, getButton(button));
-        return true;
+        if (ready) script.invoke("non", "touchdown", x, y, pointer, getButton(button));
+        return false;
     }
 
     public boolean touchUp (int x, int y, int pointer, int button) {
-       if (ready) script.invoke("non", "touchup", new Vector2(x, y), pointer, getButton(button));
-       return true;
+       if (ready) script.invoke("non", "touchup", x, y, pointer, getButton(button));
+       return false;
     }
 
     public boolean touchDragged (int x, int y, int pointer) {
-       if (ready) script.invoke("non", "touchdragged", new Vector2(x, y), pointer);
-       return true;
+       if (ready) script.invoke("non", "touchdragged", x, y, pointer);
+       return false;
     }
 
     public boolean mouseMoved (int x, int y) {
-       if (ready) script.invoke("non", "mousemoved", new Vector2(x, y));
-       return true;
+       if (ready) script.invoke("non", "mousemoved", x, y);
+       return false;
     }
 
     public boolean scrolled (int amount) {
        if (ready) script.invoke("non", "scrolled", amount);
-       return true;
+       return false;
     }
     
     public void dispose () { 
