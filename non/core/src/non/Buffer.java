@@ -2,53 +2,53 @@ package non;
 
 import java.io.*;
 
-public class NonBuffer {
+public class Buffer {
     private ByteArrayInputStream inBytes;
     private ByteArrayOutputStream outBytes;
     private DataInputStream in;
     private DataOutputStream out;
 
-    public NonBuffer() {
+    public Buffer() {
         outBytes = new ByteArrayOutputStream();
         out = new DataOutputStream(outBytes);
     }
 
-    public NonBuffer(byte[] data) {
+    public Buffer(byte[] data) {
         inBytes = new ByteArrayInputStream(data);
         in = new DataInputStream(inBytes);
     }
 
-    public NonBuffer write(byte[] data) throws IOException {
+    public Buffer write(byte[] data) throws IOException {
         out.write(data);
         return this;
     }
 
-    public NonBuffer writeBoolean(boolean val) throws IOException {
+    public Buffer writeBoolean(boolean val) throws IOException {
         out.writeBoolean(val);
         return this;
     }
 
-    public NonBuffer writeByte(int val) throws IOException {
+    public Buffer writeByte(int val) throws IOException {
         out.writeByte(val);
         return this;
     }
 
-    public NonBuffer writeFloat(float val) throws IOException {
+    public Buffer writeFloat(float val) throws IOException {
         out.writeFloat(val);
         return this;
     }
 
-    public NonBuffer writeInt(int val) throws IOException {
+    public Buffer writeInt(int val) throws IOException {
         out.writeInt(val);
         return this;
     }
 
-    public NonBuffer writeLong(long val) throws IOException {
+    public Buffer writeLong(long val) throws IOException {
         out.writeLong(val);
         return this;
     }
 
-    public NonBuffer writeString(String val) throws IOException {
+    public Buffer writeString(String val) throws IOException {
         out.writeUTF(val);
         return this;
     }

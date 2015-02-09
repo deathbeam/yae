@@ -1,5 +1,21 @@
+[3.6.0]
+- added destroy(..) method for destroying bodies and joints to physics (usage physics.destroy(joint) or physics.destroy(body))
+- added many new methods to physics module for different types of joints and joint definitions
+- added physics example (usage java -jar non.jar gen:physics)
+- added example of require function (usage java -jar non.jar gen:require)
+- added support for classes to JavaScript engine (read Wiki for example usage)
+- removed CoffeeScript support, now engine only supports JavaScript
+- renamed non.cfg to config.json to actually show in what language is it and to support external editors
+- removed plugin system, replaced it with module system introduced in last patch (prefix "non" is used for determining non modules)
+- moved non.buffer to network.buffer
+- split input module to parts, so now f.e input.keyboard is keyboard, input.mouse is mouse etc
+- fixed bug when clearing screen via graphics.clear method caused to erase all text from screen permanently (now calling clear method is required before drawing anything on screen and not optional as before)
+- added queryAABB method to physics
+- optimized calling of functions from scripts by storing them properly in variables
+- fixed unproject method from graphics module
+
 [3.5.0]
-- added awesome module engine similar to node.js but better ;)
+- added awesome method of handling multiple script files similar to node.js
 - removed non.require as it was never working
 - moved launcher source code to separate repository to decrease amount of downloaded data for each update and to split versioning of launcher and Non
 - added checks for outdated non.jar version

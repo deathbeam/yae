@@ -1,4 +1,4 @@
-package non.plugins;
+package non.modules;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Shape2D;
@@ -12,11 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import non.Line;
 import non.Quad;
 
-public class math extends Plugin {
-    public String author()      { return "Thomas Slusny"; }
-    public String license()     { return "MIT"; }
-    public String description() { return "Easy math and geometry."; }
-    
+public class NonMath extends Module {
     public Line line(float x1, float y1, float x2, float y2) {
         return new Line(x1, y1, x2, y2);
     }

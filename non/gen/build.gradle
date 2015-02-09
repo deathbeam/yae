@@ -4,7 +4,19 @@ task pong << {
     copy {
         from "pong"
         into "../../project"
-        exclude "**/*.DS_Store"
-        exclude "**/*Thumbs.db"
+    }
+}
+
+task physics << {
+    copy {
+        from "physics"
+        into "../../project"
+    }
+}
+
+task require << {
+    copy {
+        from "require"
+        into "../../project"
     }
 }

@@ -39,7 +39,7 @@ task updateRoboVMXML(dependsOn: copyNatives) << {
 
 task run(dependsOn: launchIPhoneSimulator)
 
-task update(dependsOn: ':update') << {
+task update(dependsOn: [':update', updateRoboVMXML]) << {
     def src = "../../project/res"
     def res = "../gen/res"
     def out = "data"
@@ -86,7 +86,6 @@ task dist(dependsOn: createIPA) << {
     println "You can find ${appName}-${version}.ipa in /dist/ios"
 }
 
-build.dependsOn updateRoboVMXML
 launchIPhoneSimulator.dependsOn build
 launchIPadSimulator.dependsOn build
 launchIOSDevice.dependsOn build

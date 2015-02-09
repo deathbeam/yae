@@ -1,4 +1,4 @@
-package non.plugins;
+package non.modules;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Connection;
@@ -6,31 +6,28 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.esotericsoftware.kryonet.Listener;
+import org.mozilla.javascript.Function;
 
 import non.Non;
-import non.NonBuffer;
+import non.Buffer;
 
-public class network extends Plugin {
-    public String author()      { return "Thomas Slusny"; }
-    public String license()     { return "MIT"; }
-    public String description() { return "Simple networking plugin."; }
-    
+public class NonNetwork extends Module {
     public class ScriptListener extends Listener {
         public void connected (Connection connection) {
-            Non.script.invoke("network", "connected", connection);
+            Non.script.call(connected, connection);
         }
         
         public void received (Connection connection, Object object) {
             if (!(object instanceof byte[])) return;
-            Non.script.invoke("network", "received", connection, (byte[])object);
+            Non.script.call(received, connection, (byte[])object);
         }
 
         public void disconnected (Connection connection) {
-            Non.script.invoke("network", "disconnected", connection);
+            Non.script.call(disconnected, connection);
         }
     }
     
-    public Object connected, disconnected, received;
+    public Function connected, disconnected, received;
     
     public Client client() { 
         Client client = new Client();
@@ -46,6 +43,14 @@ public class network extends Plugin {
         server.addListener(new ScriptListener());
 
         return server;
+    }
+    
+    public Buffer buffer() {
+        return new Buffer();
+    }
+    
+    public Buffer buffer(byte[] data) {
+        return new Buffer(data);
     }
     
     private void register (EndPoint endPoint) {

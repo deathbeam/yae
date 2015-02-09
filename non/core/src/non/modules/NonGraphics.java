@@ -1,4 +1,4 @@
-package non.plugins;
+package non.modules;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -18,17 +18,13 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import org.mozilla.javascript.Scriptable;
 
 import non.Non;
 import non.Quad;
 import non.Line;
 
-public class graphics extends Plugin {
-    public String author()      { return "Thomas Slusny"; }
-    public String license()     { return "MIT"; }
-    public String description() { return "Plugin for drawing and rendering of images and text."; }
-    public String[] dependencies() { return new String[] { "math" }; }
-    
+public class NonGraphics extends Module {
     private SpriteBatch batch;
     private ShapeRenderer shapes;
     private OrthographicCamera camera;
@@ -41,11 +37,11 @@ public class graphics extends Plugin {
     public SpriteBatch getBatch() { return batch; }
     public OrthographicCamera getCamera() { return camera; }
     public BitmapFont getFont() { return curFont; }
-    public graphics setFont(BitmapFont fnt) { curFont = fnt; return this; }
-    public graphics setShader(ShaderProgram shader) { batch.setShader(shader); return this; }
-    public graphics setBlending(int src, int dest) { batch.setBlendFunction(src, dest); return this; }
+    public NonGraphics setFont(BitmapFont fnt) { curFont = fnt; return this; }
+    public NonGraphics setShader(ShaderProgram shader) { batch.setShader(shader); return this; }
+    public NonGraphics setBlending(int src, int dest) { batch.setBlendFunction(src, dest); return this; }
     
-    public void plugin_load() {
+    public NonGraphics() {
         batch = new SpriteBatch();
         shapes = new ShapeRenderer();
         shapes.setAutoShapeType(true);
@@ -53,17 +49,13 @@ public class graphics extends Plugin {
         camera = new OrthographicCamera();
     }
     
-    public void plugin_unload() {
+    public void dispose() {
         batch.dispose();
         curFont.dispose();
     }
-
-    public void plugin_update_before() {
-        reset().flush();
-    }
     
-    public void plugin_resize() {
-        camera.setToOrtho(true);
+    public void resize(float width, float height) {
+        camera.setToOrtho(true, width, height);
         updateMatrices();
     }
     
@@ -121,7 +113,7 @@ public class graphics extends Plugin {
     }
     
     public Vector2 unproject(Vector2 pos) {
-        return project(pos.x, pos.y);
+        return unproject(pos.x, pos.y);
     }
     
     public Vector2 unproject(float x, float y) {
@@ -129,48 +121,49 @@ public class graphics extends Plugin {
         return new Vector2(temp.x, temp.y);
     }
     
-    public graphics clear(float r, float g, float b) {
+    public NonGraphics clear(float r, float g, float b) {
         return clear(color(r,g,b));
     }
     
-    public graphics clear(float r, float g, float b, float a) {
+    public NonGraphics clear(float r, float g, float b, float a) {
         return clear(color(r,g,b,a));
     }
     
-    public graphics clear(String color) {
+    public NonGraphics clear(String color) {
         return clear(color(color));
     }
     
-    public graphics clear(Color color) {
+    public NonGraphics clear(Color color) {
         Gdx.gl.glClearColor(color.r, color.g, color.b, color.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        reset().flush();
         return this;
     }
     
-    public graphics tint(float r, float g, float b) {
+    public NonGraphics tint(float r, float g, float b) {
         return tint(color(r,g,b));
     }
     
-    public graphics tint(float r, float g, float b, float a) {
+    public NonGraphics tint(float r, float g, float b, float a) {
         return tint(color(r,g,b,a));
     }
     
-    public graphics tint(String color) {
+    public NonGraphics tint(String color) {
         return tint(color(color));
     }
     
-    public graphics tint(Color color) {
+    public NonGraphics tint(Color color) {
         shapes.setColor(color);
         batch.setColor(color);
         curFont.setColor(color);
         return this;
     }
     
-    public graphics rotate(float degrees) {
+    public NonGraphics rotate(float degrees) {
         return rotate(degrees, 0, 0, 1);
     }
     
-    public graphics rotate(float degrees, float x, float y, float z) {
+    public NonGraphics rotate(float degrees, float x, float y, float z) {
         if (rotation != degrees) {
             rotation = degrees;
             camera.rotate(rotation, x, y, z);
@@ -181,7 +174,7 @@ public class graphics extends Plugin {
         return this;
     }
 
-    public graphics scale(float factor) {
+    public NonGraphics scale(float factor) {
         factor = 1/factor;
         if (scale != factor) {
             scale = factor;
@@ -193,11 +186,11 @@ public class graphics extends Plugin {
         return this;
     }
     
-    public graphics translate(Vector2 pos) {
+    public NonGraphics translate(Vector2 pos) {
         return translate(pos.x, pos.y);
     }
     
-    public graphics translate(float x, float y) {
+    public NonGraphics translate(float x, float y) {
         if ((tx != x) && (ty != y)) {
             tx = x;
             ty = y;
@@ -209,24 +202,24 @@ public class graphics extends Plugin {
         return this;
     }
     
-    public graphics reset() {
+    public NonGraphics reset() {
         return resetColor().resetTransform();
     }
     
-    public graphics flush() {
+    public NonGraphics flush() {
         if (shapes.isDrawing()) shapes.end();
         if (batch.isDrawing()) batch.end();
         return this;
     }
     
-    public graphics resetColor() {
+    public NonGraphics resetColor() {
         shapes.setColor(Color.WHITE);
         batch.setColor(Color.WHITE);
         curFont.setColor(Color.WHITE);
         return this;
     }
 	
-    public graphics resetTransform() {
+    public NonGraphics resetTransform() {
         scale = 1;
         tx = 0;
         ty = 0;
@@ -236,26 +229,26 @@ public class graphics extends Plugin {
         return this;
     }
 
-    public graphics print(String text, int x, int y) {
+    public NonGraphics print(String text, int x, int y) {
         return print(text, x, y, 1);
     }
     
-    public graphics print(String text, int x, int y, float scale) {
+    public NonGraphics print(String text, int x, int y, float scale) {
         return print(text, x, y, scale, scale);
     }
     
-    public graphics print(String text, int x, int y, float sx, float sy) {
+    public NonGraphics print(String text, int x, int y, float sx, float sy) {
         checkBatch();
         curFont.setScale(sx, -sx);
         curFont.draw(batch, text, x, y);
         return this;
     }
     
-    public graphics printf(String text, int x, int y, int limit) {
+    public NonGraphics printf(String text, int x, int y, int limit) {
         return printf(text, x, y, limit, "left");
     }
     
-    public graphics printf(String text, int x, int y, int limit, String align) {
+    public NonGraphics printf(String text, int x, int y, int limit, String align) {
         checkBatch();
         curFont.setScale(1, -1);
         if ("left".equalsIgnoreCase(align)) 
@@ -267,7 +260,7 @@ public class graphics extends Plugin {
         return this;
     }
 	
-    public graphics fill(String type, Vector2 shape) {
+    public NonGraphics fill(String type, Vector2 shape) {
         checkShapes();
 		
         if (type.equalsIgnoreCase("line")) {
@@ -281,7 +274,7 @@ public class graphics extends Plugin {
         return this;
     }
 	
-    public graphics fill(String type, Shape2D shape) {
+    public NonGraphics fill(String type, Shape2D shape) {
         checkShapes();
 		
         if (type.equalsIgnoreCase("line")) {
@@ -310,38 +303,38 @@ public class graphics extends Plugin {
         return this;
     }
     
-    public graphics draw(Texture img, float x, float y) {;
+    public NonGraphics draw(Texture img, float x, float y) {;
         return draw(img, x, y, 0);
     }
     
-    public graphics draw(Texture img, float x, float y, float r) {;
+    public NonGraphics draw(Texture img, float x, float y, float r) {;
         return draw(img, x, y, r, 1, 1);
     }
     
-    public graphics draw(Texture img, float x, float y, float r, float sx, float sy) {;
+    public NonGraphics draw(Texture img, float x, float y, float r, float sx, float sy) {;
         return draw(img, x, y, r, sx, sy, 0, 0);
     }
     
-    public graphics draw(Texture img, float x, float y, float r, float sx, float sy, float ox, float oy) {
+    public NonGraphics draw(Texture img, float x, float y, float r, float sx, float sy, float ox, float oy) {
         final float w = img.getWidth();
         final float h = img.getHeight();
         writeQuad(img, x, y, ox, oy, w, h, sx, sy, r, 0, 0, (int)w, (int)h);
         return this;
     }
     
-    public graphics drawq(Texture img, Quad q, float x, float y) {;
+    public NonGraphics drawq(Texture img, Quad q, float x, float y) {;
         return drawq(img, q, x, y, 0);
     }
     
-    public graphics drawq(Texture img, Quad q, float x, float y, float r) {;
+    public NonGraphics drawq(Texture img, Quad q, float x, float y, float r) {;
         return drawq(img, q, x, y, r, 1, 1);
     }
     
-    public graphics drawq(Texture img, Quad q, float x, float y, float r, float sx, float sy) {;
+    public NonGraphics drawq(Texture img, Quad q, float x, float y, float r, float sx, float sy) {;
         return drawq(img, q, x, y, r, sx, sy, 0, 0);
     }
     
-    public graphics drawq(Texture img, Quad q, float x, float y, float r, float sx, float sy, float ox, float oy) {
+    public NonGraphics drawq(Texture img, Quad q, float x, float y, float r, float sx, float sy, float ox, float oy) {
         writeQuad(img, x, y, ox, oy, q.w, q.h, sx, sy, r, q.sx, q.sy, q.sw, q.sh);
         return this;
     }

@@ -3,12 +3,11 @@ package non.script;
 import org.mozilla.javascript.*;
 import java.io.*;
 import non.Non;
-import non.plugins.Plugin;
 
-public class CoffeeScript {
+public class JavaScript {
     private final Scriptable scope;
     
-    public CoffeeScript() {
+    public JavaScript() {
         Context context = Context.enter();
         try {
             scope = context.initStandardObjects();
@@ -32,7 +31,7 @@ public class CoffeeScript {
             
             if (args != null) {
                 Object[] values = new Object[args.length];
-                for (int i = 0; i < args.length; i++) values[i] = convert(args[i]);
+                for (int i = 0; i < args.length; i++) values[i] = convertToJs(args[i]);
                 return func.call(context, scope, scope, values);
             } else {
                 return func.call(context, scope, scope, null);
@@ -42,32 +41,60 @@ public class CoffeeScript {
         }
     }
 
-    public Object eval(String script) {
+    public Object eval(String script, String tag) {
         Context context = Context.enter();
         
         try {
             context.setOptimizationLevel(-1);
-            return context.evaluateString(scope, script, "CoffeeScript", 1, null);
+            return context.evaluateString(scope, script, tag, 1, null);
         } finally {
             Context.exit();
         }
     }
+    
+    public Object call(Function function, Object... args) {
+        if (function == null) return null;
+        
+        Context context = Context.enter();
+        try {
+            if (args != null) {
+                Object[] values = new Object[args.length];
+                for (int i = 0; i < args.length; i++) values[i] = convertToJs(args[i]);
+                return function.call(context, scope, scope, values);
+            } else {
+                return function.call(context, scope, scope, null);
+            }
+        } finally {
+            Context.exit(); 
+        }
+    }
 
     public void put(String key, Object value) {
-        ScriptableObject.putProperty(scope, key, convert(value));
+        ScriptableObject.putProperty(scope, key, convertToJs(value));
     }
     
     public Object get(String key) {
         return scope.get(key, scope);
     }
     
-    public Object convert(Object javaValue) {
+    public Object convertToJs(Object javaValue) {
         Context.enter();
         
         try {
-            return javaValue == null? UniqueTag.NULL_VALUE:
+            return javaValue == null? null:
                    javaValue instanceof Scriptable? javaValue:
                    Context.javaToJS(javaValue, scope);
+        } finally {
+            Context.exit();
+        }
+    }
+    
+    public Object convertToJava(Object jsValue, Class<?> desiredType) {
+        Context.enter();
+        
+        try {
+            return jsValue == null? null:
+                   Context.jsToJava(jsValue, desiredType);
         } finally {
             Context.exit();
         }

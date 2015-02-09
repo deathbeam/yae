@@ -122,9 +122,6 @@ task resolveDependencies << {
 }
 
 task update << {
-    clearPlugins()
-    clearLanguages()
-    
     def vals = [
         [ "%APP_NAME%", "%PACKAGE%", "%PACKAGE_DIR%" ],
         [ appName, packageName, packageDir ]
@@ -140,7 +137,7 @@ task update << {
     def src = "../project/res"
     def res = "gen/res"
     def out = "android/assets/res"
-    def files = [ "loading.png", "loading_bg.png", "loading_bar.png", "loading_bar_bg.png", "coffee-script.js", "require.js" ]
+    def files = [ "loading.png", "loading_bg.png", "loading_bar.png", "loading_bar_bg.png", "non.js" ]
     
     for(fl in files) {
         if (file("${src}/${fl}.png").exists()) {
@@ -159,18 +156,6 @@ task update << {
     }
     
     copy {
-        from "../languages"
-        into "core/src/non/languages"
-        include "**/*.java"
-    }
-    
-    copy {
-        from "../plugins"
-        into "core/src/non/plugins"
-        include "**/*.java"
-    }
-    
-    copy {
         from "../project"
         into "android/assets"
         exclude "res/"
@@ -180,48 +165,12 @@ task update << {
 }
 
 def configure() {
-    def f = file("../project/non.cfg")
+    def f = file("../project/config.json")
 
     if (f.exists()) {
         ext.cfg = new groovy.json.JsonSlurper().parseText(f.text)
     } else {
         ext.cfg = new groovy.json.JsonSlurper().parseText('{ "name":"non", "package":"non", "version":"1.0.0" }')
-    }
-}
-
-def clearPlugins() {
-    def f = new File("core/src/non/plugins");
-    def plugins = f.listFiles()
-    
-    for (plugin in plugins) {
-        def name = plugin.getName()
-        
-        if (name.equals("Plugin.java")) continue
-        if (name.equals("audio.java")) continue
-        if (name.equals("graphics.java")) continue
-        if (name.equals("input.java")) continue
-        if (name.equals("lights.java")) continue
-        if (name.equals("math.java")) continue
-        if (name.equals("network.java")) continue
-        if (name.equals("non.java")) continue
-        if (name.equals("physics.java")) continue
-        
-        plugin.delete()
-    }
-}
-
-def clearLanguages() {
-    def f = new File("core/src/non/languages");
-    def languages = f.listFiles()
-    
-    for (language in languages) {
-        def name = language.getName()
-        
-        if (name.equals("Language.java")) continue
-        if (name.equals("javascript.java")) continue
-        if (name.equals("lua.java")) continue
-        
-        language.delete()
     }
 }
 

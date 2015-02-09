@@ -1,9 +1,5 @@
 {
     "name": "Hello World",
     "package": "non.examples.helloworld",
-    "version": "1.0.0",
-    
-    "plugins": [
-        "graphics"
-    ]
+    "version": "1.0.0"
 }
