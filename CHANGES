@@ -1,3 +1,20 @@
+[3.9.1]
+- added vscroll (vertical scrollbar) to GUI module
+- added hscroll (horizontal scrollbar) to GUI module
+- updated GUI sample
+- fixed few bugs in GUI system
+- added lights demonstration to physics sample
+- added pointAtLight(x, y) and pointAtShadow(x, y) to lights module. These methods tests if specified point is in light or in shadow. Usefull for roguelike games.
+- refactored source code as possible preparation to add web support via GWT
+- added back non.getPlatform() what I accidentally removed before
+- fixed build script to actually include correct .js files from res/ folder
+- fixed build script to check for changed icons and loading screen in project res/ folder
+- removed android.permission.VIBRATE as this feature is no longer in Non
+- added cache clearing to build.gradle
+- added android.permission.INTERNET to enable non.networking module
+- added Network sample (usage gen:network)
+- fixed non key events to match keyboard module key events
+
 [3.9.0]
 - created GUI sample (usage java -jar non.jar gen:gui)
 - added setVisible(boolean) method to keyboard and mouse modules

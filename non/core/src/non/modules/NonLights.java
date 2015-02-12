@@ -21,6 +21,8 @@ public class NonLights extends Module {
     public NonLights setShadows(boolean shadows) { handler.setShadows(shadows); return this; }
     public NonLights setCulling(boolean culling) { handler.setCulling(culling); return this; }
     public NonLights setLightmaps(boolean isAutomatic) { handler.setLightMapRendering(isAutomatic); return this; }
+    public boolean pointAtLight(float x, float y) { return handler.pointAtLight(x, y); }
+    public boolean pointAtShadow(float x, float y) { return handler.pointAtShadow(x, y); }
     
     public NonLights() {
         handler = new RayHandler(null);

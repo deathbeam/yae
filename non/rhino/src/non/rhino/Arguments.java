@@ -1,8 +1,8 @@
-package non.script;
+package non.rhino;
 
 import org.mozilla.javascript.*;
 import java.io.*;
-import non.Non;
+import non.rhino.RhinoNon;
 
 public class Arguments {
     private final Scriptable s;
@@ -17,7 +17,7 @@ public class Arguments {
     
     public Object get(String key, Object defaultValue) {
         if (has(key)) {
-            return Non.script.convertToJava(s.get(key, s), Object.class);
+            return RhinoNon.script.convertToJava(s.get(key, s), Object.class);
         }
         
         return defaultValue;
@@ -34,7 +34,7 @@ public class Arguments {
     
     public String getString(String key, String defaultValue) {
         if (has(key)) {
-            return (String)Non.script.convertToJava(s.get(key, s), String.class);
+            return (String)RhinoNon.script.convertToJava(s.get(key, s), String.class);
         }
         
         return defaultValue;
@@ -42,7 +42,7 @@ public class Arguments {
     
     public boolean getBool(String key, Boolean defaultValue) {
         if (has(key)) {
-            return (Boolean)Non.script.convertToJava(s.get(key, s), Boolean.class);
+            return (Boolean)RhinoNon.script.convertToJava(s.get(key, s), Boolean.class);
         }
         
         return defaultValue;
@@ -50,7 +50,7 @@ public class Arguments {
     
     public float getNum(String key, Float defaultValue) {
         if (has(key)) {
-            return (Float)Non.script.convertToJava(s.get(key, s), Float.class);
+            return (Float)RhinoNon.script.convertToJava(s.get(key, s), Float.class);
         }
         
         return defaultValue;
@@ -62,7 +62,7 @@ public class Arguments {
             Object[] values = new Object[jsArray.length];
             
             for (int i = 0; i < jsArray.length; i++) {
-                values[i] = Non.script.convertToJava(jsArray[i], Object.class);
+                values[i] = RhinoNon.script.convertToJava(jsArray[i], Object.class);
             }
             
             return values;
@@ -77,7 +77,7 @@ public class Arguments {
             String[] values = new String[jsArray.length];
             
             for (int i = 0; i < jsArray.length; i++) {
-                values[i] = (String)Non.script.convertToJava(jsArray[i], String.class);
+                values[i] = (String)RhinoNon.script.convertToJava(jsArray[i], String.class);
             }
             
             return values;
@@ -92,7 +92,7 @@ public class Arguments {
             boolean[] values = new boolean[jsArray.length];
             
             for (int i = 0; i < jsArray.length; i++) {
-                values[i] = (Boolean)Non.script.convertToJava(jsArray[i], Boolean.class);
+                values[i] = (Boolean)RhinoNon.script.convertToJava(jsArray[i], Boolean.class);
             }
             
             return values;
@@ -106,7 +106,7 @@ public class Arguments {
             Object[] jsArray = ((NativeArray)s.get(key, s)).toArray();
             float[] values = new float[jsArray.length];
             for (int i = 0; i < jsArray.length; i++) {
-                values[i] = (Float)Non.script.convertToJava(jsArray[i], Float.class);
+                values[i] = (Float)RhinoNon.script.convertToJava(jsArray[i], Float.class);
             }
             
             return values;

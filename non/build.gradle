@@ -39,7 +39,7 @@ project(":desktop") {
     apply plugin: "java"
     
     dependencies {
-        compile project(":core")
+        compile project(":rhino")
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
@@ -57,7 +57,7 @@ project(":android") {
     configurations { natives }
 
     dependencies {
-        compile project(":core")
+        compile project(":rhino")
         compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
@@ -81,7 +81,7 @@ project(":ios") {
     configurations { natives }
 
     dependencies {
-        compile project(":core")
+        compile project(":rhino")
         compile "org.robovm:robovm-rt:${roboVMVersion}"
         compile "org.robovm:robovm-cocoatouch:${roboVMVersion}"
         compile "com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion"
@@ -100,10 +100,18 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
-        compile "org.mozilla:rhino:$rhinoVersion"
         compile "com.esotericsoftware:kryonet:$kryonetVersion"
 
         try { for(dep in cfg.libraries) compile dep } catch(e) { }
+    }
+}
+
+project(":rhino") {
+    apply plugin: "java"
+
+    dependencies {
+        compile project(":core")
+        compile "org.mozilla:rhino:$rhinoVersion"
     }
 }
 
@@ -122,6 +130,10 @@ task resolveDependencies << {
 }
 
 task update << {
+    deldir(file("ios/src"))
+    deldir(file("android/src"))
+    deldir(file("desktop/src"))
+    
     def vals = [
         [ "%APP_NAME%", "%PACKAGE%", "%PACKAGE_DIR%" ],
         [ appName, packageName, packageDir ]
@@ -137,10 +149,10 @@ task update << {
     def src = "../project/res"
     def res = "gen/res"
     def out = "android/assets/res"
-    def files = [ "loading.png", "loading_bg.png", "loading_bar.png", "loading_bar_bg.png", "non.js" ]
+    def files = [ "loading.png", "loading_bg.png", "loading_bar.png", "loading_bar_bg.png" ]
     
     for(fl in files) {
-        if (file("${src}/${fl}.png").exists()) {
+        if (file("${src}/${fl}").exists()) {
             copy {
                 from src
                 into out
@@ -153,6 +165,11 @@ task update << {
                 include "${fl}"
             }
         }
+    }
+    
+    copy {
+        from "gen/res/javascript" 
+        into "android/assets/res/javascript"
     }
     
     copy {
@@ -186,4 +203,22 @@ def copyAndReplace(input, out, values) {
     out.getParentFile().mkdirs()
     out.createNewFile()
     out.write(txt)
+}
+
+def deldir(file) {
+    if(file.exists()) {
+        def files = file.listFiles();
+        
+        if(files !=null) {
+            for(File fl: files) {
+                if(fl.isDirectory()) {
+                    deldir(fl)
+                } else {
+                    fl.delete()
+                }
+            }
+        }
+    }
+        
+    file.delete()
 }

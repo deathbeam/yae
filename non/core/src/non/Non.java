@@ -14,7 +14,6 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
-import non.script.JavaScript;
 import java.io.IOException;
 import non.modules.*;
 
@@ -24,96 +23,19 @@ public class Non implements ApplicationListener, InputProcessor {
     public static final String E_ARGUMENT = "Argument not found - ";
     public static final String E_PLUGIN = "Plugin not found - ";
     
-    public static boolean ready;
-    public static JavaScript script;
     public static AssetManager assets;
-    private static JsonValue config;
+    public static NonScript script;
     
+    private JsonValue config;
+    private boolean ready;
     private SpriteBatch loadingBatch;
     private Texture loadingBg, loadingImage, loadingBar, loadingBarBg;
     private Vector2 loadingPos, loadingBarPos;
     private float percent, barWidth;
-    
-    public static String getButton(int code) {
-        if (code == com.badlogic.gdx.Input.Buttons.LEFT) return "left";
-        if (code == com.badlogic.gdx.Input.Buttons.RIGHT) return "right";
-        if (code == com.badlogic.gdx.Input.Buttons.MIDDLE) return "middle";
-        if (code == com.badlogic.gdx.Input.Buttons.BACK) return "back";
-        if (code == com.badlogic.gdx.Input.Buttons.FORWARD) return "forward";
-        return "unknown";
-    }
-    
-    public static int getButton(String name) {
-       if ("left".equalsIgnoreCase(name)) return com.badlogic.gdx.Input.Buttons.LEFT;
-       if ("right".equalsIgnoreCase(name)) return com.badlogic.gdx.Input.Buttons.RIGHT;
-       if ("middle".equalsIgnoreCase(name)) return com.badlogic.gdx.Input.Buttons.MIDDLE;
-       if ("back".equalsIgnoreCase(name)) return com.badlogic.gdx.Input.Buttons.BACK;
-       if ("forward".equalsIgnoreCase(name)) return com.badlogic.gdx.Input.Buttons.FORWARD;
-       return -1;
-    }
-    
-    public static String getKey(int code) {
-        return com.badlogic.gdx.Input.Keys.toString(code).toLowerCase();
-    }
-    
-    public static int getKey(String name) {
-        return com.badlogic.gdx.Input.Keys.valueOf(name);
-    }
-    
-    public static String getExtension(String fileName) {
-        String extension = "";
-        int i = fileName.lastIndexOf('.');
-        if (i > 0) extension = fileName.substring(i+1);
-        return extension;
-    }
-    
-    public static JsonValue getConfig() {
-        return config;
-    }
-    
-    public static int getWidth() {
-        return Gdx.graphics.getWidth();
-    }
-    
-    public static int getHeight() {
-        return Gdx.graphics.getHeight();
-    }
-    
-    public static int getFPS() {
-        return Gdx.graphics.getFramesPerSecond();
-    }
-    
-    public static float getDelta() {
-        return Gdx.graphics.getDeltaTime();
-    }
-    
-    public static String getPlatform() {
-        ApplicationType type = Gdx.app.getType();
-        if (type == ApplicationType.Desktop) return "desktop";
-        if (type == ApplicationType.Android) return "android";
-        if (type == ApplicationType.iOS) return "ios";
-        if (type == ApplicationType.Applet || type == ApplicationType.WebGL) return "web";
-        return "unknown";
-    }
-    
-    public static void error(String type, String msg) {
-        Gdx.app.error(type, msg);
-    }
-    
-    public static void log(String type, String msg) {
-        Gdx.app.log(type, msg);
-    }
-    
-    public static void debug(String type, String msg) {
-        Gdx.app.debug(type, msg);
-    }
-    
-    public static FileHandle file(String path) {
-        return Gdx.files.internal(path);
-    }
-	
-    public static void quit() {
-        Gdx.app.exit();
+
+    public Non setHandler(NonScript script) {
+        this.script = script;
+        return this;
     }
     
     public void create () {
@@ -121,9 +43,6 @@ public class Non implements ApplicationListener, InputProcessor {
         config = new JsonReader().parse(file("config.json"));
         loadingBatch = new SpriteBatch();
         assets = new AssetManager();
-        script = new JavaScript();
-        script.put("non", new RootObject());
-        script.eval(file("res/non.js").readString(), "non.js");
         Gdx.input.setInputProcessor(this);
         
         if (config.has("logging")) {
@@ -193,31 +112,19 @@ public class Non implements ApplicationListener, InputProcessor {
             quit();
         }
         
-        fl = file("main.js");
-        
-        if (fl.exists()) {
-            script.eval(fl.readString(), "main.js");
-        } else {
-            error(TAG, E_RESOURCE + fl.name());
-            quit();
-        }
-        
-        script.invoke("non", "load", assets);
+        script.load(assets);
     }
 
     public void render () {
         if(assets.update()) {
             if (!ready) {
                 if (Gdx.input.isTouched()) {
-                    script.invoke("non", "ready");
+                    script.ready();
                     ready = true;
                     resize(getWidth(), getHeight());
                 }
             } else {
-                Module.updateAll(getDelta());
-                script.invoke("non", "update", getDelta());
-                script.invoke("non", "draw");
-                Module.updateAfterAll(getDelta());
+                script.render();
             }
         }
         
@@ -245,8 +152,7 @@ public class Non implements ApplicationListener, InputProcessor {
 
     public void resize(int width, int height) { 
         if (ready) {
-            Module.resizeAll(width, height); 
-            script.invoke("non", "resize", width, height);
+            script.resize(width, height);
         } else {
             loadingBatch.setProjectionMatrix(
                 loadingBatch.getProjectionMatrix().setToOrtho2D(0, 0, width, height));
@@ -262,62 +168,133 @@ public class Non implements ApplicationListener, InputProcessor {
     }
 	
     public void pause() {
-        if (ready) script.invoke("non", "pause"); 
+        if (ready) script.pause(); 
     }
 	
     public void resume() {
-        if (ready) script.invoke("non", "resume");
+        if (ready) script.resume();
     }
     
     public boolean keyDown(int keycode) {
-        if (ready) {
-            Module.keyPressedAll(keycode);
-            script.invoke("non", "keydown", getKey(keycode));
-        }
+        if (ready) script.keyDown(keycode);
         return false;
     }
 
     public boolean keyUp(int keycode) {
-        if (ready) script.invoke("non", "keyup", getKey(keycode));
+        if (ready) script.keyUp(keycode);
         return false;
     }
 
     public boolean keyTyped (char character) {
-        if (ready) {
-            Module.keyTypedAll(character);
-            script.invoke("non", "keytyped", ""+character);
-        }
+        if (ready) script.keyTyped(character);
         return false;
     }
    
     public boolean touchDown (int x, int y, int pointer, int button) {
-        if (ready) script.invoke("non", "touchdown", x, y, pointer, getButton(button));
+        if (ready) script.touchDown(x, y, pointer, button);
         return false;
     }
 
     public boolean touchUp (int x, int y, int pointer, int button) {
-       if (ready) script.invoke("non", "touchup", x, y, pointer, getButton(button));
+       if (ready) script.touchUp(x, y, pointer, button);
        return false;
     }
 
     public boolean touchDragged (int x, int y, int pointer) {
-       if (ready) script.invoke("non", "touchdragged", x, y, pointer);
+       if (ready) script.touchDragged(x, y, pointer);
        return false;
     }
 
     public boolean mouseMoved (int x, int y) {
-       if (ready) script.invoke("non", "mousemoved", x, y);
+       if (ready) script.mouseMoved(x, y);
        return false;
     }
 
     public boolean scrolled (int amount) {
-       if (ready) script.invoke("non", "scrolled", amount);
+       if (ready) script.scrolled(amount);
        return false;
     }
     
     public void dispose () { 
-        if (ready) script.invoke("non", "close");
+        if (ready) script.close();
         assets.dispose();
-        Module.disposeAll();
+    }
+    
+    public static String getButton(int code) {
+        if (code == com.badlogic.gdx.Input.Buttons.LEFT) return "Left";
+        if (code == com.badlogic.gdx.Input.Buttons.RIGHT) return "Right";
+        if (code == com.badlogic.gdx.Input.Buttons.MIDDLE) return "Middle";
+        if (code == com.badlogic.gdx.Input.Buttons.BACK) return "Back";
+        if (code == com.badlogic.gdx.Input.Buttons.FORWARD) return "Forward";
+        return "unknown";
+    }
+    
+    public static int getButton(String name) {
+       if ("Left".equalsIgnoreCase(name)) return com.badlogic.gdx.Input.Buttons.LEFT;
+       if ("Right".equalsIgnoreCase(name)) return com.badlogic.gdx.Input.Buttons.RIGHT;
+       if ("Middle".equalsIgnoreCase(name)) return com.badlogic.gdx.Input.Buttons.MIDDLE;
+       if ("Back".equalsIgnoreCase(name)) return com.badlogic.gdx.Input.Buttons.BACK;
+       if ("Forward".equalsIgnoreCase(name)) return com.badlogic.gdx.Input.Buttons.FORWARD;
+       return -1;
+    }
+    
+    public static String getKey(int code) {
+        return com.badlogic.gdx.Input.Keys.toString(code);
+    }
+    
+    public static int getKey(String name) {
+        return com.badlogic.gdx.Input.Keys.valueOf(name);
+    }
+    
+    public static String getExtension(String fileName) {
+        String extension = "";
+        int i = fileName.lastIndexOf('.');
+        if (i > 0) extension = fileName.substring(i+1);
+        return extension;
+    }
+    
+    public static int getWidth() {
+        return Gdx.graphics.getWidth();
+    }
+    
+    public static int getHeight() {
+        return Gdx.graphics.getHeight();
+    }
+    
+    public static int getFPS() {
+        return Gdx.graphics.getFramesPerSecond();
+    }
+    
+    public static float getDelta() {
+        return Gdx.graphics.getDeltaTime();
+    }
+    
+    public static String getPlatform() {
+        ApplicationType type = Gdx.app.getType();
+        if (type == ApplicationType.Desktop) return "desktop";
+        if (type == ApplicationType.Android) return "android";
+        if (type == ApplicationType.iOS) return "ios";
+        if (type == ApplicationType.Applet || type == ApplicationType.WebGL) return "web";
+        return "unknown";
+    }
+    
+    public static void error(String type, String msg) {
+        Gdx.app.error(type, msg);
+    }
+    
+    public static void log(String type, String msg) {
+        Gdx.app.log(type, msg);
+    }
+    
+    public static void debug(String type, String msg) {
+        Gdx.app.debug(type, msg);
+    }
+    
+    public static FileHandle file(String path) {
+        return Gdx.files.internal(path);
+    }
+	
+    public static void quit() {
+        Gdx.app.exit();
     }
 }

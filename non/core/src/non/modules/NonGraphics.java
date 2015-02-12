@@ -19,18 +19,16 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import org.mozilla.javascript.Scriptable;
 
 import non.Non;
 import non.BlendMode;
 import non.Line;
-import non.script.Arguments;
 
 public class NonGraphics extends Module {
+    protected BitmapFont curFont;
     private SpriteBatch batch;
     private ShapeRenderer shapes;
     private OrthographicCamera camera;
-    private BitmapFont curFont;
     private float rotation, scale, tx, ty;
     
     public Class<?> imageLoader = Texture.class;
@@ -42,7 +40,6 @@ public class NonGraphics extends Module {
     public BitmapFont getFont() { return curFont; }
     public NonGraphics setFont(BitmapFont fnt) { curFont = fnt; return this; }
     public NonGraphics setShader(ShaderProgram shader) { batch.setShader(shader); return this; }
-    public NonGraphics setBlending(int src, int dest) { batch.setBlendFunction(src, dest); return this; }
     
     public TextBounds measureText(String text) {
         TextBounds bounds = curFont.getBounds(text);
@@ -253,16 +250,7 @@ public class NonGraphics extends Module {
         return this;
     }
 
-    public NonGraphics print(Scriptable rhinoArgs) {
-        Arguments args = new Arguments(rhinoArgs);
-        if (!args.has("text")) return this;
-        
-        String text = args.getString("text", "");
-        String align = args.getString("align", "left");
-        float scale[] = args.getNumArray("scale", new float[]{1,1});
-        float wrap = args.getNum("wrap", curFont.getBounds(text).width);
-        float position[] = args.getNumArray("position", new float[]{0,0});
-        
+    public NonGraphics print(String text, float[] position, float[] scale, float wrap, String align) {
         checkBatch();
         
         curFont.setScale(scale[0], -scale[1]);
@@ -276,18 +264,12 @@ public class NonGraphics extends Module {
         return this;
     }
 	
-    public NonGraphics fill(Scriptable rhinoArgs) {
-        Arguments args = new Arguments(rhinoArgs);
-        if (!args.has("shape")) return this;
-        
-        Object shape = args.get("shape", null);
-        String type = args.getString("mode", "line");
-        
+    public NonGraphics fill(Object shape, String mode) {
         checkShapes();
 		
-        if (type.equalsIgnoreCase("line")) {
+        if (mode.equalsIgnoreCase("line")) {
             shapes.set(ShapeRenderer.ShapeType.Line);
-        } else if (type.equalsIgnoreCase("fill")) {
+        } else if (mode.equalsIgnoreCase("fill")) {
             shapes.set(ShapeRenderer.ShapeType.Filled);
         }
 		
@@ -314,18 +296,7 @@ public class NonGraphics extends Module {
         return this;
     }
     
-    public NonGraphics draw(Scriptable rhinoArgs) {
-        Arguments args = new Arguments(rhinoArgs);
-        if (!args.has("image")) return this;
-        
-        Texture image = (Texture)args.get("image", null);
-        float[] position = args.getNumArray("position", new float[]{0,0});
-        float[] origin = args.getNumArray("origin", new float[]{0,0});
-        float[] size = args.getNumArray("size", new float[]{image.getWidth(),image.getHeight()});
-        float[] scale = args.getNumArray("scale", new float[]{1,1});
-        float rotation = args.getNum("rotation", 0f);
-        float[] source = args.getNumArray("source", new float[]{0,0,image.getWidth(),image.getHeight()});
-        
+    public NonGraphics draw(Texture image, float[] position, float[] size, float[] origin, float[] scale, float[] source, float rotation) {
         checkBatch();
         batch.draw(
                 image, position[0], position[1], 

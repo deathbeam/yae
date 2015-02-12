@@ -4,6 +4,7 @@ import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import non.Non;
+import non.rhino.RhinoNon;
 
 public class DesktopLauncher {
     public static void main (String[] args) {
@@ -15,6 +16,6 @@ public class DesktopLauncher {
         cfg.addIcon("res/icon-16.png", Files.FileType.Internal);
         cfg.width = 800;
         cfg.height = 600;
-        new LwjglApplication(new Non(), cfg);
+        new LwjglApplication(new Non().setHandler(new RhinoNon()), cfg);
     }
 }

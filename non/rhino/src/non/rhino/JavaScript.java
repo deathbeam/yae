@@ -1,8 +1,7 @@
-package non.script;
+package non.rhino;
 
 import org.mozilla.javascript.*;
 import java.io.*;
-import non.Non;
 
 public class JavaScript {
     private final Scriptable scope;

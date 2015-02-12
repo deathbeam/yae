@@ -6,33 +6,17 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.esotericsoftware.kryonet.Listener;
-import org.mozilla.javascript.Function;
 
 import non.Non;
 import non.Buffer;
 
 public class NonNetwork extends Module {
-    public class ScriptListener extends Listener {
-        public void connected (Connection connection) {
-            Non.script.call(connected, connection);
-        }
-        
-        public void received (Connection connection, Object object) {
-            if (!(object instanceof byte[])) return;
-            Non.script.call(received, connection, (byte[])object);
-        }
-
-        public void disconnected (Connection connection) {
-            Non.script.call(disconnected, connection);
-        }
-    }
-    
-    public Function connected, disconnected, received;
+    private Listener listener;
     
     public Client client() { 
         Client client = new Client();
         register(client);
-        client.addListener(new ScriptListener());
+        client.addListener(listener);
         
         return client;
     }
@@ -40,7 +24,7 @@ public class NonNetwork extends Module {
     public Server server() { 
         Server server = new Server();
         register(server);
-        server.addListener(new ScriptListener());
+        server.addListener(listener);
 
         return server;
     }
@@ -51,6 +35,10 @@ public class NonNetwork extends Module {
     
     public Buffer buffer(byte[] data) {
         return new Buffer(data);
+    }
+    
+    public void setListener(Listener listener) {
+        this.listener = listener;
     }
     
     private void register (EndPoint endPoint) {

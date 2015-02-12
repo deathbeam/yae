@@ -1,6 +1,8 @@
 var physics = require('non.physics');
+var lights = require('non.lights');
 var graphics = require('non.graphics');
 var math = require('non.math');
+var lights = require('lights');
 
 var groundBody = null;
 var mouseJoint = null;
@@ -19,6 +21,8 @@ callback = function(fixture) {
 
 non.ready = function() {
     physics.setGravity(0, -10).setSpeed(3);
+    lights.ready();
+    
     groundBody = physics.body({type: 'static'});
     
     for(var i = 0; i < 50; i++) {
@@ -48,11 +52,14 @@ non.ready = function() {
     }
 
     for(var i = 0; i < 7; i++) {
-        var body = physics.body({
-            type: 'static',
-            position: [math.random(0, non.getWidth()), math.random(0, non.getHeight())]
-        });
-
+        var position = [math.random(0, non.getWidth()), math.random(0, non.getHeight())]
+        var body = physics.body({type: 'static', position: position});
+        var red = math.random();
+        var green = math.random();
+        var blue = math.random();
+        
+        lights.staticLight(body);
+        
         physics.fixture(body, {
             shape: math.rectangle(0, 0, math.random(8, 20), math.random(8, 20)),
         });
@@ -68,6 +75,7 @@ non.ready = function() {
 non.draw = function() {
     graphics.clear('black');
     physics.draw(graphics);
+    lights.draw();
 };
 
 non.touchdown = function(x, y, pointer, button) {
@@ -90,6 +98,7 @@ non.touchdown = function(x, y, pointer, button) {
         });
         
         hitBody.setAwake(true);
+        lights.dynamicLight(hitBody);
     }
 };
 

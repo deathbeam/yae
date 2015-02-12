@@ -27,3 +27,10 @@ task gui << {
         into "../../project"
     }
 }
+
+task network << {
+    copy {
+        from "network"
+        into "../../project"
+    }
+}

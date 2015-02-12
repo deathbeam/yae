@@ -1,11 +1,15 @@
-package non;
+package non.rhino;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonValue;
 
-import non.modules.*;
+import non.Non;
 
 public class RootObject {
+    public String getPlatform() {
+        return Non.getPlatform();
+    }
+    
     public int getWidth() {
         return Non.getWidth();
     }
