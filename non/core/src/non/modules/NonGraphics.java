@@ -311,12 +311,12 @@ public class NonGraphics extends Module {
         return this;
     }
 	
-    private void checkBatch() {
+    public void checkBatch() {
         if (shapes.isDrawing()) shapes.end();
         if (!batch.isDrawing()) batch.begin();
     }
 	
-    private void checkShapes() {
+    public void checkShapes() {
         if (batch.isDrawing()) batch.end();
         if (!shapes.isDrawing()) shapes.begin();
     }

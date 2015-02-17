@@ -16,6 +16,6 @@ public class DesktopLauncher {
         cfg.addIcon("res/icon-16.png", Files.FileType.Internal);
         cfg.width = 800;
         cfg.height = 600;
-        new LwjglApplication(new Non().setHandler(new RhinoNon()), cfg);
+        new LwjglApplication(new Non(new RhinoNon()), cfg);
     }
 }

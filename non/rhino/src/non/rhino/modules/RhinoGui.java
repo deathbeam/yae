@@ -25,10 +25,6 @@ public class RhinoGui extends NonGui {
         return (Function)renderer.get(name, renderer);
     }
     
-    protected NonGraphics getGraphics() {
-        return (NonGraphics)RhinoNon.script.convertToJava(renderer.get("graphics", renderer), NonGraphics.class);
-    }
-    
     protected void render(String renderer, Object... args) {
         RhinoNon.script.call(getRenderer(renderer), args);
     }
@@ -70,7 +66,7 @@ public class RhinoGui extends NonGui {
         int id = (int)args.getNum("id", (float)(generateId()));
         maxid++;
         float[] position = args.getNumArray("position", new float[] {0, 0});
-        TextBounds size = getGraphics().measureText(text);
+        TextBounds size = graphics.measureText(text);
         Rectangle bounds = new Rectangle(position[0], position[1], size.width, size.height);
         
         if (regionHit(bounds)) {

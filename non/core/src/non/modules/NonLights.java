@@ -46,20 +46,12 @@ public class NonLights extends Module {
         return new DirectionalLight(handler, rays, color, direction);
     }
     
-    public PointLight point(int rays) {
-        return new PointLight(handler, rays);
-    }
-    
     public PointLight point(int rays, Color color, float distance, float x, float y) {
         return new PointLight(handler, rays, color, distance, x, y);
     }
     
     public ConeLight cone(int rays, Color color, float distance, float x, float y, float direction, float cone) {
         return new ConeLight(handler, rays, color, distance, x, y, direction, cone);
-    }
-	
-    public ChainLight chain(int rays, Color color, float distance, int rayDirection) {
-        return new ChainLight(handler, rays, color, distance, rayDirection);
     }
 	
     public ChainLight chain(int rays, Color color, float distance, int rayDirection, float[] chains) {

@@ -8,6 +8,7 @@ public class JavaScript {
     
     public JavaScript() {
         Context context = Context.enter();
+        
         try {
             scope = context.initStandardObjects();
         } finally {
@@ -17,6 +18,7 @@ public class JavaScript {
     
     public Object invoke(String object, String method, Object... args) {
         Context context = Context.enter();
+        
         try {
             Function func;
             if (method != null) {
@@ -53,8 +55,8 @@ public class JavaScript {
     
     public Object call(Function function, Object... args) {
         if (function == null) return null;
-        
         Context context = Context.enter();
+        
         try {
             if (args != null) {
                 Object[] values = new Object[args.length];

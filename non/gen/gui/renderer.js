@@ -1,5 +1,3 @@
-this.graphics = graphics;
-    
 this.focus = function(id, x, y, width, height) {
     var color = graphics.getTint();
     graphics.tint(1, 1, 1, 0.4);

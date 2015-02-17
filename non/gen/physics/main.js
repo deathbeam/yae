@@ -54,9 +54,6 @@ non.ready = function() {
     for(var i = 0; i < 7; i++) {
         var position = [math.random(0, non.getWidth()), math.random(0, non.getHeight())]
         var body = physics.body({type: 'static', position: position});
-        var red = math.random();
-        var green = math.random();
-        var blue = math.random();
         
         lights.staticLight(body);
         
@@ -88,8 +85,7 @@ non.touchdown = function(x, y, pointer, button) {
     if (hitBody != null && hitBody.getType() == physics.bodyType('kinematic')) return false;
 
     if (hitBody != null) {
-        mouseJoint = physics.joint({
-            type: 'mouse',
+        mouseJoint = physics.mouseJoint({
             bodyA: groundBody,
             bodyB: hitBody,
             collideConnected: true,

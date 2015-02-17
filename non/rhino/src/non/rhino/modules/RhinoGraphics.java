@@ -32,16 +32,18 @@ public class RhinoGraphics extends NonGraphics {
     
     public NonGraphics draw(Scriptable rhinoArgs) {
         Arguments args = new Arguments(rhinoArgs);
-        if (!args.has("image")) return this;
+        if (args.has("image")) {
+            Texture image = (Texture)args.get("image", null);
+            float[] position = args.getNumArray("position", new float[]{0,0});
+            float[] origin = args.getNumArray("origin", new float[]{0,0});
+            float[] size = args.getNumArray("size", new float[]{image.getWidth(),image.getHeight()});
+            float[] scale = args.getNumArray("scale", new float[]{1,1});
+            float rotation = args.getNum("rotation", 0f);
+            float[] source = args.getNumArray("source", new float[]{0,0,image.getWidth(),image.getHeight()});
+            
+            return draw(image, position,  size, origin, scale, source, rotation);
+        }
         
-        Texture image = (Texture)args.get("image", null);
-        float[] position = args.getNumArray("position", new float[]{0,0});
-        float[] origin = args.getNumArray("origin", new float[]{0,0});
-        float[] size = args.getNumArray("size", new float[]{image.getWidth(),image.getHeight()});
-        float[] scale = args.getNumArray("scale", new float[]{1,1});
-        float rotation = args.getNum("rotation", 0f);
-        float[] source = args.getNumArray("source", new float[]{0,0,image.getWidth(),image.getHeight()});
-        
-        return draw(image, position,  size, origin, scale, source, rotation);
+        return this;
     }
 }

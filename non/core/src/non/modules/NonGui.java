@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.*;
 
 import non.Non;
-import non.modules.NonGraphics;
 
 public class NonGui extends Module {
     static final int MAGIC_NUMBER = 1270475;
@@ -32,6 +31,7 @@ public class NonGui extends Module {
     protected int maxid;
     protected float focusTimer = 0;
     protected boolean renderFocus = false;
+    protected NonGraphics graphics;
     
     public NonGui() {
         state = new UIState();
@@ -69,6 +69,11 @@ public class NonGui extends Module {
         }
                     
         state.keyEntered = 0;
+    }
+    
+    public NonGui setGraphics(NonGraphics graphics) {
+        this.graphics = graphics;
+        return this;
     }
     
     public void update(float dt) {

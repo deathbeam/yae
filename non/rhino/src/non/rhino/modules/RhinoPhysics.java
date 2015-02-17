@@ -103,155 +103,182 @@ public class RhinoPhysics extends NonPhysics {
         return fixture;
     }
     
-    public Joint joint(Scriptable rhinoArgs) {
+    public DistanceJoint distanceJoint(Scriptable rhinoArgs) {
         Arguments args = new Arguments(rhinoArgs);
-        String type = args.getString("type", "unknown");
-        Body bodyA = (Body)args.get("bodyA", null);
-        Body bodyB = (Body)args.get("bodyB", null);
-        boolean collideConnected = args.getBool("collideConnected", false);
-        
-        if (type.equals("distance")) {
-            DistanceJointDef newDef = new DistanceJointDef();
-            newDef.bodyA = bodyA;
-            newDef.bodyB = bodyB;
-            newDef.collideConnected = collideConnected;
-            float[] anchorA = args.getNumArray("anchorA", new float[]{0,0});
-            float[] anchorB = args.getNumArray("anchorB", new float[]{0,0});
-            newDef.frequencyHz = args.getNum("frequencyHz", 0f);
-            newDef.dampingRatio = args.getNum("dampingRatio", 0f);
-            newDef.initialize(bodyA, bodyB, new Vector2(anchorA[0], anchorA[1]),
-                new Vector2(anchorB[0], anchorB[1]));
-            return (DistanceJoint)world.createJoint(newDef);
-        } else if(type.equals("friction")) {
-            FrictionJointDef newDef = new FrictionJointDef();
-            newDef.bodyA = bodyA;
-            newDef.bodyB = bodyB;
-            newDef.collideConnected = collideConnected;
-            float[] anchor = args.getNumArray("anchor", new float[]{0,0});
-            newDef.maxForce = args.getNum("maxForce", 0f);
-            newDef.maxTorque = args.getNum("maxTorque", 0f);
-            newDef.initialize(bodyA, bodyB, new Vector2((float)anchor[0], (float)anchor[1]));
-            return (FrictionJoint)world.createJoint(newDef);
-        } else if(type.equals("gear")) {
-            GearJointDef newDef = new GearJointDef();
-            newDef.bodyA = bodyA;
-            newDef.bodyB = bodyB;
-            newDef.collideConnected = collideConnected;
-            float[] anchor = args.getNumArray("anchor", new float[]{0,0});
-            newDef.joint1 = (Joint)args.get("jointA", null);
-            newDef.joint2 = (Joint)args.get("jointB", null);
-            newDef.ratio = args.getNum("ratio", 1f);
-            return (GearJoint)world.createJoint(newDef);
-        } else if(type.equals("motor")) {
-            MotorJointDef newDef = new MotorJointDef();
-            newDef.bodyA = bodyA;
-            newDef.bodyB = bodyB;
-            newDef.collideConnected = collideConnected;
-            newDef.maxForce = args.getNum("maxForce", 1f);
-            newDef.maxTorque = args.getNum("maxTorque", 1f);
-            newDef.correctionFactor = args.getNum("correctionFactor", 0.3f);
-            newDef.initialize(bodyA, bodyB);
-            return (MotorJoint)world.createJoint(newDef);
-        } else if(type.equals("mouse")) {
-            MouseJointDef newDef = new MouseJointDef();
-            newDef.bodyA = bodyA;
-            newDef.bodyB = bodyB;
-            newDef.collideConnected = collideConnected;
-            float[] target = args.getNumArray("target", new float[]{0,0});
-            newDef.maxForce = args.getNum("maxForce", 0f);
-            newDef.frequencyHz = args.getNum("frequencyHz", 5f);
-            newDef.dampingRatio = args.getNum("dampingRatio", 0.7f);
-            newDef.target.set(target[0], target[1]);
-            return (MouseJoint)world.createJoint(newDef);
-        } else if(type.equals("prismatic")) {
-            PrismaticJointDef newDef = new PrismaticJointDef();
-            newDef.bodyA = bodyA;
-            newDef.bodyB = bodyB;
-            newDef.collideConnected = collideConnected;
-            float[] anchor = args.getNumArray("anchor", new float[]{0,0});
-            float[] axis = args.getNumArray("axis", new float[]{0,0});
-            newDef.enableLimit = args.getBool("enableLimit", false);
-            newDef.lowerTranslation = args.getNum("lowerTranslation", 0f);
-            newDef.upperTranslation = args.getNum("upperTranslation", 0f);
-            newDef.enableMotor = args.getBool("enableMotor", false);
-            newDef.maxMotorForce = args.getNum("maxMotorForce", 0f);
-            newDef.motorSpeed = args.getNum("motorSpeed", 0f);
-            newDef.initialize(bodyA, bodyB, new Vector2(anchor[0], anchor[1]),
-                new Vector2(axis[0], axis[1]));
-            return (PrismaticJoint)world.createJoint(newDef);
-        } else if(type.equals("pulley")) {
-            PulleyJointDef newDef = new PulleyJointDef();
-            newDef.bodyA = bodyA;
-            newDef.bodyB = bodyB;
-            newDef.collideConnected = collideConnected;
-            float[] groupAnchorA = args.getNumArray("groupAnchorA", new float[]{-1,1});
-            float[] groupAnchorB = args.getNumArray("groupAnchorB", new float[]{1,1});
-            float[] anchorA = args.getNumArray("anchorA", new float[]{-1,0});
-            float[] anchorB = args.getNumArray("anchorB", new float[]{1,0});
-            float ratio = args.getNum("ratio", 1f);
-            newDef.initialize(bodyA, bodyB, new Vector2(groupAnchorA[0], groupAnchorA[1]),
-                new Vector2(groupAnchorB[0], groupAnchorB[1]),
-                new Vector2(anchorA[0], anchorA[1]),
-                new Vector2(anchorB[0], anchorB[1]), ratio);
-            return (PulleyJoint)world.createJoint(newDef);
-        } else if(type.equals("revolute")) {
-            RevoluteJointDef newDef = new RevoluteJointDef();
-            newDef.bodyA = bodyA;
-            newDef.bodyB = bodyB;
-            newDef.collideConnected = collideConnected;
-            float[] anchor = args.getNumArray("anchor", new float[]{0,0});
-            float[] axis = args.getNumArray("axis", new float[]{0,0});
-            newDef.enableLimit = args.getBool("enableLimit", false);
-            newDef.lowerAngle = args.getNum("lowerAngle", 0f);
-            newDef.upperAngle = args.getNum("upperAngle", 0f);
-            newDef.enableMotor = args.getBool("enableMotor", false);
-            newDef.maxMotorTorque = args.getNum("maxMotorTorque", 0f);
-            newDef.motorSpeed = args.getNum("motorSpeed", 0f);
-            newDef.initialize(bodyA, bodyB, new Vector2(anchor[0], anchor[1]));
-            return (RevoluteJoint)world.createJoint(newDef);
-        } else if(type.equals("rope")) {
-            RopeJointDef newDef = new RopeJointDef();
-            newDef.bodyA = bodyA;
-            newDef.bodyB = bodyB;
-            newDef.collideConnected = collideConnected;
-            float[] anchorA = args.getNumArray("anchorA", new float[]{0,0});
-            float[] anchorB = args.getNumArray("anchorB", new float[]{0,0});
-            newDef.maxLength = args.getNum("maxLength", 0f);
-            newDef.localAnchorA.set(anchorA[0], anchorA[1]);
-            newDef.localAnchorB.set(anchorB[0], anchorB[1]);
-            return (RopeJoint)world.createJoint(newDef);
-        } else if (type.equals("weld")) {
-            WeldJointDef newDef = new WeldJointDef();
-            newDef.bodyA = bodyA;
-            newDef.bodyB = bodyB;
-            newDef.collideConnected = collideConnected;
-            float[] anchor = args.getNumArray("anchor", new float[]{0,0});
-            newDef.frequencyHz = args.getNum("frequencyHz", 0f);
-            newDef.dampingRatio = args.getNum("dampingRatio", 0f);
-            newDef.initialize(bodyA, bodyB, new Vector2(anchor[0], anchor[1]));
-            return (WeldJoint)world.createJoint(newDef);
-        } else if(type.equals("wheel")) {
-            WheelJointDef newDef = new WheelJointDef();
-            newDef.bodyA = bodyA;
-            newDef.bodyB = bodyB;
-            newDef.collideConnected = collideConnected;
-            float[] anchor = args.getNumArray("anchor", new float[]{0,0});
-            float[] axis = args.getNumArray("axis", new float[]{0,0});
-            newDef.enableMotor = args.getBool("enableMotor", false);
-            newDef.maxMotorTorque = args.getNum("maxMotorTorque", 0f);
-            newDef.motorSpeed = args.getNum("motorSpeed", 0f);
-            newDef.frequencyHz = args.getNum("frequencyHz", 2f);
-            newDef.dampingRatio = args.getNum("dampingRatio", 0.7f);
-            newDef.initialize(bodyA, bodyB, new Vector2(anchor[0], anchor[1]), new Vector2(axis[0], axis[1]));
-            return (WheelJoint)world.createJoint(newDef);
-        }
-        
-        JointDef def = new JointDef();
-        def.type = jointType(type);
-        def.bodyA = bodyA;
-        def.bodyB = bodyB;
-        
-        return world.createJoint(def);
+
+        DistanceJointDef newDef = new DistanceJointDef();
+        newDef.bodyA = (Body)args.get("bodyA", null);
+        newDef.bodyB = (Body)args.get("bodyB", null);
+        newDef.collideConnected = args.getBool("collideConnected", false);
+        float[] anchorA = args.getNumArray("anchorA", new float[]{0,0});
+        float[] anchorB = args.getNumArray("anchorB", new float[]{0,0});
+        newDef.frequencyHz = args.getNum("frequencyHz", 0f);
+        newDef.dampingRatio = args.getNum("dampingRatio", 0f);
+        newDef.initialize(newDef.bodyA, newDef.bodyB, new Vector2(anchorA[0], anchorA[1]),
+            new Vector2(anchorB[0], anchorB[1]));
+        return (DistanceJoint)world.createJoint(newDef);
+    }
+    
+    public FrictionJoint frictionJoint(Scriptable rhinoArgs) {
+        Arguments args = new Arguments(rhinoArgs);
+
+        FrictionJointDef newDef = new FrictionJointDef();
+        newDef.bodyA = (Body)args.get("bodyA", null);
+        newDef.bodyB = (Body)args.get("bodyB", null);
+        newDef.collideConnected = args.getBool("collideConnected", false);     
+        float[] anchor = args.getNumArray("anchor", new float[]{0,0});
+        newDef.maxForce = args.getNum("maxForce", 0f);
+        newDef.maxTorque = args.getNum("maxTorque", 0f);
+        newDef.initialize(newDef.bodyA, newDef.bodyB, new Vector2((float)anchor[0], (float)anchor[1]));
+        return (FrictionJoint)world.createJoint(newDef);
+    }
+    
+    public GearJoint gearJoint(Scriptable rhinoArgs) {
+        Arguments args = new Arguments(rhinoArgs);
+
+        GearJointDef newDef = new GearJointDef();
+        newDef.bodyA = (Body)args.get("bodyA", null);
+        newDef.bodyB = (Body)args.get("bodyB", null);
+        newDef.collideConnected = args.getBool("collideConnected", false);
+        float[] anchor = args.getNumArray("anchor", new float[]{0,0});
+        newDef.joint1 = (Joint)args.get("jointA", null);
+        newDef.joint2 = (Joint)args.get("jointB", null);
+        newDef.ratio = args.getNum("ratio", 1f);
+        return (GearJoint)world.createJoint(newDef);
+    }
+    
+    public MotorJoint motorJoint(Scriptable rhinoArgs) {
+        Arguments args = new Arguments(rhinoArgs);
+
+        MotorJointDef newDef = new MotorJointDef();
+        newDef.bodyA = (Body)args.get("bodyA", null);
+        newDef.bodyB = (Body)args.get("bodyB", null);
+        newDef.collideConnected = args.getBool("collideConnected", false);
+        newDef.maxForce = args.getNum("maxForce", 1f);
+        newDef.maxTorque = args.getNum("maxTorque", 1f);
+        newDef.correctionFactor = args.getNum("correctionFactor", 0.3f);
+        newDef.initialize(newDef.bodyA, newDef.bodyB);
+        return (MotorJoint)world.createJoint(newDef);
+    }
+    
+    public MouseJoint mouseJoint(Scriptable rhinoArgs) {
+        Arguments args = new Arguments(rhinoArgs);
+
+        MouseJointDef newDef = new MouseJointDef();
+        newDef.bodyA = (Body)args.get("bodyA", null);
+        newDef.bodyB = (Body)args.get("bodyB", null);
+        newDef.collideConnected = args.getBool("collideConnected", false);
+        float[] target = args.getNumArray("target", new float[]{0,0});
+        newDef.maxForce = args.getNum("maxForce", 0f);
+        newDef.frequencyHz = args.getNum("frequencyHz", 5f);
+        newDef.dampingRatio = args.getNum("dampingRatio", 0.7f);
+        newDef.target.set(target[0], target[1]);
+        return (MouseJoint)world.createJoint(newDef);
+    }
+    
+    public PrismaticJoint prismaticJoint(Scriptable rhinoArgs) {
+        Arguments args = new Arguments(rhinoArgs);
+
+        PrismaticJointDef newDef = new PrismaticJointDef();
+        newDef.bodyA = (Body)args.get("bodyA", null);
+        newDef.bodyB = (Body)args.get("bodyB", null);
+        newDef.collideConnected = args.getBool("collideConnected", false);
+        float[] anchor = args.getNumArray("anchor", new float[]{0,0});
+        float[] axis = args.getNumArray("axis", new float[]{0,0});
+        newDef.enableLimit = args.getBool("enableLimit", false);
+        newDef.lowerTranslation = args.getNum("lowerTranslation", 0f);
+        newDef.upperTranslation = args.getNum("upperTranslation", 0f);
+        newDef.enableMotor = args.getBool("enableMotor", false);
+        newDef.maxMotorForce = args.getNum("maxMotorForce", 0f);
+        newDef.motorSpeed = args.getNum("motorSpeed", 0f);
+        newDef.initialize(newDef.bodyA, newDef.bodyB, new Vector2(anchor[0], anchor[1]),
+            new Vector2(axis[0], axis[1]));
+        return (PrismaticJoint)world.createJoint(newDef);
+    }
+    
+    public PulleyJoint pulleyJoint(Scriptable rhinoArgs) {
+        Arguments args = new Arguments(rhinoArgs);
+
+        PulleyJointDef newDef = new PulleyJointDef();
+        newDef.bodyA = (Body)args.get("bodyA", null);
+        newDef.bodyB = (Body)args.get("bodyB", null);
+        newDef.collideConnected = args.getBool("collideConnected", false);
+        float[] groupAnchorA = args.getNumArray("groupAnchorA", new float[]{-1,1});
+        float[] groupAnchorB = args.getNumArray("groupAnchorB", new float[]{1,1});
+        float[] anchorA = args.getNumArray("anchorA", new float[]{-1,0});
+        float[] anchorB = args.getNumArray("anchorB", new float[]{1,0});
+        float ratio = args.getNum("ratio", 1f);
+        newDef.initialize(newDef.bodyA, newDef.bodyB, new Vector2(groupAnchorA[0], groupAnchorA[1]),
+            new Vector2(groupAnchorB[0], groupAnchorB[1]),
+            new Vector2(anchorA[0], anchorA[1]),
+            new Vector2(anchorB[0], anchorB[1]), ratio);
+        return (PulleyJoint)world.createJoint(newDef);
+    }
+    
+    public RevoluteJoint revoluteJoint(Scriptable rhinoArgs) {
+        Arguments args = new Arguments(rhinoArgs);
+
+        RevoluteJointDef newDef = new RevoluteJointDef();
+        newDef.bodyA = (Body)args.get("bodyA", null);
+        newDef.bodyB = (Body)args.get("bodyB", null);
+        newDef.collideConnected = args.getBool("collideConnected", false);
+        float[] anchor = args.getNumArray("anchor", new float[]{0,0});
+        float[] axis = args.getNumArray("axis", new float[]{0,0});
+        newDef.enableLimit = args.getBool("enableLimit", false);
+        newDef.lowerAngle = args.getNum("lowerAngle", 0f);
+        newDef.upperAngle = args.getNum("upperAngle", 0f);
+        newDef.enableMotor = args.getBool("enableMotor", false);
+        newDef.maxMotorTorque = args.getNum("maxMotorTorque", 0f);
+        newDef.motorSpeed = args.getNum("motorSpeed", 0f);
+        newDef.initialize(newDef.bodyA, newDef.bodyB, new Vector2(anchor[0], anchor[1]));
+        return (RevoluteJoint)world.createJoint(newDef);
+    }
+    
+    public RopeJoint ropeJoint(Scriptable rhinoArgs) {
+        Arguments args = new Arguments(rhinoArgs);
+
+        RopeJointDef newDef = new RopeJointDef();
+        newDef.bodyA = (Body)args.get("bodyA", null);
+        newDef.bodyB = (Body)args.get("bodyB", null);
+        newDef.collideConnected = args.getBool("collideConnected", false);
+        float[] anchorA = args.getNumArray("anchorA", new float[]{0,0});
+        float[] anchorB = args.getNumArray("anchorB", new float[]{0,0});
+        newDef.maxLength = args.getNum("maxLength", 0f);
+        newDef.localAnchorA.set(anchorA[0], anchorA[1]);
+        newDef.localAnchorB.set(anchorB[0], anchorB[1]);
+        return (RopeJoint)world.createJoint(newDef);
+    }
+    
+    public WeldJoint weldJoint(Scriptable rhinoArgs) {
+        Arguments args = new Arguments(rhinoArgs);
+
+        WeldJointDef newDef = new WeldJointDef();
+        newDef.bodyA = (Body)args.get("bodyA", null);
+        newDef.bodyB = (Body)args.get("bodyB", null);
+        newDef.collideConnected = args.getBool("collideConnected", false);
+        float[] anchor = args.getNumArray("anchor", new float[]{0,0});
+        newDef.frequencyHz = args.getNum("frequencyHz", 0f);
+        newDef.dampingRatio = args.getNum("dampingRatio", 0f);
+        newDef.initialize(newDef.bodyA, newDef.bodyB, new Vector2(anchor[0], anchor[1]));
+        return (WeldJoint)world.createJoint(newDef);
+    }
+    
+    public WheelJoint wheelJoint(Scriptable rhinoArgs) {
+        Arguments args = new Arguments(rhinoArgs);
+
+        WheelJointDef newDef = new WheelJointDef();
+        newDef.bodyA = (Body)args.get("bodyA", null);
+        newDef.bodyB = (Body)args.get("bodyB", null);
+        newDef.collideConnected = args.getBool("collideConnected", false);
+        float[] anchor = args.getNumArray("anchor", new float[]{0,0});
+        float[] axis = args.getNumArray("axis", new float[]{0,0});
+        newDef.enableMotor = args.getBool("enableMotor", false);
+        newDef.maxMotorTorque = args.getNum("maxMotorTorque", 0f);
+        newDef.motorSpeed = args.getNum("motorSpeed", 0f);
+        newDef.frequencyHz = args.getNum("frequencyHz", 2f);
+        newDef.dampingRatio = args.getNum("dampingRatio", 0.7f);
+        newDef.initialize(newDef.bodyA, newDef.bodyB, new Vector2(anchor[0], anchor[1]), new Vector2(axis[0], axis[1]));
+        return (WheelJoint)world.createJoint(newDef);
     }
     
     public void queryAABB(Rectangle area, final Function callback) {

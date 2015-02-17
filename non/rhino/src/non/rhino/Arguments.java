@@ -24,6 +24,14 @@ public class Arguments {
         
     }
     
+    public Scriptable getScriptable(String key) {
+        if (has(key)) {
+            return (Scriptable)s.get(key, s);
+        }
+        
+        return null;
+    }
+    
     public Function getFunction(String key) {
         if (has(key)) {
             return (Function)s.get(key, s);

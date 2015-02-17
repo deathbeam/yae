@@ -1,3 +1,17 @@
+[4.0.0]
+- added self variable to classes
+- added particles module (non.particles)
+- last API changes for Joints in physics module
+- fixed lights module API to match new physics and graphics API introduced in 3.9.0 update
+- updated physics example to match new API changes
+- removed graphics parameter from gui renderer and added setGraphics(..) method to GUI module
+- loading screen resources are now properly cleared after game is loaded
+- optimized game rendering code
+- now not only assets loading but also game core loading (scripts, configuration) is shown on loading screen
+- changed non.getPlatform() method to non.platform variable
+- added non.config variable
+- optimized rhino engine
+
 [3.9.1]
 - added vscroll (vertical scrollbar) to GUI module
 - added hscroll (horizontal scrollbar) to GUI module

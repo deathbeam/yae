@@ -11,7 +11,7 @@ import non.rhino.RhinoNon;
 public class IOSLauncher extends IOSApplication.Delegate {
     protected IOSApplication createApplication() {
         IOSApplicationConfiguration config = new IOSApplicationConfiguration();
-        return new IOSApplication(new Non().setHandler(new RhinoNon()), config);
+        return new IOSApplication(new Non(new RhinoNon()), config);
     }
 
     public static void main(String[] args) {

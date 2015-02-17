@@ -25,146 +25,99 @@ public class Non implements ApplicationListener, InputProcessor {
     
     public static AssetManager assets;
     public static NonScript script;
+    public static JsonValue config;
     
-    private JsonValue config;
     private boolean ready;
     private SpriteBatch loadingBatch;
     private Texture loadingBg, loadingImage, loadingBar, loadingBarBg;
     private Vector2 loadingPos, loadingBarPos;
-    private float percent, barWidth;
+    private float percent, barWidth, loadProgress;
+    private int loadState;
 
-    public Non setHandler(NonScript script) {
+    public Non(NonScript script) {
         this.script = script;
-        return this;
     }
     
     public void create () {
-        ready = false;
-        config = new JsonReader().parse(file("config.json"));
         loadingBatch = new SpriteBatch();
         assets = new AssetManager();
-        Gdx.input.setInputProcessor(this);
         
-        if (config.has("logging")) {
-            String logLevel = config.getString("logging");
-            
-            if ("".equalsIgnoreCase(logLevel))
-                Gdx.app.setLogLevel(0);
-            else if ("error".equalsIgnoreCase(logLevel))
-                Gdx.app.setLogLevel(1);
-            else if ("info".equalsIgnoreCase(logLevel))
-                Gdx.app.setLogLevel(2);
-            else if ("debug".equalsIgnoreCase(logLevel))
-                Gdx.app.setLogLevel(3);
-        }
+        assets.load("res/loading.png", Texture.class);
+        assets.load("res/loading_bg.png", Texture.class);
+        assets.load("res/loading_bar.png", Texture.class);
+        assets.load("res/loading_bar_bg.png", Texture.class);
+        assets.finishLoading();
         
-        if (getPlatform().equalsIgnoreCase("desktop")) {
-            int width = 800;
-            int height = 600;
-            boolean fullscreen = false;
-    		
-            if (config.has("desktop")) {
-                JsonValue desktop = config.get("desktop");
-                if (desktop.has("display")) {
-                    JsonValue display = desktop.get("display");
-                    if (display.has("width")) width = display.getInt("width");
-                    if (display.has("height")) height = display.getInt("height");
-                    if (display.has("fullscreen")) fullscreen = display.getBoolean("fullscreen");
-                }
-            }
-    		
-            Gdx.graphics.setDisplayMode(width, height, fullscreen);
-        }
-        
-        FileHandle fl = file("res/loading.png");
-        
-        if (fl.exists()) {
-            loadingImage = new Texture(fl);
-        } else {
-            error(TAG, E_RESOURCE + fl.name());
-            quit();
-        }
-        
-        fl = file("res/loading_bg.png");
-        
-        if (fl.exists()) {
-            loadingBg = new Texture(fl);
-        } else {
-            error(TAG, E_RESOURCE + fl.name());
-            quit();
-        }
-        
-        fl = file("res/loading_bar.png");
-        
-        if (fl.exists()) {
-            loadingBar = new Texture(fl);
-        } else {
-            error(TAG, E_RESOURCE + fl.name());
-            quit();
-        }
-        
-        fl = file("res/loading_bar_bg.png");
-        
-        if (fl.exists()) {
-            loadingBarBg = new Texture(fl);
-        } else {
-            error(TAG, E_RESOURCE + fl.name());
-            quit();
-        }
-        
-        script.load(assets);
+        loadingImage = assets.get("res/loading.png", Texture.class);
+        loadingBg = assets.get("res/loading_bg.png", Texture.class);
+        loadingBar = assets.get("res/loading_bar.png", Texture.class);
+        loadingBarBg = assets.get("res/loading_bar_bg.png", Texture.class);
     }
 
     public void render () {
-        if(assets.update()) {
-            if (!ready) {
+        if (ready) {
+            script.render();
+            return;
+        }
+        
+        if (loadCore()) {
+            if (assets.update()) {
                 if (Gdx.input.isTouched()) {
                     script.ready();
                     ready = true;
                     resize(getWidth(), getHeight());
+                    loadingBatch.dispose();
+                    assets.unload("res/loading.png");
+                    assets.unload("res/loading_bg.png");
+                    assets.unload("res/loading_bar.png");
+                    assets.unload("res/loading_bar_bg.png");
+                    loadingBatch = null;
+                    loadingBg = null;
+                    loadingImage = null;
+                    loadingBar = null;
+                    loadingBarBg = null;
+                    return;
                 }
-            } else {
-                script.render();
             }
         }
-        
-        if (!ready) {
-            Gdx.gl.glClearColor(0, 0, 0, 1);
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-            loadingBatch.begin();
-            loadingBatch.draw(loadingBg, 
-                0, 0, getWidth(), getHeight(), 
-                0, 0, loadingBg.getWidth(), loadingBg.getHeight());
-            loadingBatch.draw(loadingImage, loadingPos.x, loadingPos.y);
-            loadingBatch.draw(loadingBarBg, loadingBarPos.x, loadingBarPos.y);
+
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        loadingBatch.begin();
+        loadingBatch.draw(loadingBg, 
+            0, 0, getWidth(), getHeight(), 
+            0, 0, loadingBg.getWidth(), loadingBg.getHeight());
+        loadingBatch.draw(loadingImage, loadingPos.x, loadingPos.y);
+        loadingBatch.draw(loadingBarBg, loadingBarPos.x, loadingBarPos.y);
 			
-            percent = Interpolation.linear.apply(percent, assets.getProgress(), 0.1f);
-            barWidth = loadingBar.getWidth() * percent;
+        percent = Interpolation.linear.apply(percent, 
+            (loadProgress + (assets != null ? assets.getProgress() : 0f)) / 2f, 0.1f);
+        barWidth = loadingBar.getWidth() * percent;
             
-            loadingBatch.draw(loadingBar,
-                loadingBarPos.x, loadingBarPos.y, 
-                barWidth, loadingBar.getHeight(),
-                0, 0, barWidth, loadingBar.getHeight());
+        loadingBatch.draw(loadingBar,
+            loadingBarPos.x, loadingBarPos.y, 
+            barWidth, loadingBar.getHeight(),
+            0, 0, barWidth, loadingBar.getHeight());
 			
-            loadingBatch.end();
-        }
+        loadingBatch.end();
     }
 
     public void resize(int width, int height) { 
         if (ready) {
             script.resize(width, height);
-        } else {
-            loadingBatch.setProjectionMatrix(
-                loadingBatch.getProjectionMatrix().setToOrtho2D(0, 0, width, height));
-                
-            loadingBarPos = new Vector2(
-                (width - loadingBar.getWidth())/2,
-                (height - loadingBar.getHeight())/2);
-		
-            loadingPos = new Vector2(
-                (width - loadingImage.getWidth())/2,
-                (height + loadingBar.getHeight())/2);
+            return;
         }
+        
+        loadingBatch.setProjectionMatrix(
+            loadingBatch.getProjectionMatrix().setToOrtho2D(0, 0, width, height));
+                
+        loadingBarPos = new Vector2(
+            (width - loadingBar.getWidth())/2,
+            (height - loadingBar.getHeight())/2);
+		
+        loadingPos = new Vector2(
+            (width - loadingImage.getWidth())/2,
+            (height + loadingBar.getHeight())/2);
     }
 	
     public void pause() {
@@ -218,6 +171,59 @@ public class Non implements ApplicationListener, InputProcessor {
     public void dispose () { 
         if (ready) script.close();
         assets.dispose();
+    }
+    
+    private boolean loadCore() {
+        if (loadState > 3) return true;
+        
+        switch (loadState) {
+            case 0:
+                config = new JsonReader().parse(file("config.json"));
+                Gdx.input.setInputProcessor(this);
+                break;
+            case 1:
+                if (getPlatform().equalsIgnoreCase("desktop")) {
+                    int width = 800;
+                    int height = 600;
+                    boolean fullscreen = false;
+                		
+                    if (config.has("desktop")) {
+                        JsonValue desktop = config.get("desktop");
+                        if (desktop.has("display")) {
+                            JsonValue display = desktop.get("display");
+                            if (display.has("width")) width = display.getInt("width");
+                            if (display.has("height")) height = display.getInt("height");
+                            if (display.has("fullscreen")) fullscreen = display.getBoolean("fullscreen");
+                        }
+                    }
+                		
+                    Gdx.graphics.setDisplayMode(width, height, fullscreen);
+                }
+                
+                break;
+            case 2:
+                if (config.has("logging")) {
+                    String logLevel = config.getString("logging");
+                        
+                    if ("".equalsIgnoreCase(logLevel))
+                        Gdx.app.setLogLevel(0);
+                    else if ("error".equalsIgnoreCase(logLevel))
+                        Gdx.app.setLogLevel(1);
+                    else if ("info".equalsIgnoreCase(logLevel))
+                        Gdx.app.setLogLevel(2);
+                    else if ("debug".equalsIgnoreCase(logLevel))
+                        Gdx.app.setLogLevel(3);
+                }
+                    
+                break;
+            case 3:
+                script.load(assets);   
+                break;
+        }
+            
+        loadState++;
+        loadProgress += 0.25f;
+        return false;
     }
     
     public static String getButton(int code) {
