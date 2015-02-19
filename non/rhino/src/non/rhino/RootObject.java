@@ -47,6 +47,14 @@ public class RootObject {
         return Non.file(path);
     }
     
+    public Thread thread(final Function function) {
+        return new Thread(new Runnable() {
+            public void run() {
+                RhinoNon.script.call(function);
+            }
+        });
+    }
+    
     public void quit() {
         Non.quit();
     }

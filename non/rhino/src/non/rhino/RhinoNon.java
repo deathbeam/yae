@@ -26,7 +26,8 @@ public class RhinoNon implements NonScript {
             if (name.equals("physics")) modules.put("physics", new RhinoPhysics());
             if (name.equals("touch")) modules.put("touch", new NonTouchScreen());
             if (name.equals("gui")) modules.put("gui", new RhinoGui());
-            if (name.equals("particles")) modules.put("particles", new RhinoParticles());
+            if (name.equals("particles")) modules.put("particles", new NonParticles());
+            if (name.equals("time")) modules.put("time", new NonTime());
         }
         
         return modules.get(name);

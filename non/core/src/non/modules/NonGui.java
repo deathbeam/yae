@@ -71,7 +71,7 @@ public class NonGui extends Module {
         state.keyEntered = 0;
     }
     
-    public NonGui setGraphics(NonGraphics graphics) {
+    public NonGui link(NonGraphics graphics) {
         this.graphics = graphics;
         return this;
     }

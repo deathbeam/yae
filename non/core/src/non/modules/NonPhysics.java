@@ -74,6 +74,10 @@ public class NonPhysics extends Module {
         return joints;
     }
     
+    public Array<Contact> contacts() {
+        return world.getContactList();
+    }
+    
     public BodyType bodyType(String type) {
         if (type.equalsIgnoreCase("dynamic")) return BodyType.DynamicBody;
         else if (type.equalsIgnoreCase("static")) return BodyType.StaticBody;

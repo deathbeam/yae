@@ -6,16 +6,16 @@ import non.Non;
 
 public class NonParticles extends Module {
     protected NonGraphics graphics;
-    public Class<?> particleLoader = ParticleEffect.class;
+    public Class<?> effectLoader = ParticleEffect.class;
     
-    public NonParticles setGraphics(NonGraphics graphics) {
+    public NonParticles link(NonGraphics graphics) {
         this.graphics = graphics;
         return this;
     }
     
-    public ParticleEffect load(String file) {
+    public ParticleEffect effect(String file) {
         if (Non.assets.isLoaded(file)) {
-            return (ParticleEffect)Non.assets.get(file, particleLoader);
+            return (ParticleEffect)Non.assets.get(file, effectLoader);
         }
         
         ParticleEffect p = new ParticleEffect();
@@ -23,9 +23,7 @@ public class NonParticles extends Module {
         return p;
     }
     
-    public NonParticles draw(ParticleEffect particle, float[] position) {
-        particle.setPosition(position[0], position[1]);
-        
+    public NonParticles draw(ParticleEffect particle) {
         graphics.checkBatch();
         particle.draw(graphics.getBatch(), Non.getDelta());
         return this;

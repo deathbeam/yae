@@ -202,6 +202,8 @@ public class Non implements ApplicationListener, InputProcessor {
                 
                 break;
             case 2:
+                if (config.has("name")) Gdx.graphics.setTitle(config.getString("name"));
+                
                 if (config.has("logging")) {
                     String logLevel = config.getString("logging");
                         

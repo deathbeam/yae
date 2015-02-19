@@ -34,3 +34,10 @@ task network << {
         into "../../project"
     }
 }
+
+task particles << {
+    copy {
+        from "particles"
+        into "../../project"
+    }
+}

@@ -1,17 +1,13 @@
 var graphics = require('non.graphics');
 var math = require('non.math');
 var keyboard = require('non.keyboard');
-var gui = require('non.gui');
+var gui = require('non.gui').link(graphics);
+gui.renderer = require('renderer');
 
 var textOutput = 'Enter text here...';
 var showArea = true;
 var scrollR = 0;
 var scrollB = 0;
-
-non.ready = function() {
-    gui.setGraphics(graphics);
-    gui.renderer = require('renderer');
-};
 
 non.draw = function() {
     graphics.clear(scrollR, 0, scrollB);

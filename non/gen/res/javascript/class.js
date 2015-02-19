@@ -1,6 +1,4 @@
 var Class = {
-    self: this,
-    
     extend: function (properties) {
         var superProto = this.prototype || Class;
         var proto = Object.create(superProto);

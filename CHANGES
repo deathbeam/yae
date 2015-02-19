@@ -1,3 +1,13 @@
+[4.1.0]
+- renamed setGraphics(..) method from GUI and particles module to link(..) method
+- renamed particleLoader from particles module to effectLoader
+- renamed load(..) method from particles module to effect(..)
+- added particles sample (usage gen:particles)
+- added non.time module
+- added threading (usage in scripts: "non.thread(function);" )
+- added contacts() method to physics module
+- now desktop window title is changed correctly
+
 [4.0.0]
 - added self variable to classes
 - added particles module (non.particles)
