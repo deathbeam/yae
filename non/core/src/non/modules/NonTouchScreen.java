@@ -3,25 +3,13 @@ package non.modules;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
-public class NonTouchScreen extends Module {
-    public float getX() {
-        return Gdx.input.getX();
-    }
-        
+public class NonTouchScreen extends Module {    
     public float getX(int index) {
         return Gdx.input.getX(index);
     }
         
-    public float getY() {
-        return Gdx.input.getY();
-    }
-        
     public float getY(int index) {
         return Gdx.input.getY(index);
-    }
-        
-    public Vector2 getPosition() {
-        return new Vector2(Gdx.input.getX(), Gdx.input.getY());
     }
         
     public Vector2 getPosition(int index) {

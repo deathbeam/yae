@@ -6,14 +6,6 @@ import com.badlogic.gdx.math.Vector2;
 import non.Non;
     
 public class NonMouse extends Module {
-    public void show() {
-        Gdx.input.setCursorCatched(false);
-    }
-        
-    public void hide() {
-        Gdx.input.setCursorCatched(true);
-    }
-    
     public void setVisible(boolean val) {
         Gdx.input.setCursorCatched(!val);
     }

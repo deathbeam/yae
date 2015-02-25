@@ -34,9 +34,9 @@ task dist(type: Jar, dependsOn: classes) {
 }
 
 task update(dependsOn: ':update') << {
-    def src = "../../project/res"
-    def res = "../gen/res"
-    def out = "../android/assets/res"
+    def src = "../../project/non"
+    def non = "../gen/non"
+    def out = "../android/assets/non"
     
     def files = [ "icon-16", "icon-32", "icon-64", "icon-192", "icon-256"]
     
@@ -49,7 +49,7 @@ task update(dependsOn: ':update') << {
             }
         } else {
             copy {
-                from res
+                from non
                 into out
                 include "${fl}.png"
             }

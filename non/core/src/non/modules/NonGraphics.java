@@ -31,12 +31,9 @@ public class NonGraphics extends Module {
     private OrthographicCamera camera;
     private float rotation, scale, tx, ty;
     
-    public Class<?> imageLoader = Texture.class;
-    public Class<?> fontLoader = BitmapFont.class;
-    
     public SpriteBatch getBatch() { return batch; }
     public OrthographicCamera getCamera() { return camera; }
-    public Color getTint() { return batch.getColor(); }
+    public Color getColor() { return batch.getColor(); }
     public BitmapFont getFont() { return curFont; }
     public NonGraphics setFont(BitmapFont fnt) { curFont = fnt; return this; }
     public NonGraphics setShader(ShaderProgram shader) { batch.setShader(shader); return this; }
@@ -81,32 +78,12 @@ public class NonGraphics extends Module {
         updateMatrices();
     }
     
-    public Color color(String name) {
-        if (name.startsWith("#")) return Color.valueOf(name.replace("#",""));
-        if ("clear".equalsIgnoreCase(name)) return Color.CLEAR;
-        else if ("white".equalsIgnoreCase(name)) return Color.WHITE;
-        else if ("black".equalsIgnoreCase(name)) return Color.BLACK;
-        else if ("red".equalsIgnoreCase(name)) return Color.RED;
-        else if ("green".equalsIgnoreCase(name)) return Color.GREEN;
-        else if ("blue".equalsIgnoreCase(name)) return Color.BLUE;
-        else if ("lightgray".equalsIgnoreCase(name)) return Color.LIGHT_GRAY;
-        else if ("gray".equalsIgnoreCase(name)) return Color.GRAY;
-        else if ("darkgray".equalsIgnoreCase(name)) return Color.DARK_GRAY;
-        else if ("pink".equalsIgnoreCase(name)) return Color.PINK;
-        else if ("orange".equalsIgnoreCase(name)) return Color.ORANGE;
-        else if ("yellow".equalsIgnoreCase(name)) return Color.YELLOW;
-        else if ("magenta".equalsIgnoreCase(name)) return Color.MAGENTA;
-        else if ("cyan".equalsIgnoreCase(name)) return Color.CYAN;
-        else if ("olive".equalsIgnoreCase(name)) return Color.OLIVE;
-        else if ("purple".equalsIgnoreCase(name)) return Color.PURPLE;
-        else if ("maroon".equalsIgnoreCase(name)) return Color.MAROON;
-        else if ("teal".equalsIgnoreCase(name)) return Color.TEAL;
-        else if ("navy".equalsIgnoreCase(name)) return Color.NAVY;
-        return Color.CLEAR;
+    public int getWidth() {
+        return Gdx.graphics.getWidth();
     }
     
-    public Color color(float r, float g, float b) {
-        return color(r, g, b, 1);
+    public int getHeight() {
+        return Gdx.graphics.getHeight();
     }
     
     public Color color(float r, float g, float b, float a) {
@@ -118,15 +95,11 @@ public class NonGraphics extends Module {
     }
 
     public Texture image(String file) {
-        return (Non.assets.isLoaded(file)) ? (Texture)Non.assets.get(file, imageLoader) : new Texture(Non.file(file));
+        return (Non.assets.isLoaded(file)) ? (Texture)Non.assets.get(file, Texture.class) : new Texture(Non.file(file));
     }
 
     public BitmapFont font(String file) {
-        return (Non.assets.isLoaded(file)) ? (BitmapFont)Non.assets.get(file, fontLoader) : new BitmapFont(Non.file(file));
-    }
-    
-    public Vector2 project(Vector2 pos) {
-        return project(pos.x, pos.y);
+        return (Non.assets.isLoaded(file)) ? (BitmapFont)Non.assets.get(file, BitmapFont.class) : new BitmapFont(Non.file(file));
     }
     
     public Vector2 project(float x, float y) {
@@ -134,54 +107,23 @@ public class NonGraphics extends Module {
         return new Vector2(temp.x, temp.y);
     }
     
-    public Vector2 unproject(Vector2 pos) {
-        return unproject(pos.x, pos.y);
-    }
-    
     public Vector2 unproject(float x, float y) {
         Vector3 temp = camera.unproject(new Vector3(x, y, 0));
         return new Vector2(temp.x, temp.y);
     }
     
-    public NonGraphics clear(float r, float g, float b) {
-        return clear(color(r,g,b));
-    }
-    
     public NonGraphics clear(float r, float g, float b, float a) {
-        return clear(color(r,g,b,a));
-    }
-    
-    public NonGraphics clear(String color) {
-        return clear(color(color));
-    }
-    
-    public NonGraphics clear(Color color) {
-        Gdx.gl.glClearColor(color.r, color.g, color.b, color.a);
+        Gdx.gl.glClearColor(r, g, b, a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         return this;
     }
     
-    public NonGraphics tint(float r, float g, float b) {
-        return tint(color(r,g,b));
-    }
-    
-    public NonGraphics tint(float r, float g, float b, float a) {
-        return tint(color(r,g,b,a));
-    }
-    
-    public NonGraphics tint(String color) {
-        return tint(color(color));
-    }
-    
-    public NonGraphics tint(Color color) {
+    public NonGraphics setColor(float r, float g, float b, float a) {
+        Color color = new Color(r, g, b, a);
         shapes.setColor(color);
         batch.setColor(color);
         curFont.setColor(color);
         return this;
-    }
-    
-    public NonGraphics rotate(float degrees) {
-        return rotate(degrees, 0, 0, 1);
     }
     
     public NonGraphics rotate(float degrees, float x, float y, float z) {
@@ -205,10 +147,6 @@ public class NonGraphics extends Module {
         }
         
         return this;
-    }
-    
-    public NonGraphics translate(Vector2 pos) {
-        return translate(pos.x, pos.y);
     }
     
     public NonGraphics translate(float x, float y) {

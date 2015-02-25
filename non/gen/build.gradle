@@ -1,43 +1,8 @@
 file("../../project").mkdir()
 
-task pong << {
+task hello << {
     copy {
-        from "pong"
-        into "../../project"
-    }
-}
-
-task physics << {
-    copy {
-        from "physics"
-        into "../../project"
-    }
-}
-
-task require << {
-    copy {
-        from "require"
-        into "../../project"
-    }
-}
-
-task gui << {
-    copy {
-        from "gui"
-        into "../../project"
-    }
-}
-
-task network << {
-    copy {
-        from "network"
-        into "../../project"
-    }
-}
-
-task particles << {
-    copy {
-        from "particles"
+        from "hello"
         into "../../project"
     }
 }

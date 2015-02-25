@@ -2,75 +2,81 @@ package non;
 
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.assets.AssetManager;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.JsonReader;
-import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import java.io.IOException;
 import non.modules.*;
+import org.jruby.embed.ScriptingContainer;
+import org.jruby.javasupport.JavaEmbedUtils;
+import com.badlogic.gdx.utils.Array;
+import java.util.Map;
+import org.yaml.snakeyaml.Yaml;
 
-public class Non implements ApplicationListener, InputProcessor {
+public class Non implements ApplicationListener {
     public static final String TAG = "No Nonsense";
     public static final String E_RESOURCE = "Resource not found - ";
     public static final String E_ARGUMENT = "Argument not found - ";
     public static final String E_PLUGIN = "Plugin not found - ";
     
-    public static AssetManager assets;
-    public static NonScript script;
-    public static JsonValue config;
+    public static Assets assets;
+    public static ScriptingContainer script;
+    public static Object receiver;
+    public static boolean ready;
     
-    private boolean ready;
+    private Map config;
+    private String loadPath;
     private SpriteBatch loadingBatch;
     private Texture loadingBg, loadingImage, loadingBar, loadingBarBg;
     private Vector2 loadingPos, loadingBarPos;
     private float percent, barWidth, loadProgress;
     private int loadState;
-
-    public Non(NonScript script) {
-        this.script = script;
+    
+    public void setLoadPath(String path) {
+        loadPath = path;
     }
     
     public void create () {
         loadingBatch = new SpriteBatch();
-        assets = new AssetManager();
+        assets = new Assets();
         
-        assets.load("res/loading.png", Texture.class);
-        assets.load("res/loading_bg.png", Texture.class);
-        assets.load("res/loading_bar.png", Texture.class);
-        assets.load("res/loading_bar_bg.png", Texture.class);
+        assets.load("non/loading.png", Texture.class);
+        assets.load("non/loading_bg.png", Texture.class);
+        assets.load("non/loading_bar.png", Texture.class);
+        assets.load("non/loading_bar_bg.png", Texture.class);
         assets.finishLoading();
         
-        loadingImage = assets.get("res/loading.png", Texture.class);
-        loadingBg = assets.get("res/loading_bg.png", Texture.class);
-        loadingBar = assets.get("res/loading_bar.png", Texture.class);
-        loadingBarBg = assets.get("res/loading_bar_bg.png", Texture.class);
+        loadingImage = assets.get("non/loading.png", Texture.class);
+        loadingBg = assets.get("non/loading_bg.png", Texture.class);
+        loadingBar = assets.get("non/loading_bar.png", Texture.class);
+        loadingBarBg = assets.get("non/loading_bar_bg.png", Texture.class);
     }
 
     public void render () {
         if (ready) {
-            script.render();
+            ModuleHandler.update(getDelta());
+            script.callMethod(receiver, "render", getDelta());
+            ModuleHandler.updateAfter(getDelta());
             return;
         }
         
         if (loadCore()) {
             if (assets.update()) {
                 if (Gdx.input.isTouched()) {
-                    script.ready();
+                    script.callMethod(receiver, "ready");
                     ready = true;
                     resize(getWidth(), getHeight());
                     loadingBatch.dispose();
-                    assets.unload("res/loading.png");
-                    assets.unload("res/loading_bg.png");
-                    assets.unload("res/loading_bar.png");
-                    assets.unload("res/loading_bar_bg.png");
+                    assets.unload("non/loading.png");
+                    assets.unload("non/loading_bg.png");
+                    assets.unload("non/loading_bar.png");
+                    assets.unload("non/loading_bar_bg.png");
                     loadingBatch = null;
                     loadingBg = null;
                     loadingImage = null;
@@ -104,7 +110,8 @@ public class Non implements ApplicationListener, InputProcessor {
 
     public void resize(int width, int height) { 
         if (ready) {
-            script.resize(width, height);
+            ModuleHandler.resize(width, height);
+            script.callMethod(receiver, "resize", width, height);
             return;
         }
         
@@ -121,55 +128,19 @@ public class Non implements ApplicationListener, InputProcessor {
     }
 	
     public void pause() {
-        if (ready) script.pause(); 
+        if (ready) script.callMethod(receiver, "pause"); 
     }
 	
     public void resume() {
-        if (ready) script.resume();
-    }
-    
-    public boolean keyDown(int keycode) {
-        if (ready) script.keyDown(keycode);
-        return false;
-    }
-
-    public boolean keyUp(int keycode) {
-        if (ready) script.keyUp(keycode);
-        return false;
-    }
-
-    public boolean keyTyped (char character) {
-        if (ready) script.keyTyped(character);
-        return false;
-    }
-   
-    public boolean touchDown (int x, int y, int pointer, int button) {
-        if (ready) script.touchDown(x, y, pointer, button);
-        return false;
-    }
-
-    public boolean touchUp (int x, int y, int pointer, int button) {
-       if (ready) script.touchUp(x, y, pointer, button);
-       return false;
-    }
-
-    public boolean touchDragged (int x, int y, int pointer) {
-       if (ready) script.touchDragged(x, y, pointer);
-       return false;
-    }
-
-    public boolean mouseMoved (int x, int y) {
-       if (ready) script.mouseMoved(x, y);
-       return false;
-    }
-
-    public boolean scrolled (int amount) {
-       if (ready) script.scrolled(amount);
-       return false;
+        if (ready) script.callMethod(receiver, "resume");
     }
     
     public void dispose () { 
-        if (ready) script.close();
+        if (ready) {
+            script.callMethod(receiver, "close");
+            ModuleHandler.dispose();
+        }
+        
         assets.dispose();
     }
     
@@ -178,8 +149,7 @@ public class Non implements ApplicationListener, InputProcessor {
         
         switch (loadState) {
             case 0:
-                config = new JsonReader().parse(file("config.json"));
-                Gdx.input.setInputProcessor(this);
+                config = (Map<String, Object>)new Yaml().load(file("config.yml").readString());
                 break;
             case 1:
                 if (getPlatform().equalsIgnoreCase("desktop")) {
@@ -187,13 +157,13 @@ public class Non implements ApplicationListener, InputProcessor {
                     int height = 600;
                     boolean fullscreen = false;
                 		
-                    if (config.has("desktop")) {
-                        JsonValue desktop = config.get("desktop");
-                        if (desktop.has("display")) {
-                            JsonValue display = desktop.get("display");
-                            if (display.has("width")) width = display.getInt("width");
-                            if (display.has("height")) height = display.getInt("height");
-                            if (display.has("fullscreen")) fullscreen = display.getBoolean("fullscreen");
+                    if (config.containsKey("desktop")) {
+                        Map desktop = (Map<String, Object>)config.get("desktop");
+                        if (desktop.containsKey("display")) {
+                            Map display = (Map<String, Object>)desktop.get("display");
+                            if (display.containsKey("width")) width = (Integer)display.get("width");
+                            if (display.containsKey("height")) height = (Integer)display.get("height");
+                            if (display.containsKey("fullscreen")) fullscreen = (Boolean)display.get("fullscreen");
                         }
                     }
                 		
@@ -202,10 +172,10 @@ public class Non implements ApplicationListener, InputProcessor {
                 
                 break;
             case 2:
-                if (config.has("name")) Gdx.graphics.setTitle(config.getString("name"));
+                if (config.containsKey("name")) Gdx.graphics.setTitle((String)config.get("name"));
                 
-                if (config.has("logging")) {
-                    String logLevel = config.getString("logging");
+                if (config.containsKey("logging")) {
+                    String logLevel = (String)config.get("logging");
                         
                     if ("".equalsIgnoreCase(logLevel))
                         Gdx.app.setLogLevel(0);
@@ -219,7 +189,15 @@ public class Non implements ApplicationListener, InputProcessor {
                     
                 break;
             case 3:
-                script.load(assets);   
+                script = new ScriptingContainer();
+                
+                if (getPlatform().equalsIgnoreCase("desktop")) {
+                    loadPath = file("main.rb").parent().file().getAbsolutePath();
+                }
+                
+                script.runScriptlet("$:.unshift '" + loadPath + "' ; $:.uniq!");
+                receiver = script.runScriptlet(file("non/initializer.rb").readString());
+                script.callMethod(receiver, "init", assets);
                 break;
         }
             

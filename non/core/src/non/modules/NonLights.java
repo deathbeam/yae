@@ -12,15 +12,14 @@ import non.Non;
 public class NonLights extends Module {
     private RayHandler handler;
     
-    public NonLights setPhysics(NonPhysics physics) { handler.setWorld(physics.getWorld()); return this; }
+    public NonLights link(NonPhysics physics) { handler.setWorld(physics.getWorld()); return this; }
     public NonLights setGammaCorrection(boolean wanted) { RayHandler.setGammaCorrection(wanted); return this; }
     public NonLights setDiffuseLight(boolean use) { RayHandler.useDiffuseLight(use); return this; }
-    public NonLights setAmbient(Color color) { handler.setAmbientLight(color); return this; }
+    public NonLights setAmbientColor(float r, float g, float b, float a) { handler.setAmbientLight(new Color(r, g, b, a)); return this; }
     public NonLights setBlur(boolean blur) { handler.setBlur(blur); return this; }
     public NonLights setBlurNum(int num) { handler.setBlurNum(num); return this; }
     public NonLights setShadows(boolean shadows) { handler.setShadows(shadows); return this; }
     public NonLights setCulling(boolean culling) { handler.setCulling(culling); return this; }
-    public NonLights setLightmaps(boolean isAutomatic) { handler.setLightMapRendering(isAutomatic); return this; }
     public boolean pointAtLight(float x, float y) { return handler.pointAtLight(x, y); }
     public boolean pointAtShadow(float x, float y) { return handler.pointAtShadow(x, y); }
     
@@ -42,19 +41,19 @@ public class NonLights extends Module {
         handler.render();
     }
     
-    public DirectionalLight directional(int rays, Color color, float direction) {
-        return new DirectionalLight(handler, rays, color, direction);
+    public DirectionalLight directional(int rays, float[] color, float direction) {
+        return new DirectionalLight(handler, rays, new Color(color[0], color[1], color[2], color[3]), direction);
     }
     
-    public PointLight point(int rays, Color color, float distance, float x, float y) {
-        return new PointLight(handler, rays, color, distance, x, y);
+    public PointLight point(int rays, float[] color, float distance, float x, float y) {
+        return new PointLight(handler, rays, new Color(color[0], color[1], color[2], color[3]), distance, x, y);
     }
     
-    public ConeLight cone(int rays, Color color, float distance, float x, float y, float direction, float cone) {
-        return new ConeLight(handler, rays, color, distance, x, y, direction, cone);
+    public ConeLight cone(int rays, float[] color, float distance, float x, float y, float direction, float cone) {
+        return new ConeLight(handler, rays, new Color(color[0], color[1], color[2], color[3]), distance, x, y, direction, cone);
     }
 	
-    public ChainLight chain(int rays, Color color, float distance, int rayDirection, float[] chains) {
-        return new ChainLight(handler, rays, color, distance, rayDirection, chains);
+    public ChainLight chain(int rays, float[] color, float distance, int rayDirection, float[] chains) {
+        return new ChainLight(handler, rays, new Color(color[0], color[1], color[2], color[3]), distance, rayDirection, chains);
     }
 }

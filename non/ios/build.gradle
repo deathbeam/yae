@@ -40,8 +40,8 @@ task updateRoboVMXML(dependsOn: copyNatives) << {
 task run(dependsOn: launchIPhoneSimulator)
 
 task update(dependsOn: [':update', updateRoboVMXML]) << {
-    def src = "../../project/res"
-    def res = "../gen/res"
+    def src = "../../project/non"
+    def non = "../gen/non"
     def out = "data"
     file(out).mkdirs()
     
@@ -73,7 +73,7 @@ task update(dependsOn: [':update', updateRoboVMXML]) << {
             }
         } else {
             copy {
-                from res
+                from non
                 into out
                 include "${fl}.png"
                 rename "${fl}.png", "${newFile}.png"

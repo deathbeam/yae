@@ -39,6 +39,17 @@ nbdist/
 nbactions.xml
 nb-configuration.xml
 
+## Ruby
+/.bundle/
+/.yardoc
+/Gemfile.lock
+/_yardoc/
+/coverage/
+/doc/
+/pkg/
+/spec/reports/
+/tmp/
+
 ## Gradle
 .gradle
 local.properties

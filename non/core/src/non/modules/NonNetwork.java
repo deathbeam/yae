@@ -11,7 +11,26 @@ import non.Non;
 import non.Buffer;
 
 public class NonNetwork extends Module {
+    class ScriptListener extends Listener {
+        public void connected (Connection connection) {
+            Non.script.callMethod(Non.receiver, "connected", connection);
+        }
+        
+        public void received (Connection connection, Object object) {
+            if (!(object instanceof byte[])) return;
+            Non.script.callMethod(Non.receiver, "received", connection, (byte[])object);
+        }
+
+        public void disconnected (Connection connection) {
+            Non.script.callMethod(Non.receiver, "disconnected", connection);
+        }
+    }
+    
     private Listener listener;
+    
+    public NonNetwork() {
+        setListener(new ScriptListener());
+    }
     
     public Client client() { 
         Client client = new Client();

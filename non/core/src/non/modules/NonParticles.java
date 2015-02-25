@@ -13,7 +13,7 @@ public class NonParticles extends Module {
         return this;
     }
     
-    public ParticleEffect effect(String file) {
+    public ParticleEffect load(String file) {
         if (Non.assets.isLoaded(file)) {
             return (ParticleEffect)Non.assets.get(file, effectLoader);
         }

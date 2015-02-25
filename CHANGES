@@ -1,3 +1,8 @@
+[5.0.0]
+- moved from JavaScript scripting backend to Ruby
+- moved Non to RubyGems, easier installation, actual command-line interface
+- changed configuration file format from JSON to YAML
+
 [4.1.0]
 - renamed setGraphics(..) method from GUI and particles module to link(..) method
 - renamed particleLoader from particles module to effectLoader
