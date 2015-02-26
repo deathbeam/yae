@@ -19,33 +19,34 @@ module Non
     class Build < Thor
         desc "build PLATFORM", "build your application for specified PLATFORM"
         def build(platform)
-            Non.execute "#{platform}:dist --offline"
+            update
+            Non.execute "#{platform}:dist"
         end
         
         desc "start PLATFORM", "start your application for specified PLATFORM"
         def start(platform)
-            Non.execute "#{platform}:run --offline"
+            update
+            Non.execute "#{platform}:run"
         end
         
         desc "hello", "generates Hello World! project"
         def hello
-            Non.execute "gen:hello --offline"
+            update
+            Non.execute "gen:hello"
         end
         
         desc "update", "updates your projects Non version"
         def update
-            if File.exists?(PROJECT_DATA)
-                return
+            if not(File.exists?(PROJECT_DATA))
+                FileUtils.copy_entry(CLI_DATA, PROJECT_DATA)
             end
             
             version = File.read(PROJECT_VERSION)
             
-            if version == Non::VERSION 
-                return
+            if version != Non::VERSION 
+                FileUtils.rm_rf(PROJECT_DATA)
+                FileUtils.copy_entry(CLI_DATA, PROJECT_DATA)
             end
-            
-            FileUtils.rm_rf(PROJECT_TEMP)
-            FileUtils.copy_entry(CLI_DATA, PROJECT_TEMP)
         end
     end
 end
