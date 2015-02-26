@@ -1,8 +1,3 @@
-def file(path)
-    java_import 'com.badlogic.gdx.Gdx'
-    Gdx.files.internal(path)
-end
-
 # Core events
 def init(assets); end
 def ready; end
