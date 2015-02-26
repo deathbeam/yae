@@ -50,5 +50,10 @@ module Non
                 FileUtils.copy_entry(CLI_DATA, PROJECT_DATA)
             end
         end
+        
+        desc "version", "prints current NON version"
+        def verion
+            puts Non::VERSION
+        end
     end
 end
