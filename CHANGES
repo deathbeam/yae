@@ -1,6 +1,8 @@
 [5.0.1]
 - changed directory structure and removed auto-updater as this now handles RubyGems
 - new event API
+- updated Android plugin to 1.1.0 version
+- updated Gradle to 2.3
 
 [5.0.0]
 - moved from JavaScript scripting backend to Ruby
