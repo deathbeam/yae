@@ -52,7 +52,7 @@ module Non
         end
         
         desc "version", "prints current NON version"
-        def verion
+        def version
             puts Non::VERSION
         end
     end
