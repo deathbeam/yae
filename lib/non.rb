@@ -2,7 +2,7 @@ require "fileutils"
 require "thor"
 
 module Non
-    VERSION = "5.0.0"
+    VERSION = "5.0.1"
     CLI_DIR = File.expand_path(File.dirname(__FILE__))
     CLI_DATA = File.join(CLI_DIR, "non")
     CLI_FILE = File.join(CLI_DIR, "non.launcher.jar")
