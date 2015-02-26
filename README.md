@@ -1,4 +1,4 @@
-![logo](https://raw.githubusercontent.com/non2d/non/master/non/gen/non/loading.png)
+![logo](https://raw.githubusercontent.com/non2d/non/master/lib/non/gen/non/loading.png)
 
 Hey folks! NON is a super easy framework you can use to make 2D games in Ruby. It's free, open-source, and works on Windows, Mac OS X, Linux, Android and iOS.
 

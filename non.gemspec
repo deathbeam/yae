@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
   spec.homepage      = "http://non2d.github.io"
   spec.license       = "MIT"
 
-  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features|non)/}) }
+  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.executables   = ["non"]
   spec.require_paths = ["lib"]
   
