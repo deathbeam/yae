@@ -1,8 +1,0 @@
-file("../../project").mkdir()
-
-task hello << {
-    copy {
-        from "hello"
-        into "../../project"
-    }
-}
