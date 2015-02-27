@@ -1,3 +1,13 @@
+[5.0.2]
+- added physics module back
+- some small API changes for physics and lights module
+- rewrote audio, keyboard, mouse, accelerometer and touch modules in Ruby
+- fixed big android bug with resource files about what I forgot before
+- another structure changes of source code
+- speeded up build times a bit by removing unnecessary gradle projects
+- removed time module (not needed cause of Ruby) and GUI module
+- added app module
+
 [5.0.1]
 - changed directory structure and removed auto-updater as this now handles RubyGems
 - new event API

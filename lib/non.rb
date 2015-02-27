@@ -2,9 +2,9 @@ require "fileutils"
 require "thor"
 
 module Non
-    VERSION = "5.0.1"
+    VERSION = "5.0.2"
     CLI_DIR = File.expand_path(File.dirname(__FILE__))
-    CLI_DATA = File.join(CLI_DIR, "non")
+    CLI_DATA = File.join(CLI_DIR, "data")
     CLI_FILE = File.join(CLI_DIR, "non.launcher.jar")
     PROJECT_DIR = File.expand_path(".")
     PROJECT_DATA = File.join(PROJECT_DIR, ".non")
@@ -37,7 +37,7 @@ module Non
         desc "hello", "generate Hello World! project"
         def hello
             Non.check
-            Non.execute "gen:hello"
+            Non.execute "hello"
         end
         
         desc "update", "update your project's runtime version"
