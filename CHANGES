@@ -1,4 +1,5 @@
 [5.0.2]
+- added stdlib support (not tested)
 - added physics module back
 - some small API changes for physics and lights module
 - rewrote audio, keyboard, mouse, accelerometer and touch modules in Ruby

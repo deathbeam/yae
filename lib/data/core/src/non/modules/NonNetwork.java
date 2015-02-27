@@ -52,10 +52,6 @@ public class NonNetwork extends Module {
         return new Buffer(data);
     }
     
-    public void setListener(Listener listener) {
-        this.listener = listener;
-    }
-    
     private void register (EndPoint endPoint) {
         Kryo kryo = endPoint.getKryo();
         kryo.register(byte[].class);

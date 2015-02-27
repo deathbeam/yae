@@ -46,7 +46,7 @@ public class NonLights extends Module {
     }
     
     public void setCulling(boolean culling) {
-        handler.setCulling(culling); return this;
+        handler.setCulling(culling);
     }
     
     public boolean pointAtLight(float x, float y) {

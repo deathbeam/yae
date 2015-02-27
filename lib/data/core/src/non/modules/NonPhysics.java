@@ -17,7 +17,7 @@ import non.Line;
 public class NonPhysics extends Module {
     public class ScriptContactListener implements ContactListener {
         public void beginContact(Contact contact) {
-            Non.script.callMethod(Non.receiver, "begincontact, contact);
+            Non.script.callMethod(Non.receiver, "begincontact", contact);
         }
             
         public void endContact(Contact contact) {
@@ -196,3 +196,4 @@ public class NonPhysics extends Module {
         if (s!=null) s.dispose();
         return fixture;
     }
+}

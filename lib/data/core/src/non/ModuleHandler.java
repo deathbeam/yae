@@ -9,7 +9,7 @@ public class ModuleHandler {
     public static Module get(String name) {
         if (!modules.containsKey(name)) {
             if (name.equals("graphics")) modules.put("graphics", new NonGraphics());
-            if (name.equals("lights")) modules.put("lights", new NonLights();
+            if (name.equals("lights")) modules.put("lights", new NonLights());
             if (name.equals("network")) modules.put("network", new NonNetwork());
             if (name.equals("physics")) modules.put("physics", new NonPhysics());
             if (name.equals("particles")) modules.put("particles", new NonParticles());

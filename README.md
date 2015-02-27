@@ -1,11 +1,15 @@
-![logo](https://raw.githubusercontent.com/non2d/non/master/lib/non/gen/non/loading.png)
+![logo](https://raw.githubusercontent.com/non2d/non/master/lib/data/non/loading.png)
 
-Hey folks! NON is a super easy framework you can use to make 2D games in Ruby. It's free, open-source, and works on Windows, Mac OS X, Linux, Android and iOS.
+[![Gem Version](https://badge.fury.io/rb/non.svg)](http://badge.fury.io/rb/non)
+
+Hey folks! NÖN is a super easy framework you can use to make 2D games in Ruby. It's free, open-source, and works on Windows, Mac OS X, Linux, Android and iOS.
 
 ### Installation ###
 
-```bash
-$ gem install non
+To install NÖN command-line interface, we will use [RubyGems](https://rubygems.org/gems/non):
+
+```ruby
+gem install non
 ```
 
 ### Getting Started ###

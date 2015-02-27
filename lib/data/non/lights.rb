@@ -1,7 +1,7 @@
 module Lights
     java_import 'non.ModuleHandler'
     Module = ModuleHandler.get("lights")
-    defined?(Graphics) ? Module.setPhysics(Graphics::Module) : Module.setPhysics(ModuleHandler.get("graphics"))
+    defined?(Graphics) ? Module.setGraphics(Graphics::Module) : Module.setGraphics(ModuleHandler.get("graphics"))
     defined?(Physics) ? Module.setPhysics(Physics::Module) : Module.setPhysics(ModuleHandler.get("physics"))
     
     def self.setGammaCorrection(bool)

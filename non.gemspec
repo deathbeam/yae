@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Thomas Slusny"]
   spec.email         = ["slusnucky@gmail.com"]
 
-  spec.summary       = %q{A platform for developing app using Ruby on Windows, Linux, Mac, Android and iOS.}
-  spec.description   = %q{Hey folks! NON is a super easy framework you can use to make 2D games in Ruby. It's free, open-source, and works on Windows, Mac OS X, Linux, Android and iOS.}
+  spec.summary       = %q{A platform for developing games using Ruby on Windows, Linux, Mac, Android and iOS.}
+  spec.description   = %q{Hey folks! NÖN is a super easy framework you can use to make 2D games in Ruby. It's free, open-source, and works on Windows, Mac OS X, Linux, Android and iOS.}
   spec.homepage      = "http://non2d.github.io"
   spec.license       = "MIT"
 
