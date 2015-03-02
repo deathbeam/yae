@@ -181,32 +181,19 @@ task update {
 task compileRuby << {
     def tree = fileTree("android/assets") {
         include "**/*.rb"
-        exclude "non/"
     }
     
     tree.each { file ->
         def scriptPath = relativePath(file.path).replace("\\", "/")
-        def origPath = scriptPath.replace("android/assets", "../project")
+        def origPath = ""
+        if (scriptPath.startsWith("android/assets/non/")) {
+            origPath = scriptPath.replace("android/assets/", "")
+        } else {
+            origPath = scriptPath.replace("android/assets/", "../project/")
+        }
+        
         if (file(origPath).equals(file(scriptPath))) return
 
-        jrubyexec {
-            environment JRUBY_OPTS : '-Xcompile.lazyHandles=true'
-            jrubyArgs '--dev', '-S', 'jrubyc'
-            script null
-            scriptArgs scriptPath
-        }
-    }
-}
-
-task compileNonRuby << {
-    def tree = fileTree("non") {
-        include "**/*.rb"
-        exclude "**/initializer.rb"
-    }
-
-    tree.each { file ->
-        def scriptPath = relativePath(file.path).replace("\\", "/")
-        println "compiling: ${scriptPath}"
         jrubyexec {
             environment JRUBY_OPTS : '-Xcompile.lazyHandles=true'
             jrubyArgs '--dev', '-S', 'jrubyc'

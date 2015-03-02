@@ -204,7 +204,7 @@ public class Non implements ApplicationListener {
                 script.setProfile(new Profile() {
                     public boolean allowBuiltin(String name) {
                         System.err.println("allowBuiltin("+name+")");
-                        return name.startsWith("thread");
+                        return name.startsWith("thread") || name.startsWith("jruby") || name.startsWith("java");
                     }
                     
                     public boolean allowClass(String name) {

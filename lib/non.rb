@@ -17,22 +17,24 @@ module Non
 
     def self.check
         unless File.exists?(PROJECT_DATA)
-            Non.execute "resolveDependencies"
             FileUtils.copy_entry(CLI_DATA, PROJECT_DATA)
+            Non.execute "resolveDependencies"
         end
     end
     
     class Build < Thor
         desc "build <platform>", "build your application for specified <platform>"
+        option :compile, :type => :boolean
         def build(platform)
             Non.check
-            Non.execute "update compileRuby #{platform}:dist --offline"
+            Non.execute options[:compile] ? "update compileRuby compileNonRuby #{platform}:dist --offline" : "update #{platform}:dist --offline"
         end
         
         desc "start <platform>", "start your application for specified <platform>"
+        option :compile, :type => :boolean
         def start(platform)
             Non.check
-            Non.execute "update compileRuby #{platform}:run --offline"
+            Non.execute options[:compile] ? "update compileRuby compileNonRuby #{platform}:run --offline" : "update #{platform}:run --offline"
         end
         
         desc "hello", "generate Hello World! project"

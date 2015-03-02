@@ -1,5 +1,5 @@
 [5.1.0]
-- all ruby code is compiled to java bytecode during build. This means performance almost equal to native Ruby (sometimes even faster) but this also means a bit slower builds
+- added --compile (example: non build desktop --compile) flag which will set that all ruby code is compiled to java bytecode during build. This means performance almost equal to native Ruby (sometimes even faster) but this also means a bit slower start and build tasks. Then to force load your optimized code, just add .class suffix when using require method
 - removed ALL ruby builtin and standard libraries for maximum performamce and cross-platform compatibility. Anyways, NÖN is a game engine, and all important is included in it's own libraries
 - fixed few small bugs with non.launcher and joined some tasks together, so this should descrease build time by few seconds
 - now resolveDependencies task is executed only when NÖN version changes and not before every task
