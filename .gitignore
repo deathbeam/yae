@@ -10,9 +10,9 @@
 /tmp/
 
 ## Gradle
-/build/
-/.gradle
-/local.properties
+build/
+.gradle/
+local.properties
 .gradle-app.setting
 
 ## OS Specific
@@ -20,6 +20,7 @@
 Thumbs.db
 
 ## NON
+/java/*.class
 .non/
 dist/
 project/

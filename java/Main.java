@@ -5,7 +5,7 @@ public class Main implements Runner.OutputListener {
         Runner runner = new Runner(this);
         runner.start();
         
-        Gradle gradle = new Gradle(new File(dir, ".non"), this);
+        Gradle gradle = new Gradle(new File(dir), this);
         
         try {
             runner.wait("Executing 'gradle " + args + "'");

@@ -203,22 +203,27 @@ public class Non implements ApplicationListener {
                 script = new ScriptingContainer();
                 script.setProfile(new Profile() {
                     public boolean allowBuiltin(String name) {
+                        System.err.println("allowBuiltin("+name+")");
                         return name.startsWith("thread");
                     }
                     
                     public boolean allowClass(String name) {
+                        System.err.println("allowClass("+name+")");
                         return true;
                     }
                     
                     public boolean allowModule(String name) {
+                        System.err.println("allowModule("+name+")");
                         return true;
                     }
                     
                     public boolean allowLoad(String name) {
+                        System.err.println("allowLoad("+name+")");
                         return true;
                     }
                     
                     public boolean allowRequire(String name) {
+                        System.err.println("allowRequire("+name+")");
                         return true;
                     }
                 });

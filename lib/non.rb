@@ -9,14 +9,14 @@ module Non
     PROJECT_DIR = File.expand_path(".")
     PROJECT_DATA = File.join(PROJECT_DIR, ".non")
     PROJECT_FILE = File.join(PROJECT_DATA, "VERSION")
-    EXECUTOR = "java -jar #{CLI_FILE} #{PROJECT_DIR} "
+    EXECUTOR = "java -jar #{CLI_FILE} #{PROJECT_DATA} "
     
     def self.execute(cmd)
         system("#{EXECUTOR} #{cmd}")
     end
 
     def self.check
-        unless File.exists?(PROJECT_DATA))
+        unless File.exists?(PROJECT_DATA)
             Non.execute "resolveDependencies"
             FileUtils.copy_entry(CLI_DATA, PROJECT_DATA)
         end

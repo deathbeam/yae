@@ -11,11 +11,12 @@ buildscript {
         classpath 'org.robovm:robovm-gradle-plugin:1.0.0-beta-03'
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.+'
         classpath 'org.yaml:snakeyaml:1.14'
-        classpath 'com.github.jruby-gradle:jruby-gradle-plugin:0.1.2'
+        classpath 'com.github.jruby-gradle:jruby-gradle-plugin:0.1.11'
     }
 }
 
 apply plugin: 'com.github.jruby-gradle.base'
+project.jruby.execVersion = '1.7.19'
 
 allprojects {
     version = cfg.version
@@ -110,6 +111,7 @@ project(":core") {
 }
 
 task hello << {
+    file("../project").mkdir()
     copy {
         from "hello"
         into "../project"
@@ -188,9 +190,9 @@ task compileRuby << {
         if (file(origPath).equals(file(scriptPath))) return
 
         jrubyexec {
-            jrubyVersion = '1.7.19'
-            jrubyArgs '-S', '-Xcompile.lazyHandles=true', '--dev' , 'jrubyc'
-            script scriptPath
+            environment JRUBY_OPTS : '-Xcompile.lazyHandles=true'
+            jrubyArgs '--dev', '-S', 'jrubyc'
+            script null
             scriptArgs scriptPath
         }
     }
@@ -204,18 +206,17 @@ task compileNonRuby << {
 
     tree.each { file ->
         def scriptPath = relativePath(file.path).replace("\\", "/")
-
+        println "compiling: ${scriptPath}"
         jrubyexec {
-            jrubyVersion = '1.7.19'
-            jrubyArgs '-S', '-Xcompile.lazyHandles=true', '--dev' , 'jrubyc'
-            script scriptPath
+            environment JRUBY_OPTS : '-Xcompile.lazyHandles=true'
+            jrubyArgs '--dev', '-S', 'jrubyc'
+            script null
             scriptArgs scriptPath
         }
     }
 }
 
 def configure() {
-    file("../project").mkdir()
     def f = file("../project/config.yml")
 
     if (f.exists()) {
