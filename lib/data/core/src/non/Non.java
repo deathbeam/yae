@@ -18,6 +18,7 @@ import org.jruby.javasupport.JavaEmbedUtils;
 import com.badlogic.gdx.utils.Array;
 import java.util.Map;
 import org.yaml.snakeyaml.Yaml;
+import org.jruby.Profile;
 
 public class Non implements ApplicationListener {
     public static final String TAG = "No Nonsense";
@@ -189,12 +190,39 @@ public class Non implements ApplicationListener {
                     
                 break;
             case 3:
-                script = new ScriptingContainer();
-                
                 if (getPlatform().equalsIgnoreCase("desktop")) {
                     loadPath = file("main.rb").parent().file().getAbsolutePath();
                 }
+
+                System.setProperty("jruby.compile.mode", "OFF");
+                System.setProperty("jruby.bytecode.version", "1.6");
+                System.setProperty("jruby.compat.version", "2.0");
+                System.setProperty("jruby.backtrace.mask", "true");
+                System.setProperty("jruby.backtrace.color", "true");
                 
+                script = new ScriptingContainer();
+                script.setProfile(new Profile() {
+                    public boolean allowBuiltin(String name) {
+                        return name.startsWith("thread");
+                    }
+                    
+                    public boolean allowClass(String name) {
+                        return true;
+                    }
+                    
+                    public boolean allowModule(String name) {
+                        return true;
+                    }
+                    
+                    public boolean allowLoad(String name) {
+                        return true;
+                    }
+                    
+                    public boolean allowRequire(String name) {
+                        return true;
+                    }
+                });
+
                 script.runScriptlet("$:.unshift '" + loadPath + "' ; $:.uniq!");
                 receiver = script.runScriptlet(file("non/initializer.rb").readString());
                 script.callMethod(receiver, "init", assets);

@@ -14,11 +14,12 @@ Gem::Specification.new do |spec|
   spec.homepage      = "http://non2d.github.io"
   spec.license       = "MIT"
 
-  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
+  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features|java)/}) }
   spec.executables   = ["non"]
   spec.require_paths = ["lib"]
   
   spec.add_runtime_dependency "thor", "~> 0.19.1"
+  spec.add_runtime_dependency "jruby-jars", "~> 1.7.19"
   spec.add_development_dependency "bundler", "~> 1.8"
   spec.add_development_dependency "rake", "~> 10.0"
 end

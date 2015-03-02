@@ -11,8 +11,11 @@ buildscript {
         classpath 'org.robovm:robovm-gradle-plugin:1.0.0-beta-03'
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.+'
         classpath 'org.yaml:snakeyaml:1.14'
+        classpath 'com.github.jruby-gradle:jruby-gradle-plugin:0.1.2'
     }
 }
+
+apply plugin: 'com.github.jruby-gradle.base'
 
 allprojects {
     version = cfg.version
@@ -120,7 +123,7 @@ task resolveDependencies << {
     }
 }
 
-task update << {
+task update {
     deldir(file("ios/src"))
     deldir(file("android/src"))
     deldir(file("desktop/src"))
@@ -173,8 +176,46 @@ task update << {
     }
 }
 
+task compileRuby << {
+    def tree = fileTree("android/assets") {
+        include "**/*.rb"
+        exclude "non/"
+    }
+    
+    tree.each { file ->
+        def scriptPath = relativePath(file.path).replace("\\", "/")
+        def origPath = scriptPath.replace("android/assets", "../project")
+        if (file(origPath).equals(file(scriptPath))) return
+
+        jrubyexec {
+            jrubyVersion = '1.7.19'
+            jrubyArgs '-S', '-Xcompile.lazyHandles=true', '--dev' , 'jrubyc'
+            script scriptPath
+            scriptArgs scriptPath
+        }
+    }
+}
+
+task compileNonRuby << {
+    def tree = fileTree("non") {
+        include "**/*.rb"
+        exclude "**/initializer.rb"
+    }
+
+    tree.each { file ->
+        def scriptPath = relativePath(file.path).replace("\\", "/")
+
+        jrubyexec {
+            jrubyVersion = '1.7.19'
+            jrubyArgs '-S', '-Xcompile.lazyHandles=true', '--dev' , 'jrubyc'
+            script scriptPath
+            scriptArgs scriptPath
+        }
+    }
+}
+
 def configure() {
-    file("../../project").mkdir()
+    file("../project").mkdir()
     def f = file("../project/config.yml")
 
     if (f.exists()) {
@@ -207,7 +248,7 @@ def deldir(file) {
     if(file.exists()) {
         def files = file.listFiles();
         
-        if(files !=null) {
+        if(files != null) {
             for(File fl: files) {
                 if(fl.isDirectory()) {
                     deldir(fl)

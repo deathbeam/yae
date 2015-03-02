@@ -1,3 +1,13 @@
+[5.1.0]
+- all ruby code is compiled to java bytecode during build. This means performance almost equal to native Ruby (sometimes even faster) but this also means a bit slower builds
+- removed ALL ruby builtin and standard libraries for maximum performamce and cross-platform compatibility. Anyways, NÖN is a game engine, and all important is included in it's own libraries
+- fixed few small bugs with non.launcher and joined some tasks together, so this should descrease build time by few seconds
+- now resolveDependencies task is executed only when NÖN version changes and not before every task
+- improved ruby backtrace (now displays only important messages)
+- fixed small networking bug caused by sharing same listener instance between both client and server
+- fixed small bug where compiler was creating empty "project" folder on wrong location
+- merged non.launcher and non source code for easy building with single "rake" command
+
 [5.0.2]
 - added stdlib support (not tested)
 - added physics module back

@@ -1,7 +1,8 @@
 module App
     java_import 'com.badlogic.gdx.Gdx'
-    java_import 'non.Non'
-    
+    java_import 'com.badlogic.gdx.Application.ApplicationType'
+    java_import 'java.lang.Thread'
+
     def self.width
         Gdx.graphics.getWidth()
     end
@@ -27,7 +28,22 @@ module App
     end
     
     def self.platform
-        Non.getPlatform()
+        type = Gdx.app.getType()
+        
+        case type
+        when ApplicationType::Desktop
+            "desktop"
+        when ApplicationType::Android 
+            "android"
+        when ApplicationType::iOS
+            "ios"
+        when ApplicationType::Applet
+            "applet"
+        when ApplicationType::WebGL
+            "web"
+        else 
+            "unknown"
+        end
     end
     
     def self.log(tag, msg)
@@ -40,7 +56,11 @@ module App
     
     def self.error(tag, msg)
         Gdx.app.error(tag, msg)
-    end 
+    end
+
+    def self.thread(&block)
+        Thread.new block
+    end
     
     def self.quit
         Gdx.app.exit()

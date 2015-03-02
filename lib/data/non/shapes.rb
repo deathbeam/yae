@@ -1,5 +1,4 @@
 module Shapes
-    java_import 'non.ModuleHandler'
     java_import 'com.badlogic.gdx.math.Circle'
     java_import 'com.badlogic.gdx.math.Ellipse'
     java_import 'com.badlogic.gdx.math.Polygon'

@@ -26,12 +26,10 @@ public class NonNetwork extends Module {
         }
     }
     
-    private final Listener listener = new ScriptListener();
-    
     public Client client() { 
         Client client = new Client();
         register(client);
-        client.addListener(listener);
+        client.addListener(new ScriptListener());
         
         return client;
     }
@@ -39,7 +37,7 @@ public class NonNetwork extends Module {
     public Server server() { 
         Server server = new Server();
         register(server);
-        server.addListener(listener);
+        server.addListener(new ScriptListener());
 
         return server;
     }
