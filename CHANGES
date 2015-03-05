@@ -12,6 +12,7 @@
 - forgot to remove stdlib dependency, so now it is done
 - added comparison checks for assets. Before, each time project was built, all assets was copied. Now compiler checks if they are modified
 - added "clean" task to CLI
+- removed --compile flag for start task
 
 [5.1.0]
 - added --compile (example: non build desktop --compile) flag which will set that all ruby code is compiled to java bytecode during build. This means performance almost equal to native Ruby (sometimes even faster) but this also means a bit slower start and build tasks. Then to force load your optimized code, just add .class suffix when using require method

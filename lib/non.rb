@@ -23,7 +23,7 @@ module Non
     end
     
     class Build < Thor
-        desc "build <platform>", "build your application for specified <platform>"
+        desc "build <PLATFORM> [--compile]", "build your application for specified platform with optional ruby to bytecode compiling"
         option :compile, :type => :boolean
         def build(platform)
             puts "Packaging your application\n"
@@ -31,12 +31,11 @@ module Non
             Non.execute options[:compile] ? "update compileRuby compileNonRuby #{platform}:dist --offline" : "update #{platform}:dist --offline"
         end
         
-        desc "start <platform>", "start your application for specified <platform>"
-        option :compile, :type => :boolean
+        desc "start <PLATFORM>", "start your application for specified platform"
         def start(platform)
             puts "Starting your application\n"
             Non.check
-            Non.execute options[:compile] ? "update compileRuby compileNonRuby #{platform}:run --offline" : "update #{platform}:run --offline"
+            Non.execute "update #{platform}:run --offline"
         end
         
         desc "hello", "generate Hello World! project"
