@@ -2,7 +2,7 @@
 
 [![Gem Version](https://badge.fury.io/rb/non.svg)](http://badge.fury.io/rb/non)
 
-Hey folks! NÖN is a super easy framework you can use to make 2D games in Ruby. It's free, open-source, and works on Windows, Mac OS X, Linux, Android and iOS.
+**Hey rubyists!** NÖN is an engine you can use to make 2D games in **Ruby**. It's free, open-source, and works on **Windows**, **Mac OS X**, **Linux**, **Android** and **iOS**.
 
 ### Installation ###
 
