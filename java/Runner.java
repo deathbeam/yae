@@ -33,6 +33,9 @@ public class Runner implements Runnable {
     
     public void start() {
         start = System.currentTimeMillis();
+        draw = true;
+        thread = new Thread(this);
+        thread.start();
     }
     
     public void stop() {
@@ -65,13 +68,6 @@ public class Runner implements Runnable {
     public void error(Exception e) {
         error = true;
         errorLog += e.getMessage() + "\n";
-    }
-
-    public void wait(String msg) {
-        listener.print(msg + "\n");
-        draw = true;
-        thread = new Thread(this);
-        thread.start();
     }
 
     public void finish() {

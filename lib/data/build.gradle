@@ -102,9 +102,8 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
         compile "com.esotericsoftware:kryonet:$kryonetVersion"
-        compile "org.yaml:snakeyaml:$snakeyamlVersion"
+        compile files("../snakeyaml.jar")
         compile "org.jruby:jruby-core:$jrubyVersion"
-        compile "org.jruby:jruby-stdlib:$jrubyVersion"
 
         try { for(dep in cfg.libs) compile dep } catch(e) { }
     }
@@ -125,7 +124,7 @@ task resolveDependencies << {
     }
 }
 
-task update {
+task update(dependsOn: [':updateDesktop', ':updateAndroid', ':updateIOS', ':updateAssets']){
     deldir(file("ios/src"))
     deldir(file("android/src"))
     deldir(file("desktop/src"))
@@ -168,14 +167,83 @@ task update {
         into "android/assets/non"
         include "**/*.rb"
     }
+}
+
+task updateDesktop << {
+    def out = "android/assets/non"
     
-    copy {
-        from "../project"
-        into "android/assets"
-        exclude "non/"
-        exclude "**/*.DS_Store"
-        exclude "**/*Thumbs.db"
+    copyAndResizeIcon("${out}/icon-16.png", 16)
+    copyAndResizeIcon("${out}/icon-32.png", 32)
+    copyAndResizeIcon("${out}/icon-64.png", 64)
+    copyAndResizeIcon("${out}/icon-192.png", 192)
+    copyAndResizeIcon("${out}/icon-256.png", 256)
+}
+
+task updateAndroid(dependsOn: 'android:copyNatives') << {
+    file("android/res/drawable-mdpi").mkdirs()
+    file("android/res/drawable-hdpi").mkdirs()
+    file("android/res/drawable-xhdpi").mkdirs()
+    file("android/res/drawable-xxhdpi").mkdirs()
+    
+    copyAndResizeIcon("android/res/drawable-mdpi/ic_launcher.png", 48)
+    copyAndResizeIcon("android/res/drawable-hdpi/ic_launcher.png", 72)
+    copyAndResizeIcon("android/res/drawable-xhdpi/ic_launcher.png", 96)
+    copyAndResizeIcon("android/res/drawable-xxhdpi/ic_launcher.png", 144)
+    copyAndResizeIcon("android/ic_launcher-web.png", 512)
+}
+
+task updateIOS(dependsOn: 'ios:updateRoboVMXML') << {
+    def src = "../project/non"
+    def non = "non"
+    def out = "ios/data"
+    file(out).mkdirs()
+    
+    copyAndResizeIcon("${out}/Icon.png", 57)
+    copyAndResizeIcon("${out}/Icon-72.png", 72)
+    copyAndResizeIcon("${out}/Icon@2x.png", 114)
+    copyAndResizeIcon("${out}/Icon-72@2x.png", 144)
+    
+    def files = [
+        [ 
+            "splash-320x480", "splash-640x960", "splash-640x1136", "splash-750x1134",
+            "splash-768x1004", "splash-1242x2208", "splash-1536x2008"
+        ],
+        [
+            "Default", "Default@2x", "Default-568h@2x", "Default-375w-667h@2x", 
+            "Default~ipad", "Default-414w-736h@3x", "Default@2x~ipad"
+        ]
+    ]
+    
+    def total = files[0].size() - 1
+    
+    for(i in 0..total) {
+        def fl = files[0][i]
+        def newFile = files[1][i]
+        
+        if (file("${src}/${fl}.png").exists()) {
+            copy {
+                from src
+                into out
+                include "${fl}.png"
+                rename "${fl}.png", "${newFile}.png"
+            }
+        } else {
+            copy {
+                from non
+                into out
+                include "${fl}.png"
+                rename "${fl}.png", "${newFile}.png"
+            }
+        }
     }
+}
+
+task updateAssets(type: Copy) {
+    from "../project"
+    into "android/assets"
+    exclude "non/"
+    exclude "**/*.DS_Store"
+    exclude "**/*Thumbs.db"
 }
 
 task compileRuby << {
@@ -248,4 +316,26 @@ def deldir(file) {
     }
         
     file.delete()
+}
+
+import static java.awt.RenderingHints.* 
+import java.awt.image.BufferedImage 
+import javax.imageio.ImageIO
+
+def copyAndResizeIcon(targetPath, newSize) {
+    def source = file("../project/icon.png").exists() ? file("../project/icon.png") : file("non/icon.png")
+    def target = file(targetPath)
+    target.createNewFile()
+    
+    def img = ImageIO.read(source) 
+
+    new BufferedImage( newSize, newSize, img.type ).with { 
+        i -> createGraphics().with { 
+            setRenderingHint( KEY_INTERPOLATION, VALUE_INTERPOLATION_BICUBIC )
+            drawImage(img, 0, 0, newSize, newSize, null)
+            dispose() 
+        }
+        
+        ImageIO.write(i, 'png', target) 
+    }
 }

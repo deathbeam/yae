@@ -8,7 +8,6 @@ public class Main implements Runner.OutputListener {
         Gradle gradle = new Gradle(new File(dir), this);
         
         try {
-            runner.wait("Executing 'gradle " + args + "'");
             gradle.execute(args);
         } catch(Exception e) {
             runner.error(e);

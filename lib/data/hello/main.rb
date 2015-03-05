@@ -7,5 +7,5 @@ def render(dt)
     Graphics.clear(0, 0, 0)
     
     # Draw the "Hello World" text on x: 10 and y: 10
-    Graphics.print(text: "Hello World!", position: [10, 10])
+    Graphics.print("Hello World!", position: [10, 10])
 end

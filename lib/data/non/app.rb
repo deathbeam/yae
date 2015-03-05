@@ -1,6 +1,6 @@
 module App
     java_import 'com.badlogic.gdx.Gdx'
-    java_import 'com.badlogic.gdx.Application.ApplicationType'
+    java_import 'non.Non'
 
     def self.width
         Gdx.graphics.getWidth()
@@ -27,22 +27,7 @@ module App
     end
     
     def self.platform
-        type = Gdx.app.getType()
-        
-        case type
-        when ApplicationType::Desktop
-            "desktop"
-        when ApplicationType::Android 
-            "android"
-        when ApplicationType::iOS
-            "ios"
-        when ApplicationType::Applet
-            "applet"
-        when ApplicationType::WebGL
-            "web"
-        else 
-            "unknown"
-        end
+        Non.getPlatform()
     end
     
     def self.log(tag, msg)

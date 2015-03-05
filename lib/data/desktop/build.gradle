@@ -32,27 +32,3 @@ task dist(type: Jar, dependsOn: classes) {
         println "You can find ${appName}-${version}.jar in /dist/desktop"
     }
 }
-
-task update(dependsOn: ':update') << {
-    def src = "../../project/non"
-    def non = "../non"
-    def out = "../android/assets/non"
-    
-    def files = [ "icon-16", "icon-32", "icon-64", "icon-192", "icon-256"]
-    
-    for(fl in files) {
-        if (file("${src}/${fl}.png").exists()) {
-            copy {
-                from src
-                into out
-                include "${fl}.png"
-            }
-        } else {
-            copy {
-                from non
-                into out
-                include "${fl}.png"
-            }
-        }
-    }
-}

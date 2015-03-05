@@ -2,7 +2,7 @@ require "fileutils"
 require "thor"
 
 module Non
-    VERSION = "5.1.0"
+    VERSION = "5.2.0"
     CLI_DIR = File.expand_path(File.dirname(__FILE__))
     CLI_DATA = File.join(CLI_DIR, "data")
     CLI_FILE = File.join(CLI_DIR, "non.jar")
@@ -26,6 +26,7 @@ module Non
         desc "build <platform>", "build your application for specified <platform>"
         option :compile, :type => :boolean
         def build(platform)
+            puts "Packaging your application\n"
             Non.check
             Non.execute options[:compile] ? "update compileRuby compileNonRuby #{platform}:dist --offline" : "update #{platform}:dist --offline"
         end
@@ -33,23 +34,33 @@ module Non
         desc "start <platform>", "start your application for specified <platform>"
         option :compile, :type => :boolean
         def start(platform)
+            puts "Starting your application\n"
             Non.check
             Non.execute options[:compile] ? "update compileRuby compileNonRuby #{platform}:run --offline" : "update #{platform}:run --offline"
         end
         
         desc "hello", "generate Hello World! project"
         def hello
+            puts "Generating Hello World! project\n"
             Non.check
             Non.execute "hello --offline"
         end
         
+        desc "clean", "clean temporary data for your project"
+        def clean
+            puts "Cleaning your project's temporary data\n"
+            Non.check
+            Non.execute "clean --offline"
+        end
+        
         desc "update", "update your project's runtime version and dependencies"
         def update
+            puts "Updating your project's runtime\n"
             Non.check
             version = File.read(PROJECT_FILE)
             puts "v#{version} found"
             
-            unless version == Non::VERSION 
+            unless version == Non::VERSION
                 FileUtils.rm_rf(PROJECT_DATA)
                 Non.check
             end

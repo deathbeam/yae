@@ -20,11 +20,10 @@ import java.util.Map;
 import org.yaml.snakeyaml.Yaml;
 import org.jruby.Profile;
 
-public class Non implements ApplicationListener {
+public class Non implements ApplicationListener, Profile {
     public static final String TAG = "No Nonsense";
     public static final String E_RESOURCE = "Resource not found - ";
     public static final String E_ARGUMENT = "Argument not found - ";
-    public static final String E_PLUGIN = "Plugin not found - ";
     
     public static Assets assets;
     public static ScriptingContainer script;
@@ -95,11 +94,14 @@ public class Non implements ApplicationListener {
             0, 0, getWidth(), getHeight(), 
             0, 0, loadingBg.getWidth(), loadingBg.getHeight());
         loadingBatch.draw(loadingImage, loadingPos.x, loadingPos.y);
-        loadingBatch.draw(loadingBarBg, loadingBarPos.x, loadingBarPos.y);
+        loadingBatch.draw(loadingBarBg, 
+            loadingBarPos.x, loadingBarPos.y, 
+            Gdx.graphics.getWidth(), loadingBar.getHeight(),
+            0, 0, Gdx.graphics.getWidth(), loadingBar.getHeight());
 			
         percent = Interpolation.linear.apply(percent, 
             (loadProgress + (assets != null ? assets.getProgress() : 0f)) / 2f, 0.1f);
-        barWidth = loadingBar.getWidth() * percent;
+        barWidth = Gdx.graphics.getWidth() * percent;
             
         loadingBatch.draw(loadingBar,
             loadingBarPos.x, loadingBarPos.y, 
@@ -118,14 +120,9 @@ public class Non implements ApplicationListener {
         
         loadingBatch.setProjectionMatrix(
             loadingBatch.getProjectionMatrix().setToOrtho2D(0, 0, width, height));
-                
-        loadingBarPos = new Vector2(
-            (width - loadingBar.getWidth())/2,
-            (height - loadingBar.getHeight())/2);
 		
-        loadingPos = new Vector2(
-            (width - loadingImage.getWidth())/2,
-            (height + loadingBar.getHeight())/2);
+        loadingPos = new Vector2((width - loadingImage.getWidth())/2, (height - loadingImage.getHeight())/2);
+        loadingBarPos = new Vector2(0, 0);
     }
 	
     public void pause() {
@@ -145,6 +142,26 @@ public class Non implements ApplicationListener {
         assets.dispose();
     }
     
+    public boolean allowBuiltin(String name) {
+        return name.startsWith("thread") || name.startsWith("jruby") || name.startsWith("java");
+    }
+                    
+    public boolean allowClass(String name) {
+        return true;
+    }
+                    
+    public boolean allowModule(String name) {
+        return true;
+    }
+                    
+    public boolean allowLoad(String name) {
+        return true;
+    }
+                    
+    public boolean allowRequire(String name) {
+        return true;
+    }
+
     private boolean loadCore() {
         if (loadState > 3) return true;
         
@@ -201,32 +218,7 @@ public class Non implements ApplicationListener {
                 System.setProperty("jruby.backtrace.color", "true");
                 
                 script = new ScriptingContainer();
-                script.setProfile(new Profile() {
-                    public boolean allowBuiltin(String name) {
-                        System.err.println("allowBuiltin("+name+")");
-                        return name.startsWith("thread") || name.startsWith("jruby") || name.startsWith("java");
-                    }
-                    
-                    public boolean allowClass(String name) {
-                        System.err.println("allowClass("+name+")");
-                        return true;
-                    }
-                    
-                    public boolean allowModule(String name) {
-                        System.err.println("allowModule("+name+")");
-                        return true;
-                    }
-                    
-                    public boolean allowLoad(String name) {
-                        System.err.println("allowLoad("+name+")");
-                        return true;
-                    }
-                    
-                    public boolean allowRequire(String name) {
-                        System.err.println("allowRequire("+name+")");
-                        return true;
-                    }
-                });
+                script.setProfile(this);
 
                 script.runScriptlet("$:.unshift '" + loadPath + "' ; $:.uniq!");
                 receiver = script.runScriptlet(file("non/initializer.rb").readString());

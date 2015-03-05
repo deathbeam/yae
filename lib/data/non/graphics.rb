@@ -62,32 +62,27 @@ module Graphics
         Module.getColor()
     end
     
-    def self.draw(options)
-        image = options[:image] ? options[:image] : nil
-        position = options[:position] ? options[:position] : [0, 0]
-        size = options[:size] ? options[:size] : [image.getWidth(), image.getHeight()]
-        origin = options[:origin] ? options[:origin] : [0, 0]
-        scale = options[:scale] ? options[:scale] : [1, 1]
-        rotation = options[:rotation] ? options[:rotation] : 0
-        source = options[:source] ? options[:source] : [0, 0, image.getWidth(), image.getHeight()]
+    def self.draw(image, options = nil)
+        position = options != nil && options[:position] ? options[:position] : [0, 0]
+        size = options != nil && options[:size] ? options[:size] : [image.getWidth(), image.getHeight()]
+        origin = options != nil && options[:origin] ? options[:origin] : [0, 0]
+        scale = options != nil && options[:scale] ? options[:scale] : [1, 1]
+        rotation = options != nil && options[:rotation] ? options[:rotation] : 0
+        source = options != nil && options[:source] ? options[:source] : [0, 0, image.getWidth(), image.getHeight()]
         
         Module.draw(image, position, size, origin, scale, source, rotation)
     end
     
-    def self.print(options)
-        text = options[:text] ? options[:text] : nil
-        align = options[:align] ? options[:align] : :left
-        position = options[:position] ? options[:position] : [0, 0]
-        scale = options[:scale] ? options[:scale] : [1, 1]
-        wrap = options[:wrap] ? options[:wrap] : Module.measureText(text).width
+    def self.print(text, options = nil)
+        align = options != nil && options[:align] ? options[:align] : :left
+        position = options != nil && options[:position] ? options[:position] : [0, 0]
+        scale = options != nil && options[:scale] ? options[:scale] : [1, 1]
+        wrap = options != nil && options[:wrap] ? options[:wrap] : Module.measureText(text).width
         
         Module.print(text, position, scale, wrap, align)
     end
     
-    def self.fill(options)
-        shape = options[:shape] ? options[:shape] : null
-        mode = options[:mode] ? options[:mode] : :line
-        
+    def self.fill(shape, mode = :line)
         Module.fill(shape, mode)
     end
 end

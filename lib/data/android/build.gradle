@@ -69,55 +69,6 @@ task copyNatives << {
     }
 }
 
-task update(dependsOn: [':update', copyNatives]) << {
-    def src = "../../project/non"
-    def non = "../non"
-    
-    file("res/drawable-mdpi").mkdirs()
-    def fl = (file("${src}/icon-48.png").exists()) ? src : non
-    copy {
-        from fl
-        into "res/drawable-mdpi"
-        include "icon-48.png"
-        rename "icon-48.png", "ic_launcher.png"
-    }
-    
-    file("res/drawable-hdpi").mkdirs()
-    fl = (file("${src}/icon-72.png").exists()) ? src : non
-    copy {
-        from fl
-        into "res/drawable-hdpi"
-        include "icon-72.png"
-        rename "icon-72.png", "ic_launcher.png"
-    }
-    
-    file("res/drawable-xhdpi").mkdirs()
-    fl = (file("${src}/icon-96.png").exists()) ? src : non
-    copy {
-        from fl
-        into "res/drawable-xhdpi"
-        include "icon-96.png"
-        rename "icon-96.png", "ic_launcher.png"
-    }
-    
-    file("res/drawable-xxhdpi").mkdirs()
-    fl = (file("${src}/icon-144.png").exists()) ? src : non
-    copy {
-        from fl
-        into "res/drawable-xxhdpi"
-        include "icon-144.png"
-        rename "icon-144.png", "ic_launcher.png"
-    }
-    
-    fl = (file("${src}/icon-512.png").exists()) ? src : non
-    copy {
-        from fl
-        into "."
-        include "icon-512.png"
-        rename "icon-512.png", "ic_launcher-web.png"
-    }
-}
-
 task dist(dependsOn: assembleRelease) << {
     file("../../dist/android").mkdirs()
     
