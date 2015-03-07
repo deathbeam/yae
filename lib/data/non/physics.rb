@@ -42,13 +42,13 @@ module Physics
     def self.body(options = nil)
         type = options != nil && options[:type] ? options[:type] : :static
         position = options != nil && options[:position] ? options[:position] : [0, 0]
-        linearVelocity = options != nil && options[:linearVelocity] ? options[:linearVelocity] : [0, 0]
+        linearVelocity = options != nil && options[:linear_velocity] ? options[:linear_velocity] : [0, 0]
         angle = options != nil && options[:angle] ? options[:angle] : 0
-        angularVelocity = options != nil && options[:angularVelocity] ? options[:angularVelocity] : 0
-        linearDamping = options != nil && options[:linearDamping] ? options[:linearDamping] : 0
-        angularDamping = options != nil && options[:angularDamping] ? options[:angularDamping] : 0
-        gravityScale = options != nil && options[:gravityScale] ? options[:gravityScale] : 1
-        fixedRotation = options != nil && options[:fixedRotation] ? options[:fixedRotation] : false
+        angularVelocity = options != nil && options[:angular_velocity] ? options[:angular_velocity] : 0
+        linearDamping = options != nil && options[:linear_damping] ? options[:linear_damping] : 0
+        angularDamping = options != nil && options[:angular_damping] ? options[:angular_damping] : 0
+        gravityScale = options != nil && options[:gravity_scale] ? options[:gravity_scale] : 1
+        fixedRotation = options != nil && options[:fixed_rotation] ? options[:fixed_rotation] : false
         bullet = options != nil && options[:bullet] ? options[:bullet] : false
         active = options != nil && options[:active] ? options[:active] : true
         

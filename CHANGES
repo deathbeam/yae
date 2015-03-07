@@ -1,3 +1,6 @@
+[5.2.2]
+- physics body properties changed to snake_case
+
 [5.2.1]
 - fixed YAML on Android (previous patch was not working)
 - removed App.thread method, now Thread works as in normal Ruby
