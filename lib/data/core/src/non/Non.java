@@ -140,6 +140,10 @@ public class Non implements ApplicationListener, Profile {
         }
         
         assets.dispose();
+        
+        if (script != null) {
+            script.terminate();
+        }
     }
     
     public boolean allowBuiltin(String name) {

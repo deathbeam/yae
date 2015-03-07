@@ -71,6 +71,7 @@ project(":android") {
         natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-armeabi"
         natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-armeabi-v7a"
         natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-x86"
+        compile files("../core/snakeyaml.jar")
 
         try { for(dep in cfg.android.libs) compile dep } catch(e) { }
     }
@@ -102,8 +103,8 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
         compile "com.esotericsoftware:kryonet:$kryonetVersion"
-        compile files("../snakeyaml.jar")
-        compile "org.jruby:jruby-core:$jrubyVersion"
+        compile("org.jruby:jruby-core:$jrubyVersion") { exclude group: "org.yaml", module: "snakeyaml" }
+        compile files("snakeyaml.jar")
 
         try { for(dep in cfg.libs) compile dep } catch(e) { }
     }

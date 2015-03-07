@@ -41,10 +41,6 @@ module App
     def self.error(tag, msg)
         Gdx.app.error(tag, msg)
     end
-
-    def self.thread(&block)
-        Thread.new block
-    end
     
     def self.quit
         Gdx.app.exit()
