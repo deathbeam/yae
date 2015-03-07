@@ -1,2 +1,2 @@
 language: java
-script: "./lib/data/gradlew clean hello update desktop:dist"
+script: "./lib/data/gradlew clean hello update desktop:dist --debug"
