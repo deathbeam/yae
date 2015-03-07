@@ -4,39 +4,39 @@ module Lights
     defined?(Graphics) ? Module.setGraphics(Graphics::Module) : Module.setGraphics(ModuleHandler.get("graphics"))
     defined?(Physics) ? Module.setPhysics(Physics::Module) : Module.setPhysics(ModuleHandler.get("physics"))
     
-    def self.setGammaCorrection(bool)
+    def self.set_gamma_correction(bool)
         Module.setGammaCorrection(bool)
     end
     
-    def self.setDiffuseLight(bool)
+    def self.set_diffuse_light(bool)
         Module.setDiffuseLight(bool)
     end
     
-    def self.setAmbientColor(r, g, b, a = 1)
+    def self.set_ambient_color(r, g, b, a = 1)
         Module.setAmbientColor(r, g, b, a)
     end
     
-    def self.setBlur(bool)
+    def self.set_blur(bool)
         Module.setBlur(bool)
     end
     
-    def self.setBlurNum(num)
+    def self.set_blur_num(num)
         Module.setBlurNum(num)
     end
     
-    def self.setShadows(bool)
+    def self.set_shadows(bool)
         Module.setShadows(bool)
     end
    
-    def self.setCulling(bool)
+    def self.set_culling(bool)
         Module.setCulling(bool)
     end
     
-    def self.pointAtLight(x, y)
+    def self.point_at_light(x, y)
         Module.pointAtLight(x, y)
     end
     
-    def self.pointAtShadow(x, y)
+    def self.point_at_shadow(x, y)
         Module.pointAtShadow(x, y)
     end
     

@@ -2,6 +2,8 @@
 - fixed YAML on Android (previous patch was not working)
 - removed App.thread method, now Thread works as in normal Ruby
 - now ruby runtime is properly terminated when app closes. This fixes mainly activity shutdown and reopen crashes on Android and prevents memory leaks
+- renamed most methods from camelCase to snake_case
+- renamed some methods totally (like getX to x, setPosition to move, isDown to down)
 
 [5.2.0]
 - removed some temporary files what I forgot to remove

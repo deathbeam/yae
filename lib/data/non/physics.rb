@@ -3,19 +3,19 @@ module Physics
     Module = ModuleHandler.get("physics")
     defined?(Graphics) ? Module.setGraphics(Graphics::Module) : Module.setGraphics(ModuleHandler.get("graphics"))
     
-    def self.setGravity(x, y)
+    def self.set_gravity(x, y)
         Module.setGravity(x, y)
     end
     
-    def self.getGravity
+    def self.get_gravity
         Module.getGravity()
     end
     
-    def self.setStep(step)
+    def self.set_step(step)
         Module.setStep(step)
     end
     
-    def self.setSpeed(speed)
+    def self.set_speed(speed)
         Module.setSpeed(speed)
     end
     

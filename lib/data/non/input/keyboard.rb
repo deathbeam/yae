@@ -10,11 +10,7 @@ module Keyboard
         self.setVisible(false)
     end
     
-    def self.setVisible(val)
-        Gdx.input.setOnscreenKeyboardVisible(val)
-    end
-    
-    def self.isDown(key)
+    def self.down(key)
         keycode = Non.getKey(name)
         Gdx.input.isKeyPressed(keycode) && keycode != 0
     end

@@ -42,23 +42,23 @@ module Graphics
         Module.clear(r, g, b, a)
     end
     
-    def self.setBlending(blending)
+    def self.set_blending(blending)
         Module.setBlending(blending)
     end
     
-    def self.setShader(shader)
+    def self.set_shader(shader)
         Module.setShader(shader)
     end
     
-    def self.setFont(font)
+    def self.set_font(font)
         Module.setFont(font)
     end
     
-    def self.setColor(r, g, b, a = 1)
+    def self.set_color(r, g, b, a = 1)
         Module.setColor(r, g, b, a)
     end
     
-    def self.getColor()
+    def self.get_color()
         Module.getColor()
     end
     
