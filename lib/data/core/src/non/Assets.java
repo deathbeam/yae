@@ -16,15 +16,15 @@ public class Assets extends AssetManager {
     
     public void add(String asset, String type) {
         if (type.equals("image")) {
-            load(asset, Texture.class)
+            load(asset, Texture.class);
         } else if (type.equals("font")) {
-            load(asset, BitmapFont.class)
+            load(asset, BitmapFont.class);
         } else if (type.equals("effect")) {
-            load(asset, ParticleEffect.class)
+            load(asset, ParticleEffect.class);
         } else if (type.equals("sound")) {
-            load(asset, Sound.class)
+            load(asset, Sound.class);
         } else if (type.equals("music")) {
-            load(asset, Music.class)
+            load(asset, Music.class);
         }
     }
 }
