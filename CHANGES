@@ -1,3 +1,8 @@
+[5.2.3]
+- new API for asset loading
+- added sound and music methods to Audio module
+- renamed Particles.load to Particles.effect
+
 [5.2.2]
 - physics body properties changed to snake_case
 

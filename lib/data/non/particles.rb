@@ -6,7 +6,7 @@ module Particles
     Module = ModuleHandler.get("particles")
     defined?(Graphics) ? Module.setGraphics(Graphics::Module) : Module.setGraphics(ModuleHandler.get("graphics"))
     
-    def self.load(path)
+    def self.effect(path)
         if Non.assets.isLoaded(file)
             return Non.assets.get(file, ParticleEffect.java_class)
         end
