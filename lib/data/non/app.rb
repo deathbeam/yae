@@ -2,47 +2,47 @@ module App
     java_import 'com.badlogic.gdx.Gdx'
     java_import 'non.Non'
 
-    def self.width
+    def width
         Gdx.graphics.getWidth()
     end
     
-    def self.height
+    def height
         Gdx.graphics.getHeight()
     end
 
-    def self.fps
+    def fps
         Gdx.graphics.getFramesPerSecond()
     end
     
-    def self.delta
+    def delta
         Gdx.graphics.getDeltaTime()
     end
     
-    def self.clipboard
+    def clipboard
         Gdx.app.getClipboard()
     end
     
-    def self.version
+    def version
         Gdx.app.getVersion()
     end
     
-    def self.platform
+    def platform
         Non.getPlatform()
     end
     
-    def self.log(tag, msg)
+    def log(tag, msg)
         Gdx.app.log(tag, msg)
     end
     
-    def self.debug(tag, msg)
+    def debug(tag, msg)
         Gdx.app.debug(tag, msg)
     end
     
-    def self.error(tag, msg)
+    def error(tag, msg)
         Gdx.app.error(tag, msg)
     end
     
-    def self.quit
+    def quit
         Gdx.app.exit()
     end
 end

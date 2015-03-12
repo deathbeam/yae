@@ -1,35 +1,46 @@
-module Files
+class Files
     java_import 'com.badlogic.gdx.Gdx'
-    
-    EXTERNAL_PATH = Gdx.files.getExternalStoragePath()
-    LOCAL_PATH = Gdx.files.getLocalStoragePath()
+    java_import 'org.yaml.snakeyaml.Yaml'
+    java_import 'com.badlogic.gdx.utils.JsonReader'
+    java_import 'com.badlogic.gdx.utils.XmlReader'
 
-    def self.internal(path)
+    def path_external
+        Gdx.files.getExternalStoragePath
+    end
+    
+    def path_local
+        Gdx.files.getLocalStoragePath
+    end
+    
+    def internal(path)
         Gdx.files.internal(path)
     end
 
-    def self.classpath(path)
+    def classpath(path)
         Gdx.files.classpath(path)
     end
 
-    def self.local(path)
+    def local(path)
         Gdx.files.local(path)
     end
 
-    def self.external(path)
+    def external(path)
         Gdx.files.external(path)
     end
 
-    def self.absolute(path)
+    def absolute(path)
         Gdx.files.absolute(path)
     end
 
-    def self.parse_yaml(text)
+    def parse_yaml(text)
+        Yaml.new.load(text)
     end
 
-    def self.parse_json(text)
+    def parse_json(text)
+        JsonReader.new.parse(text)
     end
-
-    def self.parse_xml(text)
+    
+    def parse_xml(text)
+        XmlReader.new.parse(text)
     end
 end

@@ -1,19 +1,19 @@
-module Accelerometer
+class Accelerometer
     java_import 'com.badlogic.gdx.Gdx'
 
-    def self.getX
+    def x
         Gdx.input.getAccelerometerX()
     end
     
-    def self.getY
+    def y
         Gdx.input.getAccelerometerY()
     end
     
-    def self.getZ
+    def z
         Gdx.input.getAccelerometerZ()
     end
     
-    def self.getRotation
+    def rotation
         Gdx.input.getRotation()
     end
 end

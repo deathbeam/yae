@@ -1,68 +1,75 @@
-module Graphics
+class Graphics
     java_import 'non.ModuleHandler'
-    Module = ModuleHandler.get("graphics")
     
-    def self.image(path)
-        Module.image(path)
+    def initialize
+        @module = ModuleHandler.get("graphics")
     end
     
-    def self.font(path)
-        Module.font(path)
+    def measure_text(text, wrap = nil)
+        wrap == nil ? @module.measureText(text) : @module.measureText(text, wrap)
+    end
+
+    def image(path)
+        @module.image(path)
     end
     
-    def self.shader(vertex, fragment)
-        Module.shader(vertex, fragment)
+    def font(path)
+        @module.font(path)
     end
     
-    def self.color(r, g, b, a = 1)
-        Module.color(r, g, b, a)
+    def shader(vertex, fragment)
+        @module.shader(vertex, fragment)
     end
     
-    def self.project(x, y)
-        Module.project(x, y)
+    def color(r, g, b, a = 1)
+        @module.color(r, g, b, a)
     end
     
-    def self.unproject(x, y)
-        Module.unproject(x, y)
+    def project(x, y)
+        @module.project(x, y)
     end
     
-    def self.rotate(degrees, x = 0, y = 0, z = 0)
-        Module.rotate(degrees, x, y, z)
+    def unproject(x, y)
+        @module.unproject(x, y)
     end
     
-    def self.scale(factor)
-        Module.scale(factor)
+    def rotate(degrees, x = 0, y = 0, z = 0)
+        @module.rotate(degrees, x, y, z)
     end
     
-    def self.translate(x, y)
-        Module.translate(x, y)
+    def scale(factor)
+        @module.scale(factor)
     end
     
-    def self.clear(r, g, b, a = 1)
-        Module.clear(r, g, b, a)
+    def translate(x, y)
+        @module.translate(x, y)
     end
     
-    def self.set_blending(blending)
-        Module.setBlending(blending)
+    def clear(r, g, b, a = 1)
+        @module.clear(r, g, b, a)
     end
     
-    def self.set_shader(shader)
-        Module.setShader(shader)
+    def set_blending(blending)
+        @module.setBlending(blending)
     end
     
-    def self.set_font(font)
-        Module.setFont(font)
+    def set_shader(shader)
+        @module.setShader(shader)
     end
     
-    def self.set_color(r, g, b, a = 1)
-        Module.setColor(r, g, b, a)
+    def set_font(font)
+        @module.setFont(font)
     end
     
-    def self.get_color()
-        Module.getColor()
+    def set_color(r, g, b, a = 1)
+        @module.setColor(r, g, b, a)
     end
     
-    def self.draw(image, options = nil)
+    def get_color()
+        @module.getColor()
+    end
+    
+    def draw(image, options = nil)
         position = options != nil && options[:position] ? options[:position] : [0, 0]
         size = options != nil && options[:size] ? options[:size] : [image.getWidth(), image.getHeight()]
         origin = options != nil && options[:origin] ? options[:origin] : [0, 0]
@@ -70,19 +77,19 @@ module Graphics
         rotation = options != nil && options[:rotation] ? options[:rotation] : 0
         source = options != nil && options[:source] ? options[:source] : [0, 0, image.getWidth(), image.getHeight()]
         
-        Module.draw(image, position, size, origin, scale, source, rotation)
+        @module.draw(image, position, size, origin, scale, source, rotation)
     end
     
-    def self.print(text, options = nil)
+    def print(text, options = nil)
         align = options != nil && options[:align] ? options[:align] : :left
         position = options != nil && options[:position] ? options[:position] : [0, 0]
         scale = options != nil && options[:scale] ? options[:scale] : [1, 1]
-        wrap = options != nil && options[:wrap] ? options[:wrap] : Module.measureText(text).width
+        wrap = options != nil && options[:wrap] ? options[:wrap] : @module.measureText(text).width
         
-        Module.print(text, position, scale, wrap, align)
+        @module.print(text, position, scale, wrap, align)
     end
     
-    def self.fill(shape, mode = :line)
-        Module.fill(shape, mode)
+    def fill(shape, mode = :line)
+        @module.fill(shape, mode)
     end
 end

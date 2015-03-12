@@ -1,4 +1,4 @@
-![logo](https://raw.githubusercontent.com/non2d/non/master/lib/data/non/loading.png)
+![logo](https://raw.githubusercontent.com/non2d/non/master/lib/data/non/logo.png)
 
 [![Gem Version](https://badge.fury.io/rb/non.svg)](http://badge.fury.io/rb/non)
 
@@ -6,7 +6,7 @@
 
 ### Installation ###
 
-To install NÖN command-line interface, we will use [RubyGems](https://rubygems.org/gems/non):
+You will need to have [Ruby](https://ruby-lang.org/) and [JDK 7+](http://www.oracle.com/technetwork/java/javase/downloads/index.html) installed. Then you can install NÖN as gem
 
 ```ruby
 gem install non
@@ -16,7 +16,7 @@ gem install non
 
   * [Introduction](https://github.com/non2d/non/wiki/Introduction)
   * [Create your first Non project](https://github.com/non2d/non/wiki/Getting-started)
-    * [Run, Manage and Package your project]( https://github.com/non2d/non/wiki/Running-and-packaging-a-project)
+    * [Run, Manage and Package your project]( https://github.com/non2d/non/wiki/Running-and-packaging-your-project)
   * [Read the Wiki](https://github.com/non2d/non/wiki)
 
 ### Documentation ###

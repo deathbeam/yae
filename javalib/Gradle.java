@@ -38,16 +38,29 @@ public class Gradle {
         Thread t = new Thread(new Runnable() {
                 public void run () {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()), 1);
+                    boolean failed = false;
                     try {
                         String c = null;
-                        while ((c = reader.readLine().trim()) != null) {
+                        while ((c = reader.readLine()) != null) {
+                            c = c.trim();
+                            
                             if (c.startsWith("BUILD") ||
                                 c.startsWith("Total time:") ||
                                 c.startsWith("Configuration on demand is an incubating feature.") ||
-                                c.equals("")) 
+                                c.equals("") ||
+                                c.startsWith("Note:") ||
+                                c.contains("warning") ||
+                                c.contains("warnings"))
                                 continue;
                             
-                            listener.print(c + "\n");           
+                            if (!failed) {
+                                if (c.endsWith("FAILED")) {
+                                    failed = true;
+                                    continue;
+                                }
+                                
+                                listener.print(c + "\n");
+                            }
                         }
                     } catch (IOException e) { }
                 }

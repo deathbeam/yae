@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
@@ -21,21 +23,16 @@ import org.yaml.snakeyaml.Yaml;
 import org.jruby.Profile;
 
 public class Non implements ApplicationListener, Profile {
-    public static final String TAG = "No Nonsense";
-    public static final String E_RESOURCE = "Resource not found - ";
-    public static final String E_ARGUMENT = "Argument not found - ";
-    
-    public static Assets assets;
-    public static ScriptingContainer script;
-    public static Object receiver;
+    private static ScriptingContainer script;
+    private static Object receiver;
     public static boolean ready;
     
     private Map config;
     private String loadPath;
-    private SpriteBatch loadingBatch;
-    private Texture loadingBg, loadingImage, loadingBar, loadingBarBg;
-    private Vector2 loadingPos, loadingBarPos;
-    private float percent, barWidth, loadProgress;
+    private SpriteBatch batch;
+    private BitmapFont font;
+    private Texture background, logo, bar;
+    private Vector2 logoPos, barPos;
     private int loadState;
     
     public void setLoadPath(String path) {
@@ -43,103 +40,98 @@ public class Non implements ApplicationListener, Profile {
     }
     
     public void create () {
-        loadingBatch = new SpriteBatch();
-        assets = new Assets();
+        batch = new SpriteBatch();
+        font = new BitmapFont();
         
-        assets.load("non/loading.png", Texture.class);
-        assets.load("non/loading_bg.png", Texture.class);
-        assets.load("non/loading_bar.png", Texture.class);
-        assets.load("non/loading_bar_bg.png", Texture.class);
-        assets.finishLoading();
-        
-        loadingImage = assets.get("non/loading.png", Texture.class);
-        loadingBg = assets.get("non/loading_bg.png", Texture.class);
-        loadingBar = assets.get("non/loading_bar.png", Texture.class);
-        loadingBarBg = assets.get("non/loading_bar_bg.png", Texture.class);
+        background = new Texture(file("non/background.png"));
+        logo = new Texture(file("non/logo.png"));
+        bar = new Texture(file("non/bar.png"));
     }
 
     public void render () {
         if (ready) {
             ModuleHandler.update(getDelta());
-            script.callMethod(receiver, "render", getDelta());
+            callMethod("update", getDelta());
+            callMethod("draw");
             ModuleHandler.updateAfter(getDelta());
             return;
         }
         
         if (loadCore()) {
-            if (assets.update()) {
-                if (Gdx.input.isTouched()) {
-                    script.callMethod(receiver, "ready");
-                    ready = true;
-                    resize(getWidth(), getHeight());
-                    loadingBatch.dispose();
-                    assets.unload("non/loading.png");
-                    assets.unload("non/loading_bg.png");
-                    assets.unload("non/loading_bar.png");
-                    assets.unload("non/loading_bar_bg.png");
-                    loadingBatch = null;
-                    loadingBg = null;
-                    loadingImage = null;
-                    loadingBar = null;
-                    loadingBarBg = null;
-                    return;
-                }
+            if (Gdx.input.isTouched()) {
+                batch.dispose();
+                batch = null;
+                font.dispose();
+                font = null;
+                background.dispose();
+                background = null;
+                logo.dispose();
+                logo = null;
+                bar.dispose();
+                bar = null;
+                callMethod("ready");
+                ready = true;
+                resize(getWidth(), getHeight());
+                return;
             }
         }
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        loadingBatch.begin();
-        loadingBatch.draw(loadingBg, 
-            0, 0, getWidth(), getHeight(), 
-            0, 0, loadingBg.getWidth(), loadingBg.getHeight());
-        loadingBatch.draw(loadingImage, loadingPos.x, loadingPos.y);
-        loadingBatch.draw(loadingBarBg, 
-            loadingBarPos.x, loadingBarPos.y, 
-            Gdx.graphics.getWidth(), loadingBar.getHeight(),
-            0, 0, Gdx.graphics.getWidth(), loadingBar.getHeight());
-			
-        percent = Interpolation.linear.apply(percent, 
-            (loadProgress + (assets != null ? assets.getProgress() : 0f)) / 2f, 0.1f);
-        barWidth = Gdx.graphics.getWidth() * percent;
+        
+        batch.begin();
+        
+        float scale = (float)getWidth() / (float)background.getWidth();
+        batch.draw(background,
+            0, 0, 0, 0, background.getWidth() * scale, background.getHeight() * scale,
+            scale, scale, 0,
+            0, 0, background.getWidth(), background.getHeight(), false, false);
             
-        loadingBatch.draw(loadingBar,
-            loadingBarPos.x, loadingBarPos.y, 
-            barWidth, loadingBar.getHeight(),
-            0, 0, barWidth, loadingBar.getHeight());
-			
-        loadingBatch.end();
+        batch.draw(logo, logoPos.x, logoPos.y);
+        batch.draw(bar, barPos.x, barPos.y);
+        
+        String text = "";
+        
+        switch(loadState) {
+        case 0: text = "Loading \"config.yml\" and applying configuration"; break;
+        case 1: text = "Starting Ruby VM 2.0"; break;
+        case 2: text = "Loading game's assets"; break;
+        default: text = "Touch screen to continue"; break;
+        }
+        
+        font.setColor(0, 0, 0, 1);
+        font.draw(batch, text, (getWidth() - font.getBounds(text).width) /2, barPos.y + (bar.getHeight() + 12) /2);
+        
+        batch.end();
     }
 
     public void resize(int width, int height) { 
         if (ready) {
             ModuleHandler.resize(width, height);
-            script.callMethod(receiver, "resize", width, height);
+            callMethod("resize", width, height);
             return;
         }
         
-        loadingBatch.setProjectionMatrix(
-            loadingBatch.getProjectionMatrix().setToOrtho2D(0, 0, width, height));
+        batch.setProjectionMatrix(
+            batch.getProjectionMatrix().setToOrtho2D(0, 0, width, height));
 		
-        loadingPos = new Vector2((width - loadingImage.getWidth())/2, (height - loadingImage.getHeight())/2);
-        loadingBarPos = new Vector2(0, 0);
+        logoPos = new Vector2((width - logo.getWidth())/2, (height - logo.getHeight())/2);
+        barPos = new Vector2((width - bar.getWidth())/2, logoPos.y - bar.getHeight());
     }
 	
     public void pause() {
-        if (ready) script.callMethod(receiver, "pause"); 
+        if (ready) callMethod("pause"); 
     }
 	
     public void resume() {
-        if (ready) script.callMethod(receiver, "resume");
+        if (ready) callMethod("resume");
     }
     
     public void dispose() { 
         if (ready) {
-            script.callMethod(receiver, "close");
+            callMethod("close");
             ModuleHandler.dispose();
         }
-        
-        assets.dispose();
         
         if (script != null) {
             script.terminate();
@@ -167,13 +159,13 @@ public class Non implements ApplicationListener, Profile {
     }
 
     private boolean loadCore() {
-        if (loadState > 3) return true;
+        if (loadState > 2) return true;
         
         switch (loadState) {
             case 0:
-                config = (Map<String, Object>)new Yaml().load(file("config.yml").readString());
-                break;
-            case 1:
+                config = (Map<String, Object>)new Yaml().load(file("non/config.yml").readString());
+                if (config.containsKey("name")) Gdx.graphics.setTitle((String)config.get("name"));
+                
                 if (getPlatform().equalsIgnoreCase("desktop")) {
                     int width = 800;
                     int height = 600;
@@ -192,10 +184,6 @@ public class Non implements ApplicationListener, Profile {
                     Gdx.graphics.setDisplayMode(width, height, fullscreen);
                 }
                 
-                break;
-            case 2:
-                if (config.containsKey("name")) Gdx.graphics.setTitle((String)config.get("name"));
-                
                 if (config.containsKey("logging")) {
                     String logLevel = (String)config.get("logging");
                         
@@ -208,9 +196,7 @@ public class Non implements ApplicationListener, Profile {
                     else if ("debug".equalsIgnoreCase(logLevel))
                         Gdx.app.setLogLevel(3);
                 }
-                    
-                break;
-            case 3:
+                
                 if (getPlatform().equalsIgnoreCase("desktop")) {
                     loadPath = file("main.rb").parent().file().getAbsolutePath();
                 }
@@ -220,19 +206,36 @@ public class Non implements ApplicationListener, Profile {
                 System.setProperty("jruby.compat.version", "2.0");
                 System.setProperty("jruby.backtrace.mask", "true");
                 System.setProperty("jruby.backtrace.color", "true");
-                
+                    
+                break;
+            case 1:
                 script = new ScriptingContainer();
                 script.setProfile(this);
 
                 script.runScriptlet("$:.unshift '" + loadPath + "' ; $:.uniq!");
-                receiver = script.runScriptlet(file("non/initializer.rb").readString());
-                script.callMethod(receiver, "init", assets);
+                break;
+            case 2:
+                try { 
+                    receiver = script.runScriptlet(file("non/initializer.rb").read(), "initializer.rb");
+                } catch(Exception e) {
+                    quit();
+                }
+                
+                Gdx.input.setInputProcessor(new InputHandler());
                 break;
         }
             
         loadState++;
-        loadProgress += 0.25f;
         return false;
+    }
+    
+    public static Object callMethod(String method, Object... args) {
+        try {
+            return script.callMethod(receiver, method, args);
+        } catch(Exception e) {
+            quit();
+            return null;
+        }
     }
     
     public static String getButton(int code) {

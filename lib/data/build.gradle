@@ -71,7 +71,7 @@ project(":android") {
         natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-armeabi"
         natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-armeabi-v7a"
         natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-x86"
-        compile files("../core/snakeyaml.jar")
+        compile files("../snakeyaml.jar")
 
         try { for(dep in cfg.android.libs) compile dep } catch(e) { }
     }
@@ -104,17 +104,25 @@ project(":core") {
         compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
         compile "com.esotericsoftware:kryonet:$kryonetVersion"
         compile("org.jruby:jruby-core:$jrubyVersion") { exclude group: "org.yaml", module: "snakeyaml" }
-        compile files("snakeyaml.jar")
+        compile files("../snakeyaml.jar")
 
         try { for(dep in cfg.libs) compile dep } catch(e) { }
     }
 }
 
 task hello << {
-    file("../project").mkdir()
+    file("../data").mkdir()
+    
     copy {
         from "hello"
-        into "../project"
+        into "../data"
+        include "main.rb"
+    }
+    
+    copy {
+        from "hello"
+        into "../"
+        include "config.yml"
     }
 }
 
@@ -142,10 +150,10 @@ task update(dependsOn: [':updateDesktop', ':updateAndroid', ':updateIOS', ':upda
     copyAndReplace("templates/ios/IOSLauncher.java", "ios/src/$packageDir/ios/IOSLauncher.java", vals)
     copyAndReplace("templates/desktop/DesktopLauncher.java", "desktop/src/$packageDir/desktop/DesktopLauncher.java", vals)
     
-    def src = "../project/non"
+    def src = "../"
     def res = "non"
     def out = "android/assets/non"
-    def files = [ "loading.png", "loading_bg.png", "loading_bar.png", "loading_bar_bg.png" ]
+    def files = [ "logo.png", "background.png", "bar.png" ]
     
     for(fl in files) {
         if (file("${src}/${fl}").exists()) {
@@ -161,6 +169,12 @@ task update(dependsOn: [':updateDesktop', ':updateAndroid', ':updateIOS', ':upda
                 include "${fl}"
             }
         }
+    }
+    
+    copy {
+        from "../"
+        into "android/assets/non"
+        include "config.yml"
     }
     
     copy {
@@ -194,7 +208,7 @@ task updateAndroid(dependsOn: 'android:copyNatives') << {
 }
 
 task updateIOS(dependsOn: 'ios:updateRoboVMXML') << {
-    def src = "../project/non"
+    def src = "../"
     def non = "non"
     def out = "ios/data"
     file(out).mkdirs()
@@ -240,7 +254,7 @@ task updateIOS(dependsOn: 'ios:updateRoboVMXML') << {
 }
 
 task updateAssets(type: Copy) {
-    from "../project"
+    from "../data"
     into "android/assets"
     exclude "non/"
     exclude "**/*.DS_Store"
@@ -258,7 +272,7 @@ task compileRuby << {
         if (scriptPath.startsWith("android/assets/non/")) {
             origPath = scriptPath.replace("android/assets/", "")
         } else {
-            origPath = scriptPath.replace("android/assets/", "../project/")
+            origPath = scriptPath.replace("android/assets/", "../data/")
         }
         
         if (file(origPath).equals(file(scriptPath))) return
@@ -273,7 +287,7 @@ task compileRuby << {
 }
 
 def configure() {
-    def f = file("../project/config.yml")
+    def f = file("../config.yml")
 
     if (f.exists()) {
         ext.cfg = new org.yaml.snakeyaml.Yaml().load(f.text)
@@ -324,8 +338,9 @@ import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 
 def copyAndResizeIcon(targetPath, newSize) {
-    def source = file("../project/icon.png").exists() ? file("../project/icon.png") : file("non/icon.png")
+    def source = file("../icon.png").exists() ? file("../icon.png") : file("non/icon.png")
     def target = file(targetPath)
+    if (target.exists()) target.delete()
     target.createNewFile()
     
     def img = ImageIO.read(source) 

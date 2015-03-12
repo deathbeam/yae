@@ -1,3 +1,22 @@
+[5.3.0]
+- moved all modules to root NON module (f.e Graphics is now NON.graphics)
+- fixed NON.accelerometer methods (getX, getY, getRotation => x, y, rotation)
+- moved methods from App module to root NON module (f.e App.quit is now NON.quit)
+- split render(delta) event to draw and update(delta) events
+- added measure_text(text, wrap = nil) to graphics module
+- renamed loading.png to logo.png, loading_bg.png to bg.png, and loading_bar to bar.png
+- changed project structure
+- changed default logo, background and icon
+- fixed resizing of large background images for loading screen
+- changed resize method of loading screen background from fit to cover
+- changed loading screen, now it is displaying progress messages
+- added parse_yaml, parse_json and parse_xml to NON.files
+- removed init(assets) event
+- now Ruby stacktrace is displayed in nice way without Java flood
+- removed some messy log messages from Gradle
+- fixed Gradle runner (was throwing null pointer exception at end of build)
+- added joints to NON.physics
+
 [5.2.3]
 - new API for asset loading
 - added sound and music methods to Audio module

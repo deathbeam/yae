@@ -1,63 +1,66 @@
-module Lights
+class Lights
     java_import 'non.ModuleHandler'
-    Module = ModuleHandler.get("lights")
-    defined?(Graphics) ? Module.setGraphics(Graphics::Module) : Module.setGraphics(ModuleHandler.get("graphics"))
-    defined?(Physics) ? Module.setPhysics(Physics::Module) : Module.setPhysics(ModuleHandler.get("physics"))
-    
-    def self.set_gamma_correction(bool)
-        Module.setGammaCorrection(bool)
+
+    def initialize
+        @module = ModuleHandler.get("lights")
+        @module.setGraphics(ModuleHandler.get("graphics"))
+        @module.setPhysics(ModuleHandler.get("physics"))
     end
     
-    def self.set_diffuse_light(bool)
-        Module.setDiffuseLight(bool)
+    def set_gamma_correction(bool)
+        @module.setGammaCorrection(bool)
     end
     
-    def self.set_ambient_color(r, g, b, a = 1)
-        Module.setAmbientColor(r, g, b, a)
+    def set_diffuse_light(bool)
+        @module.setDiffuseLight(bool)
     end
     
-    def self.set_blur(bool)
-        Module.setBlur(bool)
+    def set_ambient_color(r, g, b, a = 1)
+        @module.setAmbientColor(r, g, b, a)
     end
     
-    def self.set_blur_num(num)
-        Module.setBlurNum(num)
+    def set_blur(bool)
+        @module.setBlur(bool)
     end
     
-    def self.set_shadows(bool)
-        Module.setShadows(bool)
+    def set_blur_num(num)
+        @module.setBlurNum(num)
+    end
+    
+    def set_shadows(bool)
+        @module.setShadows(bool)
     end
    
-    def self.set_culling(bool)
-        Module.setCulling(bool)
+    def set_culling(bool)
+        @module.setCulling(bool)
     end
     
-    def self.point_at_light(x, y)
-        Module.pointAtLight(x, y)
+    def point_at_light(x, y)
+        @module.pointAtLight(x, y)
     end
     
-    def self.point_at_shadow(x, y)
-        Module.pointAtShadow(x, y)
+    def point_at_shadow(x, y)
+        @module.pointAtShadow(x, y)
     end
     
-    def self.directional(options)
+    def directional(options)
         rays = options[:rays] ? options[:rays] : 100
         color = options[:color] ? options[:color] : [1, 1, 1, 0.75]
         direction = options[:direction] ? options[:direction] : 0
         
-        Module.directional(rays, color, direction)
+        @module.directional(rays, color, direction)
     end
     
-    def self.point(options)
+    def point(options)
         rays = options[:rays] ? options[:rays] : 100
         color = options[:color] ? options[:color] : [1, 1, 1, 0.75]
         distance = options[:distance] ? options[:distance] : 100
         position = options[:position] ? options[:position] : [0, 0]
         
-        Module.point(rays, color, distance, position[0], position[1])
+        @module.point(rays, color, distance, position[0], position[1])
     end
     
-    def self.cone(options)
+    def cone(options)
         rays = options[:rays] ? options[:rays] : 100
         color = options[:color] ? options[:color] : [1, 1, 1, 0.75]
         distance = options[:distance] ? options[:distance] : 100
@@ -65,10 +68,10 @@ module Lights
         direction = options[:direction] ? options[:direction] : 0
         cone = options[:cone] ? options[:cone] : 20
         
-        Module.cone(rays, color, distance, position[0], position[1], direction, cone)
+        @module.cone(rays, color, distance, position[0], position[1], direction, cone)
     end
     
-    def self.chain(options)
+    def chain(options)
         rays = options[:rays] ? options[:rays] : 100
         color = options[:color] ? options[:color] : [1, 1, 1, 0.75]
         distance = options[:distance] ? options[:distance] : 100
@@ -76,9 +79,9 @@ module Lights
         chains = options[:chains] ? options[:chains] : nil
         
         if orientation == "right"
-            Module.chain(rays, color, distance, -1, chains)
+            @module.chain(rays, color, distance, -1, chains)
         else
-            Module.chain(rays, color, distance, 1, chains)
+            @module.chain(rays, color, distance, 1, chains)
         end
     end
 end

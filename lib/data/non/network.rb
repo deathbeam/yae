@@ -1,16 +1,19 @@
-module Network
+class Network
     java_import 'non.ModuleHandler'
-    Module = ModuleHandler.get("network")
-    
-    def self.client
-        Module.client()
+
+    def initialize
+        @module = ModuleHandler.get("network")
     end
     
-    def self.server
-        Module.server()
+    def client
+        @module.client()
     end
     
-    def self.buffer(data = nil)
-        data == nil ? Module.buffer() : Module.buffer(data)
+    def server
+        @module.server()
+    end
+    
+    def buffer(data = nil)
+        data == nil ? @module.buffer() : @module.buffer(data)
     end
 end

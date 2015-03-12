@@ -17,19 +17,19 @@ import non.Line;
 public class NonPhysics extends Module {
     public class ScriptContactListener implements ContactListener {
         public void beginContact(Contact contact) {
-            Non.script.callMethod(Non.receiver, "begincontact", contact);
+            Non.callMethod("begincontact", contact);
         }
             
         public void endContact(Contact contact) {
-            Non.script.callMethod(Non.receiver, "endcontact", contact);
+            Non.callMethod("endcontact", contact);
         }
             
         public void preSolve(Contact contact, Manifold oldManifold) {
-            Non.script.callMethod(Non.receiver, "presolve", contact, oldManifold);
+            Non.callMethod("presolve", contact, oldManifold);
         }
             
         public void postSolve(Contact contact, ContactImpulse impulse) {
-            Non.script.callMethod(Non.receiver, "postsolve", contact, impulse);
+            Non.callMethod("postsolve", contact, impulse);
         }
     }
     

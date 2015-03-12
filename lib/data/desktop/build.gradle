@@ -22,13 +22,13 @@ task dist(type: Jar, dependsOn: classes) {
     }
     
     doLast {
-        file("../../dist/desktop").mkdirs()
+        file("../../build/desktop").mkdirs()
         copy {
             from "build/libs"
-            into "../../dist/desktop"
+            into "../../build/desktop"
             include "desktop-${version}.jar"
             rename "desktop-${version}.jar", "${appName}-${version}.jar"
         }
-        println "You can find ${appName}-${version}.jar in /dist/desktop"
+        println "You can find ${appName}-${version}.jar in /build/desktop"
     }
 }

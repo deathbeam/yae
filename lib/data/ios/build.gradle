@@ -40,7 +40,7 @@ task updateRoboVMXML(dependsOn: copyNatives) << {
 task run(dependsOn: launchIPhoneSimulator)
 
 task dist(dependsOn: createIPA) << {
-    println "You can find ${appName}-${version}.ipa in /dist/ios"
+    println "You can find ${appName}-${version}.ipa in /build/ios"
 }
 
 launchIPhoneSimulator.dependsOn build

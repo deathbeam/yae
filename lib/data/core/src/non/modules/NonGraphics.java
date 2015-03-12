@@ -87,11 +87,11 @@ public class NonGraphics extends Module {
     }
 
     public Texture image(String file) {
-        return (Non.assets.isLoaded(file)) ? (Texture)Non.assets.get(file, Texture.class) : new Texture(Non.file(file));
+        return new Texture(Non.file(file));
     }
 
     public BitmapFont font(String file) {
-        return (Non.assets.isLoaded(file)) ? (BitmapFont)Non.assets.get(file, BitmapFont.class) : new BitmapFont(Non.file(file));
+        return new BitmapFont(Non.file(file));
     }
     
     public Vector2 project(float x, float y) {

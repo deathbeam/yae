@@ -1,4 +1,4 @@
 ---
   name: "Hello World"
-  package: "non.examples.helloworld"
+  package: "non.hello"
   version: "1.0.0"

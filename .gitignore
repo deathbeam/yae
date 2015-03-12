@@ -20,7 +20,4 @@ local.properties
 Thumbs.db
 
 ## NON
-/java/*.class
-.non/
-dist/
-project/
+/javalib/*.class
