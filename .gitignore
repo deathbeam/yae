@@ -9,15 +9,19 @@
 /spec/reports/
 /tmp/
 
-## Gradle
+## Lua
+*.def
+*.rock
+*.rc
+*.res
+
+## Java
 build/
 .gradle/
 local.properties
 .gradle-app.setting
+*.class
 
 ## OS Specific
 .DS_Store
 Thumbs.db
-
-## NON
-/javalib/*.class

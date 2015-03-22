@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
@@ -25,52 +24,123 @@ import non.BlendMode;
 import non.Line;
 
 public class NonGraphics extends Module {
-    protected BitmapFont curFont;
-    private SpriteBatch batch;
-    private ShapeRenderer shapes;
-    private OrthographicCamera camera;
+    public SpriteBatch batch;
+    public ShapeRenderer shapes;
+    public OrthographicCamera camera;
+    
+    private BitmapFont curFont;
+    private ShaderProgram curShader;
     private float rotation, scale, tx, ty;
+    private String blendMode;
+    private Color backgroundColor, curColor;
     
-    public SpriteBatch getBatch() { return batch; }
-    public OrthographicCamera getCamera() { return camera; }
-    public Color getColor() { return batch.getColor(); }
-    public BitmapFont getFont() { return curFont; }
-    public NonGraphics setFont(BitmapFont fnt) { curFont = fnt; return this; }
-    public NonGraphics setShader(ShaderProgram shader) { batch.setShader(shader); return this; }
-    
-    public TextBounds measureText(String text) {
-        TextBounds bounds = curFont.getBounds(text);
-        bounds.height = -bounds.height;
-        return bounds;
+    public Texture image(FileHandle file) {
+        return new Texture(file);
     }
     
-    public TextBounds measureText(String text, float wrap) {
-        TextBounds bounds = curFont.getWrappedBounds(text, wrap);
-        bounds.height = -bounds.height;
-        return bounds;
+    public BitmapFont font(FileHandle file) {
+        return new BitmapFont(file);
     }
     
-    public NonGraphics setBlending(String name) {
-        int[] blendMode = BlendMode.getOpenGLBlendMode(name);
-        batch.setBlendFunction(blendMode[0], blendMode[1]);
-        return this;
+    public ShaderProgram shader(FileHandle vertFile, FileHandle fragFile) {
+        return new ShaderProgram(vertFile, fragFile);
+    }
+    
+    public void setFont(BitmapFont font) {
+        curFont = font;
+    }
+    
+    public BitmapFont getFont() {
+        return curFont;
+    }
+    
+    public void setShader(ShaderProgram shader) {
+        curShader = shader;
+        batch.setShader(shader);
+    }
+    
+    public ShaderProgram getShader() {
+        return curShader;
+    }
+    
+    public void setBlending(String name) {
+        int[] mode = BlendMode.getOpenGLBlendMode(name);
+        batch.setBlendFunction(mode[0], mode[1]);
+        blendMode = name;
+    }
+    
+    public String getBlending() {
+        return blendMode;
+    }
+    
+    public void setColor(float r, float b, float g, float a) {
+        curColor.r = r;
+        curColor.g = g;
+        curColor.b = b;
+        curColor.a = a;
+    
+        batch.setColor(curColor);
+        shapes.setColor(curColor);
+        curFont.setColor(curColor);
+    }
+    
+    public Color getColor() {
+        return curColor;
+    }
+    
+    public void setBackgroundColor(float r, float b, float g, float a) {
+        backgroundColor.r = r;
+        backgroundColor.g = g;
+        backgroundColor.b = b;
+        backgroundColor.a = a;
+    }
+    
+    public Color getBackgroundColor() {
+        return backgroundColor;
     }
     
     public NonGraphics() {
-        batch = new SpriteBatch();
+        curFont = new BitmapFont();
+        curShader = SpriteBatch.createDefaultShader();
+        batch = new SpriteBatch(1000, curShader);
         shapes = new ShapeRenderer();
         shapes.setAutoShapeType(true);
-        curFont = new BitmapFont();
         camera = new OrthographicCamera();
+        curColor = new Color(1, 1, 1, 1);
+        backgroundColor = new Color(0, 0, 0, 1);
     }
     
     public void dispose() {
         batch.dispose();
+        shapes.dispose();
         curFont.dispose();
     }
     
+    public void update(float dt) {
+        scale = 1;
+        tx = 0;
+        ty = 0;
+        rotation = 0;
+        
+        camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.update();
+        updateMatrices();
+        
+        Gdx.gl.glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        
+        curColor.r = 1;
+        curColor.g = 1;
+        curColor.b = 1;
+        curColor.a = 1;
+        
+        shapes.setColor(curColor);
+        batch.setColor(curColor);
+        curFont.setColor(curColor);
+    }
+    
     public void updateAfter(float dt) {
-        reset().flush();
+        flush();
     }
     
     public void resize(float width, float height) {
@@ -78,109 +148,41 @@ public class NonGraphics extends Module {
         updateMatrices();
     }
     
-    public Color color(float r, float g, float b, float a) {
-        return new Color(r, g, b, a);
-    }
-    
-    public ShaderProgram shader(String vert, String frag) {
-        return new ShaderProgram(Non.file(vert), Non.file(frag));
-    }
-
-    public Texture image(String file) {
-        return new Texture(Non.file(file));
-    }
-
-    public BitmapFont font(String file) {
-        return new BitmapFont(Non.file(file));
-    }
-    
-    public Vector2 project(float x, float y) {
-        Vector3 temp = camera.project(new Vector3(x, y, 0));
-        return new Vector2(temp.x, temp.y);
-    }
-    
-    public Vector2 unproject(float x, float y) {
-        Vector3 temp = camera.unproject(new Vector3(x, y, 0));
-        return new Vector2(temp.x, temp.y);
-    }
-    
-    public NonGraphics clear(float r, float g, float b, float a) {
-        Gdx.gl.glClearColor(r, g, b, a);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        return this;
-    }
-    
-    public NonGraphics setColor(float r, float g, float b, float a) {
-        Color color = new Color(r, g, b, a);
-        shapes.setColor(color);
-        batch.setColor(color);
-        curFont.setColor(color);
-        return this;
-    }
-    
-    public NonGraphics rotate(float degrees, float x, float y, float z) {
+    public void rotate(float degrees, boolean doUpdate) {
         if (rotation != degrees) {
             rotation = degrees;
-            camera.rotate(rotation, x, y, z);
+            camera.rotate(rotation);
             camera.update();
-            updateMatrices();
+            if (doUpdate) updateMatrices();
         }
-        
-        return this;
     }
 
-    public NonGraphics scale(float factor) {
+    public void scale(float factor, boolean doUpdate) {
         factor = 1/factor;
         if (scale != factor) {
             scale = factor;
             camera.zoom = scale;
             camera.update();
-            updateMatrices();
+            if (doUpdate) updateMatrices();
         }
-        
-        return this;
     }
     
-    public NonGraphics translate(float x, float y) {
-        if ((tx != x) && (ty != y)) {
+    public void translate(float x, float y, boolean doUpdate) {
+        if ((tx != x) || (ty != y)) {
             tx = x;
             ty = y;
             camera.translate(-tx, -ty);
             camera.update();
-            updateMatrices();
+            if (doUpdate) updateMatrices();
         }
-
-        return this;
     }
     
-    public NonGraphics reset() {
-        return resetColor().resetTransform();
-    }
-    
-    public NonGraphics flush() {
+    public void flush() {
         if (shapes.isDrawing()) shapes.end();
         if (batch.isDrawing()) batch.end();
-        return this;
-    }
-    
-    public NonGraphics resetColor() {
-        shapes.setColor(Color.WHITE);
-        batch.setColor(Color.WHITE);
-        curFont.setColor(Color.WHITE);
-        return this;
-    }
-	
-    public NonGraphics resetTransform() {
-        scale = 1;
-        tx = 0;
-        ty = 0;
-        rotation = 0;
-        camera.zoom = scale;
-        camera.setToOrtho(true);
-        return this;
     }
 
-    public NonGraphics print(String text, float[] position, float[] scale, float wrap, String align) {
+    public void print(String text, float[] position, float[] scale, float wrap, String align) {
         checkBatch();
         
         curFont.setScale(scale[0], -scale[1]);
@@ -190,43 +192,81 @@ public class NonGraphics extends Module {
             curFont.drawWrapped(batch, text, position[0], position[1], wrap, BitmapFont.HAlignment.RIGHT);
         else if ("center".equalsIgnoreCase(align)) 
             curFont.drawWrapped(batch, text, position[0], position[1], wrap, BitmapFont.HAlignment.CENTER);
-        
-        return this;
     }
-	
-    public NonGraphics fill(Object shape, String mode) {
+    
+    public void rectangle(float x, float y, float width, float height, String mode) {
         checkShapes();
-		
+        
         if (mode.equalsIgnoreCase("line")) {
             shapes.set(ShapeRenderer.ShapeType.Line);
         } else if (mode.equalsIgnoreCase("fill")) {
             shapes.set(ShapeRenderer.ShapeType.Filled);
         }
-		
-        if (shape instanceof Rectangle) {
-            Rectangle cur = (Rectangle)shape;
-            shapes.rect(cur.x, cur.y, cur.width, cur.height);
-        } else if (shape instanceof Circle) {
-            Circle cur = (Circle)shape;
-            shapes.circle(cur.x, cur.y, cur.radius);
-        } else if (shape instanceof Ellipse) {
-            Ellipse cur = (Ellipse)shape;
-            shapes.ellipse(cur.x, cur.y, cur.width, cur.height);
-        } else if (shape instanceof Polygon) {
-            Polygon cur = (Polygon)shape;
-            shapes.polygon(cur.getVertices());
-        } else if (shape instanceof Line) {
-            Line cur = (Line)shape;
-            shapes.rectLine(cur.x1, cur.y1, cur.x2, cur.y2, 1);
-        } else if (shape instanceof Vector2) {
-            Vector2 cur = (Vector2)shape;
-            shapes.point(cur.x, cur.y, 0);
-        }
-		
-        return this;
+        
+        shapes.rect(x, y, width, height);
     }
     
-    public NonGraphics draw(Texture image, float[] position, float[] size, float[] origin, float[] scale, float[] source, float rotation) {
+    public void circle(float x, float y, float radius, String mode) {
+        checkShapes();
+        
+        if (mode.equalsIgnoreCase("line")) {
+            shapes.set(ShapeRenderer.ShapeType.Line);
+        } else if (mode.equalsIgnoreCase("fill")) {
+            shapes.set(ShapeRenderer.ShapeType.Filled);
+        }
+        
+        shapes.circle(x, y, radius);
+    }
+    
+    public void ellipse(float x, float y, float width, float height, String mode) {
+        checkShapes();
+        
+        if (mode.equalsIgnoreCase("line")) {
+            shapes.set(ShapeRenderer.ShapeType.Line);
+        } else if (mode.equalsIgnoreCase("fill")) {
+            shapes.set(ShapeRenderer.ShapeType.Filled);
+        }
+        
+        shapes.ellipse(x, y, width, height);
+    }
+    
+    public void polygon(float[] vertices, String mode) {
+        checkShapes();
+        
+        if (mode.equalsIgnoreCase("line")) {
+            shapes.set(ShapeRenderer.ShapeType.Line);
+        } else if (mode.equalsIgnoreCase("fill")) {
+            shapes.set(ShapeRenderer.ShapeType.Filled);
+        }
+        
+        shapes.polygon(vertices);
+    }
+    
+    public void line(float x1, float y1, float x2, float y2, String mode) {
+        checkShapes();
+        
+        if (mode.equalsIgnoreCase("line")) {
+            shapes.set(ShapeRenderer.ShapeType.Line);
+        } else if (mode.equalsIgnoreCase("fill")) {
+            shapes.set(ShapeRenderer.ShapeType.Filled);
+        }
+        
+        shapes.rectLine(x1, y1, x2, y2, 1);
+    }
+    
+    public void point(float x, float y, String mode) {
+        checkShapes();
+        
+        if (mode.equalsIgnoreCase("line")) {
+            shapes.set(ShapeRenderer.ShapeType.Line);
+        } else if (mode.equalsIgnoreCase("fill")) {
+            shapes.set(ShapeRenderer.ShapeType.Filled);
+        }
+        
+        shapes.point(x, y, 0);
+    }
+    
+    public void draw(Texture image, float[] position, float[] size, float[] origin, float[] scale, float[] source, float rotation) {
         checkBatch();
         batch.draw(
                 image, position[0], position[1], 
@@ -237,16 +277,14 @@ public class NonGraphics extends Module {
                 (int)source[2], (int)source[3],
                 false, true
         );
-        
-        return this;
     }
 	
-    public void checkBatch() {
+    private void checkBatch() {
         if (shapes.isDrawing()) shapes.end();
         if (!batch.isDrawing()) batch.begin();
     }
 	
-    public void checkShapes() {
+    private void checkShapes() {
         if (batch.isDrawing()) batch.end();
         if (!shapes.isDrawing()) shapes.begin();
     }

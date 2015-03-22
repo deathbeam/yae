@@ -14,10 +14,14 @@ android {
         instrumentTest.setRoot('tests')
     }
     
+    packagingOptions {
+        exclude "META-INF/NOTICE"
+    }
+    
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 21
-        multiDexEnabled = true
+        if (runtime == "ruby") multiDexEnabled = true
     }
     
     try {

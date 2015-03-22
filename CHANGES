@@ -1,4 +1,29 @@
-[5.3.0]
+[0.5.0]
+- published NON to LuaRocks
+- fixed hello task on first run (before you needed to execute it twice to actually generate hello world game)
+- added Lua support (same API, just snake_case changed to camelCase)
+- changed :position and :size parameters of NON.graphics.draw to :x, :y, :width and :height
+- changed :position parameter for NON.graphics.print to :x and :y
+- changed float colors to byte colors
+- new API for drawing shapes
+- added option to load music, sound, image, font and shader instances from different path sources (internal, local...)
+- changed NON.clipboard.get_contents and NON.clipboard.set_contents to NON.get_clipboard and NON.set_clipboard
+- changed versioning (previous versioning was misleading and indicated that NON isn´t in early development)
+- new loading screen background to match website
+- added some new methods to NON.graphics - set_background_color, get_background_color, get_shader and get_blending
+- removed NON.graphics.clear
+- now NON.graphics.get_color returns array and not Color object (so you can do "r, g, b, a = NON.graphics.get_color")
+- removed NON.physics, NON.lights and NON.particles module (temporary, will be added back in next updates)
+- fixed resetting of color each update before draw() callback
+- fixed NON.graphics.translate, NON.graphics.rotate and NON.graphics.scale methods
+- finished API for NON.files module
+- finished API for NON.audio module
+- fixed resizing of game window on desktop platforms
+- removed NON.files.parse_json, NON.files.parse_yaml and NON.files.parse_xml (temporary, will be added back in next updates)
+- renamed close() callback to quit() callback
+- fixed NON.keyboard.show, NON.keyboard.hide, NON.mouse.show and NON.mouse.hide
+
+[0.4.10]
 - moved all modules to root NON module (f.e Graphics is now NON.graphics)
 - fixed NON.accelerometer methods (getX, getY, getRotation => x, y, rotation)
 - moved methods from App module to root NON module (f.e App.quit is now NON.quit)
@@ -17,22 +42,22 @@
 - fixed Gradle runner (was throwing null pointer exception at end of build)
 - added joints to NON.physics
 
-[5.2.3]
+[0.4.9]
 - new API for asset loading
 - added sound and music methods to Audio module
 - renamed Particles.load to Particles.effect
 
-[5.2.2]
+[0.4.8]
 - physics body properties changed to snake_case
 
-[5.2.1]
+[0.4.7]
 - fixed YAML on Android (previous patch was not working)
 - removed App.thread method, now Thread works as in normal Ruby
 - now ruby runtime is properly terminated when app closes. This fixes mainly activity shutdown and reopen crashes on Android and prevents memory leaks
 - renamed most methods from camelCase to snake_case
 - renamed some methods totally (like getX to x, setPosition to move, isDown to down)
 
-[5.2.0]
+[0.4.6]
 - removed some temporary files what I forgot to remove
 - removed some debug code what I forgot to remove
 - small API changes for Graphics.print, Graphics.draw, Graphics.fill and Physics.fixture
@@ -48,7 +73,7 @@
 - added "clean" task to CLI
 - removed --compile flag for start task
 
-[5.1.0]
+[0.4.5]
 - added --compile (example: non build desktop --compile) flag which will set that all ruby code is compiled to java bytecode during build. This means performance almost equal to native Ruby (sometimes even faster) but this also means a bit slower start and build tasks. Then to force load your optimized code, just add .class suffix when using require method
 - removed ALL ruby builtin and standard libraries for maximum performamce and cross-platform compatibility. Anyways, NÖN is a game engine, and all important is included in it's own libraries
 - fixed few small bugs with non.launcher and joined some tasks together, so this should descrease build time by few seconds
@@ -58,7 +83,7 @@
 - fixed small bug where compiler was creating empty "project" folder on wrong location
 - merged non.launcher and non source code for easy building with single "rake" command
 
-[5.0.2]
+[0.4.4]
 - added stdlib support (not tested)
 - added physics module back
 - some small API changes for physics and lights module
@@ -69,18 +94,18 @@
 - removed time module (not needed cause of Ruby) and GUI module
 - added app module
 
-[5.0.1]
+[0.4.3]
 - changed directory structure and removed auto-updater as this now handles RubyGems
 - new event API
 - updated Android plugin to 1.1.0 version
 - updated Gradle to 2.3
 
-[5.0.0]
+[0.4.2]
 - moved from JavaScript scripting backend to Ruby
 - moved Non to RubyGems, easier and automated installation, actual command-line interface (replaced 'java -jar non.jar" with simply "non")
 - changed configuration file format from JSON to YAML
 
-[4.1.0]
+[0.4.1]
 - renamed setGraphics(..) method from GUI and particles module to link(..) method
 - renamed particleLoader from particles module to effectLoader
 - renamed load(..) method from particles module to effect(..)
@@ -90,7 +115,7 @@
 - added contacts() method to physics module
 - now desktop window title is changed correctly
 
-[4.0.0]
+[0.4.0]
 - added self variable to classes
 - added particles module (non.particles)
 - last API changes for Joints in physics module
@@ -104,7 +129,7 @@
 - added non.config variable
 - optimized rhino engine
 
-[3.9.1]
+[0.3.13]
 - added vscroll (vertical scrollbar) to GUI module
 - added hscroll (horizontal scrollbar) to GUI module
 - updated GUI sample
@@ -121,7 +146,7 @@
 - added Network sample (usage gen:network)
 - fixed non key events to match keyboard module key events
 
-[3.9.0]
+[0.3.12]
 - created GUI sample (usage java -jar non.jar gen:gui)
 - added setVisible(boolean) method to keyboard and mouse modules
 - added measureText(text) and measureText(text, width) methods to graphics module
@@ -138,7 +163,7 @@
 - added uniqueNumber and uniqueString methods to math module
 - added getTint() method to graphics module
 
-[3.6.0]
+[0.3.11]
 - added destroy(..) method for destroying bodies and joints to physics (usage physics.destroy(joint) or physics.destroy(body))
 - added many new methods to physics module for different types of joints and joint definitions
 - added physics example (usage java -jar non.jar gen:physics)
@@ -154,7 +179,7 @@
 - optimized calling of functions from scripts by storing them properly in variables
 - fixed unproject method from graphics module
 
-[3.5.0]
+[0.3.10]
 - added awesome method of handling multiple script files similar to node.js
 - removed non.require as it was never working
 - moved launcher source code to separate repository to decrease amount of downloaded data for each update and to split versioning of launcher and Non
@@ -163,24 +188,24 @@
 - removed support for custom scripting languages (sorry folks :/)
 - removed need of adding "language" to non.cfg
 
-[3.4.3]
+[0.3.9]
 - fixed major dependency resolving bug (thanks to Murii for finding it)
 
-[3.4.2]
+[0.3.8]
 - more output logs from gradle
 - changed some previous output logs to be more clear
 - fixed weird whitespace with warnings
 - removed logging of dexing warnings
 
-[3.4.1]
+[0.3.7]
 - fixed desktop:run task finally
 - fixed few visual bugs in console
 
-[3.4.0]
+[0.3.6]
 - revamped Non launcher, now it automatically updates your Non version
 - renamed hello task from gen:hello to hello
 
-[3.3.0]
+[0.3.5]
 - updated Gradle Android to 0.14.4
 - updated RoboVM to 1.0.0-beta-03
 - updated LibGDX to 1.5.3
@@ -202,13 +227,13 @@
 - fixed bug when task fails, it was not recognizing it until all tasks ended
 - console now properly ignores fake errors from LuaJ and Rhino libraries (Lua and JavaScript)
 
-[3.2.2]
+[0.3.4]
 - added proper loading animation for Non command line
 - added getPosition method to input.touch
 - added option for hiding mouse (desktop only) with show() and hide() methods
 - added automatic dependency loading to plugins
 
-[3.2.1]
+[0.3.3]
 - simplified logging of non.jar CLI
 - added support for multi-threading for JavaScript, not yet working on Lua
 - fixed translate method in graphics plugin
@@ -227,14 +252,14 @@
 - added checks for missing resources
 - added checks for missing plugins
 
-[3.2.0]
+[0.3.2]
 - revamped Non launcher, now only non.jar is required (this also changed some commands, so please read again the Wiki)
 - fixed bug what caused that mobile devices thought that all apps made by non are same (so when you tried to install 2 different Non projects on your device, second one simply replaced first one)
 - added "package" property to non.cfg
 - added sqrt() to math plugin
 - added pow() to math plugin
 
-[3.1.0]
+[0.3.1]
 - added non.buffer what can be used for reading and writing data to and from byte array
 - added checks for not existing functions to scripting
 - added more features to math plugin
@@ -244,7 +269,7 @@
 - removed init() method from scripting
 - replaced hacky networking with KryoNet (still WIP, some threading issues with scripting)
 
-[3.0.0]
+[0.3.0]
 - added drawing of various shapes to graphics plugin
 - added new method to graphics plugin for drawing formatted text (printf)
 - added new method to graphics plugin for drawing texture quad (drawq)
@@ -279,7 +304,7 @@
 - fixed graphics.translate and graphics.rotate
 - fixed calling of resize event
 
-[2.0.0]
+[0.2.0]
 - added asynchromous resource loading (use non.load(assets) event) along with super sexy loading screen what is displayed during loading 
 - removed TILED support (sorry, I wasn´t able to make it work with normal coordinate system)
 - totally revamped graphics, audio and input plugin

@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require "bundler/setup"
-require "non"
+FILE = File.join(File.expand_path(File.dirname(__FILE__)), "non.jar")
+ARGS = ARGV.join(" ")
 
-Non::Build.start(ARGV)
+system "java -jar \"#{FILE}\" #{ARGS}"

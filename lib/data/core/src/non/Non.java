@@ -2,7 +2,6 @@ package non;
 
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.ApplicationListener;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Color;
@@ -15,18 +14,20 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import java.io.IOException;
 import non.modules.*;
-import org.jruby.embed.ScriptingContainer;
-import org.jruby.javasupport.JavaEmbedUtils;
+import javax.script.*;
 import com.badlogic.gdx.utils.Array;
 import java.util.Map;
 import org.yaml.snakeyaml.Yaml;
-import org.jruby.Profile;
 
-public class Non implements ApplicationListener, Profile {
-    private static ScriptingContainer script;
-    private static Object receiver;
-    public static boolean ready;
+public class Non implements ApplicationListener {
+    private static ScriptEngine script;
+    private static int runtime;
+    private static final int RUBY = 0;
+    private static final String RUBY_MAIN = "main.rb";
+    private static final int LUA = 1;
+    private static final String LUA_MAIN = "main.lua";
     
+    private boolean ready;
     private Map config;
     private String loadPath;
     private SpriteBatch batch;
@@ -40,20 +41,70 @@ public class Non implements ApplicationListener, Profile {
     }
     
     public void create () {
+        if (Gdx.files.internal(RUBY_MAIN).exists()) {
+            runtime = RUBY;
+        } else if (Gdx.files.internal(LUA_MAIN).exists()) {
+            runtime = LUA;
+        } else {
+            System.out.println("Wrong main script extension!");
+            Gdx.app.exit();
+        }
+        
+        config = (Map<String, Object>)new Yaml().load(Gdx.files.internal("non/config.yml").readString());
+        
+        if (config.containsKey("name")) Gdx.graphics.setTitle((String)config.get("name"));
+        
+        if (Gdx.app.getType() == ApplicationType.Desktop) {
+            int width = 800;
+            int height = 600;
+            boolean fullscreen = false;
+        		
+            if (config.containsKey("desktop")) {
+                Map desktop = (Map<String, Object>)config.get("desktop");
+                if (desktop.containsKey("display")) {
+                    Map display = (Map<String, Object>)desktop.get("display");
+                    if (display.containsKey("width")) width = (Integer)display.get("width");
+                    if (display.containsKey("height")) height = (Integer)display.get("height");
+                    if (display.containsKey("fullscreen")) fullscreen = (Boolean)display.get("fullscreen");
+                }
+            }
+        		
+            Gdx.graphics.setDisplayMode(width, height, fullscreen);
+            
+            switch (runtime) {
+            case RUBY: loadPath = Gdx.files.internal(RUBY_MAIN).parent().file().getAbsolutePath(); break;
+            case LUA: loadPath = Gdx.files.internal(LUA_MAIN).parent().file().getAbsolutePath(); break;
+            }
+            
+        }
+        
+        if (config.containsKey("logging")) {
+            String logLevel = (String)config.get("logging");
+                
+            if ("".equalsIgnoreCase(logLevel))
+                Gdx.app.setLogLevel(0);
+            else if ("error".equalsIgnoreCase(logLevel))
+                Gdx.app.setLogLevel(1);
+            else if ("info".equalsIgnoreCase(logLevel))
+                Gdx.app.setLogLevel(2);
+            else if ("debug".equalsIgnoreCase(logLevel))
+                Gdx.app.setLogLevel(3);
+        }
+                
         batch = new SpriteBatch();
         font = new BitmapFont();
         
-        background = new Texture(file("non/background.png"));
-        logo = new Texture(file("non/logo.png"));
-        bar = new Texture(file("non/bar.png"));
+        background = new Texture(Gdx.files.internal("non/background.png"));
+        logo = new Texture(Gdx.files.internal("non/logo.png"));
+        bar = new Texture(Gdx.files.internal("non/bar.png"));
     }
 
     public void render () {
         if (ready) {
-            ModuleHandler.update(getDelta());
-            callMethod("update", getDelta());
+            JModule.update(Gdx.graphics.getDeltaTime());
+            callMethod("update", Gdx.graphics.getDeltaTime());
             callMethod("draw");
-            ModuleHandler.updateAfter(getDelta());
+            JModule.updateAfter(Gdx.graphics.getDeltaTime());
             return;
         }
         
@@ -71,7 +122,7 @@ public class Non implements ApplicationListener, Profile {
                 bar = null;
                 callMethod("ready");
                 ready = true;
-                resize(getWidth(), getHeight());
+                resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
                 return;
             }
         }
@@ -81,11 +132,8 @@ public class Non implements ApplicationListener, Profile {
         
         batch.begin();
         
-        float scale = (float)getWidth() / (float)background.getWidth();
-        batch.draw(background,
-            0, 0, 0, 0, background.getWidth() * scale, background.getHeight() * scale,
-            scale, scale, 0,
-            0, 0, background.getWidth(), background.getHeight(), false, false);
+        float scale = (float)Gdx.graphics.getWidth() / (float)background.getWidth();
+        batch.draw(background, 0, 0, background.getWidth() * scale, background.getHeight() * scale);
             
         batch.draw(logo, logoPos.x, logoPos.y);
         batch.draw(bar, barPos.x, barPos.y);
@@ -93,21 +141,21 @@ public class Non implements ApplicationListener, Profile {
         String text = "";
         
         switch(loadState) {
-        case 0: text = "Loading \"config.yml\" and applying configuration"; break;
-        case 1: text = "Starting Ruby VM 2.0"; break;
-        case 2: text = "Loading game's assets"; break;
+        case 0: text = ""; break;
+        case 1: text = "Starting the engine"; break;
+        case 2: text = "Initializing the game"; break;
         default: text = "Touch screen to continue"; break;
         }
         
         font.setColor(0, 0, 0, 1);
-        font.draw(batch, text, (getWidth() - font.getBounds(text).width) /2, barPos.y + (bar.getHeight() + 12) /2);
+        font.draw(batch, text, (Gdx.graphics.getWidth() - font.getBounds(text).width) /2, barPos.y + (bar.getHeight() + 12) /2);
         
         batch.end();
     }
 
     public void resize(int width, int height) { 
         if (ready) {
-            ModuleHandler.resize(width, height);
+            JModule.resize(width, height);
             callMethod("resize", width, height);
             return;
         }
@@ -129,99 +177,51 @@ public class Non implements ApplicationListener, Profile {
     
     public void dispose() { 
         if (ready) {
-            callMethod("close");
-            ModuleHandler.dispose();
+            callMethod("quit");
+            JModule.dispose();
         }
-        
-        if (script != null) {
-            script.terminate();
-        }
-    }
-    
-    public boolean allowBuiltin(String name) {
-        return name.startsWith("thread") || name.startsWith("jruby") || name.startsWith("java");
-    }
-                    
-    public boolean allowClass(String name) {
-        return true;
-    }
-                    
-    public boolean allowModule(String name) {
-        return true;
-    }
-                    
-    public boolean allowLoad(String name) {
-        return true;
-    }
-                    
-    public boolean allowRequire(String name) {
-        return true;
     }
 
     private boolean loadCore() {
         if (loadState > 2) return true;
         
         switch (loadState) {
-            case 0:
-                config = (Map<String, Object>)new Yaml().load(file("non/config.yml").readString());
-                if (config.containsKey("name")) Gdx.graphics.setTitle((String)config.get("name"));
-                
-                if (getPlatform().equalsIgnoreCase("desktop")) {
-                    int width = 800;
-                    int height = 600;
-                    boolean fullscreen = false;
-                		
-                    if (config.containsKey("desktop")) {
-                        Map desktop = (Map<String, Object>)config.get("desktop");
-                        if (desktop.containsKey("display")) {
-                            Map display = (Map<String, Object>)desktop.get("display");
-                            if (display.containsKey("width")) width = (Integer)display.get("width");
-                            if (display.containsKey("height")) height = (Integer)display.get("height");
-                            if (display.containsKey("fullscreen")) fullscreen = (Boolean)display.get("fullscreen");
-                        }
-                    }
-                		
-                    Gdx.graphics.setDisplayMode(width, height, fullscreen);
-                }
-                
-                if (config.containsKey("logging")) {
-                    String logLevel = (String)config.get("logging");
-                        
-                    if ("".equalsIgnoreCase(logLevel))
-                        Gdx.app.setLogLevel(0);
-                    else if ("error".equalsIgnoreCase(logLevel))
-                        Gdx.app.setLogLevel(1);
-                    else if ("info".equalsIgnoreCase(logLevel))
-                        Gdx.app.setLogLevel(2);
-                    else if ("debug".equalsIgnoreCase(logLevel))
-                        Gdx.app.setLogLevel(3);
-                }
-                
-                if (getPlatform().equalsIgnoreCase("desktop")) {
-                    loadPath = file("main.rb").parent().file().getAbsolutePath();
-                }
-
-                System.setProperty("jruby.compile.mode", "OFF");
-                System.setProperty("jruby.bytecode.version", "1.6");
-                System.setProperty("jruby.compat.version", "2.0");
-                System.setProperty("jruby.backtrace.mask", "true");
-                System.setProperty("jruby.backtrace.color", "true");
-                    
-                break;
             case 1:
-                script = new ScriptingContainer();
-                script.setProfile(this);
-
-                script.runScriptlet("$:.unshift '" + loadPath + "' ; $:.uniq!");
+                switch (runtime) {
+                case RUBY:
+                    System.setProperty("jruby.compile.mode", "OFF");
+                    System.setProperty("jruby.bytecode.version", "1.6");
+                    System.setProperty("jruby.compat.version", "2.0");
+                    System.setProperty("jruby.backtrace.mask", "true");
+                    System.setProperty("jruby.backtrace.color", "true");
+                    System.setProperty("org.jruby.embed.localvariable.behavior", "transient");
+                    script = new ScriptEngineManager().getEngineByName("jruby");
+                    try { script.eval("$:.unshift '" + loadPath + "' ; $:.uniq!"); }
+                    catch(Exception e) { Gdx.app.exit(); }
+                    break;
+                case LUA:
+                    script = new ScriptEngineManager().getEngineByName("luaj");
+                    break;
+                }
+                
                 break;
             case 2:
-                try { 
-                    receiver = script.runScriptlet(file("non/initializer.rb").read(), "initializer.rb");
-                } catch(Exception e) {
-                    quit();
+                switch (runtime) {
+                case RUBY:
+                    try { script.eval(Gdx.files.internal("non/ruby/initializer.rb").readString()); }
+                    catch(Exception e) { Gdx.app.exit(); }
+                    break;
+                case LUA:
+                    script.put("NON_MODULE", JModule.class);
+                    script.put("NON_GDX", Gdx.class);
+                    script.put("NON_NON", Non.class);
+                    script.put("NON_SCRIPT", script);
+                    try { script.eval(Gdx.files.internal("non/lua/initializer.lua").readString()); }
+                    catch(Exception e) { e.printStackTrace(); Gdx.app.exit(); }
+                    break;
                 }
                 
-                Gdx.input.setInputProcessor(new InputHandler());
+                Gdx.input.setInputProcessor(new JInput());
                 break;
         }
             
@@ -229,90 +229,53 @@ public class Non implements ApplicationListener, Profile {
         return false;
     }
     
-    public static Object callMethod(String method, Object... args) {
-        try {
-            return script.callMethod(receiver, method, args);
-        } catch(Exception e) {
-            quit();
-            return null;
-        }
-    }
-    
-    public static String getButton(int code) {
-        if (code == com.badlogic.gdx.Input.Buttons.LEFT) return "Left";
-        if (code == com.badlogic.gdx.Input.Buttons.RIGHT) return "Right";
-        if (code == com.badlogic.gdx.Input.Buttons.MIDDLE) return "Middle";
-        if (code == com.badlogic.gdx.Input.Buttons.BACK) return "Back";
-        if (code == com.badlogic.gdx.Input.Buttons.FORWARD) return "Forward";
-        return "unknown";
-    }
-    
-    public static int getButton(String name) {
-       if ("Left".equalsIgnoreCase(name)) return com.badlogic.gdx.Input.Buttons.LEFT;
-       if ("Right".equalsIgnoreCase(name)) return com.badlogic.gdx.Input.Buttons.RIGHT;
-       if ("Middle".equalsIgnoreCase(name)) return com.badlogic.gdx.Input.Buttons.MIDDLE;
-       if ("Back".equalsIgnoreCase(name)) return com.badlogic.gdx.Input.Buttons.BACK;
-       if ("Forward".equalsIgnoreCase(name)) return com.badlogic.gdx.Input.Buttons.FORWARD;
-       return -1;
-    }
-    
-    public static String getKey(int code) {
-        return com.badlogic.gdx.Input.Keys.toString(code);
-    }
-    
-    public static int getKey(String name) {
-        return com.badlogic.gdx.Input.Keys.valueOf(name);
-    }
-    
-    public static String getExtension(String fileName) {
-        String extension = "";
-        int i = fileName.lastIndexOf('.');
-        if (i > 0) extension = fileName.substring(i+1);
-        return extension;
-    }
-    
-    public static int getWidth() {
-        return Gdx.graphics.getWidth();
-    }
-    
-    public static int getHeight() {
-        return Gdx.graphics.getHeight();
-    }
-    
-    public static int getFPS() {
-        return Gdx.graphics.getFramesPerSecond();
-    }
-    
-    public static float getDelta() {
-        return Gdx.graphics.getDeltaTime();
+    public static FileHandle lcal(String path) {
+        return Gdx.files.local(path);
     }
     
     public static String getPlatform() {
-        ApplicationType type = Gdx.app.getType();
-        if (type == ApplicationType.Desktop) return "desktop";
-        if (type == ApplicationType.Android) return "android";
-        if (type == ApplicationType.iOS) return "ios";
-        if (type == ApplicationType.Applet || type == ApplicationType.WebGL) return "web";
+        ApplicationType platform = Gdx.app.getType();
+  
+        if (platform == ApplicationType.Desktop)
+          return "desktop";
+        else if (platform == ApplicationType.Android)
+          return "android";
+        else if (platform == ApplicationType.iOS)
+          return "ios";
+        
         return "unknown";
     }
     
-    public static void error(String type, String msg) {
-        Gdx.app.error(type, msg);
-    }
-    
-    public static void log(String type, String msg) {
-        Gdx.app.log(type, msg);
-    }
-    
-    public static void debug(String type, String msg) {
-        Gdx.app.debug(type, msg);
-    }
-    
-    public static FileHandle file(String path) {
-        return Gdx.files.internal(path);
-    }
-	
-    public static void quit() {
-        Gdx.app.exit();
+    public static Object callMethod(String method, Object... args) {
+        try {
+            switch (runtime) {
+            case RUBY:
+                return ((Invocable)script).invokeFunction(method,args);
+            case LUA:
+                if (args != null && args.length > 0) {
+                    String tempArg = "int_arg0";
+                    String argstring = tempArg;
+                    script.put(tempArg, args[0]);
+                    
+                    if (args.length > 1) {
+                        for (int i = 1; i < args.length; i++) {
+                            tempArg = "int_arg" + i;
+                            argstring += ", " + tempArg;
+                            script.put(tempArg, args[i]);
+                        }
+                    }
+                    
+                    return script.eval(method + "(" + argstring + ")");
+                }
+                
+                return script.eval(method + "()");
+            }
+            
+            return null;
+        } catch(Exception e) {
+            e.printStackTrace();
+            Gdx.app.exit();
+            return null;
+        }
     }
 }
