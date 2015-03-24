@@ -1,20 +1,20 @@
-function draw()
+function non.draw()
   -- Tint text with red
-  NON.graphics.setColor(255, 0, 0)
+  non.graphics.setColor(255, 0, 0)
   
   -- Draw the text on specified coordinates
-  NON.graphics.print("What hath deathbeam wrought?", { x = x, y = y })
+  non.graphics.print("What hath deathbeam wrought?", { x = x, y = y })
 end
 
-function resize(w, h)
+function non.resize(w, h)
   -- Calculate center of the window for text position
-  x = (NON.width() - 165) / 2
-  y = (NON.height() - 12) / 2
+  x = (non.width() - 165) / 2
+  y = (non.height() - 12) / 2
 end
 
-function keydown(key)
+function non.keydown(key)
   -- Quit application if Q or Escape key was pressed
   if key == "Q" or key == "Escape" then
-    NON.quit()
+    non.quit()
   end
 end

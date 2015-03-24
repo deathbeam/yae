@@ -1,3 +1,7 @@
+[0.6.1]
+- now "non start" and "non build" platform defaults to "desktop"
+- fixed few bugs what I accidentally made in previous release
+
 [0.6.0]
 - changed API a bit to match Lua standards
 - desktop window is now not resizeable

@@ -111,11 +111,11 @@ task cleanAssets << {
 }
 
 task hellolua << {
-    file("../data").mkdir()
+    file("../assets").mkdir()
     
     copy {
         from "hello"
-        into "../data"
+        into "../assets"
         include "main.lua"
     }
     
@@ -127,11 +127,11 @@ task hellolua << {
 }
 
 task hellomoon << {
-    file("../data").mkdir()
+    file("../assets").mkdir()
     
     copy {
         from "hello"
-        into "../data"
+        into "../assets"
         include "main.moon"
     }
     
@@ -200,8 +200,10 @@ task update(dependsOn: [':updateDesktop', ':updateAndroid', ':updateIOS', ':upda
         include "**/*.lua"
     }
     
-    exec {
-        commandLine "moonc", "-t", file("android").absolutePath, file("../assets").absolutePath
+    if (file("../assets").exists()) {
+        exec {
+            commandLine "moonc", "-t", file("android").absolutePath, file("../assets").absolutePath
+        }
     }
 }
 

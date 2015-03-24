@@ -1,13 +1,13 @@
 package = "non"
-version = "0.6.0-1"
+version = "0.6.1-1"
 
 source = {
   url = "git://github.com/non2d/non.git",
-  tag = "v0.6.0"
+  tag = "v0.6.1"
 }
 
 description = {
-  summary = "Make cross-platform games in Lua and Moonscript",
+  summary = "Make cross-platform games in Lua and MoonScript",
   detailed = "NÖN is an engine you can use to make 2D games in Lua and MoonScript. It's free, open-source, and works on Windows, Mac OS X, Linux, Android and iOS.",
   homepage = "http://nononsense.science",
   maintainer = "Thomas Slusny <slusnucky@gmail.com>",

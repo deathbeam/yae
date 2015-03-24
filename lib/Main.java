@@ -1,7 +1,7 @@
 import java.io.*;
 
 public class Main implements Runner.OutputListener {
-    private static final String VERSION = "v0.6.0";
+    private static final String VERSION = "v0.6.1";
     
     private static File JAR_FILE;
     private static File PROJECT_DIR;
@@ -50,7 +50,7 @@ public class Main implements Runner.OutputListener {
         System.out.println("  non update                        # update your project's runtime version and dependencies");
         System.out.println("  non version                       # print current compiler version");
         System.out.println("");
-        System.out.println("  <PLATFORM> can be 'desktop', 'android' or 'ios'");
+        System.out.println("  <PLATFORM> can be 'desktop', 'android' or 'ios' (defaults to 'desktop')");
         System.out.println("  <LANGUAGE> can be 'lua' or 'moon' (defaults to 'lua')");
         System.exit(-1);
     }
@@ -73,7 +73,7 @@ public class Main implements Runner.OutputListener {
             System.out.println("Packaging your application");
             check();
             
-            if (args[1].equals("desktop")) {
+            if (args.length <= 1 || args[1].equals("desktop")) {
                 new Main("update desktop:dist --offline");
             } else if (args[1].equals("android")) {
                 new Main("update android:dist --offline");
@@ -90,7 +90,7 @@ public class Main implements Runner.OutputListener {
             System.out.println("Starting your application");
             check();
             
-            if (args[1].equals("desktop")) {
+            if (args.length <= 1 || args[1].equals("desktop")) {
                 new Main("update desktop:run --offline");
             } else if (args[1].equals("android")) {
                 new Main("update android:run --offline");
