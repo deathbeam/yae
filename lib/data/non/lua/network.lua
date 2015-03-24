@@ -1,18 +1,18 @@
-NON.network = {}
-NON.network.module = NON_MODULE:get("network")
+non.network = {}
+non.network.module = NON_MODULE:get("network")
   
-function NON.network.client()
-  return NON.network.module:client()
+function non.network.client()
+  return non.network.module:client()
 end
   
-function NON.network.server()
-  return NON.network.module:server()
+function non.network.server()
+  return non.network.module:server()
 end
   
-function NON.network.buffer(data)
+function non.network.buffer(data)
   if data == nil then
-    return NON.network.module:buffer()
+    return non.network.module:buffer()
   else
-    return NON.network.module:buffer(data)
+    return non.network.module:buffer(data)
   end
 end

@@ -21,35 +21,16 @@ import org.yaml.snakeyaml.Yaml;
 
 public class Non implements ApplicationListener {
     private static ScriptEngine script;
-    private static int runtime;
-    private static final int RUBY = 0;
-    private static final String RUBY_MAIN = "main.rb";
-    private static final int LUA = 1;
-    private static final String LUA_MAIN = "main.lua";
     
     private boolean ready;
     private Map config;
-    private String loadPath;
     private SpriteBatch batch;
     private BitmapFont font;
     private Texture background, logo, bar;
     private Vector2 logoPos, barPos;
     private int loadState;
     
-    public void setLoadPath(String path) {
-        loadPath = path;
-    }
-    
     public void create () {
-        if (Gdx.files.internal(RUBY_MAIN).exists()) {
-            runtime = RUBY;
-        } else if (Gdx.files.internal(LUA_MAIN).exists()) {
-            runtime = LUA;
-        } else {
-            System.out.println("Wrong main script extension!");
-            Gdx.app.exit();
-        }
-        
         config = (Map<String, Object>)new Yaml().load(Gdx.files.internal("non/config.yml").readString());
         
         if (config.containsKey("name")) Gdx.graphics.setTitle((String)config.get("name"));
@@ -70,12 +51,6 @@ public class Non implements ApplicationListener {
             }
         		
             Gdx.graphics.setDisplayMode(width, height, fullscreen);
-            
-            switch (runtime) {
-            case RUBY: loadPath = Gdx.files.internal(RUBY_MAIN).parent().file().getAbsolutePath(); break;
-            case LUA: loadPath = Gdx.files.internal(LUA_MAIN).parent().file().getAbsolutePath(); break;
-            }
-            
         }
         
         if (config.containsKey("logging")) {
@@ -133,7 +108,7 @@ public class Non implements ApplicationListener {
         batch.begin();
         
         float scale = (float)Gdx.graphics.getWidth() / (float)background.getWidth();
-        batch.draw(background, 0, 0, background.getWidth() * scale, background.getHeight() * scale);
+        batch.draw(background, 0,  Gdx.graphics.getHeight() - (background.getHeight() * scale), background.getWidth() * scale, background.getHeight() * scale);
             
         batch.draw(logo, logoPos.x, logoPos.y);
         batch.draw(bar, barPos.x, barPos.y);
@@ -187,39 +162,15 @@ public class Non implements ApplicationListener {
         
         switch (loadState) {
             case 1:
-                switch (runtime) {
-                case RUBY:
-                    System.setProperty("jruby.compile.mode", "OFF");
-                    System.setProperty("jruby.bytecode.version", "1.6");
-                    System.setProperty("jruby.compat.version", "2.0");
-                    System.setProperty("jruby.backtrace.mask", "true");
-                    System.setProperty("jruby.backtrace.color", "true");
-                    System.setProperty("org.jruby.embed.localvariable.behavior", "transient");
-                    script = new ScriptEngineManager().getEngineByName("jruby");
-                    try { script.eval("$:.unshift '" + loadPath + "' ; $:.uniq!"); }
-                    catch(Exception e) { Gdx.app.exit(); }
-                    break;
-                case LUA:
-                    script = new ScriptEngineManager().getEngineByName("luaj");
-                    break;
-                }
-                
+                script = new ScriptEngineManager().getEngineByName("luaj");
                 break;
             case 2:
-                switch (runtime) {
-                case RUBY:
-                    try { script.eval(Gdx.files.internal("non/ruby/initializer.rb").readString()); }
-                    catch(Exception e) { Gdx.app.exit(); }
-                    break;
-                case LUA:
-                    script.put("NON_MODULE", JModule.class);
-                    script.put("NON_GDX", Gdx.class);
-                    script.put("NON_NON", Non.class);
-                    script.put("NON_SCRIPT", script);
-                    try { script.eval(Gdx.files.internal("non/lua/initializer.lua").readString()); }
-                    catch(Exception e) { e.printStackTrace(); Gdx.app.exit(); }
-                    break;
-                }
+                script.put("NON_MODULE", JModule.class);
+                script.put("NON_GDX", Gdx.class);
+                script.put("NON_NON", Non.class);
+                script.put("NON_SCRIPT", script);
+                try { script.eval(Gdx.files.internal("non/lua/initializer.lua").readString()); }
+                catch(Exception e) { e.printStackTrace(); Gdx.app.exit(); }
                 
                 Gdx.input.setInputProcessor(new JInput());
                 break;
@@ -248,30 +199,23 @@ public class Non implements ApplicationListener {
     
     public static Object callMethod(String method, Object... args) {
         try {
-            switch (runtime) {
-            case RUBY:
-                return ((Invocable)script).invokeFunction(method,args);
-            case LUA:
-                if (args != null && args.length > 0) {
-                    String tempArg = "int_arg0";
-                    String argstring = tempArg;
-                    script.put(tempArg, args[0]);
-                    
-                    if (args.length > 1) {
-                        for (int i = 1; i < args.length; i++) {
-                            tempArg = "int_arg" + i;
-                            argstring += ", " + tempArg;
-                            script.put(tempArg, args[i]);
-                        }
+            if (args != null && args.length > 0) {
+                String tempArg = "int_arg0";
+                String argstring = tempArg;
+                script.put(tempArg, args[0]);
+                
+                if (args.length > 1) {
+                    for (int i = 1; i < args.length; i++) {
+                        tempArg = "int_arg" + i;
+                        argstring += ", " + tempArg;
+                        script.put(tempArg, args[i]);
                     }
-                    
-                    return script.eval(method + "(" + argstring + ")");
                 }
                 
-                return script.eval(method + "()");
+                return script.eval("non." + method + "(" + argstring + ")");
             }
-            
-            return null;
+                
+            return script.eval("non." + method + "()");
         } catch(Exception e) {
             e.printStackTrace();
             Gdx.app.exit();

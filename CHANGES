@@ -1,3 +1,11 @@
+[0.6.0]
+- changed API a bit to match Lua standards
+- desktop window is now not resizeable
+- removed Ruby support (this drastically speeded-up built times)
+- added MoonScript support
+- renamed "data" folder to "assets" folder because of MoonScript compiler
+- now loading screen background is positioned in top-left corner and not in bottom-left corner
+
 [0.5.0]
 - published NON to LuaRocks
 - fixed hello task on first run (before you needed to execute it twice to actually generate hello world game)

@@ -12,16 +12,6 @@ public class AndroidLauncher extends AndroidApplication {
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-        Non non = new Non();
-        try {
-            String apkName = getContext().getPackageManager().getApplicationInfo(getContext().getPackageName(), 0).sourceDir;
-            non.setLoadPath("file:" + apkName + "!/assets");
-        } catch (NameNotFoundException e) {}
-        initialize(non, config);
-    }
-    
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-        MultiDex.install(this); 
+        initialize(new Non(), config);
     }
 }

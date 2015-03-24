@@ -19,14 +19,12 @@ allprojects {
     
     ext {
         cfg = cfg
-        runtime = runtime
         appName = cfg.name
         packageName = cfg.package
         packageDir = cfg.package.replace('.', '/')
         gdxVersion = '1.5.3'
         roboVMVersion = '1.0.0-beta-03'
         box2DLightsVersion = '1.3'
-        jrubyVersion = '1.7.19'
         kryonetVersion = '2.22.0-RC1'
         snakeyamlVersion = '1.14'
         luajVersion = '3.0'
@@ -59,7 +57,6 @@ project(":android") {
     configurations { natives }
 
     dependencies {
-        compile "com.android.support:multidex:1.0.0"
         compile "com.wu-man:android-bsf-api:3.1.3"
         compile project(":core")
         compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
@@ -103,13 +100,7 @@ project(":core") {
         compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
         compile "com.esotericsoftware:kryonet:$kryonetVersion"
         compile files("../snakeyaml.jar")
-        
-        switch (runtime) {
-        case "ruby":
-            compile("org.jruby:jruby-core:$jrubyVersion") { exclude group: "org.yaml", module: "snakeyaml" }; break
-        case "lua":
-            compile "org.luaj:luaj-jse:$luajVersion"; break
-        }
+        compile "org.luaj:luaj-jse:$luajVersion"
 
         try { for(dep in cfg.libs) compile dep } catch(e) { }
     }
@@ -135,13 +126,13 @@ task hellolua << {
     }
 }
 
-task helloruby << {
+task hellomoon << {
     file("../data").mkdir()
     
     copy {
         from "hello"
         into "../data"
-        include "main.rb"
+        include "main.moon"
     }
     
     copy {
@@ -150,6 +141,7 @@ task helloruby << {
         include "config.yml"
     }
 }
+
 
 task resolveDependencies << {
     project.rootProject.allprojects.each { subProject ->
@@ -202,23 +194,14 @@ task update(dependsOn: [':updateDesktop', ':updateAndroid', ':updateIOS', ':upda
         include "config.yml"
     }
     
-    switch (runtime) {
-    case "ruby":
-        copy {
-            from "non" 
-            into "android/assets/non"
-            include "**/*.rb"
-        }
-        
-        break
-    case "lua":
-        copy {
-            from "non" 
-            into "android/assets/non"
-            include "**/*.lua"
-        }
-        
-        break
+    copy {
+        from "non" 
+        into "android/assets/non"
+        include "**/*.lua"
+    }
+    
+    exec {
+        commandLine "moonc", "-t", file("android").absolutePath, file("../assets").absolutePath
     }
 }
 
@@ -292,8 +275,9 @@ task updateIOS(dependsOn: 'ios:updateRoboVMXML') << {
 }
 
 task updateAssets(type: Copy) {
-    from "../data"
+    from "../assets"
     into "android/assets"
+    exclude "**/*.moon"
     exclude "non/"
     exclude "**/*.DS_Store"
     exclude "**/*Thumbs.db"
@@ -311,14 +295,6 @@ def configure() {
             '  package: "non"\n' +
             '  version: "1.0.0"'
         )
-    }
-    
-    if (file("../data/main.rb").exists()) {
-        ext.runtime = "ruby"
-    } else if (file("../data/main.lua").exists()) {
-        ext.runtime = "lua"
-    } else {
-        ext.runtime = "lua"
     }
 }
 

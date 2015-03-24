@@ -21,7 +21,6 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 21
-        if (runtime == "ruby") multiDexEnabled = true
     }
     
     try {

@@ -1,16 +1,16 @@
-NON.files = {}
+non.files = {}
 
 local Gdx = NON_GDX
   
-function NON.files.getExternalPath()
+function non.files.getExternalPath()
   return Gdx.files:getExternalStoragePath()
 end
   
-function NON.files.getLocalPath()
+function non.files.getLocalPath()
   return Gdx.files:getLocalStoragePath()
 end
   
-function NON.files.open(path, type)
+function non.files.open(path, type)
   if type == nil then type = "internal" end
   
   if type == "internal" then
@@ -28,46 +28,46 @@ function NON.files.open(path, type)
   return Gdx.files.internal(path)
 end
   
-function NON.files.exists(path, type)
-  return NON.files.open(path, type):exists()
+function non.files.exists(path, type)
+  return non.files.open(path, type):exists()
 end
   
-function NON.files.isDirectory(path, type)
-  return NON.files.open(path, type):isDirectory()
+function non.files.isDirectory(path, type)
+  return non.files.open(path, type):isDirectory()
 end
   
-function NON.files.isFile(path, type)
-  return not NON.files.isDirectory(path, type)
+function non.files.isFile(path, type)
+  return not non.files.isDirectory(path, type)
 end
   
-function NON.files.read(path, type)
-  return NON.files.open(path, type):readString()
+function non.files.read(path, type)
+  return non.files.open(path, type):readString()
 end
   
-function NON.files.write(path, text, type)
-  return NON.files.open(path, type):writeString(text, false)
+function non.files.write(path, text, type)
+  return non.files.open(path, type):writeString(text, false)
 end
   
-function NON.files.append(path, text, type)
-  return NON.files.open(path, type):writeString(text, true)
+function non.files.append(path, text, type)
+  return non.files.open(path, type):writeString(text, true)
 end
   
-function NON.files.remove(path, type)
-  return NON.files.open(path, type):delete()
+function non.files.remove(path, type)
+  return non.files.open(path, type):delete()
 end
   
-function NON.files.size(path, type)
-  return NON.files.open(path, type):length()
+function non.files.size(path, type)
+  return non.files.open(path, type):length()
 end
   
-function NON.files.last_modified(path, type)
-  return NON.files.open(path, type):lastModified()
+function non.files.last_modified(path, type)
+  return non.files.open(path, type):lastModified()
 end
   
-function NON.files.list(path, type)
-  return NON.files.open(path, type):list()
+function non.files.list(path, type)
+  return non.files.open(path, type):list()
 end
   
-function NON.files.mkdir(path, type)
-  return NON.files.open(path, type):mkdirs()
+function non.files.mkdir(path, type)
+  return non.files.open(path, type):mkdirs()
 end

@@ -1,6 +1,6 @@
 -- reserved globals - NON_NON, NON_GDX, NON_MODULE, NON_SCRIPT
 
-NON = {}
+non = {}
 
 function require(file)
   return NON_SCRIPT:eval(NON_GDX.files:internal(file..".lua"):readString())
@@ -17,27 +17,27 @@ require "non/lua/input/mouse"
 require "non/lua/input/touch"
 
 -- Callbacks
-function ready() end
-function update(dt) end
-function draw() end
-function quit() end
-function pause() end
-function resume() end
-function resize(w, h) end
+function non.ready() end
+function non.update(dt) end
+function non.draw() end
+function non.quit() end
+function non.pause() end
+function non.resume() end
+function non.resize(w, h) end
 
 -- Input Callbacks
-function keydown(key) end
-function keyup(key) end
-function keytyped(character) end
-function touchdown(x, y, pointer, button) end
-function touchup(x, y, pointer, button) end
-function touchdragged(x, y, pointer) end
-function mousemoved(x, y) end
-function mousescrolled(amount) end
+function non.keydown(key) end
+function non.keyup(key) end
+function non.keytyped(character) end
+function non.touchdown(x, y, pointer, button) end
+function non.touchup(x, y, pointer, button) end
+function non.touchdragged(x, y, pointer) end
+function non.mousemoved(x, y) end
+function non.mousescrolled(amount) end
 
 -- Network Callbacks
-function connected(connection) end
-function disconnected(connection) end
-function received(connection, data) end
+function non.connected(connection) end
+function non.disconnected(connection) end
+function non.received(connection, data) end
 
 require "main"

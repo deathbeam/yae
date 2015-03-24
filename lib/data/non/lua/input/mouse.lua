@@ -1,29 +1,29 @@
-NON.mouse = {}
+non.mouse = {}
 
 local Gdx = NON_GDX
 local Non = NON_NON
   
-function NON.mouse.show()
+function non.mouse.show()
   Gdx.input:setCursorCatched(false)
 end
   
-function NON.mouse.hide()
+function non.mouse.hide()
   Gdx.input:setCursorCatched(true)
 end
   
-function NON.mouse.x()
+function non.mouse.x()
   return Gdx.input:getX()
 end
   
-function NON.mouse.y()
+function non.mouse.y()
   return Gdx.input:getY()
 end
   
-function NON.mouse.move(x, y)
+function non.mouse.move(x, y)
   return Gdx.input:setCursorPosition(x, y)
 end
   
-function NON.mouse.down(button)
+function non.mouse.down(button)
   if button == nil then buton = "left" end
   local buttoncode = Non:getButton(name)
   return Gdx.input:isButtonPressed(buttoncode)

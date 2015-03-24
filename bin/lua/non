@@ -1,6 +1,0 @@
-#!/usr/bin/env lua
-
-local FILE = debug.getinfo(1,"S").source:sub(2)..".jar"
-local ARGS = table.concat(arg, " ")
-
-os.execute("java -jar \""..FILE.."\" "..ARGS)

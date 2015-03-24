@@ -1,6 +1,6 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env lua
 
-FILE = File.join(File.expand_path(File.dirname(__FILE__)), "non.jar")
-ARGS = ARGV.join(" ")
+local FILE = debug.getinfo(1,"S").source:sub(2)..".jar"
+local ARGS = table.concat(arg, " ")
 
-system "java -jar \"#{FILE}\" #{ARGS}"
+os.execute("java -jar \""..FILE.."\" "..ARGS)

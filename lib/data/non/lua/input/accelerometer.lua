@@ -1,23 +1,19 @@
-NON.accelerometer = {}
+non.accelerometer = {}
 
 local Gdx = NON_GDX
 
-function NON.accelerometer.x()
+function non.accelerometer.x()
   return Gdx.input:getAccelerometerX()
 end
   
-function NON.accelerometer.y()
+function non.accelerometer.y()
   return Gdx.input:getAccelerometerY()
 end
   
-function NON.accelerometer.z()
+function non.accelerometer.z()
   return Gdx.input:getAccelerometerZ()
 end
-
-function NON.accelerometer.rotation()
-  return NON.accelerometer.x(), NON.accelerometer.y(), NON.accelerometer.z()
-end
   
-function NON.accelerometer.orientation()
+function non.accelerometer.rotation()
   return Gdx.input:getRotation()
 end

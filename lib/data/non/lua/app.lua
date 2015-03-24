@@ -1,50 +1,50 @@
 local Gdx = NON_GDX
 local Non = NON_NON
 
-function NON.width()
+function non.width()
   return Gdx.graphics:getWidth()
 end
   
-function NON.height()
+function non.height()
   return Gdx.graphics:getHeight()
 end
 
-function NON.fps()
+function non.fps()
   return Gdx.graphics:getFramesPerSecond()
 end
   
-function NON.delta()
+function non.delta()
   return Gdx.graphics:getDeltaTime()
 end
   
-function NON.getClipboard()
+function non.getClipboard()
   return Gdx.app:getClipboard():getContents()
 end
   
-function NON.setClipboard(object)
+function non.setClipboard(object)
   Gdx.app:getClipboard():setContents(object)
 end
   
-function NON.version()
+function non.version()
   return Gdx.app:getVersion()
 end
   
-function NON.platform()
+function non.platform()
   return Non:getPlatform()
 end
   
-function NON.log(tag, msg)
+function non.log(tag, msg)
   Gdx.app:log(tag, msg)
 end
   
-function NON.debug(tag, msg)
+function non.debug(tag, msg)
   Gdx.app:debug(tag, msg)
 end
   
-function NON.error(tag, msg)
+function non.error(tag, msg)
   Gdx.app:error(tag, msg)
 end
   
-function NON.quit()
+function non.quit()
   Gdx.app:exit()
 end

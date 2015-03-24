@@ -1,31 +1,31 @@
-NON.audio = {}
+non.audio = {}
 
 local Gdx = NON_GDX
   
-function NON.audio.sound(path, type)
-  return Gdx.audio:newSound(NON.files.open(path, type))
+function non.audio.sound(path, type)
+  return Gdx.audio:newSound(non.files.open(path, type))
 end
   
-function NON.audio.music(path, type)
-  return Gdx.audio:newMusic(NON.files.open(path, type))
+function non.audio.music(path, type)
+  return Gdx.audio:newMusic(non.files.open(path, type))
 end
   
-function NON.audio.play(source)
+function non.audio.play(source)
   source:play()
 end
   
-function NON.audio.pause(source)
+function non.audio.pause(source)
   source:pause()
 end
   
-function NON.audio.resume(source)
+function non.audio.resume(source)
   source:resume()
 end
   
-function NON.audio.stop(source)
+function non.audio.stop(source)
   source:stop()
 end
   
-function NON.audio.loop(source)
+function non.audio.loop(source)
   source:loop()
 end

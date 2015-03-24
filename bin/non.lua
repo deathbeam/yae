@@ -2,28 +2,28 @@
 
 local FILE = debug.getinfo(1,"S").source:sub(2)..".jar"
 
-NON = {}
+non = {}
 
-function NON.hello(language) {
+function non.hello(language)
     os.execute("java -jar \""..FILE.."\" hello "..language)
-}
+end
 
-function NON.start(platform) {
+function non.start(platform)
     os.execute("java -jar \""..FILE.."\" start "..platform)
-}
+end
 
-function NON.build(platform) {
+function non.build(platform)
     os.execute("java -jar \""..FILE.."\" build "..platform)
-}
+end
 
-function NON.update() {
+function non.update()
     os.execute("java -jar \""..FILE.."\" update")
-}
+end
 
-function NON.clean() {
+function non.clean()
     os.execute("java -jar \""..FILE.."\" clean")
-}
+end
 
-function NON.version() {
+function non.version()
     os.execute("java -jar \""..FILE.."\" version")
-}
+end
