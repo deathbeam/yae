@@ -1,16 +1,10 @@
 ![logo](https://raw.githubusercontent.com/non2d/non/master/lib/data/non/logo.png)
 
-NÖN is an engine you can use to make 2D games in **Ruby** and **Lua**. It's free, open-source, and works on **Windows**, **Mac OS X**, **Linux**, **Android** and **iOS**.
+NÖN is an engine you can use to make 2D games in **Lua** and **MoonScript**. It's free, open-source, and works on **Windows**, **Mac OS X**, **Linux**, **Android** and **iOS**.
 
 ### Installation ###
 
-You will need to have [JDK 7+](http://www.oracle.com/technetwork/java/javase/downloads/index.html) installed. Then you can install NÖN as gem ([RubyGems](https://rubygems.org/) required)
-
-```ruby
-gem install non
-```
-
-or as rock ([LuaRocks](https://luarocks.org/) required)
+You will need to have [JDK 7+](http://www.oracle.com/technetwork/java/javase/downloads/index.html) installed. Then you can install NÖN as rock ([LuaRocks](https://luarocks.org/) required)
 
 ```lua
 luarocks install non
