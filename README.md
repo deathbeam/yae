@@ -1,4 +1,4 @@
-![logo](https://raw.githubusercontent.com/non2d/non/master/lib/data/non/logo.png)
+![logo](https://raw.githubusercontent.com/non2d/non/master/src/data/resources/logo.png)
 
 NÖN is an engine you can use to make 2D games in **Lua** and **MoonScript**. It's free, open-source, and works on **Windows**, **Mac OS X**, **Linux**, **Android** and **iOS**.
 
@@ -14,7 +14,7 @@ luarocks install non
 
   * [Introduction](https://github.com/non2d/non/wiki/Introduction)
   * [Create your first Non project](https://github.com/non2d/non/wiki/Getting-started)
-    * [Run, Manage and Package your project]( https://github.com/non2d/non/wiki/Running-and-packaging-your-project)
+  * [Run, Manage and Package your project]( https://github.com/non2d/non/wiki/Running-and-packaging-your-project)
   * [Read the Wiki](https://github.com/non2d/non/wiki)
 
 ### Documentation ###

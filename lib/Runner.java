@@ -46,7 +46,7 @@ public class Runner implements Runnable {
         if (silent) return;
         
         if (error) {
-            listener.print(errorLog + "\n");
+            listener.print("\n" + errorLog);
             listener.print("\nBUILD FAILED\n");
         } else {
             listener.print("\nBUILD SUCCESFULL\n");
@@ -66,7 +66,7 @@ public class Runner implements Runnable {
     }
     
     public void warn(String msg) {
-        listener.print(msg + "\n");
+        listener.print("\n" + msg + "\n");
     }
 
     public void error(Exception e) {

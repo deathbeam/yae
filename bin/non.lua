@@ -1,18 +1,21 @@
 #!/usr/bin/env lua
 
-local FILE = debug.getinfo(1,"S").source:sub(2)..".jar"
+local FILE = debug.getinfo(1,"S").source:sub(2):replace(".lua", ".jar")
 
 non = {}
 
 function non.hello(language)
+    if language == nil then language = "lua" end
     os.execute("java -jar \""..FILE.."\" hello "..language)
 end
 
 function non.start(platform)
+    if platform == nil then platform = "desktop" end
     os.execute("java -jar \""..FILE.."\" start "..platform)
 end
 
 function non.build(platform)
+    if platform == nil then platform = "desktop" end
     os.execute("java -jar \""..FILE.."\" build "..platform)
 end
 

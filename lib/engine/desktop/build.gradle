@@ -1,0 +1,46 @@
+sourceCompatibility = 1.6
+sourceSets.main.java.srcDirs = [ "src/" ]
+
+project.ext.mainClassName = "${packageName}.desktop.DesktopLauncher"
+project.ext.assetsDir = new File("../android/assets")
+
+task run(type: JavaExec, dependsOn: classes) {
+    main = project.mainClassName
+    classpath = sourceSets.main.runtimeClasspath
+    standardInput = System.in
+    workingDir = project.assetsDir
+}
+
+task dist(type: Jar, dependsOn: classes) {
+    from files(sourceSets.main.output.classesDir)
+    from files(sourceSets.main.output.resourcesDir)
+    from {configurations.compile.collect {zipTree(it)}}
+    from files(project.assetsDir);
+ 
+    manifest {
+        attributes 'Main-Class': project.mainClassName
+    }
+    
+    doLast {
+        try {
+            ant.signjar(
+                jar: file("build/libs/desktop-${version}.jar").absolutePath,
+                alias: cfg.sign.keyAlias,
+                keystore: file(cfg.sign.storeFile).absolutePath,
+                storepass: cfg.sign.storePassword,
+                keypass: cfg.sign.keyPassword
+            )
+        } catch(e) { }
+        
+        file("../../build/desktop").mkdirs()
+        
+        copy {
+            from "build/libs"
+            into "../../build/desktop"
+            include "desktop-${version}.jar"
+            rename "desktop-${version}.jar", "${appName} v${version}.jar"
+        }
+        
+        println "You can find ${appName} v${version}.jar in /build/desktop"
+    }
+}
