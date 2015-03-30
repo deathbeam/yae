@@ -1,6 +1,6 @@
+project = "NÖN"
 title = "NÖN Docs"
 description = "Make cross-platform games in Lua and MoonScript"
-project = title
 format = "markdown"
 style = true
 

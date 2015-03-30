@@ -10,33 +10,53 @@ Key-codes alone do not give us information about which character the user actual
 
 non.keyboard = {}
 
-----------
--- Show on-screen keyboard (mobile devices only)
--- @usage non.keyboard.show()
+--[[----------
+Show on-screen keyboard (mobile devices only)
+@usage
+-- lua -------------------------------------------------------------------------------------
+non.keyboard.show()
+-- moonscript ------------------------------------------------------------------------------
+non.keyboard.show!
+]]
 function non.keyboard.show()
   NON.gdx.input:setOnscreenKeyboardVisible(true)
 end
 
-----------
--- Hide on-screen keyboard (mobile devices only)
--- @usage non.keyboard.hide() 
+--[[----------
+Hide on-screen keyboard (mobile devices only)
+@usage
+-- lua -------------------------------------------------------------------------------------
+non.keyboard.hide()
+-- moonscript ------------------------------------------------------------------------------
+non.keyboard.hide!
+]]
 function non.keyboard.hide()
   NON.gdx.input:setOnscreenKeyboardVisible(false)
 end
 
-----------
--- Change on-screen keyboard visibility (mobile devices only)
--- @tparam boolean visible set if keyboard will be visible or not
--- @usage non.keyboard.setVisible(true) 
+--[[----------
+Change on-screen keyboard visibility (mobile devices only)
+@tparam boolean visible set if keyboard will be visible or not
+@usage
+-- lua -------------------------------------------------------------------------------------
+non.keyboard.setVisible(true)
+-- moonscript ------------------------------------------------------------------------------
+non.keyboard.setVisible true
+]]
 function non.keyboard.setVisible(visible)
   NON.gdx.input:setOnscreenKeyboardVisible(visible)
 end
 
-----------
--- Check if specified key is down
--- @tparam string key key to check for
--- @treturn boolean true if specified key is pressed
--- @usage isADown = non.keyboard.isDown("A")
+--[[----------
+Check if specified key is down
+@tparam string key key to check for
+@treturn boolean true if specified key is pressed
+@usage
+-- lua -------------------------------------------------------------------------------------
+isADown = non.keyboard.isDown("A")
+-- moonscript ------------------------------------------------------------------------------
+isADown = non.keyboard.isDown "A"
+]]
 function non.keyboard.isDown(key)
   local keycode = NON:getKey(name)
   if NON.gdx.input:isKeyPressed(keycode) and keycode ~= 0 then return true end

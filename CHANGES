@@ -1,3 +1,13 @@
+[0.6.3]
+- added documentation for MoonScript
+- optimized rendering of loading screen
+- removed automatic resizing of screen canvas (now it is resized only at game start)
+- removed unused Java code
+- now launcher loads version directly from VERSION file
+- added non.system.getSize(), non.system.getWidth() and non.system.getHeight() to get device screen size
+- added non.graphics.setSize(width, height) to change current screen size (usefull for screen cropping)
+- changed non.graphics.getSize(), non.graphics.getWidth() and non.graphics.getHeight() to return current screen size
+
 [0.6.2]
 - updated LibGDX backend to v1.5.5
 - updated RoboVM backend to v1.0.0

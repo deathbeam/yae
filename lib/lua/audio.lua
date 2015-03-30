@@ -15,70 +15,105 @@ For any sound that's longer than a few seconds it is preferable to stream it fro
 
 non.audio = {}
 
-----------
--- Create a sound instance from specified resource
--- @tparam string path path to sound file
--- @tparam string type type of file path (default is "internal")
--- @treturn Sound a sound instance
--- @see non.files
--- @usage source = non.audio.sound("sound.ogg", "local")
+--[[----------
+Create a sound instance from specified resource
+@tparam string path path to sound file
+@tparam string type type of file path (default is "internal")
+@treturn Sound a sound instance
+@see non.files
+@usage
+-- lua -------------------------------------------------------------------------------------
+source = non.audio.sound("sound.ogg", "local")
+-- moonscript ------------------------------------------------------------------------------
+source = non.audio.sound "sound.ogg", "local"
+]]
 function non.audio.sound(path, type)
   return NON.gdx.audio:newSound(non.files.open(path, type))
 end
 
-----------
--- Create a music instance from specified resource
--- @tparam string path path to sound file
--- @tparam string type type of file path (default is "internal")
--- @treturn Music a music instance
--- @see non.files
--- @usage source = non.audio.music("music.mp3", "external")
+--[[----------
+Create a music instance from specified resource
+@tparam string path path to sound file
+@tparam string type type of file path (default is "internal")
+@treturn Music a music instance
+@see non.files
+@usage
+-- lua -------------------------------------------------------------------------------------
+source = non.audio.music("music.mp3", "external")
+-- moonscript ------------------------------------------------------------------------------
+source = non.audio.music "music.mp3", "external"
+]]
 function non.audio.music(path, type)
   return NON.gdx.audio:newMusic(non.files.open(path, type))
 end
 
-----------
--- Play music or sound instance
--- @param source music or sound instance to be played
--- @tparam number volume volume of audio to be played (from 0 to 100), default is 100
--- @usage non.audio.play(source, 80)
+--[[----------
+Play music or sound instance
+@param source music or sound instance to be played
+@tparam number volume volume of audio to be played (from 0 to 100), default is 100
+@usage
+-- lua -------------------------------------------------------------------------------------
+non.audio.play(source, 80)
+-- moonscript ------------------------------------------------------------------------------
+non.audio.play source, 80
+]]
 function non.audio.play(source, volume)
   if volume == nil then volume = 100 end
   source:setVolume(volume / 100)
   source:play()
 end
 
-----------
--- Play and loop music or sound instance
--- @param source music or sound instance to be looped
--- @tparam number volume volume of audio to be played (from 0 to 100), default is 100
--- @usage non.audio.loop(source, 70)
+--[[----------
+Play and loop music or sound instance
+@param source music or sound instance to be looped
+@tparam number volume volume of audio to be played (from 0 to 100), default is 100
+@usage
+-- lua -------------------------------------------------------------------------------------
+non.audio.loop(source, 70)
+-- moonscript ------------------------------------------------------------------------------
+non.audio.loop source, 70
+]]
 function non.audio.loop(source, volume)
   if volume == nil then volume = 100 end
   source:setVolume(volume / 100)
   source:loop()
 end
 
-----------
--- Pause music or sound instance
--- @param source music or sound instance to be paused
--- @usage non.audio.pause(source)
+--[[----------
+Pause music or sound instance
+@param source music or sound instance to be paused
+@usage
+-- lua -------------------------------------------------------------------------------------
+non.audio.pause(source)
+-- moonscript ------------------------------------------------------------------------------
+non.audio.pause source
+]]
 function non.audio.pause(source)
   source:pause()
 end
 
-----------
--- Resume paused music or sound instance
--- @param source music or sound instance to be resumed
--- @usage non.audio.resume(source)
+--[[----------
+Resume paused music or sound instance
+@param source music or sound instance to be resumed
+@usage
+-- lua -------------------------------------------------------------------------------------
+non.audio.resume(source)
+-- moonscript ------------------------------------------------------------------------------
+non.audio.resume source
+]]
 function non.audio.resume(source)
   source:resume()
 end
 
-----------
--- Stop playing of music or sound instance
--- @param source music or sound instance to be played
--- @usage non.audio.stop(source)
+--[[----------
+Stop playing of music or sound instance
+@param source music or sound instance to be played
+@usage
+-- lua -------------------------------------------------------------------------------------
+non.audio.stop source
+-- moonscript ------------------------------------------------------------------------------
+non.audio.stop source
+]]
 function non.audio.stop(source)
   source:stop()
 end

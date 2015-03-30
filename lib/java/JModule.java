@@ -113,10 +113,6 @@ public class JModule {
         for(Module module: modules.values()) module.updateAfter(dt);
     }
     
-    public static void resize(float w, float h) {
-        for(Module module: modules.values()) module.resize(w, h);
-    }
-    
     public static void dispose() {
         for(Module module: modules.values()) module.dispose();
     }

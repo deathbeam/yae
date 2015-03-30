@@ -10,26 +10,41 @@ Some Android devices and iOS devices have an integrated magnetic field sensor th
 
 non.compass = {}
 
-----------
--- Get the angle of the device's orientation around the z-axis. The positive z-axis points towards the earths center
--- @treturn number azimuth
--- @usage azimuth = non.compass.getAzimuth()
+--[[----------
+Get the angle of the device's orientation around the z-axis. The positive z-axis points towards the earths center
+@treturn number azimuth
+@usage
+-- lua -------------------------------------------------------------------------------------
+azimuth = non.compass.getAzimuth()
+-- moonscript ------------------------------------------------------------------------------
+azimuth = non.compass.getAzimuth!
+]]
 function non.compass.getAzimuth()
   return NON.gdx.input:getAzimuth()
 end
   
-  ----------
--- Get the angle of the device's orientation around the z-axis. The positive z-axis points towards the earths center.
--- @treturn number pitch
--- @usage pitch = non.compass.getPitch()
+  --[[----------
+Get the angle of the device's orientation around the z-axis. The positive z-axis points towards the earths center.
+@treturn number pitch
+@usage
+-- lua -------------------------------------------------------------------------------------
+pitch = non.compass.getPitch()
+-- moonscript ------------------------------------------------------------------------------
+pitch = non.compass.getPitch!
+]]
 function non.compass.getPitch()
   return NON.gdx.input:getPitch()
 end
 
-----------
--- Get the angle of the device's orientation around the y-axis. The positive y-axis points toward the magnetic north pole of the earth while remaining orthogonal to the other two axes.
--- @treturn number roll 
--- @usage roll = non.compass.getRoll()
+--[[----------
+Get the angle of the device's orientation around the y-axis. The positive y-axis points toward the magnetic north pole of the earth while remaining orthogonal to the other two axes.
+@treturn number roll 
+@usage
+-- lua -------------------------------------------------------------------------------------
+roll = non.compass.getRoll()
+-- moonscript ------------------------------------------------------------------------------
+roll = non.compass.getRoll!
+]]
 function non.compass.getRoll()
   return NON.gdx.input:getRoll()
 end

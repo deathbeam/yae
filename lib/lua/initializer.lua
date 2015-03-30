@@ -3,11 +3,23 @@ NÖN lifecycle callbacks
 
 A NÖN project has a well defined life-cycle, governing the states of an application, like creating, pausing and resuming, rendering and disposing the application.
 
-@script callbacks
 @usage
-function non.ready()
-  -- do something here
+-- lua -------------------------------------------------------------------------------------
+function non.update(dt)
+  -- handle some logic here
 end
+
+function non.draw()
+  -- do some drawing here
+end
+
+-- moonscript ------------------------------------------------------------------------------
+non.update = (dt) ->
+  -- handle some logic here
+
+non.draw = ->
+  -- do some drawing here
+@module callbacks
 ]]
 
 non = {}

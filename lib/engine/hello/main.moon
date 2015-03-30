@@ -9,8 +9,8 @@ non.draw = ->
 
 non.resize = (w, h) ->
   -- Calculate center of the window for text position
-  x = (non.graphics.getWidth! - 165) / 2
-  y = (non.graphics.getHeight! - 12) / 2
+  x = (w - 165) / 2
+  y = (h - 12) / 2
 
 non.keydown = (key) ->
   -- Quit application if Q or Escape key was pressed

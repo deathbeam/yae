@@ -55,17 +55,7 @@ public class LuaEngine extends AbstractScriptEngine implements ScriptEngine, Com
     }
     
     public CompiledScript compile(FileHandle file) throws ScriptException {
-        put(FILENAME, file.name());
-        
-        try {
-            final Globals g = context.globals;
-            final LuaFunction f = g.load(file.reader(), file.name()).checkfunction();
-            return new LuajCompiledScript(f, g);
-        } catch ( LuaError lee ) {
-            throw new ScriptException(lee.getMessage() );
-        } catch ( Exception e ) {
-            throw new ScriptException("eval threw "+e.toString());
-        }
+        return compile(file.reader(), file.name());
     }
 
     @Override
@@ -75,9 +65,14 @@ public class LuaEngine extends AbstractScriptEngine implements ScriptEngine, Com
 
     @Override
     public CompiledScript compile(Reader script) throws ScriptException {
+        return compile(script, "script");
+    }
+
+    public CompiledScript compile(Reader script, String name) throws ScriptException {
+        put(FILENAME, name);
         try {
             final Globals g = context.globals;
-            final LuaFunction f = g.load(script, "script").checkfunction();
+            final LuaFunction f = g.load(script, name).checkfunction();
             return new LuajCompiledScript(f, g);
         } catch ( LuaError lee ) {
             throw new ScriptException(lee.getMessage());
@@ -98,7 +93,7 @@ public class LuaEngine extends AbstractScriptEngine implements ScriptEngine, Com
 
     @Override
     protected ScriptContext getScriptContext(Bindings nn) {
-        throw new IllegalStateException("LuajScriptEngine should not be allocating contexts.");
+        throw new IllegalStateException("LuaEngine should not be allocating contexts.");
     }
 
     @Override
@@ -118,9 +113,8 @@ public class LuaEngine extends AbstractScriptEngine implements ScriptEngine, Com
 
     @Override
     public ScriptEngineFactory getFactory() {
-        return null;
+        throw new IllegalStateException("LuaEngine do not supports getFactory().");
     }
-
 
     class LuajCompiledScript extends CompiledScript {
         final LuaFunction function;
@@ -170,10 +164,8 @@ public class LuaEngine extends AbstractScriptEngine implements ScriptEngine, Com
         BindingsMetatable(final Bindings bindings) {
             this.rawset(LuaValue.INDEX, new TwoArgFunction() {
                 public LuaValue call(LuaValue table, LuaValue key) {
-                    if (key.isstring()) 
-                        return toLua(bindings.get(key.tojstring()));
-                    else
-                        return this.rawget(key);
+                    if (key.isstring()) return toLua(bindings.get(key.tojstring()));
+                    else return this.rawget(key);
                 }
             });
             this.rawset(LuaValue.NEWINDEX, new ThreeArgFunction() {
@@ -181,10 +173,8 @@ public class LuaEngine extends AbstractScriptEngine implements ScriptEngine, Com
                     if (key.isstring()) {
                         final String k = key.tojstring();
                         final Object v = toJava(value);
-                        if (v == null)
-                            bindings.remove(k);
-                        else
-                            bindings.put(k, v);
+                        if (v == null) bindings.remove(k);
+                        else bindings.put(k, v);
                     } else {
                         this.rawset(key, value);
                     }
@@ -205,9 +195,8 @@ public class LuaEngine extends AbstractScriptEngine implements ScriptEngine, Com
         case LuaValue.TNIL: return null;
         case LuaValue.TSTRING: return luajValue.tojstring();
         case LuaValue.TUSERDATA: return luajValue.checkuserdata(Object.class);
-        case LuaValue.TNUMBER: return luajValue.isinttype()? 
-                (Object) new Integer(luajValue.toint()): 
-                (Object) new Double(luajValue.todouble());
+        case LuaValue.TNUMBER: return luajValue.isinttype()?
+            new Integer(luajValue.toint()): new Double(luajValue.todouble());
         default: return luajValue;
         }
     }

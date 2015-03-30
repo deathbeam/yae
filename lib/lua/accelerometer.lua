@@ -14,42 +14,67 @@ NÖN takes care of this and presents the accelerometer readings as shown in the 
 
 non.accelerometer = {}
 
-----------
--- Get current X relative to the center of earth
--- @treturn number x value of accelerometer
--- @usage x = non.accelerometer.getX()
+--[[----------
+Get current X relative to the center of earth
+@treturn number x value of accelerometer
+@usage
+-- lua -------------------------------------------------------------------------------------
+x = non.accelerometer.getX()
+-- moonscript ------------------------------------------------------------------------------
+x = non.accelerometer.getX
+]]
 function non.accelerometer.getX()
   return NON.gdx.input:getAccelerometerX()
 end
 
-----------
--- Get current Y relative to the center of earth
--- @treturn number y value of accelerometer
--- @usage y = non.accelerometer.getY()
+--[[----------
+Get current Y relative to the center of earth
+@treturn number y value of accelerometer
+@usage
+-- lua -------------------------------------------------------------------------------------
+y = non.accelerometer.getY()
+-- moonscript ------------------------------------------------------------------------------
+y = non.accelerometer.getY!
+]]
 function non.accelerometer.getY()
   return NON.gdx.input:getAccelerometerY()
 end
 
-----------
--- Get current Z relative to the center of earth
--- @treturn number z value of accelerometer
--- @usage z = non.accelerometer.getZ()
+--[[----------
+Get current Z relative to the center of earth
+@treturn number z value of accelerometer
+@usage
+-- lua -------------------------------------------------------------------------------------
+z = non.accelerometer.getZ()
+-- moonscript ------------------------------------------------------------------------------
+z = non.accelerometer.getZ!
+]]
 function non.accelerometer.getZ()
   return NON.gdx.input:getAccelerometerZ()
 end
 
-----------
--- Get current X, Y and Z relative to the center of earth
--- @treturn table x, y and z values of accelerometer
--- @usage x, y, z = non.accelerometer.getRotation()
+--[[----------
+Get current X, Y and Z relative to the center of earth
+@treturn table x, y and z values of accelerometer
+@usage
+-- lua -------------------------------------------------------------------------------------
+x, y, z = non.accelerometer.getRotation()
+-- moonscript ------------------------------------------------------------------------------
+x, y, z = non.accelerometer.getRotation!
+]]
 function non.accelerometer.getRotation()
   return non.accelerometer.getX(), non.accelerometer.getY(), non.accelerometer.getZ()
 end
 
-----------
--- Get current orientation of the device
--- @treturn number an orientation of device
--- @usage orientation = non.accelerometer.getOrientation()
+--[[----------
+Get current orientation of the device
+@treturn number an orientation of device
+@usage
+-- lua -------------------------------------------------------------------------------------
+orientation = non.accelerometer.getOrientation()
+-- moonscript ------------------------------------------------------------------------------
+orientation = non.accelerometer.getOrientation!
+]]
 function non.accelerometer.getOrientation()
   return NON.gdx.input:getRotation()
 end

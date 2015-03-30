@@ -10,74 +10,119 @@ Mouse input comes with additional information, namely which button was pressed. 
 
 non.mouse = {}
 
-----------
--- Show mouse cursor
--- @usage non.mouse.show()
+--[[----------
+Show mouse cursor
+@usage
+-- lua -------------------------------------------------------------------------------------
+non.mouse.show()
+-- moonscript ------------------------------------------------------------------------------
+non.mouse.show!
+]]
 function non.mouse.show()
   NON.gdx.input:setCursorCatched(false)
 end
 
-----------
--- Hide mouse cursor
--- @usage non.mouse.hide()
+--[[----------
+Hide mouse cursor
+@usage
+-- lua -------------------------------------------------------------------------------------
+non.mouse.hide()
+-- moonscript ------------------------------------------------------------------------------
+non.mouse.hide!
+]]
 function non.mouse.hide()
   NON.gdx.input:setCursorCatched(true)
 end
 
-----------
--- Change mouse cursor visibility
--- @tparam boolean visible set if cursor will be visible or not
--- @usage non.mouse.setVisible(true) 
+--[[----------
+Change mouse cursor visibility
+@tparam boolean visible set if cursor will be visible or not
+@usage
+-- lua -------------------------------------------------------------------------------------
+non.mouse.setVisible(true) 
+-- moonscript ------------------------------------------------------------------------------
+non.mouse.setVisible true
+]]
 function non.mouse.setVisible(visible)
   NON.gdx.input:setCursorCatched(not visible)
 end
 
-----------
--- Check if mouse cursor is visible
--- @treturn boolean true if cursor is visible
--- @usage cursorVisible = non.mouse.isVisible() 
+--[[----------
+Check if mouse cursor is visible
+@treturn boolean true if cursor is visible
+@usage
+-- lua -------------------------------------------------------------------------------------
+cursorVisible = non.mouse.isVisible()
+-- moonscript ------------------------------------------------------------------------------
+cursorVisible = non.mouse.isVisible!
+]]
 function non.mouse.isVisible()
   return not NON.gdx.input:isCursorCatched()
 end
 
-----------
--- Get X coordinate of mouse cursor position
--- @treturn number x coordinate
--- @usage x = non.mouse.getX()
+--[[----------
+Get X coordinate of mouse cursor position
+@treturn number x coordinate
+@usage
+-- lua -------------------------------------------------------------------------------------
+x = non.mouse.getX()
+-- moonscript ------------------------------------------------------------------------------
+x = non.mouse.getX!
+]]
 function non.mouse.getX()
   return NON.gdx.input:getX()
 end
 
-----------
--- Get Y coordinate of mouse cursor position
--- @treturn number y coordinate
--- @usage y = non.mouse.getY()
+--[[----------
+Get Y coordinate of mouse cursor position
+@treturn number y coordinate
+@usage
+-- lua -------------------------------------------------------------------------------------
+y = non.mouse.getY()
+-- moonscript ------------------------------------------------------------------------------
+y = non.mouse.getY!
+]]
 function non.mouse.getY()
   return NON.gdx.input:getY()
 end
 
-----------
--- Get mouse cursor position
--- @treturn table cursor coordinates
--- @usage x, y = non.mouse.getPosition()
+--[[----------
+Get mouse cursor position
+@treturn table cursor coordinates
+@usage
+-- lua -------------------------------------------------------------------------------------
+x, y = non.mouse.getPosition()
+-- moonscript ------------------------------------------------------------------------------
+x, y = non.mouse.getPosition!
+]]
 function non.mouse.getPosition()
   return non.mouse.getX(), non.mouse.getY()
 end
 
-----------
--- Set mouse cursor position
--- @tparam number x the x coordinate
--- @tparam number y the y coordinate
--- @usage non.mouse.setPosition(10, 10)
+--[[----------
+Set mouse cursor position
+@tparam number x the x coordinate
+@tparam number y the y coordinate
+@usage
+-- lua -------------------------------------------------------------------------------------
+non.mouse.setPosition(10, 10)
+-- moonscript ------------------------------------------------------------------------------
+non.mouse.setPosition 10, 10
+]]
 function non.mouse.setPosition(x, y)
   return NON.gdx.input:setCursorPosition(x, y)
 end
 
-----------
--- Check if specified mouse button is down
--- @tparam string button button to check for (defaults to "Left")
--- @treturn boolean true if specified mouse button is pressed
--- @usage clicked = non.mouse.isDown("Right")
+--[[----------
+Check if specified mouse button is down
+@tparam string button button to check for (defaults to "Left")
+@treturn boolean true if specified mouse button is pressed
+@usage
+-- lua -------------------------------------------------------------------------------------
+clicked = non.mouse.isDown("Right")
+-- moonscript ------------------------------------------------------------------------------
+clicked = non.mouse.isDown "Right"
+]]
 function non.mouse.isDown(button)
   if button == nil then buton = "Left" end
   local buttoncode = NON:getButton(name)

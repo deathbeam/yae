@@ -2,7 +2,7 @@ import java.io.*;
 import java.net.URISyntaxException;
 
 public class Main implements Runner.OutputListener {
-    private static final String VERSION = "v0.6.2";
+    private static String VERSION;
     private static File PROJECT_DIR, PROJECT_DATA;
     
     public Main(String args) {
@@ -67,6 +67,7 @@ public class Main implements Runner.OutputListener {
         
         PROJECT_DIR = new File(System.getProperty("user.dir"));
         PROJECT_DATA = new File(PROJECT_DIR, ".non");
+        VERSION = FileUtils.readStream(Main.class.getResourceAsStream("engine/VERSION")).trim();
         
         if (args[0].equals("build")) {
             System.out.println("Packaging your application");

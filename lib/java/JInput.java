@@ -1,19 +1,21 @@
 package non;
 
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.Input.Keys;
 
 public class JInput implements InputProcessor {
     public static String getButton(int code) {
-        if (code == com.badlogic.gdx.Input.Buttons.LEFT) return "Left";
-        if (code == com.badlogic.gdx.Input.Buttons.RIGHT) return "Right";
-        if (code == com.badlogic.gdx.Input.Buttons.MIDDLE) return "Middle";
-        if (code == com.badlogic.gdx.Input.Buttons.BACK) return "Back";
-        if (code == com.badlogic.gdx.Input.Buttons.FORWARD) return "Forward";
+        if (code == Buttons.LEFT) return "Left";
+        if (code == Buttons.RIGHT) return "Right";
+        if (code == Buttons.MIDDLE) return "Middle";
+        if (code == Buttons.BACK) return "Back";
+        if (code == Buttons.FORWARD) return "Forward";
         return "unknown";
     }
     
     public static String getKey(int code) {
-        return com.badlogic.gdx.Input.Keys.toString(code);
+        return Keys.toString(code);
     }
     
     public boolean keyDown(int keycode) {

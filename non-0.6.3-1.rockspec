@@ -1,9 +1,9 @@
 package = "non"
-version = "0.6.2-1"
+version = "0.6.3-1"
 
 source = {
   url = "git://github.com/non2d/non.git",
-  tag = "v0.6.2"
+  tag = "v0.6.3"
 }
 
 description = {

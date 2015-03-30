@@ -47,35 +47,26 @@ public class LuaContext extends SimpleScriptContext implements ScriptContext {
     }
     
     public LuaContext(boolean createDebugGlobals, boolean useLuaJCCompiler) {
-        globals = createDebugGlobals?
-                JsePlatform.debugGlobals():
-                JsePlatform.standardGlobals();
-            if (useLuaJCCompiler)
-                LuaJC.install(globals);
-            stdin = globals.STDIN;
-            stdout = globals.STDOUT;
-            stderr = globals.STDERR;
+        globals = createDebugGlobals? JsePlatform.debugGlobals(): JsePlatform.standardGlobals();
+        if (useLuaJCCompiler) LuaJC.install(globals);
+        stdin = globals.STDIN;
+        stdout = globals.STDOUT;
+        stderr = globals.STDERR;
     }
     
     @Override
     public void setErrorWriter(Writer writer) {
-        globals.STDERR = writer != null?
-                new PrintStream(new WriterOutputStream(writer)):
-                stderr;
+        globals.STDERR = writer != null? new PrintStream(new WriterOutputStream(writer)): stderr;
     }
 
     @Override
     public void setReader(Reader reader) {
-        globals.STDIN = reader != null?
-                new ReaderInputStream(reader):
-                stdin;
+        globals.STDIN = reader != null? new ReaderInputStream(reader): stdin;
     }
 
     @Override
     public void setWriter(Writer writer) {
-        globals.STDOUT = writer != null?
-                new PrintStream(new WriterOutputStream(writer), true):
-                stdout;
+        globals.STDOUT = writer != null? new PrintStream(new WriterOutputStream(writer), true): stdout;
     }
 
     static final class WriterOutputStream extends OutputStream {

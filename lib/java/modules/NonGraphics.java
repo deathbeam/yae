@@ -11,18 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.math.Shape2D;
-import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.Ellipse;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Polygon;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-
-import non.Non;
 import non.BlendMode;
-import non.Line;
 
 public class NonGraphics extends Module {
     public SpriteBatch batch;
@@ -64,6 +53,21 @@ public class NonGraphics extends Module {
     
     public ShaderProgram getShader() {
         return curShader;
+    }
+    
+    public float getWidth() {
+        return camera.viewportWidth;
+    }
+    
+    public float getHeight() {
+        return camera.viewportHeight;
+    }
+    
+    public void setSize(float width, float height) {
+        camera.viewportWidth = width;
+        camera.viewportHeight = height;
+        camera.update();
+        updateMatrices();
     }
     
     public void setBlending(String name) {
@@ -109,8 +113,10 @@ public class NonGraphics extends Module {
         shapes = new ShapeRenderer();
         shapes.setAutoShapeType(true);
         camera = new OrthographicCamera();
+        camera.setToOrtho(true);
         curColor = new Color(1, 1, 1, 1);
         backgroundColor = new Color(0, 0, 0, 1);
+        updateMatrices();
     }
     
     public void dispose() {
@@ -127,7 +133,7 @@ public class NonGraphics extends Module {
         ty = 0;
         rotation = 0;
         
-        camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.setToOrtho(true);
         camera.update();
         updateMatrices();
         
@@ -146,11 +152,6 @@ public class NonGraphics extends Module {
     
     public void updateAfter(float dt) {
         flush();
-    }
-    
-    public void resize(float width, float height) {
-        camera.setToOrtho(true, width, height);
-        updateMatrices();
     }
     
     public void rotate(float degrees, boolean doUpdate) {
