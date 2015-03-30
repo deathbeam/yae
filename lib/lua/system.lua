@@ -155,7 +155,8 @@ end
 
 --[[----------
 Get device size (in pixels)
-@treturn table width and height of the device
+@treturn number width of the device
+@treturn number height of the device
 @usage
 -- lua -------------------------------------------------------------------------------------
 width, height = non.system.getSize()

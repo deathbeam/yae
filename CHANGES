@@ -1,3 +1,6 @@
+[0.6.4]
+- fixed documentation for methods that returns multiple values
+
 [0.6.3]
 - added documentation for MoonScript
 - optimized rendering of loading screen

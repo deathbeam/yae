@@ -55,7 +55,9 @@ end
 
 --[[----------
 Get current X, Y and Z relative to the center of earth
-@treturn table x, y and z values of accelerometer
+@treturn number x value of accelerometer
+@treturn number y value of accelerometer
+@treturn number z value of accelerometer
 @usage
 -- lua -------------------------------------------------------------------------------------
 x, y, z = non.accelerometer.getRotation()

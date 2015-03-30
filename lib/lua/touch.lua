@@ -43,7 +43,8 @@ end
 --[[----------
 Get position of finger touching the screen
 @tparam number pointer index of finger touching the screen for multitouch devices (defaults to 0)
-@treturn table finger coordinates
+@treturn number x finger coordinate
+@treturn number y finger coordinate
 @usage
 -- lua -------------------------------------------------------------------------------------
 x, y = non.touch.getPosition(0)

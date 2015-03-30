@@ -88,7 +88,8 @@ end
 
 --[[----------
 Get mouse cursor position
-@treturn table cursor coordinates
+@treturn number x coordinate of the cursor
+@treturn number y coordinate of the cursor
 @usage
 -- lua -------------------------------------------------------------------------------------
 x, y = non.mouse.getPosition()

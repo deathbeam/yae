@@ -159,7 +159,8 @@ end
 
 --[[----------
 Get screen size (in pixels)
-@treturn table width and height of the screen
+@treturn number width of the screen
+@treturn number height of the screen
 @usage
 -- lua -------------------------------------------------------------------------------------
 width, height = non.graphics.getSize()
@@ -287,7 +288,10 @@ end
 
 --[[----------
 Get current background color. Background color is used for clearing the screen each frame. Color parts can be in range 0-255.
-@treturn table current background color
+@treturn number red
+@treturn number green
+@treturn number blue
+@treturn number alpha
 @usage
 -- lua -------------------------------------------------------------------------------------
 r, g, b, a = non.graphics.getBackgroundColor()
@@ -318,7 +322,10 @@ end
 
 --[[----------
 Get current background color. Color is used for drawing text and tinting images. Color parts can be in range 0-255.
-@treturn table current color
+@treturn number red
+@treturn number green
+@treturn number blue
+@treturn number alpha
 @usage
 -- lua -------------------------------------------------------------------------------------
 r, g, b, a = non.graphics.getColor()
@@ -333,7 +340,8 @@ end
 --[[----------
 Get size of specified image
 @tparam Image image image to get size from
-@treturn table size of the image
+@treturn number width of the image
+@treturn number height of the image
 @see non.graphics.image
 @usage
 -- lua -------------------------------------------------------------------------------------
@@ -349,7 +357,8 @@ end
 Get size of specified text
 @tparam string text text to get size from
 @tparam string wrap text wrap (if using on multiline wrapped text, otherwise defaults to nil)
-@treturn table size of the text
+@treturn number width of the text
+@treturn number height of the text
 @usage
 -- lua -------------------------------------------------------------------------------------
 width, height = non.graphics.getTextBounds("Hello World!")
