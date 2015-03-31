@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import non.BlendMode;
 
+@SuppressWarnings("deprecation")
 public class NonGraphics extends Module {
     public SpriteBatch batch;
     public ShapeRenderer shapes;

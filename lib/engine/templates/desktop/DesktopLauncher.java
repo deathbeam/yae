@@ -11,6 +11,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import non.Non;
 
 public class DesktopLauncher {
+    @SuppressWarnings("unchecked")
     public static void main (String[] args) throws FileNotFoundException {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.addIcon("non/icon-256.png", Files.FileType.Internal);

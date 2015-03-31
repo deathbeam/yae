@@ -13,6 +13,7 @@ import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
 import non.Non;
 
 public class IOSLauncher extends IOSApplication.Delegate {
+    @SuppressWarnings("unchecked")
     protected IOSApplication createApplication() {
         IOSApplicationConfiguration cfg = new IOSApplicationConfiguration();
         

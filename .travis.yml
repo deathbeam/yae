@@ -5,13 +5,6 @@ android:
     - build-tools-21.1.2
     - android-20
 
-compiler:
-  - gcc
-
-before_install:
-  - sudo apt-get update
-  - sudo apt-get install build-essential
-
 install:
   - sudo apt-get install luajit
   - sudo apt-get install luarocks
@@ -25,4 +18,3 @@ script:
   - java -jar bin/non.jar -d hello moon
   - java -jar bin/non.jar -d build desktop
   - java -jar bin/non.jar -d build android
-  - java -jar bin/non.jar -d build ios
