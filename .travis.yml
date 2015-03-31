@@ -10,7 +10,5 @@ jdk: openjdk7
 script:
   - javac lib/*.java
   - jar cvfe bin/non.jar Main -C lib .
-  - java -jar bin/non.jar hello
+  - java -jar bin/non.jar hello moon
   - java -jar bin/non.jar build desktop
-  - java -jar bin/non.jar build android
-  - java -jar bin/non.jar build ios
