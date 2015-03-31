@@ -3,6 +3,7 @@
 - fixed Java to Lua object loading
 - added non.java module
 - added support for including dependencies for repositories from mvnrepository.com
+- added -d switch to cli for debug log output
 
 [0.6.3]
 - added documentation for MoonScript

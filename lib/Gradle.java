@@ -44,17 +44,15 @@ public class Gradle {
                         while ((c = reader.readLine()) != null) {
                             c = c.trim();
                             
-                            if (c.startsWith("BUILD") ||
+                            if (c.equals("") ||
+                                c.startsWith("BUILD") ||
                                 c.startsWith("Total time:") ||
-                                c.startsWith("Configuration on demand is an incubating feature.") ||
-                                c.equals("") ||
-                                c.startsWith("Note:") ||
-                                c.contains("warning") ||
-                                c.contains("warnings"))
+                                !Main.DEBUG && c.startsWith("Configuration on demand is an incubating feature.") ||
+                                !Main.DEBUG && c.startsWith("Note:"))
                                 continue;
                             
                             if (!failed) {
-                                if (c.endsWith("FAILED")) {
+                                if (!Main.DEBUG && c.endsWith("FAILED")) {
                                     failed = true;
                                     continue;
                                 }

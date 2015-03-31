@@ -1,14 +1,21 @@
-language: java
+language: android
+
+android:
+  components:
+    - build-tools-21.1.2
+    - android-20
 
 install:
   - sudo apt-get install luajit
   - sudo apt-get install luarocks
   - sudo luarocks install moonscript
 
-jdk: openjdk7
+jdk: oraclejdk7
 
 script:
   - javac lib/*.java
   - jar cvfe bin/non.jar Main -C lib .
-  - java -jar bin/non.jar hello moon
-  - java -jar bin/non.jar build desktop
+  - java -jar bin/non.jar -d hello moon
+  - java -jar bin/non.jar -d build desktop
+  - java -jar bin/non.jar -d build android
+  - java -jar bin/non.jar -d build ios
