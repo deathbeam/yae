@@ -1,5 +1,5 @@
 --[[--------
-Simplifies binding to Java classes and methods.  
+Provides direct access to Java 
 
 @module non.java
 ]]
@@ -13,10 +13,10 @@ Bind Java object to Lua
 @usage
 -- lua -------------------------------------------------------------------------------------
 system = non.java.bind("java.lang.System")
-print(system:currentTimeMillis)
+print(system:currentTimeMillis())
 -- moonscript ------------------------------------------------------------------------------
 system = non.java.bind "java.lang.System"
-print system\currentTimeMillis
+print system\currentTimeMillis!
 ]]
 function non.java.bind(name)
   return luajava.bindClass(name)

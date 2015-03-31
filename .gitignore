@@ -4,6 +4,9 @@
 *.rc
 *.res
 
+## LDoc
+doc/doc/
+
 ## Java
 build/
 .gradle/
