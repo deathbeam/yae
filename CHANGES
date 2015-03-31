@@ -4,6 +4,7 @@
 - added non.java module
 - added support for including dependencies for repositories from mvnrepository.com
 - added -d switch to cli for debug log output
+- fixed out of memory error on iOS builds
 
 [0.6.3]
 - added documentation for MoonScript
