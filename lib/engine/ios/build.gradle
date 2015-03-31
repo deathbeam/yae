@@ -1,7 +1,7 @@
 sourceSets.main.java.srcDirs = [ "src/" ]
 sourceCompatibility = '1.7'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-ext.mainClassName = "${packageName}.ios.IOSLauncher"
+ext.mainClassName = packageName + ".ios.IOSLauncher"
 
 task copyNatives << {
     file("build/libs/ios/").mkdirs();
