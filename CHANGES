@@ -1,5 +1,8 @@
 [0.6.4]
 - fixed documentation for methods that returns multiple values
+- fixed Java to Lua object loading
+- added non.java module
+- added support for including dependencies for repositories from mvnrepository.com
 
 [0.6.3]
 - added documentation for MoonScript

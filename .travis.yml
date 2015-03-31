@@ -1,0 +1,15 @@
+language: java
+
+install:
+  - sudo apt-get install luajit
+  - sudo apt-get install luarocks
+  - sudo luarocks install moonscript
+
+jdk: openjdk6
+
+script:
+  - javac lib/*.java
+  - jar cvfe bin/non.jar Main -C lib .
+  - cd bin
+  - non hello
+  - non build

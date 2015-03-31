@@ -28,6 +28,7 @@ function require(file)
   return NON:eval(NON.gdx.files:internal(file..".lua"))
 end
 
+require "non/java"
 require "non/files"
 require "non/system"
 require "non/audio"

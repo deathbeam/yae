@@ -11,6 +11,7 @@ file = {
   '../lib/lua/compass.lua',
   '../lib/lua/files.lua',
   '../lib/lua/graphics.lua',
+  '../lib/lua/java.lua',
   '../lib/lua/keyboard.lua',
   '../lib/lua/mouse.lua',
   '../lib/lua/network.lua',

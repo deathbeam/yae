@@ -103,6 +103,7 @@ project(":core") {
         compile "com.esotericsoftware:kryonet:$kryonetVersion"
         compile files("../libs/snakeyaml.jar")
         compile files("../libs/luaj.jar")
+        try { for(dep in cfg.libs) compile dep } catch(e) { }
     }
 }
 
