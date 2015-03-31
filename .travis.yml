@@ -5,7 +5,7 @@ install:
   - sudo apt-get install luarocks
   - sudo luarocks install moonscript
 
-jdk: openjdk6
+jdk: openjdk7
 
 script:
   - javac lib/*.java
