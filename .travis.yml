@@ -10,6 +10,6 @@ jdk: openjdk6
 script:
   - javac lib/*.java
   - jar cvfe bin/non.jar Main -C lib .
-  - cd bin
+  - (cd /bin && exec /bin/non)
   - non hello
   - non build
