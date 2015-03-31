@@ -4,6 +4,8 @@ NÖN is an engine you can use to make 2D games in **Lua** and **MoonScript**. It
 
 ### Installation ###
 
+[![Join the chat at https://gitter.im/non2d/non](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/non2d/non?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 You will need to have [JDK 7+](http://www.oracle.com/technetwork/java/javase/downloads/index.html) installed. Then you can install NÖN as rock ([LuaRocks](https://luarocks.org/) required)
 
 ```lua
