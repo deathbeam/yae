@@ -1,4 +1,4 @@
-![logo](https://raw.githubusercontent.com/non2d/non/master/lib/engine/resources/logo.png)
+![logo](https://raw.githubusercontent.com/non2d/non/master/lib/data/resources/logo.png)
 
 [![Build Status](https://travis-ci.org/non2d/non.png)](https://travis-ci.org/non2d/non) [![Join the chat at https://gitter.im/non2d/non](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/non2d/non?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 

@@ -1,3 +1,10 @@
+[0.7.0]
+- changed API to be mostly LÖVE compatible
+- renamed background.png to splash.png
+- removed bar.png
+- moved all Lua code to Java, so now engine runs with almost native Java performance
+- speeded up build times a bit
+
 [0.6.4]
 - fixed documentation for methods that returns multiple values
 - fixed Java to Lua object binding

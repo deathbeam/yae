@@ -48,7 +48,9 @@ public class Gradle {
                                 c.startsWith("BUILD") ||
                                 c.startsWith("Total time:") ||
                                 !Main.DEBUG && c.startsWith("Configuration on demand is an incubating feature.") ||
-                                !Main.DEBUG && c.startsWith("Note:"))
+                                !Main.DEBUG && c.startsWith("Note:") ||
+                                !Main.DEBUG && c.endsWith("warning") ||
+                                !Main.DEBUG && c.endsWith("error"))
                                 continue;
                             
                             if (!failed) {

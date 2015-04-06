@@ -34,11 +34,10 @@ public class Main implements Runner.OutputListener {
     private static void check() {
         try {
             if (!PROJECT_DATA.exists()) {
-                ZipUtils.extract(new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()), PROJECT_DIR, "engine/", "java/", "lua/");
-                new File(PROJECT_DIR, "engine").renameTo(PROJECT_DATA);
+                ZipUtils.extract(new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()), PROJECT_DIR, "data/", "src/");
+                new File(PROJECT_DIR, "data").renameTo(PROJECT_DATA);
                 new File(PROJECT_DATA, "core/src").mkdirs();
-                new File(PROJECT_DIR, "java").renameTo(new File(PROJECT_DATA, "core/src/non"));
-                new File(PROJECT_DIR, "lua").renameTo(new File(PROJECT_DATA, "lua"));
+                new File(PROJECT_DIR, "src").renameTo(new File(PROJECT_DATA, "core/src/non"));
                 new Main("resolveDependencies", true);
             }
         } catch (URISyntaxException e) {
@@ -68,7 +67,7 @@ public class Main implements Runner.OutputListener {
         
         PROJECT_DIR = new File(System.getProperty("user.dir"));
         PROJECT_DATA = new File(PROJECT_DIR, ".non");
-        VERSION = FileUtils.readStream(Main.class.getResourceAsStream("engine/VERSION")).trim();
+        VERSION = FileUtils.readStream(Main.class.getResourceAsStream("data/VERSION")).trim();
         
         if (args[0].equals("-d")) {
             DEBUG = true;
