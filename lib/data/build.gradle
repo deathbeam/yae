@@ -181,8 +181,9 @@ task update(dependsOn: ':updateAssets'){
     }
     
     copy {
-        from "lua" 
+        from "resources/" 
         into "android/assets/non"
+        include "boot.lua"
     }
     
     if (file("../assets").exists()) {

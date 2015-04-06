@@ -44,8 +44,11 @@ public class LuanGraphics extends LuanBase {
         shapes.setAutoShapeType(true);
         transform = new Transform();
         color = new Color(1, 1, 1, 1);
-        backgroundColor = new Color(0, 0, 0, 1);
+        backgroundColor = new Color(0.4f, 0.3f, 0.4f, 1);
         blendMode = "alpha";
+        shapes.setColor(color);
+	    batch.setColor(color);
+	    font.getFont().setColor(color);
 	}
 
 	public void dispose() {
@@ -79,11 +82,37 @@ public class LuanGraphics extends LuanBase {
 			}
 		}});
 
+		// non.graphics.circle(mode, x, y, radius)
+		set("circle", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
+			try {
+				checkShapes();
+		        changeMode(getArgString(args, 1));
+		        shapes.circle(getArgFloat(args, 2), getArgFloat(args, 3), getArgFloat(args, 4));
+			} catch (Exception e) {
+				handleError(e);
+			} finally {
+				return NONE;
+			}
+		}});
+
 		// non.graphics.clear()
 		set("clear", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
 			Gdx.gl.glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
         	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         	return NONE;
+		}});
+
+		// non.graphics.ellipse(mode, x, y, width, height)
+		set("ellipse", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
+			try {
+				checkShapes();
+		        changeMode(getArgString(args, 1));
+		        shapes.ellipse(getArgFloat(args, 2), getArgFloat(args, 3), getArgFloat(args, 4), getArgFloat(args, 5));
+			} catch (Exception e) {
+				handleError(e);
+			} finally {
+				return NONE;
+			}
 		}});
 
 		// r, g, b, a = non.graphics.getBackgroundColor()
@@ -114,6 +143,19 @@ public class LuanGraphics extends LuanBase {
         	return font;
 		}});
 
+		// non.graphics.line(mode, x1, y1, x2, y2)
+		set("line", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
+			try {
+				checkShapes();
+		        changeMode(getArgString(args, 1));
+		        shapes.rectLine(getArgFloat(args, 2), getArgFloat(args, 3), getArgFloat(args, 4), getArgFloat(args, 5), 1);
+			} catch (Exception e) {
+				handleError(e);
+			} finally {
+				return NONE;
+			}
+		}});
+
 		// non.graphics.origin()
 		set("origin", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
 			scalex = 1;
@@ -122,9 +164,22 @@ public class LuanGraphics extends LuanBase {
 	        translatey = 0;
 	        rotation = 0;
 	        
-	        transform.setToOrtho(true);
+	        transform.reset();
 	        updateMatrices();
         	return NONE;
+		}});
+
+		// non.graphics.point(mode, x, y)
+		set("point", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
+			try {
+				checkShapes();
+		        changeMode(getArgString(args, 1));
+		        shapes.point(getArgFloat(args, 2), getArgFloat(args, 3), 0);
+			} catch (Exception e) {
+				handleError(e);
+			} finally {
+				return NONE;
+			}
 		}});
 
 		// non.graphics.present()
@@ -132,6 +187,19 @@ public class LuanGraphics extends LuanBase {
 			if (shapes.isDrawing()) shapes.end();
         	if (batch.isDrawing()) batch.end();
         	return NONE;
+		}});
+
+		// non.graphics.rectangle(mode, x, y, width, height)
+		set("rectangle", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
+			try {
+				checkShapes();
+		        changeMode(getArgString(args, 1));
+		        shapes.rect(getArgFloat(args, 2), getArgFloat(args, 3), getArgFloat(args, 4), getArgFloat(args, 5));
+			} catch (Exception e) {
+				handleError(e);
+			} finally {
+				return NONE;
+			}
 		}});
 
 		// non.graphics.present()
@@ -145,9 +213,9 @@ public class LuanGraphics extends LuanBase {
 	        shader = SpriteBatch.createDefaultShader();
 	        batch.setShader(shader);
 
-	        backgroundColor.r = 0;
-	        backgroundColor.g = 0;
-	        backgroundColor.b = 0;
+	        backgroundColor.r = 0.4f;
+	        backgroundColor.g = 0.3f;
+	        backgroundColor.b = 0.4f;
 	        backgroundColor.a = 1;
 	        
 	        color.r = 1;
@@ -159,7 +227,7 @@ public class LuanGraphics extends LuanBase {
 	        batch.setColor(color);
 	        font.getFont().setColor(color);
 	        
-	        transform.setToOrtho(true);
+	        transform.reset();
 	        updateMatrices();
         	return NONE;
 		}});
@@ -212,6 +280,9 @@ public class LuanGraphics extends LuanBase {
 				color.g = getArgInt(args, 2) / 255f;
 				color.b = getArgInt(args, 3) / 255f;
 				color.a = getArgInt(args, 4, 255) / 255f;
+				batch.setColor(color);
+		        shapes.setColor(color);
+		        font.getFont().setColor(color);
 			} catch (Exception e) {
 				handleError(e);
 			} finally {
@@ -261,6 +332,14 @@ public class LuanGraphics extends LuanBase {
 		}});
 	}
 
+	private void changeMode(String mode) {
+        if (mode.equals("line")) {
+            shapes.set(ShapeRenderer.ShapeType.Line);
+        } else if (mode.equals("fill")) {
+            shapes.set(ShapeRenderer.ShapeType.Filled);
+        }
+    }
+
 	private void checkBatch() {
         if (shapes.isDrawing()) shapes.end();
         if (!batch.isDrawing()) batch.begin();
@@ -277,7 +356,7 @@ public class LuanGraphics extends LuanBase {
     }
 
     public class Transform extends OrthographicCamera {
-    	private final Vector2 scale = new Vector2();
+    	private final Vector2 scale = new Vector2(1, 1);
     	private final Vector3 tmp = new Vector3();
 
     	public Transform() {
@@ -297,6 +376,11 @@ public class LuanGraphics extends LuanBase {
 				Matrix4.inv(invProjectionView.val);
 				frustum.update(invProjectionView);
 			}
+		}
+
+		public void reset() {
+			scale.set(1, 1);
+			setToOrtho(true);
 		}
 
 		@Override

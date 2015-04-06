@@ -220,7 +220,7 @@ public class NonVM implements ApplicationListener, InputProcessor, Disposable {
             break;
         case 2:
             try {
-                lua.eval(Gdx.files.internal("main.lua"));
+                lua.eval(Gdx.files.internal("non/boot.lua"));
             } catch (ScriptException e) {
                 handleLuaError(TAG, e);
             }
@@ -271,33 +271,6 @@ public class NonVM implements ApplicationListener, InputProcessor, Disposable {
         toLua(lua.get("non")).set("getConfig", new VarArgFunction() { @Override public LuaValue invoke(Varargs args) {
             return toLua(cfg);
         }});
-
-        
-        StringBuffer s = new StringBuffer();
-        s.append("function non.run(dt)"                          ).append("\n");
-        s.append("  if (non.update) then non.update(dt) end"     ).append("\n");
-        s.append("  non.graphics.clear()"                        ).append("\n");
-        s.append("  non.graphics.origin()"                       ).append("\n");
-        s.append("  if (non.draw) then non.draw() end"           ).append("\n");
-        s.append("  non.graphics.present()"                      ).append("\n");
-        s.append("end"                                           ).append("\n");
-
-        s.append("non.java = {}"                                 ).append("\n");
-        
-        s.append("function non.java.bind(javaobjname)"           ).append("\n");
-        s.append("  return luajava.bindClass(javaobjname)"       ).append("\n");
-        s.append("end"                                           ).append("\n");
-        
-        s.append("function non.java.new(javaobjname, ...)"       ).append("\n");
-        s.append("  return luajava.newInstance(javaobjname, ...)").append("\n");
-        s.append("end"                                           ).append("\n");
-        
-        s.append("function non.java.extend(javaobjname, luaobj)" ).append("\n");
-        s.append("  return luajava.createProxy(javaobj, luaobj)" ).append("\n");
-        s.append("end");
-
-        try { lua.eval(s.toString()); }
-        catch (ScriptException e) { handleLuaError(TAG, e); }
 
         LuanBase accelerometer = new LuanAccelerometer(this);
         toLua(lua.get("non")).set("accelerometer", accelerometer);

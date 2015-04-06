@@ -21,6 +21,8 @@ public class LoadingScreen {
         background = new Sprite(new Texture(Gdx.files.internal("non/splash.png")));
         background.setOrigin(0, 0);
         logo = new Sprite(new Texture(Gdx.files.internal("non/logo.png")));
+        font.setColor(1, 1, 1, 0.6f);
+        logo.setColor(1, 1, 1, 0.6f);
     }
 
     public void render () {
@@ -36,7 +38,6 @@ public class LoadingScreen {
     public void resize(int width, int height) { 
         batch.setProjectionMatrix(batch.getProjectionMatrix().setToOrtho2D(0, 0, width, height));
         float scale = (float)width / (float)background.getWidth();
-        background.setY(height - (background.getHeight() * scale));
         background.setScale(scale);
         logo.setCenter(width/2, height/2);
         textPos.set((Gdx.graphics.getWidth() - font.getBounds(text).width) /2, logo.getY() - 18);
