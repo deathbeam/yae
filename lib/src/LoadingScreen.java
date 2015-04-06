@@ -21,8 +21,6 @@ public class LoadingScreen {
         background = new Sprite(new Texture(Gdx.files.internal("non/splash.png")));
         background.setOrigin(0, 0);
         logo = new Sprite(new Texture(Gdx.files.internal("non/logo.png")));
-        font.setColor(1, 1, 1, 0.6f);
-        logo.setColor(1, 1, 1, 0.6f);
     }
 
     public void render () {

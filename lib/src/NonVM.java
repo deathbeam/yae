@@ -129,11 +129,11 @@ public class NonVM implements ApplicationListener, InputProcessor, Disposable {
         
         loading.resize(width, height);
     }
-	
+    
     public void pause() {
         runCallback("visible", LuaValue.FALSE);
     }
-	
+    
     public void resume() {
         runCallback("visible", LuaValue.TRUE);
     }
@@ -251,7 +251,7 @@ public class NonVM implements ApplicationListener, InputProcessor, Disposable {
         lua.getContext().getGlobals().set("print", new VarArgFunction() { @Override public LuaValue invoke(Varargs args) {
             StringBuffer s = new StringBuffer();
 
-            for (int i = 1; i <= args.narg(); ++i) {
+            for (int i = 1; i <= args.narg(); i++) {
                 if (i > 1) s.append("\t");
                 s.append(args.arg(i).toString());
             }
