@@ -10,13 +10,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.Varargs;
 import org.luaj.vm2.lib.VarArgFunction;
@@ -32,7 +32,6 @@ public class LuanGraphics extends LuanBase {
     private Transform transform;
     private LuanObjFont font;
     private ShaderProgram shader;
-    private float rotation, scalex, scaley, translatex, translatey;
     private String blendMode;
     private Color backgroundColor, color;
 
@@ -51,6 +50,11 @@ public class LuanGraphics extends LuanBase {
         shapes.setColor(color);
         batch.setColor(color);
         font.getFont().setColor(color);
+
+        OrthographicCamera cam = new OrthographicCamera();
+        cam.setToOrtho(true);
+        batch.setProjectionMatrix(cam.combined);
+        shapes.setProjectionMatrix(cam.combined);
     }
 
     public void dispose() {
@@ -124,10 +128,10 @@ public class LuanGraphics extends LuanBase {
         set("draw", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
                 checkBatch();
-                LuanObjImage image = (LuanObjImage)getArgData(args, 1);
+                final LuanObjImage image = (LuanObjImage)getArgData(args, 1);
 
                 if (args.istable(2)) {
-                    LuanObjQuad quad = (LuanObjQuad)getArgData(args, 2);
+                    final LuanObjQuad quad = (LuanObjQuad)getArgData(args, 2);
                     batch.draw(
                         image.getTexture(),
                         getArgFloat(args, 3, 0f),
@@ -225,13 +229,7 @@ public class LuanGraphics extends LuanBase {
 
         // non.graphics.origin()
         set("origin", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
-            scalex = 1;
-            scaley = 1;
-            translatex = 0;
-            translatey = 0;
-            rotation = 0;
-            
-            transform.reset();
+            transform.identity();
             updateMatrices();
             return NONE;
         }});
@@ -282,6 +280,68 @@ public class LuanGraphics extends LuanBase {
             return NONE;
         }});
 
+        // non.graphics.print(text, x, y, r, sx, sy, ox, oy, kx, ky)
+        set("print", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
+            try {
+                checkBatch();
+                final String text = getArgString(args, 1);
+                final float x = getArgFloat(args, 2, 0f);
+                final float y = getArgFloat(args, 3, 0f);
+
+                if (isArgSet(args, 4)) {
+                    final float r = getArgFloat(args, 4, 0f);
+                    final float ox = getArgFloat(args, 7, 0f);
+                    final float oy = getArgFloat(args, 8, 0f);
+                    final float sx = getArgFloat(args, 5, 1f);
+                    final float sy = getArgFloat(args, 6, 1f);
+                    final Matrix4 tmp = batch.getTransformMatrix();
+
+                    batch.setTransformMatrix(transform.translate(x, y).rotate(r).translate(-x, -y).matrix);
+                    font.getFont().setScale(sx, -sy);
+                    font.getFont().draw(batch, text, x - ox * sx, y - oy * sy);
+                    batch.setTransformMatrix(tmp);
+                } else {
+                    font.getFont().setScale(1, -1);
+                    font.getFont().draw(batch, text, x, y);
+                }
+            } catch (Exception e) {
+                handleError(e);
+            } finally {
+                return NONE;
+            }
+        }});
+
+        // non.graphics.printf(text, x, y, wrap, align, r, sx, sy, ox, oy, kx, ky)
+        set("printf", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
+            try {
+                checkBatch();
+                final String text = getArgString(args, 1);
+                final float x = getArgFloat(args, 2, 0f);
+                final float y = getArgFloat(args, 3, 0f);
+
+                if (isArgSet(args, 6)) {
+                    final float r = getArgFloat(args, 6, 0f);
+                    final float sx = getArgFloat(args, 7, 1f);
+                    final float sy = getArgFloat(args, 8, 1f);
+                    final float ox = getArgFloat(args, 9, 0f);
+                    final float oy = getArgFloat(args, 10, 0f);
+                    final Matrix4 tmp = batch.getTransformMatrix();
+
+                    batch.setTransformMatrix(transform.translate(x, y).rotate(r).translate(-x, -y).matrix);
+                    font.getFont().setScale(sx, -sy);
+                    font.getFont().draw(batch, text, x - ox * sx, y - oy * sy);
+                    batch.setTransformMatrix(tmp);
+                } else if (isArgSet(args, 4)) {
+                    font.getFont().setScale(1, -1);
+                    font.getFont().drawWrapped(batch, text, x, y, getArgFloat(args, 4), getAlign(getArgString(args, 5, "left")));
+                }
+            } catch (Exception e) {
+                handleError(e);
+            } finally {
+                return NONE;
+            }
+        }});
+
         // non.graphics.rectangle(mode, x, y, width, height)
         set("rectangle", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
@@ -295,14 +355,8 @@ public class LuanGraphics extends LuanBase {
             }
         }});
 
-        // non.graphics.present()
+        // non.graphics.reset()
         set("reset", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
-            scalex = 1;
-            scaley = 1;
-            translatex = 0;
-            translatey = 0;
-            rotation = 0;
-
             shader = SpriteBatch.createDefaultShader();
             batch.setShader(shader);
 
@@ -320,7 +374,7 @@ public class LuanGraphics extends LuanBase {
             batch.setColor(color);
             font.getFont().setColor(color);
             
-            transform.reset();
+            transform.identity();
             updateMatrices();
             return NONE;
         }});
@@ -328,9 +382,7 @@ public class LuanGraphics extends LuanBase {
         // non.graphics.rotate(radians)
         set("rotate", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
-                rotation = getArgFloat(args, 1);
-                transform.rotate(rotation);
-                transform.update();
+                transform.rotate(getArgFloat(args, 1));
                 updateMatrices();
             } catch (Exception e) {
                 handleError(e);
@@ -397,10 +449,7 @@ public class LuanGraphics extends LuanBase {
         // non.graphics.scale(sx, sy)
         set("scale", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
-                scalex = getArgFloat(args, 1);
-                scaley = getArgFloat(args, 2);
-                transform.scale(1 / scalex, 1 / scaley);
-                transform.update();
+                transform.scale(getArgFloat(args, 1), getArgFloat(args, 2));
                 updateMatrices();
             } catch (Exception e) {
                 handleError(e);
@@ -412,10 +461,7 @@ public class LuanGraphics extends LuanBase {
         // non.graphics.translate(tx, ty)
         set("translate", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
-                translatex = getArgFloat(args, 1);
-                translatey = getArgFloat(args, 2);
-                transform.translate(-translatex, -translatey);
-                transform.update();
+                transform.translate(getArgFloat(args, 1), getArgFloat(args, 2));
                 updateMatrices();
             } catch (Exception e) {
                 handleError(e);
@@ -423,6 +469,12 @@ public class LuanGraphics extends LuanBase {
                 return NONE;
             }
         }});
+    }
+
+    private BitmapFont.HAlignment getAlign(String align) {
+        if ("right".equals(align)) return HAlignment.RIGHT;
+        else if ("center".equals(align)) return HAlignment.CENTER;
+        return HAlignment.LEFT;
     }
 
     private void changeMode(String mode) {
@@ -444,45 +496,31 @@ public class LuanGraphics extends LuanBase {
     }
     
     private void updateMatrices() {
-        shapes.setProjectionMatrix(transform.combined);
-        batch.setProjectionMatrix(transform.combined);
+        shapes.setTransformMatrix(transform.matrix);
+        batch.setTransformMatrix(transform.matrix);
     }
 
-    public class Transform extends OrthographicCamera {
-        private final Vector2 scale = new Vector2(1, 1);
-        private final Vector3 tmp = new Vector3();
+    public class Transform {
+        public final Matrix4 matrix = new Matrix4();
 
-        public Transform() {
-            super();
+        public Transform identity() {
+            matrix.idt();
+            return this;
         }
 
-        @Override
-        public void update (boolean updateFrustum) {
-            projection.setToOrtho(scale.x * -viewportWidth / 2, scale.x * (viewportWidth / 2), scale.y * -(viewportHeight / 2), scale.y
-                * viewportHeight / 2, near, far);
-            view.setToLookAt(position, tmp.set(position).add(direction), up);
-            combined.set(projection);
-            Matrix4.mul(combined.val, view.val);
-
-            if (updateFrustum) {
-                invProjectionView.set(combined);
-                Matrix4.inv(invProjectionView.val);
-                frustum.update(invProjectionView);
-            }
+        public Transform rotate(float radians) {
+            matrix.rotate(0f, 0f, 1f, radians * MathUtils.radDeg);
+            return this;
         }
 
-        public void reset() {
-            scale.set(1, 1);
-            setToOrtho(true);
+        public Transform scale(float x, float y) {
+            matrix.scale(x, y, 1f);
+            return this;
         }
 
-        @Override
-        public void rotate(float radians) {
-            super.rotate((float)Math.toDegrees(radians));
-        }
-
-        public void scale (float x, float y) {
-            scale.set(x, y);
+        public Transform translate(float x, float y) {
+            matrix.translate(x, y, 0f);
+            return this;
         }
     }
 

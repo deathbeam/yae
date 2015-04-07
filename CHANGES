@@ -5,6 +5,7 @@
 - moved all Lua code to Java, so now engine runs with almost native Java performance
 - speeded up build times a bit
 - changed loading screen a bit
+- drastically improved view transformations performance
 
 [0.6.4]
 - fixed documentation for methods that returns multiple values
