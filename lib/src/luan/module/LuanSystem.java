@@ -1,5 +1,6 @@
 package non.luan.module;
 
+import java.lang.reflect.Field;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import org.luaj.vm2.Varargs;
@@ -8,8 +9,16 @@ import non.NonVM;
 import non.luan.LuanBase;
 
 public class LuanSystem extends LuanBase {
+    private boolean runningOnOuya;
+
     public LuanSystem(NonVM vm) {
         super(vm, "NonSystem");
+
+        try {
+            Field field = Class.forName("android.os.Build").getDeclaredField("DEVICE");
+            Object device = field.get(null);
+            runningOnOuya = "ouya_1_1".equals(device) || "cardhu".equals(device);
+        } catch (Exception e) { }
     }
 
     @Override
@@ -42,6 +51,8 @@ public class LuanSystem extends LuanBase {
                 name = "Android";
             } else if (Gdx.app.getType() == ApplicationType.iOS) {
                 name = "iOS";
+            } else if (runningOnOuya) {
+                name = "Ouya";
             }
         
             return varargsOf(valueOf(name), valueOf(version));
