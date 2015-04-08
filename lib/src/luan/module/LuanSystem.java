@@ -19,18 +19,42 @@ public class LuanSystem extends LuanBase {
             return valueOf(Gdx.app.getClipboard().getContents());
         }});
 
-        // os = non.system.getOS()
+        // os, version = non.system.getOS()
         set("getOS", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
-            ApplicationType platform = Gdx.app.getType();
+            String name = "unknown";
+            String version = Long.toString(Gdx.app.getVersion());
   
-            if (platform == ApplicationType.Desktop)
-              return valueOf("desktop");
-            else if (platform == ApplicationType.Android)
-              return valueOf("android");
-            else if (platform == ApplicationType.iOS)
-              return valueOf("ios");
+            if (Gdx.app.getType() == ApplicationType.Desktop) {
+                String osname = System.getProperty("os.name").toLowerCase();
+
+                if (osname.startsWith("windows")) {
+                    name = "Windows";
+                } else if (osname.startsWith("linux")) {
+                    name = "Linux";
+                } else if (osname.startsWith("mac") || osname.startsWith("darwin")) {
+                    name = "OS X";
+                } else if (osname.startsWith("sunos")) {
+                    name = "Solaris";
+                }
+
+                version = System.getProperty("os.version");
+            } else if (Gdx.app.getType() == ApplicationType.Android) {
+                name = "Android";
+            } else if (Gdx.app.getType() == ApplicationType.iOS) {
+                name = "iOS";
+            }
         
-            return valueOf("unknown");
+            return varargsOf(valueOf(name), valueOf(version));
+        }});
+
+        // heap_size = non.system.getJavaHeap()
+        set("getJavaHeap", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
+            return valueOf(Gdx.app.getJavaHeap());
+        }});
+
+        // heap_size = non.system.getNativeHeap()
+        set("getNativeHeap", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
+            return valueOf(Gdx.app.getNativeHeap());
         }});
 
         // success = non.system.openURL(url)
@@ -49,6 +73,17 @@ public class LuanSystem extends LuanBase {
             try {
                 String text = getArgString(args, 1);
                 Gdx.app.getClipboard().setContents(text);
+            } catch (Exception e) {
+                handleError(e);
+            } finally {
+                return NONE;
+            }
+        }});
+
+        // non.system.vibrate(seconds)
+        set("vibrate", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
+            try {
+                Gdx.input.vibrate((int)(getArgFloat(args, 1, 1f) * 1000f));
             } catch (Exception e) {
                 handleError(e);
             } finally {
