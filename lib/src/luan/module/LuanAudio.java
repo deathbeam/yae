@@ -35,7 +35,7 @@ public class LuanAudio extends LuanBase {
         set("newSource", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
                 FileHandle file = LuanFilesystem.newFile(getArgString(args, 1), getArgString(args, 3, "internal"));
-                String type = getArgString(args, 2, "static");
+                String type = getArgString(args, 2, "stream");
                 LuanObjSource source = new LuanObjSource(LuanAudio.this, file, type);
                 sources.add(source);
                 return source;
