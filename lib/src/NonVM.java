@@ -18,102 +18,47 @@ import org.luaj.vm2.lib.VarArgFunction;
 import non.luan.LuanBase;
 import non.luan.module.*;
 
-public class NonVM implements ApplicationListener, InputProcessor, Disposable {
+public class NonVM implements ApplicationListener, InputProcessor {
     private static final String TAG = "NonVM";
     private static final String VERSION = "v0.7.0";
     private static final Set knownNotImplemented = new HashSet<String>();
-    private static final Set modules = new HashSet<LuanBase>();
+    private static final Set toDispose = new HashSet<Disposable>();
 
-    private final Map cfg;
-    private LuaEngine lua;
+    private final Map config;
+    private final Logger logger;
+    private final Callbacks callbacks;
+
     private LoadingScreen loading;
+    private LuaEngine lua;
     private boolean ready;
     private int state;
 
     public NonVM(Map config) {
-        cfg = config;
-        
-        if (config.containsKey("logging")) {
-            String logLevel = (String)config.get("logging");
-
-            if ("error".equalsIgnoreCase(logLevel)) {
-                Gdx.app.setLogLevel(1);
-            } else if ("info".equalsIgnoreCase(logLevel)) {
-                Gdx.app.setLogLevel(2);
-            } else if ("debug".equalsIgnoreCase(logLevel)) {
-                Gdx.app.setLogLevel(3);
-            } else {
-                Gdx.app.setLogLevel(0);
-            }
-        }
+        this.config = config;
+        callbacks = new Callbacks(this);
+        logger = new Logger();
     }
 
-    public Map getConfig() {
-        return cfg;
-    }
-
-    public LuaEngine getLua() {
-        return lua;
-    }
-
-    public void log(String tag, String msg) {
-        Gdx.app.log(tag, msg);
-    }
-
-    public void logE(String tag, String msg) {
-        Gdx.app.error(tag, msg);
-    }
-
-    public void logE(String tag, String msg, Exception e) {
-        Gdx.app.error(tag, msg, e);
-    }
-
-    public void handleError(String tag, Exception e) {
-        Gdx.app.error(tag, "", e);
-        Gdx.app.exit();
-    }
-    
-    public void handleLuaError(String tag, LuaError e) {
-        Gdx.app.error(tag, "", e);
-        Gdx.app.exit();
-    }
-
-    public void handleLuaError(String tag, ScriptException e) {
-        Gdx.app.error(tag, "", e);
-        Gdx.app.exit();
-    }
-
-    public void notImplemented(String s) {
-        if (knownNotImplemented.contains(s)) return;
-        knownNotImplemented.add(s);
-        log(TAG, "WARNING! \"" + s + "\" is not implemented.");
-    }
-
-    public LuaValue toLua(Object o) {
-        return (LuaValue)LuaEngine.toLua(o);
-    }
-
-    public Object toJava(LuaValue o) {
-        return LuaEngine.toJava(o);
-    }
-
-    public void create () {    
+    @Override
+    public void create () {
         loading = new LoadingScreen();
         loading.setText("Starting the engine");
     }
 
-    public void render () {
+    @Override
+    public void render() {
         if (ready) {
-            runCallback("run", Gdx.graphics.getDeltaTime());
+            callbacks.run();
             return;
         }
         
-        if (loadCore()) {
+        if (setupCore()) {
             if (Gdx.input.isTouched()) {
-                loading.dispose();
-                runCallback("load");
                 ready = true;
-                resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                loading.dispose();
+                callbacks.enable();
+                callbacks.load();
+                callbacks.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
                 return;
             }
         }
@@ -121,94 +66,103 @@ public class NonVM implements ApplicationListener, InputProcessor, Disposable {
         loading.render();
     }
 
+    @Override
     public void resize(int width, int height) { 
-        if (ready) {
-            runCallback("resize", width, height);
-            return;
-        }
-        
-        loading.resize(width, height);
+        callbacks.resize(width, height);
+        if (!ready) loading.resize(width, height);
     }
-    
-    public void pause() {
-        runCallback("visible", LuaValue.FALSE);
-    }
-    
-    public void resume() {
-        runCallback("visible", LuaValue.TRUE);
-    }
-    
-    public void dispose() { 
-        if (ready) {
-            runCallback("quit");
-        } else {
-            loading.dispose();
-        }
 
-        for (Object module : modules) ((LuanBase)module).dispose();
+    @Override
+    public void pause() {
+        callbacks.visible(false);
+    }
+
+    @Override
+    public void resume() {
+        callbacks.visible(true);
+    }
+
+    @Override
+    public void dispose() { 
+        callbacks.quit();
+        if (!ready) loading.dispose();
+        for (Object disposable : toDispose) ((Disposable)disposable).dispose();
         if (Gdx.app.getType() == ApplicationType.Android) System.exit(0);
     }
-    
-    
-    
+
+    @Override
     public boolean keyDown(int keycode) {
-        runCallback("keypressed", LuanKeyboard.getKey(keycode));
+        callbacks.keypressed(LuanKeyboard.getKey(keycode));
         return false;
     }
 
+    @Override
     public boolean keyUp(int keycode) {
-        runCallback("keyreleased", LuanKeyboard.getKey(keycode));
+        callbacks.keyreleased(LuanKeyboard.getKey(keycode));
         return false;
     }
 
-    public boolean keyTyped (char character) {
-        runCallback("textinput", ""+character);
-        return false;
-    }
-   
-    public boolean touchDown (int x, int y, int pointer, int buttoncode) {
-        runCallback("touchpressed", x, y, pointer);
-        runCallback("mousepressed", x, y, LuanMouse.getButton(buttoncode));
+    @Override
+    public boolean keyTyped(char character) {
+        callbacks.textinput(""+character);
         return false;
     }
 
-    public boolean touchUp (int x, int y, int pointer, int buttoncode) {
-        runCallback("touchreleased", x, y, pointer);
-        runCallback("mousereleased", x, y, LuanMouse.getButton(buttoncode));
+    @Override
+    public boolean touchDown(int x, int y, int pointer, int buttoncode) {
+        callbacks.touchpressed(x, y, pointer);
+        callbacks.mousepressed(x, y, LuanMouse.getButton(buttoncode));
         return false;
     }
 
-    public boolean touchDragged (int x, int y, int pointer) {
-        runCallback("touchmoved", x, y, pointer);
+    @Override
+    public boolean touchUp(int x, int y, int pointer, int buttoncode) {
+        callbacks.touchreleased(x, y, pointer);
+        callbacks.mousereleased(x, y, LuanMouse.getButton(buttoncode));
         return false;
     }
 
-    public boolean mouseMoved (int x, int y) {
-        runCallback("mousemoved", x, y);
+    @Override
+    public boolean touchDragged(int x, int y, int pointer) {
+        callbacks.touchmoved(x, y, pointer);
         return false;
     }
 
-    public boolean scrolled (int amount) {
-        runCallback("mousescrolled", amount);
+    @Override
+    public boolean mouseMoved(int x, int y) {
+        callbacks.mousemoved(x, y);
         return false;
     }
 
-    public Object runCallback(String name, Object... args) {
-        if (lua == null) return null;
-        LuaValue callback = toLua(toLua(lua.get("non")).get(name));
-        if (callback == LuaValue.NIL) return null;
-
-        switch (args.length) {
-            case 0: return toJava(callback.call());
-            case 1: return toJava(callback.call(toLua(args[0])));
-            case 2: return toJava(callback.call(toLua(args[0]),toLua(args[1])));
-            case 3: return toJava(callback.call(toLua(args[0]),toLua(args[1]), toLua(args[2])));
-        }
-
-        return null;
+    @Override
+    public boolean scrolled(int amount) {
+        callbacks.mousescrolled(amount);
+        return false;
     }
 
-    private boolean loadCore() {
+    public Map getConfig() {
+        return config;
+    }
+
+    public LuaEngine getLua() {
+        return lua;
+    }
+
+    public Logger getLogger() {
+        return logger;
+    }
+
+    public void ensureDispose(Disposable d) {
+        toDispose.add(d);
+    }
+
+    public void notImplemented(String s) {
+        if (knownNotImplemented.contains(s)) return;
+        knownNotImplemented.add(s);
+        logger.log(TAG, "WARNING! \"" + s + "\" is not implemented.");
+    }
+
+    private boolean setupCore() {
         if (state > 2) return true;
         
         switch (state) {
@@ -222,7 +176,7 @@ public class NonVM implements ApplicationListener, InputProcessor, Disposable {
             try {
                 lua.eval(Gdx.files.internal("non/boot.lua"));
             } catch (ScriptException e) {
-                handleLuaError(TAG, e);
+                logger.luaerror(TAG, e);
             }
             
             Gdx.input.setInputProcessor(this);
@@ -238,12 +192,12 @@ public class NonVM implements ApplicationListener, InputProcessor, Disposable {
         lua.getContext().getGlobals().set("require", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
                 String filename = args.checkjstring(1) + ".lua";
-                String filetype = args.narg() >= 2 && !args.isnil(2) ? args.checkjstring(2) : "internal";
+                String filetype = args.narg() == 2 && !args.isnil(2) ? args.checkjstring(2) : "internal";
                 FileHandle file = LuanFilesystem.newFile(filename, filetype);
                 if (file == null) throw new Exception("Wrong file type \"" + filetype + "\"");
-                return toLua(lua.eval(file));
+                return lua.convert(lua.eval(file));
             } catch (Exception e) {
-                handleError(TAG, e);
+                logger.error(TAG, e);
                 return LuaValue.NONE;
             }
         }});
@@ -256,7 +210,7 @@ public class NonVM implements ApplicationListener, InputProcessor, Disposable {
                 s.append(args.arg(i).toString());
             }
 
-            log(TAG, s.toString());
+            logger.log(TAG, s.toString());
             return LuaValue.NONE;
         }});
     }
@@ -264,56 +218,56 @@ public class NonVM implements ApplicationListener, InputProcessor, Disposable {
     private void setupCoreLibrary() {
         lua.put("non", LuaValue.tableOf());
 
-        toLua(lua.get("non")).set("getVersion", new VarArgFunction() { @Override public LuaValue invoke(Varargs args) {
-            return toLua(VERSION);
+        ((LuaValue)lua.get("non")).set("getVersion", new VarArgFunction() { @Override public LuaValue invoke(Varargs args) {
+            return LuaValue.valueOf(VERSION);
         }});
 
-        toLua(lua.get("non")).set("getConfig", new VarArgFunction() { @Override public LuaValue invoke(Varargs args) {
-            return toLua(cfg);
+        ((LuaValue)lua.get("non")).set("getConfig", new VarArgFunction() { @Override public LuaValue invoke(Varargs args) {
+            return lua.convert(config);
         }});
 
         LuanBase accelerometer = new LuanAccelerometer(this);
-        toLua(lua.get("non")).set("accelerometer", accelerometer);
-        modules.add(accelerometer);
+        ((LuaValue)lua.get("non")).set("accelerometer", accelerometer);
+        ensureDispose(accelerometer);
 
         LuanBase audio = new LuanAudio(this);
-        toLua(lua.get("non")).set("audio", audio);
-        modules.add(audio);
+        ((LuaValue)lua.get("non")).set("audio", audio);
+        ensureDispose(audio);
 
         LuanBase compass = new LuanCompass(this);
-        toLua(lua.get("non")).set("compass", compass);
-        modules.add(compass);
+        ((LuaValue)lua.get("non")).set("compass", compass);
+        ensureDispose(compass);
 
         LuanBase filesystem = new LuanFilesystem(this);
-        toLua(lua.get("non")).set("filesystem", filesystem);
-        modules.add(filesystem);
+        ((LuaValue)lua.get("non")).set("filesystem", filesystem);
+        ensureDispose(filesystem);
 
         LuanBase graphics = new LuanGraphics(this);
-        toLua(lua.get("non")).set("graphics", graphics);
-        modules.add(graphics);
+        ((LuaValue)lua.get("non")).set("graphics", graphics);
+        ensureDispose(graphics);
 
         LuanBase keyboard = new LuanKeyboard(this);
-        toLua(lua.get("non")).set("keyboard", keyboard);
-        modules.add(keyboard);
+        ((LuaValue)lua.get("non")).set("keyboard", keyboard);
+        ensureDispose(keyboard);
 
         LuanBase mouse = new LuanMouse(this);
-        toLua(lua.get("non")).set("mouse", mouse);
-        modules.add(mouse);
+        ((LuaValue)lua.get("non")).set("mouse", mouse);
+        ensureDispose(mouse);
 
         LuanBase system = new LuanSystem(this);
-        toLua(lua.get("non")).set("system", system);
-        modules.add(system);
+        ((LuaValue)lua.get("non")).set("system", system);
+        ensureDispose(system);
 
         LuanBase timer = new LuanTimer(this);
-        toLua(lua.get("non")).set("timer", timer);
-        modules.add(timer);
+        ((LuaValue)lua.get("non")).set("timer", timer);
+        ensureDispose(timer);
 
         LuanBase touch = new LuanTouch(this);
-        toLua(lua.get("non")).set("touch", touch);
-        modules.add(touch);
+        ((LuaValue)lua.get("non")).set("touch", touch);
+        ensureDispose(touch);
 
         LuanBase window = new LuanWindow(this);
-        toLua(lua.get("non")).set("window", window);
-        modules.add(window);
+        ((LuaValue)lua.get("non")).set("window", window);
+        ensureDispose(window);
     }
 }

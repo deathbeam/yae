@@ -7,8 +7,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Disposable;
 
-public class LoadingScreen {
+public class LoadingScreen implements Disposable {
     private final SpriteBatch batch;
     private final BitmapFont font;
     private final Sprite background, logo;
@@ -46,6 +47,7 @@ public class LoadingScreen {
         textPos.set((Gdx.graphics.getWidth() - font.getBounds(text).width) /2, logo.getY() - 18);
     }
 
+    @Override
     public void dispose() {
         batch.dispose();
         font.dispose();

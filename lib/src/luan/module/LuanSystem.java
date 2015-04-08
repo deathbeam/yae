@@ -19,8 +19,8 @@ public class LuanSystem extends LuanBase {
             return valueOf(Gdx.app.getClipboard().getContents());
         }});
 
-        // platform = non.system.getPlatform()
-        set("getPlatform", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
+        // os = non.system.getOS()
+        set("getOS", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             ApplicationType platform = Gdx.app.getType();
   
             if (platform == ApplicationType.Desktop)

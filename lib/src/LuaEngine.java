@@ -192,14 +192,26 @@ public class LuaEngine extends AbstractScriptEngine implements ScriptEngine, Com
             });
         }
     }
+
+    public LuaValue convert(Object javavalue) {
+        return toLua(javavalue);
+    }
+
+    public Object convert(LuaValue luavalue) {
+        return toJava(luavalue);
+    }
+
+    public Object convert(Varargs luavalue) {
+        return toJava(luavalue);
+    }
     
-    public static LuaValue toLua(Object javaValue) {
+    private static LuaValue toLua(Object javaValue) {
         return javaValue == null? LuaValue.NIL:
             javaValue instanceof LuaValue? (LuaValue) javaValue:
             CoerceJavaToLua.coerce(javaValue);
     }
 
-    public static Object toJava(LuaValue luajValue) {
+    private static Object toJava(LuaValue luajValue) {
         switch ( luajValue.type() ) {
         case LuaValue.TNIL: return null;
         case LuaValue.TSTRING: return luajValue.tojstring();
@@ -210,7 +222,7 @@ public class LuaEngine extends AbstractScriptEngine implements ScriptEngine, Com
         }
     }
 
-    public static Object toJava(Varargs v) {
+    private static Object toJava(Varargs v) {
         final int n = v.narg();
         switch (n) {
         case 0: return null;

@@ -1,5 +1,6 @@
-function non.run(dt)
-  if non.update then non.update(dt) end
+function non.run()
+  local dt = non.timer and non.timer.getDelta() or 0
+  if non.update then non.update(non.timer.getDelta()) end
   non.graphics.clear()
   non.graphics.origin()
   if non.draw then non.draw() end

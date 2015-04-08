@@ -1,5 +1,6 @@
 package non.luan;
 
+import com.badlogic.gdx.utils.Disposable;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.Varargs;
@@ -7,7 +8,7 @@ import org.luaj.vm2.lib.TwoArgFunction;
 import org.luaj.vm2.lib.VarArgFunction;
 import non.NonVM;
 
-public abstract class LuanBase extends LuaTable {
+public abstract class LuanBase extends LuaTable implements Disposable {
     public NonVM vm;
     public String tag;
     
@@ -19,6 +20,8 @@ public abstract class LuanBase extends LuaTable {
     }
 
     public abstract void init();
+
+    @Override
     public void dispose() { }
 
     public boolean getArgBoolean(Varargs args, int i) {
@@ -60,35 +63,21 @@ public abstract class LuanBase extends LuaTable {
     public boolean isArgSet(Varargs args, int i) {
         return args.narg() >= i && !args.isnil(i);
     }
-    
-    public String getLuaType(int t) {
-        switch (t) {
-            case LuaValue.TNIL:         return "nil";
-            case LuaValue.TBOOLEAN:     return "boolean";
-            case LuaValue.TNUMBER:      return "number";
-            case LuaValue.TSTRING:      return "string";
-            case LuaValue.TTABLE:       return "table";
-            case LuaValue.TFUNCTION:    return "function";
-            case LuaValue.TUSERDATA:    return "userdata";
-            case LuaValue.TTHREAD:      return "thread";    
-            default: return "unknown";
-        }
-    }
 
     public void log(String msg) {
-        vm.log(tag, msg);
+        vm.getLogger().log(tag, msg);
     }
 
-    public void logE(String msg) {
-        vm.logE(tag, msg);
+    public void logError(String msg) {
+        vm.getLogger().logE(tag, msg);
     }
 
-    public void logE(String msg, Exception e) {
-        vm.logE(tag, msg, e);
+    public void logError(String msg, Throwable t) {
+        vm.getLogger().logE(tag, msg, t);
     }
 
-    public void handleError(Exception e) {
-        vm.handleError(tag, e);
+    public void handleError(Throwable t) {
+        vm.getLogger().error(tag, t);
     }
 
     public VarArgFunction notImplemented(final String method, final Varargs returnType) {
