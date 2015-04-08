@@ -49,7 +49,7 @@ public class LuanSystem extends LuanBase {
 
         // java, native = non.system.getMemoryUse()
         set("getMemoryUse", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
-            return varargsOf(valueOf(Gdx.app.getJavaHeap(), Gdx.app.getNativeHeap());
+            return varargsOf(valueOf(Gdx.app.getJavaHeap()), valueOf(Gdx.app.getNativeHeap()));
         }});
 
         // success = non.system.openURL(url)
