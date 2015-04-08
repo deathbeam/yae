@@ -47,14 +47,9 @@ public class LuanSystem extends LuanBase {
             return varargsOf(valueOf(name), valueOf(version));
         }});
 
-        // heap_size = non.system.getJavaHeap()
-        set("getJavaHeap", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
-            return valueOf(Gdx.app.getJavaHeap());
-        }});
-
-        // heap_size = non.system.getNativeHeap()
-        set("getNativeHeap", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
-            return valueOf(Gdx.app.getNativeHeap());
+        // java, native = non.system.getMemoryUse()
+        set("getMemoryUse", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
+            return varargsOf(valueOf(Gdx.app.getJavaHeap(), Gdx.app.getNativeHeap());
         }});
 
         // success = non.system.openURL(url)
