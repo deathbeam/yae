@@ -117,6 +117,7 @@ public class LuanAudio extends LuanBase {
     }
 
     public void dispose() {
+        if (isDisposed()) return;
         for (Object source : sources) {
             ((LuanObjSource)source).stop();
         }

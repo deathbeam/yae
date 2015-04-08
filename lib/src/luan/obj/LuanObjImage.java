@@ -26,6 +26,7 @@ public class LuanObjImage extends LuanBase {
     }
 
     public void dispose() {
+        if (isDisposed()) return;
         texture.dispose();
     }
 

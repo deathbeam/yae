@@ -58,6 +58,7 @@ public class LuanGraphics extends LuanBase {
     }
 
     public void dispose() {
+        if (isDisposed()) return;
         batch.dispose();
         shapes.dispose();
         font.dispose();

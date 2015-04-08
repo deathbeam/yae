@@ -91,6 +91,7 @@ public class LuanObjSource extends LuanBase {
     }
 
     public void dispose() {
+        if (isDisposed()) return;
         if (isMusic) music.dispose();
         else sound.dispose();
     }

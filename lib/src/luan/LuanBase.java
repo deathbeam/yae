@@ -9,8 +9,9 @@ import org.luaj.vm2.lib.VarArgFunction;
 import non.NonVM;
 
 public abstract class LuanBase extends LuaTable implements Disposable {
+    private String tag;
+    private boolean disposed;
     public NonVM vm;
-    public String tag;
 
     public LuanBase(NonVM vm, String tag) {
         this(vm, tag, false);
@@ -28,7 +29,16 @@ public abstract class LuanBase extends LuaTable implements Disposable {
     public abstract void init();
 
     @Override
-    public void dispose() { }
+    public void dispose() {}
+
+    public boolean isDisposed() {
+        if (disposed) {
+            return true;
+        }
+
+        disposed = true;
+        return false;
+    }
 
     public boolean getArgBoolean(Varargs args, int i) {
         return args.checkboolean(i);
@@ -87,12 +97,9 @@ public abstract class LuanBase extends LuaTable implements Disposable {
     }
 
     public VarArgFunction notImplemented(final String method, final Varargs returnType) {
-        return (new VarArgFunction() {
-            @Override
-            public Varargs invoke(Varargs args) {
-                vm.notImplemented(method);
-                return returnType;
-            }
-        });
+        return new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
+            vm.getLogger().notImplemented(tag, method);
+            return returnType;
+        }};
     }
 }

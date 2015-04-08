@@ -22,12 +22,12 @@ import non.luan.module.*;
 public class NonVM implements ApplicationListener, InputProcessor {
     private static final String TAG = "NonVM";
     private static final String VERSION = "v0.7.0";
-    private static final Set knownNotImplemented = new HashSet<String>();
-    private static final Set toDispose = new HashSet<Disposable>();
 
+    private final Set toDispose = new HashSet<Disposable>();
+    private final Logger logger = new Logger();
+    private final Callbacks callbacks = new Callbacks(this);
     private final Map config;
-    private final Logger logger;
-    private final Callbacks callbacks;
+    
     private LoadingScreen loading;
     private LuaEngine lua;
     private boolean ready;
@@ -35,8 +35,6 @@ public class NonVM implements ApplicationListener, InputProcessor {
 
     public NonVM(Map config) {
         this.config = config;
-        logger = new Logger();
-        callbacks = new Callbacks(this);
     }
 
     @Override
@@ -83,7 +81,7 @@ public class NonVM implements ApplicationListener, InputProcessor {
     }
 
     @Override
-    public void dispose() { 
+    public void dispose() {
         callbacks.quit();
         if (!ready) loading.dispose();
         for (Object disposable : toDispose) ((Disposable)disposable).dispose();
@@ -160,12 +158,6 @@ public class NonVM implements ApplicationListener, InputProcessor {
         toDispose.add(d);
     }
 
-    public void notImplemented(String s) {
-        if (knownNotImplemented.contains(s)) return;
-        knownNotImplemented.add(s);
-        logger.log(TAG, "WARNING! \"" + s + "\" is not implemented.");
-    }
-
     private boolean setupCore() {
         if (state > 2) return true;
         
@@ -177,14 +169,7 @@ public class NonVM implements ApplicationListener, InputProcessor {
             loading.setText("Initializing the game");
             break;
         case 2:
-            try {
-                lua.eval(Gdx.files.internal("non/boot.lua"));
-            } catch (ScriptException e) {
-                logger.luaerror(TAG, e);
-            }
-            
-            
-            Gdx.input.setInputProcessor(this);
+            bootEngine();
             loading.setText("Touch screen to continue");
             break;
         }
@@ -245,4 +230,15 @@ public class NonVM implements ApplicationListener, InputProcessor {
 
         lua.put("non", non);
     }
+
+    private void bootEngine() {
+        try {
+            lua.eval(Gdx.files.internal("non/boot.lua"));
+        } catch (ScriptException e) {
+            logger.luaError(TAG, e);
+        }
+        
+        Gdx.input.setInputProcessor(this);
+    }
+
 }

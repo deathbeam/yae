@@ -37,6 +37,7 @@ public class LuanObjFont extends LuanBase {
     }
 
     public void dispose() {
+        if (isDisposed()) return;
         font.dispose();
     }
 
