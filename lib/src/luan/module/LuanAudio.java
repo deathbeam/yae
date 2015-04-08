@@ -16,7 +16,7 @@ public class LuanAudio extends LuanBase {
     private float volume = 1.0f;
 
     public LuanAudio(NonVM vm) {
-        super(vm, "NonAudio");
+        super(vm, "NonAudio", true);
     }
 
     @Override

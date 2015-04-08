@@ -6,6 +6,7 @@ import org.luaj.vm2.LuaValue;
 
 public class Callbacks {
     private NonVM vm;
+    private LuaValue root;
     private boolean enabled;
 
     public Callbacks(NonVM vm) {
@@ -14,6 +15,7 @@ public class Callbacks {
 
     public void enable() {
         enabled = true;
+        root = vm.getLibrary();
     }
 
     public void load() {
@@ -90,7 +92,7 @@ public class Callbacks {
         if (!enabled) return;
         if (vm.getLua() == null) return;
 
-        LuaValue callback = (LuaValue)((LuaValue)vm.getLua().get("non")).get(name);
+        LuaValue callback = (LuaValue)root.get(name);
         if (callback == LuaValue.NIL) return;
 
         switch (args.length) {

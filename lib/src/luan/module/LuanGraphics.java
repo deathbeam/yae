@@ -36,7 +36,7 @@ public class LuanGraphics extends LuanBase {
     private Color backgroundColor, color;
 
     public LuanGraphics(NonVM vm) {
-        super(vm, "NonGraphics");
+        super(vm, "NonGraphics", true);
 
         font = new LuanObjFont(this);
         shader = SpriteBatch.createDefaultShader();

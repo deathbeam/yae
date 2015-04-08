@@ -20,7 +20,7 @@ public class LuanObjSource extends LuanBase {
     private boolean isLooping, isPaused, isStopped;
 
     public LuanObjSource(LuanBase base, FileHandle file, String type) { 
-        super(base.vm, "NonSource");
+        super(base.vm, "NonSource", true);
         isMusic = "stream".equals(type);
 
         if (isMusic) {

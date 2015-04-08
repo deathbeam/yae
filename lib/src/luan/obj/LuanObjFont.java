@@ -19,17 +19,17 @@ import non.luan.LuanBase;
 public class LuanObjFont extends LuanBase {
     private BitmapFont font;
 
+    public LuanObjFont(LuanBase base, BitmapFont font) {
+        super(base.vm, "NonFont", true);
+        this.font = font;
+    }
+
     public LuanObjFont(LuanBase base) {
         this(base, new BitmapFont());
     }
 
     public LuanObjFont(LuanBase base, FileHandle file, int size) { 
         this(base, new FreeTypeFontGenerator(file).generateFont(size));
-    }
-
-    public LuanObjFont(LuanBase base, BitmapFont font) {
-        super(base.vm, "NonFont");
-        this.font = font;
     }
 
     public BitmapFont getFont() {

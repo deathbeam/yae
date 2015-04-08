@@ -12,6 +12,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Disposable;
 import org.luaj.vm2.LuaError;
+import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.Varargs;
 import org.luaj.vm2.lib.VarArgFunction;
@@ -27,7 +28,6 @@ public class NonVM implements ApplicationListener, InputProcessor {
     private final Map config;
     private final Logger logger;
     private final Callbacks callbacks;
-
     private LoadingScreen loading;
     private LuaEngine lua;
     private boolean ready;
@@ -35,8 +35,8 @@ public class NonVM implements ApplicationListener, InputProcessor {
 
     public NonVM(Map config) {
         this.config = config;
-        callbacks = new Callbacks(this);
         logger = new Logger();
+        callbacks = new Callbacks(this);
     }
 
     @Override
@@ -152,6 +152,10 @@ public class NonVM implements ApplicationListener, InputProcessor {
         return logger;
     }
 
+    public LuaValue getLibrary() {
+        return (LuaValue)lua.get("non");
+    }
+
     public void ensureDispose(Disposable d) {
         toDispose.add(d);
     }
@@ -178,6 +182,7 @@ public class NonVM implements ApplicationListener, InputProcessor {
             } catch (ScriptException e) {
                 logger.luaerror(TAG, e);
             }
+            
             
             Gdx.input.setInputProcessor(this);
             loading.setText("Touch screen to continue");
@@ -216,58 +221,28 @@ public class NonVM implements ApplicationListener, InputProcessor {
     }
 
     private void setupCoreLibrary() {
-        lua.put("non", LuaValue.tableOf());
+        LuaTable non = LuaValue.tableOf();
 
-        ((LuaValue)lua.get("non")).set("getVersion", new VarArgFunction() { @Override public LuaValue invoke(Varargs args) {
+        non.set("getVersion", new VarArgFunction() { @Override public LuaValue invoke(Varargs args) {
             return LuaValue.valueOf(VERSION);
         }});
 
-        ((LuaValue)lua.get("non")).set("getConfig", new VarArgFunction() { @Override public LuaValue invoke(Varargs args) {
+        non.set("getConfig", new VarArgFunction() { @Override public LuaValue invoke(Varargs args) {
             return lua.convert(config);
         }});
 
-        LuanBase accelerometer = new LuanAccelerometer(this);
-        ((LuaValue)lua.get("non")).set("accelerometer", accelerometer);
-        ensureDispose(accelerometer);
+        non.set("accelerometer", new LuanAccelerometer(this));
+        non.set("audio", new LuanAudio(this));
+        non.set("compass", new LuanCompass(this));
+        non.set("filesystem", new LuanFilesystem(this));
+        non.set("graphics", new LuanGraphics(this));
+        non.set("keyboard", new LuanKeyboard(this));
+        non.set("mouse", new LuanMouse(this));
+        non.set("system", new LuanSystem(this));
+        non.set("timer", new LuanTimer(this));
+        non.set("touch", new LuanTouch(this));
+        non.set("window", new LuanWindow(this));
 
-        LuanBase audio = new LuanAudio(this);
-        ((LuaValue)lua.get("non")).set("audio", audio);
-        ensureDispose(audio);
-
-        LuanBase compass = new LuanCompass(this);
-        ((LuaValue)lua.get("non")).set("compass", compass);
-        ensureDispose(compass);
-
-        LuanBase filesystem = new LuanFilesystem(this);
-        ((LuaValue)lua.get("non")).set("filesystem", filesystem);
-        ensureDispose(filesystem);
-
-        LuanBase graphics = new LuanGraphics(this);
-        ((LuaValue)lua.get("non")).set("graphics", graphics);
-        ensureDispose(graphics);
-
-        LuanBase keyboard = new LuanKeyboard(this);
-        ((LuaValue)lua.get("non")).set("keyboard", keyboard);
-        ensureDispose(keyboard);
-
-        LuanBase mouse = new LuanMouse(this);
-        ((LuaValue)lua.get("non")).set("mouse", mouse);
-        ensureDispose(mouse);
-
-        LuanBase system = new LuanSystem(this);
-        ((LuaValue)lua.get("non")).set("system", system);
-        ensureDispose(system);
-
-        LuanBase timer = new LuanTimer(this);
-        ((LuaValue)lua.get("non")).set("timer", timer);
-        ensureDispose(timer);
-
-        LuanBase touch = new LuanTouch(this);
-        ((LuaValue)lua.get("non")).set("touch", touch);
-        ensureDispose(touch);
-
-        LuanBase window = new LuanWindow(this);
-        ((LuaValue)lua.get("non")).set("window", window);
-        ensureDispose(window);
+        lua.put("non", non);
     }
 }

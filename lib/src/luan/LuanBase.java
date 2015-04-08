@@ -11,12 +11,18 @@ import non.NonVM;
 public abstract class LuanBase extends LuaTable implements Disposable {
     public NonVM vm;
     public String tag;
-    
+
     public LuanBase(NonVM vm, String tag) {
+        this(vm, tag, false);
+    }
+    
+    public LuanBase(NonVM vm, String tag, boolean dispose) {
         super();
         this.vm = vm;
         this.tag = tag;
         init();
+
+        if (dispose) vm.ensureDispose(this);
     }
 
     public abstract void init();
