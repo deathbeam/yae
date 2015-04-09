@@ -20,32 +20,23 @@ public class LuanObjQuad extends LuanBase {
         this.sh = sh;
     }
 
-    private LuanObjQuad self (Varargs args) {
-        try {
-            return (LuanObjQuad)getArgData(args, 1);
-        } catch (Exception e) {
-            handleError(e);
-            return null;
-        }
-    }
-
     public void init() {
         // x, y, w, h = Quad:getViewport()
         set("getViewport", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             return LuaValue.varargsOf(new LuaValue[] {
-                valueOf(self(args).x),
-                valueOf(self(args).y),
-                valueOf(self(args).width),
-                valueOf(self(args).height)});
+                valueOf(x),
+                valueOf(y),
+                valueOf(width),
+                valueOf(height)});
         }});
 
         // Quad:setViewport(x, y, width, height)
         set("setViewport", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
-                self(args).x = getArgFloat(args, 2);
-                self(args).y = getArgFloat(args, 3);
-                self(args).width = getArgFloat(args, 4);
-                self(args).height = getArgFloat(args, 5);
+                x = getArgFloat(args, 2);
+                y = getArgFloat(args, 3);
+                width = getArgFloat(args, 4);
+                height = getArgFloat(args, 5);
             } catch (Exception e) {
                 handleError(e);
             } finally {

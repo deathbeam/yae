@@ -30,56 +30,47 @@ public class LuanObjImage extends LuanBase {
         texture.dispose();
     }
 
-    private LuanObjImage self (Varargs args) {
-        try {
-            return (LuanObjImage)getArgData(args, 1);
-        } catch (Exception e) {
-            handleError(e);
-            return null;
-        }
-    }
-
     public void init() {
         // width, height = Image:getDimensions()
         set("getDimensions", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             return LuaValue.varargsOf(
-                valueOf(self(args).getTexture().getWidth()),
-                valueOf(self(args).getTexture().getHeight()));
+                valueOf(getTexture().getWidth()),
+                valueOf(getTexture().getHeight()));
         }});
 
         // min, mag = Image:getFilter()
         set("getFilter", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             return LuaValue.varargsOf(
-                valueOf(getFilter(self(args).getTexture().getMinFilter())),
-                valueOf(getFilter(self(args).getTexture().getMagFilter())));
+                valueOf(getFilter(getTexture().getMinFilter())),
+                valueOf(getFilter(getTexture().getMagFilter())));
         }});
 
         // format = Image:getFormat()
         set("getFormat", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
-            return valueOf(getFormat(self(args).getTexture().getTextureData().getFormat()));
+            return valueOf(getFormat(getTexture().getTextureData().getFormat()));
         }});
 
         // height = Image:getHeight()
         set("getHeight", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
-            return valueOf(self(args).getTexture().getHeight());
+            return valueOf(getTexture().getHeight());
         }});
 
         // width = Image:getWidth()
         set("getWidth", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
-            return valueOf(self(args).getTexture().getWidth());
+            return valueOf(getTexture().getWidth());
         }});
 
         // horiz, vert = Image:getWrap()
         set("getWrap", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             return LuaValue.varargsOf(
-                valueOf(getWrap(self(args).getTexture().getUWrap())),
-                valueOf(getWrap(self(args).getTexture().getVWrap())));
+                valueOf(getWrap(getTexture().getUWrap())),
+                valueOf(getWrap(getTexture().getVWrap())));
         }});
 
         // Image:setFilter(min, mag)
         set("setFilter", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
-                self(args).getTexture().setFilter(
+                getTexture().setFilter(
                     getFilter(getArgString(args, 2)),
                     getFilter(getArgString(args, 3)));
             } catch (Exception e) {
@@ -92,7 +83,7 @@ public class LuanObjImage extends LuanBase {
         // Image:setWrap(horiz, vert)
         set("setWrap", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
-                self(args).getTexture().setWrap(
+                getTexture().setWrap(
                     getWrap(getArgString(args, 2)),
                     getWrap(getArgString(args, 3)));
             } catch (Exception e) {

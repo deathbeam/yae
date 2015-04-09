@@ -41,30 +41,21 @@ public class LuanObjFont extends LuanBase {
         font.dispose();
     }
 
-    private LuanObjFont self (Varargs args) {
-        try {
-            return (LuanObjFont)getArgData(args, 1);
-        } catch (Exception e) {
-            handleError(e);
-            return null;
-        }
-    }
-
     public void init() {
         // ascent = Font:getAscent()
         set("getAscent", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
-            return valueOf(self(args).getFont().getAscent());
+            return valueOf(getFont().getAscent());
         }});
 
         // width, height = Font:getBounds(text, wrap)
         set("getBounds", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
                 if (isArgSet(args, 3)) {
-                    TextBounds bounds = self(args).getFont().getWrappedBounds(getArgString(args, 2), getArgFloat(args, 3));
+                    TextBounds bounds = getFont().getWrappedBounds(getArgString(args, 2), getArgFloat(args, 3));
                     return LuaValue.varargsOf(valueOf(bounds.width), valueOf(bounds.height));
                 }
 
-                TextBounds bounds = self(args).getFont().getMultiLineBounds(getArgString(args, 2));
+                TextBounds bounds = getFont().getMultiLineBounds(getArgString(args, 2));
                 return LuaValue.varargsOf(valueOf(bounds.width), valueOf(bounds.height));
             } catch (Exception e) {
                 handleError(e);
@@ -74,24 +65,24 @@ public class LuanObjFont extends LuanBase {
 
         // descent = Font:getDescent()
         set("getDescent", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
-            return valueOf(self(args).getFont().getDescent());
+            return valueOf(getFont().getDescent());
         }});
 
         // min, mag = Font:getFilter()
         set("getFilter", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             return LuaValue.varargsOf(
-                valueOf(LuanObjImage.getFilter(self(args).getFont().getRegion(0).getTexture().getMinFilter())),
-                valueOf(LuanObjImage.getFilter(self(args).getFont().getRegion(0).getTexture().getMagFilter())));
+                valueOf(LuanObjImage.getFilter(getFont().getRegion(0).getTexture().getMinFilter())),
+                valueOf(LuanObjImage.getFilter(getFont().getRegion(0).getTexture().getMagFilter())));
         }});
 
         // height = Font:getHeight(text, wrap)
         set("getHeight", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
                 if (isArgSet(args, 3)) {
-                    return valueOf(self(args).getFont().getWrappedBounds(getArgString(args, 2), getArgFloat(args, 3)).height);
+                    return valueOf(getFont().getWrappedBounds(getArgString(args, 2), getArgFloat(args, 3)).height);
                 }
 
-                return valueOf(self(args).getFont().getMultiLineBounds(getArgString(args, 2)).height);
+                return valueOf(getFont().getMultiLineBounds(getArgString(args, 2)).height);
             } catch (Exception e) {
                 handleError(e);
                 return ZERO;
@@ -100,17 +91,17 @@ public class LuanObjFont extends LuanBase {
 
         // line_height = Font:getLineHeight()
         set("getLineHeight", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
-            return valueOf(self(args).getFont().getLineHeight());
+            return valueOf(getFont().getLineHeight());
         }});
 
         // width = Font:getWidth(text, wrap)
         set("getWidth", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
                 if (isArgSet(args, 3)) {
-                    return valueOf(self(args).getFont().getWrappedBounds(getArgString(args, 2), getArgFloat(args, 3)).width);
+                    return valueOf(getFont().getWrappedBounds(getArgString(args, 2), getArgFloat(args, 3)).width);
                 }
                 
-                return valueOf(self(args).getFont().getMultiLineBounds(getArgString(args, 2)).width);
+                return valueOf(getFont().getMultiLineBounds(getArgString(args, 2)).width);
             } catch (Exception e) {
                 handleError(e);
                 return ZERO;
@@ -123,7 +114,7 @@ public class LuanObjFont extends LuanBase {
                 boolean hasGlyph = true;
 
                 for (int i = 2; i <= args.narg(); i++) {
-                    hasGlyph &= self(args).getFont().containsCharacter(getArgString(args, i).charAt(0));
+                    hasGlyph &= getFont().containsCharacter(getArgString(args, i).charAt(0));
                 }
 
                 return valueOf(hasGlyph);
@@ -136,7 +127,7 @@ public class LuanObjFont extends LuanBase {
         // Font:setFilter(min, mag)
         set("setFilter", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
-                self(args).getFont().getRegion(0).getTexture().setFilter(
+                getFont().getRegion(0).getTexture().setFilter(
                     LuanObjImage.getFilter(getArgString(args, 2)),
                     LuanObjImage.getFilter(getArgString(args, 3)));
             } catch (Exception e) {
@@ -149,7 +140,7 @@ public class LuanObjFont extends LuanBase {
         // Font:setLineHeight(line_height)
         set("setLineHeight", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
-                self(args).getFont().getData().setLineHeight(getArgFloat(args, 2));
+                getFont().getData().setLineHeight(getArgFloat(args, 2));
                 return LuaValue.NONE;
             } catch (Exception e) {
                 handleError(e);

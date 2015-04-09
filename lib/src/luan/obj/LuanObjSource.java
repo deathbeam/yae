@@ -96,63 +96,54 @@ public class LuanObjSource extends LuanBase {
         else sound.dispose();
     }
 
-    private LuanObjSource self (Varargs args) {
-        try {
-            return (LuanObjSource)getArgData(args, 1);
-        } catch (Exception e) {
-            handleError(e);
-            return null;
-        }
-    }
-
     public void init() {
         // volume = Source:getVolume()
         set("getVolume", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
-            return valueOf(self(args).getVolume());
+            return valueOf(getVolume());
         }});
 
         // is_looping = Source:isLooping()
         set("isLooping", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
-            return valueOf(self(args).isLooping());
+            return valueOf(isLooping());
         }});
 
         // is_paused = Source:isPaused()
         set("isPaused", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
-            return valueOf(self(args).isPaused());
+            return valueOf(isPaused());
         }});
 
         // is_static = Source:isStatic()
         set("isStatic", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
-            return valueOf(self(args).isStatic());
+            return valueOf(isStatic());
         }});
 
         // is_stopped = Source:isStopped()
         set("isStopped", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
-            return valueOf(self(args).isStopped());
+            return valueOf(isStopped());
         }});
 
         // Source:pause()
         set("pause", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
-            self(args).pause();
+            pause();
             return LuaValue.NONE;
         }});
 
         // Source:play()
         set("play", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
-            self(args).play();
+            play();
             return LuaValue.NONE;
         }});
 
         // Source:resume()
         set("resume", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
-            self(args).resume();
+            resume();
             return LuaValue.NONE;
         }});
 
         // Source:setLooping(is_looping)
         set("setLooping", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
-                self(args).setLooping(getArgBoolean(args, 2));
+                setLooping(getArgBoolean(args, 2));
             } catch (Exception e) {
                 handleError(e);
             } finally {
@@ -163,7 +154,7 @@ public class LuanObjSource extends LuanBase {
         // Source:setVolume(volume)
         set("setVolume", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
-                self(args).setVolume(getArgFloat(args, 2));
+                setVolume(getArgFloat(args, 2));
             } catch (Exception e) {
                 handleError(e);
             } finally {
@@ -173,7 +164,7 @@ public class LuanObjSource extends LuanBase {
 
         // Source:stop()
         set("stop", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
-            self(args).stop();
+            stop();
             return LuaValue.NONE;
         }});
 

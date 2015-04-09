@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
+import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.Varargs;
 import org.luaj.vm2.lib.VarArgFunction;
@@ -67,40 +68,15 @@ public class LuanGraphics extends LuanBase {
 
     @Override
     public void init() {
-        // font = non.graphics.newFont(filename, size, filetype)
-        set("newFont", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
+        // non.graphics.arc(mode, x, y, radius, angle1, angle2)
+        set("arc", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
-                FileHandle file = LuanFilesystem.newFile(getArgString(args, 1), getArgString(args, 3, "internal"));
-                return new LuanObjFont(LuanGraphics.this, file, getArgInt(args, 2, 12));
+                checkShapes();
+                changeMode(getArgString(args, 1));
+                shapes.arc(getArgFloat(args, 2), getArgFloat(args, 3), getArgFloat(args, 4), getArgFloat(args, 5), getArgFloat(args, 6) * MathUtils.radDeg);
             } catch (Exception e) {
                 handleError(e);
-                return NONE;
-            }
-        }});
-
-        // image = non.graphics.newImage(filename, format, filetype)
-        set("newImage", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
-            try {
-                FileHandle file = LuanFilesystem.newFile(getArgString(args, 1), getArgString(args, 3, "internal"));
-                return new LuanObjImage(LuanGraphics.this, file, getArgString(args, 2, "normal"));
-            } catch (Exception e) {
-                handleError(e);
-                return NONE;
-            }
-        }});
-
-        // quad = non.graphics.newQuad(x, y, width, height, sw, sh)
-        set("newQuad", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
-            try {
-                return new LuanObjQuad(LuanGraphics.this,
-                    getArgFloat(args, 1),
-                    getArgFloat(args, 2),
-                    getArgFloat(args, 3),
-                    getArgFloat(args, 4),
-                    getArgFloat(args, 5),
-                    getArgFloat(args, 6));
-            } catch (Exception e) {
-                handleError(e);
+            } finally {
                 return NONE;
             }
         }});
@@ -215,15 +191,52 @@ public class LuanGraphics extends LuanBase {
             return font;
         }});
 
-        // non.graphics.line(mode, x1, y1, x2, y2)
+        // non.graphics.line(x1, y1, x2, y2)
         set("line", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
                 checkShapes();
-                changeMode(getArgString(args, 1));
-                shapes.rectLine(getArgFloat(args, 2), getArgFloat(args, 3), getArgFloat(args, 4), getArgFloat(args, 5), 1);
+                shapes.line(getArgFloat(args, 1), getArgFloat(args, 2), getArgFloat(args, 3), getArgFloat(args, 4));
             } catch (Exception e) {
                 handleError(e);
             } finally {
+                return NONE;
+            }
+        }});
+
+        // font = non.graphics.newFont(filename, size, filetype)
+        set("newFont", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
+            try {
+                FileHandle file = LuanFilesystem.newFile(getArgString(args, 1), getArgString(args, 3, "internal"));
+                return new LuanObjFont(LuanGraphics.this, file, getArgInt(args, 2, 12));
+            } catch (Exception e) {
+                handleError(e);
+                return NONE;
+            }
+        }});
+
+        // image = non.graphics.newImage(filename, format, filetype)
+        set("newImage", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
+            try {
+                FileHandle file = LuanFilesystem.newFile(getArgString(args, 1), getArgString(args, 3, "internal"));
+                return new LuanObjImage(LuanGraphics.this, file, getArgString(args, 2, "normal"));
+            } catch (Exception e) {
+                handleError(e);
+                return NONE;
+            }
+        }});
+
+        // quad = non.graphics.newQuad(x, y, width, height, sw, sh)
+        set("newQuad", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
+            try {
+                return new LuanObjQuad(LuanGraphics.this,
+                    getArgFloat(args, 1),
+                    getArgFloat(args, 2),
+                    getArgFloat(args, 3),
+                    getArgFloat(args, 4),
+                    getArgFloat(args, 5),
+                    getArgFloat(args, 6));
+            } catch (Exception e) {
+                handleError(e);
                 return NONE;
             }
         }});
@@ -239,8 +252,7 @@ public class LuanGraphics extends LuanBase {
         set("point", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
                 checkShapes();
-                changeMode(getArgString(args, 1));
-                shapes.point(getArgFloat(args, 2), getArgFloat(args, 3), 0);
+                shapes.point(getArgFloat(args, 1), getArgFloat(args, 2), 0);
             } catch (Exception e) {
                 handleError(e);
             } finally {
