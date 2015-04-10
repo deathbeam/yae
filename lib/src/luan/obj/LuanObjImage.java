@@ -19,6 +19,7 @@ public class LuanObjImage extends LuanBase {
     public LuanObjImage(LuanBase base, FileHandle file, String format) { 
         super(base.vm, "NonImage", true);
         texture = new Texture(file, getFormat(format), false);
+        texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
     }
 
     public Texture getTexture() {

@@ -105,44 +105,44 @@ public class LuanGraphics extends LuanBase {
         set("draw", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
                 checkBatch();
-                final LuanObjImage image = (LuanObjImage)getArgData(args, 1);
+                final Texture texture = ((LuanObjImage)getArgData(args, 1)).getTexture();
+                float x, y, r, sx, sy, ox, oy, w, h;
+                int srcX, srcY, srcW, srcH;
 
                 if (args.istable(2)) {
                     final LuanObjQuad quad = (LuanObjQuad)getArgData(args, 2);
-                    batch.draw(
-                        image.getTexture(),
-                        getArgFloat(args, 3, 0f),
-                        getArgFloat(args, 4, 0f),
-                        getArgFloat(args, 8, 0f),
-                        getArgFloat(args, 9, 0f),
-                        quad.width,
-                        quad.height,
-                        getArgFloat(args, 6, 1f),
-                        getArgFloat(args, 7, 1f),
-                        getArgFloat(args, 5, 0f),
-                        (int)quad.x,
-                        (int)quad.y,
-                        (int)quad.sw,
-                        (int)quad.sh,
-                        false, true);
+                    x = getArgFloat(args, 3, 0f);
+                    y = getArgFloat(args, 4, 0f);
+                    r = getArgFloat(args, 5, 0f) * MathUtils.radDeg;
+                    sx = getArgFloat(args, 6, 1f);
+                    sy = getArgFloat(args, 7, 1f);
+                    ox = getArgFloat(args, 8, 0f);
+                    oy = getArgFloat(args, 9, 0f);
+                    w = quad.width;
+                    h = quad.height;
+                    srcX = (int)quad.x;
+                    srcY = (int)quad.y;
+                    srcW = (int)quad.sw;
+                    srcH = (int)quad.sh;
                 } else {
-                    batch.draw(
-                        image.getTexture(),
-                        getArgFloat(args, 2, 0f),
-                        getArgFloat(args, 3, 0f),
-                        getArgFloat(args, 7, 0f),
-                        getArgFloat(args, 8, 0f),
-                        image.getTexture().getWidth(),
-                        image.getTexture().getHeight(),
-                        getArgFloat(args, 5, 1f),
-                        getArgFloat(args, 6, 1f),
-                        getArgFloat(args, 4, 0f),
-                        0,
-                        0,
-                        (int)image.getTexture().getWidth(),
-                        (int)image.getTexture().getHeight(),
-                        false, true);
+                    x = getArgFloat(args, 2, 0f);
+                    y = getArgFloat(args, 3, 0f);
+                    r = getArgFloat(args, 4, 0f) * MathUtils.radDeg;
+                    sx = getArgFloat(args, 5, 1f);
+                    sy = getArgFloat(args, 6, 1f);
+                    ox = getArgFloat(args, 7, 0f);
+                    oy = getArgFloat(args, 8, 0f);
+                    w = texture.getWidth();
+                    h = texture.getHeight();
+                    srcX = 0;
+                    srcY = 0;
+                    srcW = (int)w;
+                    srcH = (int)h;
                 }
+
+                x -= ox;
+                y -= oy;
+                batch.draw(texture, x, y, ox, oy, w, h, sx, sy, r, srcX, srcY, srcW, srcH, false, true);
             } catch (Exception e) {
                 handleError(e);
             } finally {
@@ -206,8 +206,12 @@ public class LuanGraphics extends LuanBase {
         // font = non.graphics.newFont(filename, size, filetype)
         set("newFont", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
-                FileHandle file = LuanFilesystem.newFile(getArgString(args, 1), getArgString(args, 3, "internal"));
-                return new LuanObjFont(LuanGraphics.this, file, getArgInt(args, 2, 12));
+                if (!args.isnumber(1)) {
+                    FileHandle file = LuanFilesystem.newFile(getArgString(args, 1), getArgString(args, 3, "internal"));
+                    return new LuanObjFont(LuanGraphics.this, file, getArgInt(args, 2, 16));
+                }
+
+                return new LuanObjFont(LuanGraphics.this, getArgInt(args, 1, 16));
             } catch (Exception e) {
                 handleError(e);
                 return NONE;
@@ -455,6 +459,23 @@ public class LuanGraphics extends LuanBase {
             } catch (Exception e) {
                 handleError(e);
             } finally {
+                return NONE;
+            }
+        }});
+
+        // font = non.graphics.setNewFont(filename, size, filetype)
+        set("setNewFont", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
+            try {
+                if (!args.isnumber(1)) {
+                    FileHandle file = LuanFilesystem.newFile(getArgString(args, 1), getArgString(args, 3, "internal"));
+                    font = new LuanObjFont(LuanGraphics.this, file, getArgInt(args, 2, 16));
+                    return font;
+                }
+
+                font = new LuanObjFont(LuanGraphics.this, getArgInt(args, 1, 16));
+                return font;
+            } catch (Exception e) {
+                handleError(e);
                 return NONE;
             }
         }});

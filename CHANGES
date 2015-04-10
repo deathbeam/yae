@@ -6,6 +6,8 @@
 - speeded up build times a bit
 - changed loading screen a bit
 - drastically improved view transformations performance
+- new default font (Roboto Light)
+- changed default textures filter to "Linear" (was "Nearest" before)
 
 [0.6.4]
 - fixed documentation for methods that returns multiple values

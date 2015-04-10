@@ -22,10 +22,15 @@ public class LuanObjFont extends LuanBase {
     public LuanObjFont(LuanBase base, BitmapFont font) {
         super(base.vm, "NonFont", true);
         this.font = font;
+        this.font.getRegion(0).getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
     }
 
     public LuanObjFont(LuanBase base) {
-        this(base, new BitmapFont());
+        this(base, 16);
+    }
+
+    public LuanObjFont(LuanBase base, int size) {
+        this(base, Gdx.files.internal("non/font.ttf"), size);
     }
 
     public LuanObjFont(LuanBase base, FileHandle file, int size) { 
