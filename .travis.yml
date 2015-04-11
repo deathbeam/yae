@@ -9,11 +9,11 @@ install:
   - sudo apt-get install luajit
   - sudo apt-get install luarocks
   - sudo luarocks install moonscript
-  - sudo install
 
 jdk: oraclejdk7
 
 script:
+  - ./install
   - sudo java -jar bin/non.jar -d hello moon
   - sudo java -jar bin/non.jar -d build desktop
   - sudo java -jar bin/non.jar -d build android
