@@ -1,3 +1,7 @@
 #!/usr/bin/env bash
-javac lib/*.java
-jar cvfe bin/non.jar Main -C lib .
+sh javac lib/launcher/*.java
+sh jar cvfe bin/non.jar Main -C lib/launcher/ .
+sh jar fu bin/non.jar lib/gradle/* lib/platforms/* lib/resources/* lib/VERSION
+sh luarocks make non-dev-1.rockspec
+cd lib/core
+sh gradlew install

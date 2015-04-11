@@ -3,11 +3,14 @@
 - renamed background.png to splash.png
 - removed bar.png
 - moved all Lua code to Java, so now engine runs with almost native Java performance
-- speeded up build times a bit
 - changed loading screen a bit
 - drastically improved view transformations performance
+- drastically reduced build times
 - new default font (Roboto Light)
 - changed default textures filter to "Linear" (was "Nearest" before)
+- to simplify engine removed option to change native iOS splash before actual NON splash
+- reduced log output to console
+- fixed small bug what caused that engine was ignoring directories with name "non"
 
 [0.6.4]
 - fixed documentation for methods that returns multiple values
