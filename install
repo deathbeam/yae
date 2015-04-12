@@ -2,8 +2,9 @@
 javac lib/launcher/*.java
 jar cvfe bin/non.jar Main -C lib/launcher/ .
 jar fu bin/non.jar lib/gradle/* lib/platforms/* lib/resources/* lib/VERSION
-luarocks make non-dev-1.rockspec
 cd lib/thirdparty
 ./gradlew install
 cd ../core
 ./gradlew install
+cd ../../
+luarocks make non-dev-1.rockspec
