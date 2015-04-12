@@ -1,4 +1,4 @@
-![logo](https://raw.githubusercontent.com/non2d/non/master/lib/data/resources/logo.png)
+![logo](https://raw.githubusercontent.com/non2d/non/master/lib/resources/logo.png)
 
 [![Build Status](https://travis-ci.org/non2d/non.png)](https://travis-ci.org/non2d/non) [![Join the chat at https://gitter.im/non2d/non](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/non2d/non?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -15,13 +15,13 @@ luarocks install non
 ### Getting Started ###
 
   * [Introduction](https://github.com/non2d/non/wiki/Introduction)
-  * [Create your first Non project](https://github.com/non2d/non/wiki/Getting-started)
+  * [Create your first project](https://github.com/non2d/non/wiki/Getting-started)
   * [Run, Manage and Package your project]( https://github.com/non2d/non/wiki/Running-and-packaging-your-project)
   * [Read the Wiki](https://github.com/non2d/non/wiki)
 
 ### Documentation ###
 
-The [Wiki](https://github.com/non2d/non/wiki) contains all the information you'll need to write a Non game. You can contribute to the Wiki directly here on GitHub!
+The [Wiki](https://github.com/non2d/non/wiki) contains all the information you'll need to write game. You can contribute to the Wiki directly here on GitHub!
 
 ### Reporting Issues ###
 
