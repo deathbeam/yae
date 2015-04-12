@@ -10,6 +10,7 @@ buildscript {
 
 repositories {
     mavenCentral()
+    mavenLocal()
     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     maven { url "https://oss.sonatype.org/content/repositories/releases/" }
 }
@@ -30,6 +31,7 @@ ext {
 }
 
 dependencies {
+    compile "io.nononsense:thirdparty:0.0.1"
     compile "com.badlogicgames.gdx:gdx:$gdxVersion"
     compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
     compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
