@@ -7,6 +7,7 @@
 - drastically improved view transformations performance
 - drastically reduced build times
 - new default font (Roboto Light)
+- new icon (Acolyte)
 - changed default textures filter to "Linear" (was "Nearest" before)
 - to simplify engine removed option to change native iOS splash before actual NON splash
 - reduced log output to console
