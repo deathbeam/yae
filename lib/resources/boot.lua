@@ -1,10 +1,4 @@
-function require(file)
-	if (string.sub(file,-4) == ".lua") then file = string.sub(file, 1, -5) end
-	file = string.gsub(file, "%.", "/")
-	file = file .. ".lua"
-	print("require: ".."'"..tostring(file).."'")
-	return non.filesystem.load(file)()
-end
+package.path = '/?.lua;./?.lua;/assets/?.lua;/?/init.lua;./?/init.lua;/assets/?/init.lua'
 
 function non.draw() end
 function non.keypressed() end

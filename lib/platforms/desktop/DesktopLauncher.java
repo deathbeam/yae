@@ -1,6 +1,7 @@
 package %PACKAGE%.desktop;
 
 import java.io.File;
+import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Map;
@@ -23,8 +24,16 @@ public class DesktopLauncher {
         cfg.width = 800;
         cfg.height = 600;
         cfg.resizable = false;
-
-        Map config = (Map<String, Object>)new Yaml().load(new FileInputStream(new File("non/config.yml")));
+        
+        Yaml yaml = new Yaml();
+        Map config;
+        
+        try {
+            config = (Map<String, Object>)yaml.load(DesktopLauncher.class.getResourceAsStream("/non/config.yml"));
+        } catch (Exception e) {
+            config = (Map<String, Object>)yaml.load(new FileInputStream(new File("non/config.yml")));
+        }
+        
         cfg.title = (String)config.get("name");
         
         if (config.containsKey("desktop")) {

@@ -14,6 +14,8 @@
 - fixed small bug what caused that engine was ignoring directories with name "non"
 - pertially fixed require function (still do not supports package.path)
 - moved installation script to tools/ and added API dumper
+- now "require" function works same as LOVE require function
+- fixed engine not be able to load "config.yml" when running from compiled JAR
 
 [0.6.4]
 - fixed documentation for methods that returns multiple values

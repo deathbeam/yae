@@ -17,14 +17,19 @@ public class IOSLauncher extends IOSApplication.Delegate {
     protected IOSApplication createApplication() {
         IOSApplicationConfiguration cfg = new IOSApplicationConfiguration();
         
+        Map config;
+        
         try {
-            Map config = (Map<String, Object>)new Yaml().load(new FileInputStream(new File("non/config.yml")));
-            return new IOSApplication(new NonVM(config), cfg);
+            config = (Map<String, Object>)yaml.load(IOSLauncher.class.getResourceAsStream("/non/config.yml"));
+        } catch (Exception e) {
+            config = (Map<String, Object>)yaml.load(new FileInputStream(new File("non/config.yml")));
         } catch (FileNotFoundException e) {
             System.err.println(e.getMessage());
             System.exit(-1);
             return null;
         }
+        
+        return new IOSApplication(new NonVM(config), cfg);
     }
 
     public static void main(String[] args) {
