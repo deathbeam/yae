@@ -13,6 +13,7 @@ install:
 jdk: oraclejdk7
 
 script:
+  - cd tools
   - sudo ./install
   - sudo non -d hello moon
   - sudo non -d build desktop

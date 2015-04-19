@@ -35,6 +35,7 @@ public class LuanGraphics extends LuanBase {
     private ShaderProgram shader;
     private String blendMode;
     private Color backgroundColor, color;
+    private boolean matrixDirty;
 
     public LuanGraphics(NonVM vm) {
         super(vm, "NonGraphics", true);
@@ -71,7 +72,7 @@ public class LuanGraphics extends LuanBase {
         // non.graphics.arc(mode, x, y, radius, angle1, angle2)
         set("arc", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
-                checkShapes();
+                check(false);
                 changeMode(getArgString(args, 1));
                 shapes.arc(getArgFloat(args, 2), getArgFloat(args, 3), getArgFloat(args, 4), getArgFloat(args, 5), getArgFloat(args, 6) * MathUtils.radDeg);
             } catch (Exception e) {
@@ -84,7 +85,7 @@ public class LuanGraphics extends LuanBase {
         // non.graphics.circle(mode, x, y, radius)
         set("circle", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
-                checkShapes();
+                check(false);
                 changeMode(getArgString(args, 1));
                 shapes.circle(getArgFloat(args, 2), getArgFloat(args, 3), getArgFloat(args, 4));
             } catch (Exception e) {
@@ -104,7 +105,7 @@ public class LuanGraphics extends LuanBase {
         // non.graphics.draw(drawable, quad, x, y, r, sx, sy, ox, oy, kx, ky)
         set("draw", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
-                checkBatch();
+                check(true);
                 final Texture texture = ((LuanObjImage)getArgData(args, 1)).getTexture();
                 float x, y, r, sx, sy, ox, oy, w, h;
                 int srcX, srcY, srcW, srcH;
@@ -153,7 +154,7 @@ public class LuanGraphics extends LuanBase {
         // non.graphics.ellipse(mode, x, y, width, height)
         set("ellipse", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
-                checkShapes();
+                check(false);
                 changeMode(getArgString(args, 1));
                 shapes.ellipse(getArgFloat(args, 2), getArgFloat(args, 3), getArgFloat(args, 4), getArgFloat(args, 5));
             } catch (Exception e) {
@@ -194,7 +195,7 @@ public class LuanGraphics extends LuanBase {
         // non.graphics.line(x1, y1, x2, y2)
         set("line", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
-                checkShapes();
+                check(false);
                 shapes.line(getArgFloat(args, 1), getArgFloat(args, 2), getArgFloat(args, 3), getArgFloat(args, 4));
             } catch (Exception e) {
                 handleError(e);
@@ -248,14 +249,14 @@ public class LuanGraphics extends LuanBase {
         // non.graphics.origin()
         set("origin", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             transform.identity();
-            updateMatrices();
+            matrixDirty = true;
             return NONE;
         }});
 
         // non.graphics.point(mode, x, y)
         set("point", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
-                checkShapes();
+                check(false);
                 shapes.point(getArgFloat(args, 1), getArgFloat(args, 2), 0);
             } catch (Exception e) {
                 handleError(e);
@@ -267,7 +268,7 @@ public class LuanGraphics extends LuanBase {
         // non.graphics.polygon(mode, x1, y1, x2, y2, ...)
         set("polygon", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
-                checkShapes();
+                check(false);
                 changeMode(getArgString(args, 1));
                 float[] vertices = new float[0];
                 int start = 2;
@@ -300,7 +301,7 @@ public class LuanGraphics extends LuanBase {
         // non.graphics.print(text, x, y, r, sx, sy, ox, oy, kx, ky)
         set("print", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
-                checkBatch();
+                check(true);
                 final String text = getArgString(args, 1);
                 final float x = getArgFloat(args, 2, 0f);
                 final float y = getArgFloat(args, 3, 0f);
@@ -331,7 +332,7 @@ public class LuanGraphics extends LuanBase {
         // non.graphics.printf(text, x, y, wrap, align, r, sx, sy, ox, oy, kx, ky)
         set("printf", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
-                checkBatch();
+                check(true);
                 final String text = getArgString(args, 1);
                 final float x = getArgFloat(args, 2, 0f);
                 final float y = getArgFloat(args, 3, 0f);
@@ -362,7 +363,7 @@ public class LuanGraphics extends LuanBase {
         // non.graphics.rectangle(mode, x, y, width, height)
         set("rectangle", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
-                checkShapes();
+                check(false);
                 changeMode(getArgString(args, 1));
                 shapes.rect(getArgFloat(args, 2), getArgFloat(args, 3), getArgFloat(args, 4), getArgFloat(args, 5));
             } catch (Exception e) {
@@ -392,7 +393,7 @@ public class LuanGraphics extends LuanBase {
             font.getFont().setColor(color);
             
             transform.identity();
-            updateMatrices();
+            matrixDirty = true;
             return NONE;
         }});
 
@@ -400,7 +401,7 @@ public class LuanGraphics extends LuanBase {
         set("rotate", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
                 transform.rotate(getArgFloat(args, 1));
-                updateMatrices();
+                matrixDirty = true;
             } catch (Exception e) {
                 handleError(e);
             } finally {
@@ -484,7 +485,7 @@ public class LuanGraphics extends LuanBase {
         set("scale", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
                 transform.scale(getArgFloat(args, 1), getArgFloat(args, 2));
-                updateMatrices();
+                matrixDirty = true;
             } catch (Exception e) {
                 handleError(e);
             } finally {
@@ -496,7 +497,7 @@ public class LuanGraphics extends LuanBase {
         set("translate", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
             try {
                 transform.translate(getArgFloat(args, 1), getArgFloat(args, 2));
-                updateMatrices();
+                matrixDirty = true;
             } catch (Exception e) {
                 handleError(e);
             } finally {
@@ -519,19 +520,24 @@ public class LuanGraphics extends LuanBase {
         }
     }
 
-    private void checkBatch() {
-        if (shapes.isDrawing()) shapes.end();
-        if (!batch.isDrawing()) batch.begin();
-    }
-    
-    private void checkShapes() {
-        if (batch.isDrawing()) batch.end();
-        if (!shapes.isDrawing()) shapes.begin();
-    }
-    
-    private void updateMatrices() {
-        shapes.setTransformMatrix(transform.matrix);
-        batch.setTransformMatrix(transform.matrix);
+    private void check(boolean textureBased) {
+        if (textureBased) {
+            if (matrixDirty) {
+                batch.setTransformMatrix(transform.matrix);
+                matrixDirty = false;
+            }
+
+            if (shapes.isDrawing()) shapes.end();
+            if (!batch.isDrawing()) batch.begin();
+        } else {
+            if (matrixDirty) {
+                shapes.setTransformMatrix(transform.matrix);
+                matrixDirty = false;
+            }
+
+            if (batch.isDrawing()) batch.end();
+            if (!shapes.isDrawing()) shapes.begin();
+        }
     }
 
     public class Transform {

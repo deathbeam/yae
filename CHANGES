@@ -12,6 +12,8 @@
 - to simplify engine removed option to change native iOS splash before actual NON splash
 - reduced log output to console
 - fixed small bug what caused that engine was ignoring directories with name "non"
+- pertially fixed require function (still do not supports package.path)
+- moved installation script to tools/ and added API dumper
 
 [0.6.4]
 - fixed documentation for methods that returns multiple values

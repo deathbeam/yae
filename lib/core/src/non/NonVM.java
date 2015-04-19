@@ -179,19 +179,6 @@ public class NonVM implements ApplicationListener, InputProcessor {
     }
 
     private void setupCoreFunctions() {
-        lua.getContext().getGlobals().set("require", new VarArgFunction() { @Override public Varargs invoke(Varargs args) {
-            try {
-                String filename = args.checkjstring(1) + ".lua";
-                String filetype = args.narg() == 2 && !args.isnil(2) ? args.checkjstring(2) : "internal";
-                FileHandle file = LuanFilesystem.newFile(filename, filetype);
-                if (file == null) throw new Exception("Wrong file type \"" + filetype + "\"");
-                return lua.convert(lua.eval(file));
-            } catch (Exception e) {
-                logger.error(TAG, e);
-                return LuaValue.NONE;
-            }
-        }});
-
         lua.getContext().getGlobals().set("print", new VarArgFunction() { @Override public LuaValue invoke(Varargs args) {
             StringBuffer s = new StringBuffer();
 
