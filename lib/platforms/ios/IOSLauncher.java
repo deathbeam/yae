@@ -16,6 +16,8 @@ public class IOSLauncher extends IOSApplication.Delegate {
     @SuppressWarnings("unchecked")
     protected IOSApplication createApplication() {
         IOSApplicationConfiguration cfg = new IOSApplicationConfiguration();
+        cfg.orientationLandscape = true;
+        cfg.orientationPortrait = true;
         
         Map config;
         
@@ -33,8 +35,17 @@ public class IOSLauncher extends IOSApplication.Delegate {
             Map window = (Map<String, Object>)config.get("window");
             if (window.containsKey("orientation")) {
                 String orientation = (String)window.get("orientation");
-                if (orientation.equals("portrait")) cfg.orientationLandscape = false;
-                else cfg.orientationPortrait = false;
+                
+                if (orientation.equals("portrait")) {
+                    cfg.orientationLandscape = false;
+                    cfg.orientationPortrait = true;
+                } else if (orientation.equals("landscape")) {
+                    cfg.orientationLandscape = true;
+                    cfg.orientationPortrait = false;
+                } else if (orientation.equals("sensor")) {
+                    cfg.orientationLandscape = true;
+                    cfg.orientationPortrait = true;
+                }
             }
         }
         

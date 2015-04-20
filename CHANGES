@@ -19,6 +19,7 @@
 - moved desktop.display to window in config.yml
 - fixed %PACKAGE_DIR% not updating for iOS builds
 - added support for changing Android and iOS display orientation ("landscape" or "portrait")
+- added support for "sensor" Android and iOS display orientation and made it default
 
 [0.6.4]
 - fixed documentation for methods that returns multiple values
