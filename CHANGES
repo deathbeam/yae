@@ -16,6 +16,9 @@
 - moved installation script to tools/ and added API dumper
 - now "require" function works same as LOVE require function
 - fixed engine not be able to load "config.yml" when running from compiled JAR
+- moved desktop.display to window in config.yml
+- fixed %PACKAGE_DIR% not updating for iOS builds
+- added support for changing Android and iOS display orientation ("landscape" or "portrait")
 
 [0.6.4]
 - fixed documentation for methods that returns multiple values

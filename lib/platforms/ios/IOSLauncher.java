@@ -29,6 +29,15 @@ public class IOSLauncher extends IOSApplication.Delegate {
             return null;
         }
         
+        if (config.containsKey("window")) {
+            Map window = (Map<String, Object>)config.get("window");
+            if (window.containsKey("orientation")) {
+                String orientation = (String)window.get("orientation");
+                if (orientation.equals("portrait")) cfg.orientationLandscape = false;
+                else cfg.orientationPortrait = false;
+            }
+        }
+        
         return new IOSApplication(new NonVM(config), cfg);
     }
 

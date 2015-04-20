@@ -36,15 +36,12 @@ public class DesktopLauncher {
         
         cfg.title = (String)config.get("name");
         
-        if (config.containsKey("desktop")) {
-            Map desktop = (Map<String, Object>)config.get("desktop");
-            if (desktop.containsKey("display")) {
-                Map display = (Map<String, Object>)desktop.get("display");
-                if (display.containsKey("width")) cfg.width = (Integer)display.get("width");
-                if (display.containsKey("height")) cfg.height = (Integer)display.get("height");
-                if (display.containsKey("resizable")) cfg.resizable = (Boolean)display.get("resizable");
-                if (display.containsKey("fullscreen")) cfg.fullscreen = (Boolean)display.get("fullscreen");
-            }
+        if (config.containsKey("window")) {
+            Map window = (Map<String, Object>)config.get("window");
+            if (window.containsKey("width")) cfg.width = (Integer)window.get("width");
+            if (window.containsKey("height")) cfg.height = (Integer)window.get("height");
+            if (window.containsKey("resizable")) cfg.resizable = (Boolean)window.get("resizable");
+            if (window.containsKey("fullscreen")) cfg.fullscreen = (Boolean)window.get("fullscreen");
         }
         
         new LwjglApplication(new NonVM(config), cfg);
