@@ -58,6 +58,8 @@ public class LuanKeyboard extends LuanBase {
                 String name = getKey(i);
                 if (name != null) keyNames.put(name, i);
             }
+            
+            keyNames.put(" ", Keys.SPACE);
         }
 
         return keyNames.get(keyname, -1);
