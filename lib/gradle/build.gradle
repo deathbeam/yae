@@ -22,7 +22,7 @@ allprojects {
         appName = cfg.name
         packageName = cfg.package
         packageDir = cfg.package.replace('.', '/')
-        screenOrientation = cfg.window.orientation ? cfg.window.orientation : "sensor"
+        screenOrientation = cfg.window ? (cfg.window.orientation ? cfg.window.orientation : "sensor") : "sensor"
         nonVersion = file('VERSION').exists() ? file('VERSION').text.trim() : file('../VERSION').text.trim()
         gdxVersion = '1.5.5'
         roboVMVersion = '1.0.0'
