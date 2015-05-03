@@ -8,13 +8,11 @@ android:
 install:
   - sudo apt-get install luajit
   - sudo apt-get install luarocks
-  - sudo luarocks install moonscript
+  - sudo luarocks install --server=http://luarocks.org/dev non
 
 jdk: oraclejdk7
 
 script:
-  - cd tools
-  - sudo ./install
   - sudo non -d hello moon
   - sudo non -d build desktop
   - sudo non -d build android
