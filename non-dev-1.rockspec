@@ -30,7 +30,7 @@ build = {
   
   platforms = {
     unix = {
-      build_command = "sudo ./install"
+      build_command = "sh install"
     },
     windows = {
       build_command = "install"
