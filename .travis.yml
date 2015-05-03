@@ -8,7 +8,7 @@ android:
 install:
   - sudo apt-get install luajit
   - sudo apt-get install luarocks
-  - sudo luarocks install --server=http://luarocks.org/dev non
+  - sudo luarocks make non-dev-1.rockspec
 
 jdk: oraclejdk7
 
