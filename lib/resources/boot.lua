@@ -19,11 +19,14 @@ function non.visible() end
 
 function non.run()
   local dt = non.timer and non.timer.getDelta() or 0
-  if non.update then non.update(non.timer.getDelta()) end
-  non.graphics.clear()
-  non.graphics.origin()
-  if non.draw then non.draw() end
-  non.graphics.present()
+  non.update(dt)
+
+  if non.graphics then 
+    non.graphics.clear()
+    non.graphics.origin()
+    non.draw()
+    non.graphics.present()
+  end
 end
 
 non.java = {}
