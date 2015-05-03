@@ -7,4 +7,3 @@ cd lib/thirdparty
 cd ../core
 ./gradlew install
 cd ../../
-luarocks make non-dev-1.rockspec

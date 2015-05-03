@@ -8,5 +8,4 @@ call gradlew.bat install
 cd ../core
 call gradlew.bat install
 cd ../../
-call luarocks make non-dev-1.rockspec
 endlocal

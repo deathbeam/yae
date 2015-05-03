@@ -33,7 +33,7 @@ build = {
       build_command = "sh install"
     },
     windows = {
-      build_command = "install"
+      build_command = "call install"
     }
   }
 }

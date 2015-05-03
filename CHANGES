@@ -21,6 +21,7 @@
 - added support for changing Android and iOS display orientation ("landscape" or "portrait")
 - added support for "sensor" Android and iOS display orientation and made it default
 - added support for " " character as space for non.keyboard
+- installation from LuaRocks is now fully automated
 
 [0.6.4]
 - fixed documentation for methods that returns multiple values
