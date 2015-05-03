@@ -18,7 +18,7 @@ dependencies = {
 }
 
 build = {
-  type = "builtin",
+  type = "command",
   
   modules = {
     ["non"] = "bin/non.lua"
@@ -26,5 +26,14 @@ build = {
   
   install = {
     bin = { "bin/non.jar", "bin/non" }
+  },
+  
+  platforms = {
+    unix = {
+      build_command = "sudo ./install"
+    },
+    windows = {
+      build_command = "install"
+    }
   }
 }
