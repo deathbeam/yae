@@ -38,7 +38,7 @@ public class LuanMouse extends LuanBase {
                 boolean isDown = false;
 
                 for (int i = 1; i <= args.narg(); ++i) {
-                    isDown |= Gdx.input.isKeyPressed(getButton(getArgString(args, i)));
+                    isDown |= Gdx.input.isButtonPressed(getButton(getArgString(args, i)));
                 }
 
                 return valueOf(isDown);

@@ -22,6 +22,7 @@
 - added support for "sensor" Android and iOS display orientation and made it default
 - added support for " " character as space for non.keyboard
 - installation from LuaRocks is now fully automated
+- fixed non.mouse.isDown (by accident I mapped there keycodes rather than buttoncodes)
 
 [0.6.4]
 - fixed documentation for methods that returns multiple values
