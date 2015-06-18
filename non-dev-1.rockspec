@@ -20,20 +20,16 @@ dependencies = {
 build = {
   type = "command",
   
-  modules = {
-    ["non"] = "bin/non.lua"
-  },
-  
   install = {
     bin = { "bin/non.jar", "bin/non" }
   },
   
   platforms = {
     unix = {
-      build_command = "sh install"
+      build_command = "./install"
     },
     windows = {
-      build_command = "call install"
+      build_command = "install"
     }
   }
 }

@@ -2,6 +2,7 @@
 javac lib/launcher/*.java
 jar cvfe bin/non.jar Main -C lib/launcher/ .
 jar fu bin/non.jar lib/gradle/* lib/platforms/* lib/resources/* lib/VERSION
+chmod 777 bin/non.jar
 cd lib/thirdparty
 ./gradlew install
 cd ../core
