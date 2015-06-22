@@ -13,6 +13,6 @@ install:
 jdk: oraclejdk7
 
 script:
-  - sudo non -d hello moon
-  - sudo non -d build desktop
-  - sudo non -d build android
+  - non -d hello moon
+  - non -d build desktop
+  - non -d build android
