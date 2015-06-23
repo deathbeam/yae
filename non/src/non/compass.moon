@@ -1,4 +1,4 @@
-gdx = require("non.common").gdx
+gdx = require("non.internal.common").gdx
 
 {
   getAzimuth: ->

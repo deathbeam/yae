@@ -1,6 +1,6 @@
 time = java.require "com.badlogic.gdx.utils.TimeUtils"
 thread = java.require "java.lang.Thread"
-gdx = require("non.common").gdx
+gdx = require("non.internal.common").gdx
 
 {
   getDelta: ->

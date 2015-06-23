@@ -1,12 +1,18 @@
-input = require "non.input"
+-- Initialize java library
+export java = require "java"
 
-export java = require "non.java"
-export non = {}
-non.accelerometer = require "non.accelerometer"
-non.compass = require "non.compass"
-non.filesystem = require "non.filesystem"
-non.system = require "non.system"
-non.timer = require "non.timer"
+-- Initialize the modules
+export non = {
+	accelerometer: require "non.accelerometer"
+	compass: require "non.compass"
+	filesystem: require "non.filesystem"
+	keyboard: require "non.keyboard"
+	mouse: require "non.mouse"
+	system: require "non.system"
+	timer: require "non.timer"
+}
+
+input = require "non.internal.input"
 
 non._keypressed = (keycode) ->
   if non.keypressed then non.keypressed input.key2string(keycode)

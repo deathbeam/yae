@@ -178,7 +178,7 @@ for k, v in pairs buttons
 
 {
   key2string: (code) -> keys_r[code]
-  key2number: (name) -> keys[name]
+  key2code: (name) -> keys[name]
   btn2string: (code) -> buttons_r[code]
-  btn2number: (name) -> buttons[name]
+  btn2code: (name) -> buttons[name]
 }

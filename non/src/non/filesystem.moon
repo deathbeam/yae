@@ -1,96 +1,96 @@
-c =	require("non.common")
+c = require("non.internal.common")
 lua = c.vm.lua
 helpers = c.vm.helpers
 
-newfile = (filename, filetype="internal") ->
-	switch filename
-		when "internal"
-			return gdx.files\internal filename
-		when "local"
-			return helpers\localfile filename
-		when "external"
-			return gdx.files\external filename
-		when "classpath"
-			return gdx.files\classpath filename
-		when "absolute"
-			return gdx.files\absolute filename
-
 {
-	append: (filename, text, filetype) ->
-		file = newfile filename, filetype
-		file\writeString text, true
-		return true
+  newFile: (filename, filetype="internal") ->
+    switch filename
+      when "internal"
+        return gdx.files\internal filename
+      when "local"
+        return helpers\localfile filename
+      when "external"
+        return gdx.files\external filename
+      when "classpath"
+        return gdx.files\classpath filename
+      when "absolute"
+        return gdx.files\absolute filename
 
-	copy: (from_filename, to_filename, from_filetype, to_filetype) ->
-		from_file = newfile from_filename, from_filetype
-		to_file = newfile from_filename, from_filetype
-		from_file\copyTo to_file
-		return true
+  append: (filename, text, filetype) ->
+    file = @newFile filename, filetype
+    file\writeString text, true
+    return true
 
-	createDirectory: (filename, filetype) ->
-		file = newfile filename, filetype
-		newfile\mkdirs!
-		return true
+  copy: (from_filename, to_filename, from_filetype, to_filetype) ->
+    from_file = @newFile from_filename, from_filetype
+    to_file = @newFile from_filename, from_filetype
+    from_file\copyTo to_file
+    return true
 
-	exists: (filename, filetype) ->
-		file = newfile filename, filetype
-		return newfile\exists!
+  createDirectory: (filename, filetype) ->
+    file = @newFile filename, filetype
+    @newFile\mkdirs!
+    return true
 
-	getDirectoryItems: (filename, filetype) ->
-		children = newfile(filename, filetype)\list!
-		paths = {}
+  exists: (filename, filetype) ->
+    file = @newFile filename, filetype
+    return @newFile\exists!
 
-		for i = 0, children.length
-			paths[i + 1] = children[i]\path!
+  getDirectoryItems: (filename, filetype) ->
+    children = @newFile(filename, filetype)\list!
+    paths = {}
 
-		return paths
+    for i = 0, children.length
+      paths[i + 1] = children[i]\path!
 
-	getExternalDirectory: ->
-		return gdx.files\getExternalStoragePath!
+    return paths
 
-	getLocalDirectory: ->
-		return gdx.files\getLocalStoragePath!
+  getExternalDirectory: ->
+    return gdx.files\getExternalStoragePath!
 
-	getWorkingDirectory: ->
-		file = newfile(".")\file!
-		return file\getAbsolutePath!
+  getLocalDirectory: ->
+    return gdx.files\getLocalStoragePath!
 
-	getLastModified: (filename, filetype) ->
-		file = newfile filename, filetype
-		return file\lastModified!
+  getWorkingDirectory: ->
+    file = @newFile(".")\file!
+    return file\getAbsolutePath!
 
-	getSize: (filename, filetype) ->
-		file = newfile filename, filetype
-		return file\length!
+  getLastModified: (filename, filetype) ->
+    file = @newFile filename, filetype
+    return file\lastModified!
 
-	isDirectory: (filename, filetype) ->
-		file = newfile filename, filetype
-		return file\isDirectory!
+  getSize: (filename, filetype) ->
+    file = @newFile filename, filetype
+    return file\length!
 
-	isFile: (filename, filetype) ->
-		return not @isDirectory filename, filetype
+  isDirectory: (filename, filetype) ->
+    file = @newFile filename, filetype
+    return file\isDirectory!
 
-	load: (filename, filetype) ->
-		file = newfile filename, filetype
-		return lua\load file\reader!, filename
+  isFile: (filename, filetype) ->
+    return not @isDirectory filename, filetype
 
-	move: (from_filename, to_filename, from_filetype, to_filetype) ->
-		from_file = newfile from_filename, from_filetype
-		to_file = newfile from_filename, from_filetype
-		from_file\moveTo to_file
-		return true
+  load: (filename, filetype) ->
+    file = @newFile filename, filetype
+    return lua\load file\reader!, filename
 
-	read: (filename, filetype) ->
-		file = newfile filename, filetype
-		return file\readString!
+  move: (from_filename, to_filename, from_filetype, to_filetype) ->
+    from_file = @newFile from_filename, from_filetype
+    to_file = @newFile from_filename, from_filetype
+    from_file\moveTo to_file
+    return true
 
-	remove: (filename, filetype) ->
-		file = newfile filename, filetype
-		file\deleteDirectory!
-		return true
+  read: (filename, filetype) ->
+    file = @newFile filename, filetype
+    return file\readString!
 
-	write: (filename, text, filetype) ->
-		file = newfile filename, filetype
-		file\writeString text
-		return true
+  remove: (filename, filetype) ->
+    file = @newFile filename, filetype
+    file\deleteDirectory!
+    return true
+
+  write: (filename, text, filetype) ->
+    file = @newFile filename, filetype
+    file\writeString text
+    return true
 }
