@@ -30,14 +30,14 @@ gdx = require("non.internal.common").gdx
   getTitle: ->
     config.name
 
-  getWidht: ->
+  getWidth: ->
     gdx.graphics\getWidth!
 
   isFullscreen: ->
     gdx.graphics\isFullscreen!
 
   setFullscreen: (fullscreen) ->
-    @setMode @getWidth, @getHeight, fullscreen
+    @setMode @getWidth!, @getHeight!, fullscreen
 
   setMode: (width, height, fullscreen=false) ->
     gdx.graphics\setDisplayMode width, height, fullscreen
