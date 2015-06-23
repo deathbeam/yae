@@ -1,19 +1,38 @@
 -- Initialize java library
 export java = require "java"
 
--- Initialize the modules
-export non = {
-  accelerometer: require "non.accelerometer"
-  audio: require "non.audio"
-  compass: require "non.compass"
-  filesystem: require "non.filesystem"
-  keyboard: require "non.keyboard"
-  mouse: require "non.mouse"
-  system: require "non.system"
-  timer: require "non.timer"
-  window: require "non.window"
-}
+-- Initialize main non table
+export non = {}
 
+-- Initialize the modules
+print "Initializing the accelerometer module"
+non.accelerometer = require "non.accelerometer"
+
+print "Initializing the audio module"
+non.audio = require "non.audio"
+
+print "Initializing the compass module"
+non.compass = require "non.compass"
+
+print "Initializing the filesystem module"
+non.filesystem = require "non.filesystem"
+
+print "Initializing the keyboard module"
+non.keyboard = require "non.keyboard"
+
+print "Initializing the mouse module"
+non.mouse = require "non.mouse"
+
+print "Initializing the system module"
+non.system = require "non.system"
+
+print "Initializing the timer module"
+non.timer = require "non.timer"
+
+print "Initializing the window module"
+non.window = require "non.window"
+
+-- Wrap the callbacks to be usefull for the engine
 c = require "non.internal.constants"
 
 non._keypressed = (keycode) ->
@@ -32,6 +51,7 @@ non._quit = ->
   if non.quit then non.quit!
   non.audio.stopAll!
 
+-- Main loop function
 non.run = () ->
   dt = 0
   if non.timer then dt = non.timer.getDelta!
