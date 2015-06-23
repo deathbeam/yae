@@ -178,7 +178,7 @@ formats = {
   "rgb565": Format.RGB565
   "alpha": Format.Alpha
   "intensity": Format.Intensity
-  "luminancealpha": Format.Luminancealpha
+  "luminancealpha": Format.LuminanceAlpha
 }
 
 wraps = {
