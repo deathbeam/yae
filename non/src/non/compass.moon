@@ -1,14 +1,14 @@
-gdx = require("non.internal.common").gdx
+Gdx = java.require "com.badlogic.gdx.Gdx"
 
 {
   getAzimuth: ->
-    gdx.input\getAzimuth!
+    Gdx.input\getAzimuth!
 
   getPitch: ->
-    gdx.input\getPitch!
+    Gdx.input\getPitch!
 
   getRoll: ->
-    gdx.input\getRoll!
+    Gdx.input\getRoll!
 
   getOrientation: ->
     @getAzimuth!, @getPitch!, @getRoll!

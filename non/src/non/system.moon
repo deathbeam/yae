@@ -1,28 +1,27 @@
-c = require("non.internal.common")
-gdx = c.gdx
-helpers = c.helpers
+Gdx = java.require "com.badlogic.gdx.Gdx"
+NonVM = java.require "non.NonVM"
 
 {
   getClipboardText: ->
-    clipboard = gdx.app\getClipboard!
+    clipboard = Gdx.app\getClipboard!
     return clipboard\getContents!
 
   getOS: ->
-    return helpers\getOS!
+    return NonVM.util\getOS!
 
   getMemoryUse: ->
-    return gdx.app\getJavaHeap!
+    return Gdx.app\getJavaHeap!
 
   openURL: (url) ->
-    return gdx.net\openURI url
+    return Gdx.net\openURI url
 
   setClipboardText: (text) ->
-    clipboard = gdx.app\getClipboard!
+    clipboard = Gdx.app\getClipboard!
     clipboard\setContents text
 
   vibrate: (seconds) ->
-    gdx.input\vibrate seconds * 1000
+    Gdx.input\vibrate seconds * 1000
 
   quit: ->
-    gdx.app\exit!
+    Gdx.app\exit!
 }

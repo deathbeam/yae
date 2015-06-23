@@ -1,6 +1,6 @@
 c = require("non.internal.constants")
-gdx = require("non.internal.common").gdx
-Peripheral = java.require("com.badlogic.gdx.Input.Peripheral")
+Gdx = java.require "com.badlogic.gdx.Gdx"
+Peripheral = java.require("com.badlogic.Gdx.Input.Peripheral")
 
 {
   isDown: (...) ->
@@ -9,13 +9,13 @@ Peripheral = java.require("com.badlogic.gdx.Input.Peripheral")
 
     for i = 1, args.n
       keycode = c.keys[args[i]]
-      found = found or gdx.input\isKeyPressed keycode
+      found = found or Gdx.input\isKeyPressed keycode
 
     return found
 
   isVisible: ->
-    return gdx.input\isPeripheralAvailable Peripheral.OnscreenKeyboard
+    return Gdx.input\isPeripheralAvailable Peripheral.OnscreenKeyboard
 
   setVisible: (visible) ->
-    gdx.input\setOnscreenKeyboardVisible visible
+    Gdx.input\setOnscreenKeyboardVisible visible
 }

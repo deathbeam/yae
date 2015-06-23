@@ -1,12 +1,12 @@
 c = require("non.internal.constants")
-gdx = require("non.internal.common").gdx
+Gdx = java.require "com.badlogic.gdx.Gdx"
 
 {
   getX: ->
-    gdx.input\getX!
+    Gdx.input\getX!
 
   getY: ->
-    gdx.input\getY!
+    Gdx.input\getY!
 
   getPosition: ->
     @getX!, @getY!
@@ -17,18 +17,18 @@ gdx = require("non.internal.common").gdx
 
     for i = 1, args.n
       btncode = c.buttons[args[i]]
-      found = found or gdx.input\isButtonPressed btncode
+      found = found or Gdx.input\isButtonPressed btncode
 
     return found
 
   isVisible: ->
-    not gdx.input\isCursorCatched!
+    not Gdx.input\isCursorCatched!
 
   setPosition: (x, y) ->
-    gdx.input\setCursorPosition x, y
+    Gdx.input\setCursorPosition x, y
 
   setVisible: (visible) ->
-    gdx.input\setCursorCatched visible
+    Gdx.input\setCursorCatched visible
 
   setX: (x) ->
     @setPosition x, @getY!

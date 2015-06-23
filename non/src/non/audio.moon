@@ -1,4 +1,4 @@
-Source = require("non.objects.Source")
+Source = require "non.objects.Source"
 
 sources = {}
 globalvolume = 1

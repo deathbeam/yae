@@ -10,7 +10,7 @@ import org.robovm.apple.uikit.UIApplication;
 import org.yaml.snakeyaml.Yaml;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplication;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
-import non.vm;
+import non.NonVM;
 
 public class IOSLauncher extends IOSApplication.Delegate {
     @SuppressWarnings("unchecked")
@@ -49,7 +49,7 @@ public class IOSLauncher extends IOSApplication.Delegate {
             }
         }
         
-        return new IOSApplication(new vm(config), cfg);
+        return new IOSApplication(new NonVM(config), cfg);
     }
 
     public static void main(String[] args) {

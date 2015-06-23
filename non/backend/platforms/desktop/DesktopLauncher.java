@@ -9,7 +9,7 @@ import org.yaml.snakeyaml.Yaml;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import non.vm;
+import non.NonVM;
 
 public class DesktopLauncher {
     @SuppressWarnings("unchecked")
@@ -44,6 +44,6 @@ public class DesktopLauncher {
             if (window.containsKey("fullscreen")) cfg.fullscreen = (Boolean)window.get("fullscreen");
         }
         
-        new LwjglApplication(new vm(config), cfg);
+        new LwjglApplication(new NonVM(config), cfg);
     }
 }

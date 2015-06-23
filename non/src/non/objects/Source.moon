@@ -1,4 +1,4 @@
-gdx = require("non.internal.common").gdx
+Gdx = java.require "com.badlogic.gdx.Gdx"
 
 class Source
   new: (filename, audiotype, filetype) =>
@@ -10,9 +10,9 @@ class Source
     @paused = false
 
     if @static
-      @source = gdx.audio\newMusic file
+      @source = Gdx.audio\newMusic file
     else
-      @source = gdx.audio\newSound file
+      @source = Gdx.audio\newSound file
 
   play: =>
     if @static

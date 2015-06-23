@@ -1,20 +1,19 @@
-c = require("non.internal.common")
-lua = c.vm.lua
-helpers = c.vm.helpers
+Gdx = java.require "com.badlogic.gdx.Gdx"
+NonVM = java.require "non.NonVM"
 
 {
   newFile: (filename, filetype="internal") ->
     switch filename
       when "internal"
-        return gdx.files\internal filename
+        return Gdx.files\internal filename
       when "local"
-        return helpers\localfile filename
+        return NonVM.util\localfile filename
       when "external"
-        return gdx.files\external filename
+        return Gdx.files\external filename
       when "classpath"
-        return gdx.files\classpath filename
+        return Gdx.files\classpath filename
       when "absolute"
-        return gdx.files\absolute filename
+        return Gdx.files\absolute filename
 
   append: (filename, text, filetype) ->
     file = @newFile filename, filetype
@@ -46,10 +45,10 @@ helpers = c.vm.helpers
     return paths
 
   getExternalDirectory: ->
-    return gdx.files\getExternalStoragePath!
+    return Gdx.files\getExternalStoragePath!
 
   getLocalDirectory: ->
-    return gdx.files\getLocalStoragePath!
+    return Gdx.files\getLocalStoragePath!
 
   getWorkingDirectory: ->
     file = @newFile(".")\file!
@@ -72,7 +71,7 @@ helpers = c.vm.helpers
 
   load: (filename, filetype) ->
     file = @newFile filename, filetype
-    return lua\load file\reader!, filename
+    return NonVM.lua\load file\reader!, filename
 
   move: (from_filename, to_filename, from_filetype, to_filetype) ->
     from_file = @newFile from_filename, from_filetype

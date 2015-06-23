@@ -1,4 +1,4 @@
-gdx = require("non.internal.common").gdx
+Gdx = java.require "com.badlogic.gdx.Gdx"
 
 {
   fromPixels: (px, py) ->
@@ -13,7 +13,7 @@ gdx = require("non.internal.common").gdx
     @getWidht!, @getHeight!, @isFullscreen!
 
   getFullscreenModes: ->
-    jmodes = gdx.graphics.getDisplayModes!
+    jmodes = Gdx.graphics.getDisplayModes!
     modes = {}
 
     for i = 0, jmodes.length
@@ -22,29 +22,29 @@ gdx = require("non.internal.common").gdx
     return modes
 
   getHeight: ->
-    gdx.graphics\getHeight!
+    Gdx.graphics\getHeight!
 
   getPixelScale: ->
-    gdx.graphics\getDensity!
+    Gdx.graphics\getDensity!
 
   getTitle: ->
     config.name
 
   getWidth: ->
-    gdx.graphics\getWidth!
+    Gdx.graphics\getWidth!
 
   isFullscreen: ->
-    gdx.graphics\isFullscreen!
+    Gdx.graphics\isFullscreen!
 
   setFullscreen: (fullscreen) ->
     @setMode @getWidth!, @getHeight!, fullscreen
 
   setMode: (width, height, fullscreen=false) ->
-    gdx.graphics\setDisplayMode width, height, fullscreen
+    Gdx.graphics\setDisplayMode width, height, fullscreen
 
   setTile: (title) ->
     config.name = title
-    gdx.graphics\setTitle config.name
+    Gdx.graphics\setTitle config.name
 
   toPixels:(dx, dy) ->
     scale = @getPixelScale!

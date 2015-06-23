@@ -1,17 +1,17 @@
-time = java.require "com.badlogic.gdx.utils.TimeUtils"
-thread = java.require "java.lang.Thread"
-gdx = require("non.internal.common").gdx
+TimeUtils = java.require "com.badlogic.Gdx.utils.TimeUtils"
+Thread = java.require "java.lang.Thread"
+Gdx = java.require "com.badlogic.gdx.Gdx"
 
 {
   getDelta: ->
-    gdx.graphics\getDeltaTime!
+    Gdx.graphics\getDeltaTime!
 
   getFPS: ->
-    gdx.graphics\getFramesPerSecond!
+    Gdx.graphics\getFramesPerSecond!
 
   getTime: ->
-    time\millis!
+    TimeUtils\millis!
 
   sleep: (seconds) ->
-    thread\sleep seconds * 1000
+    Thread\sleep seconds * 1000
 }

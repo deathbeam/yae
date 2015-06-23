@@ -7,7 +7,7 @@ import org.yaml.snakeyaml.Yaml;
 import android.os.Bundle;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import non.vm;
+import non.NonVM;
 
 public class AndroidLauncher extends AndroidApplication {
     @SuppressWarnings("unchecked")
@@ -17,7 +17,7 @@ public class AndroidLauncher extends AndroidApplication {
 
         try {
             Map config = (Map<String, Object>)new Yaml().load(getAssets().open("non/config.yml"));
-            initialize(new vm(config), cfg);
+            initialize(new NonVM(config), cfg);
         } catch (IOException e) {
             System.err.println(e.getMessage());
             System.exit(-1);

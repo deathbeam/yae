@@ -24,10 +24,10 @@ import org.luaj.vm2.lib.VarArgFunction;
 import org.luaj.vm2.lib.jse.JsePlatform;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 
-public class vm implements ApplicationListener, InputProcessor, ResourceFinder {
+public class NonVM implements ApplicationListener, InputProcessor, ResourceFinder {
     public static final String TAG = "NonVM";
     public static final String VERSION = "v0.7.0";
-    public static final Helpers helpers = new Helpers();
+    public static final Helpers util = new Helpers();
     public static Globals lua;
     
     private final Callbacks callbacks = new Callbacks(this);
@@ -36,7 +36,7 @@ public class vm implements ApplicationListener, InputProcessor, ResourceFinder {
     private int state;
     private Map config;
 
-    public vm(Map config) {
+    public NonVM(Map config) {
         this.config = config;
     }
 
