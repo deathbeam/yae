@@ -6,9 +6,9 @@ sourceCompatibility = 1.6
 sourceSets.main.java.srcDirs = [ "src/" ]
 
 task precompile(type:Exec) {
-    try {
+    if (System.getProperty('os.name').toLowerCase().contains('windows')) {
         commandLine 'cmd', '/c', 'precompile.bat'
-    } catch (e) {
+    } else {
         commandLine './precompile.sh'
     }
 }
