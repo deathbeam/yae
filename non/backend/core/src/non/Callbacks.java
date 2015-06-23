@@ -36,7 +36,7 @@ public class Callbacks {
     }
 
     public void quit() { 
-        runCallback("quit");
+        runCallback("_quit");
     }
 
     public void keypressed(int keycode) {

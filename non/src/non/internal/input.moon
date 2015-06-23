@@ -166,13 +166,13 @@ buttons = {
   "forward": 4
 }
 
+-- Create flipped table for keys to be able to convert keycodes to strings
 keys_r = {}
-
 for k, v in pairs keys
   keys_r[v] = k
 
+-- Create flipped table for buttons to be able to convert buttoncodes to strings
 buttons_r = {}
-
 for k, v in pairs buttons
   buttons_r[v] = k
 

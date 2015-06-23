@@ -87,7 +87,7 @@ class Source
     else
       source\setVolume @volume
 
-  dispose: =>
+  free: =>
     source\dispose!
 
 return Source

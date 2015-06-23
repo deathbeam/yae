@@ -3,13 +3,14 @@ export java = require "java"
 
 -- Initialize the modules
 export non = {
-	accelerometer: require "non.accelerometer"
-	compass: require "non.compass"
-	filesystem: require "non.filesystem"
-	keyboard: require "non.keyboard"
-	mouse: require "non.mouse"
-	system: require "non.system"
-	timer: require "non.timer"
+  accelerometer: require "non.accelerometer"
+  audio: require "non.audio"
+  compass: require "non.compass"
+  filesystem: require "non.filesystem"
+  keyboard: require "non.keyboard"
+  mouse: require "non.mouse"
+  system: require "non.system"
+  timer: require "non.timer"
 }
 
 input = require "non.internal.input"
@@ -25,6 +26,10 @@ non._mousepressed = (x, y, buttoncode) ->
 
 non._mousereleased = (x, y, buttoncode) ->
   if non.mousereleased then non.mousereleased input.btn2string(buttoncode)
+
+non._quit = ->
+  if non.quit then non.quit!
+  non.audio.stopAll!
 
 non.run = () ->
   dt = 0
