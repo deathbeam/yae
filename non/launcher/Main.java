@@ -53,7 +53,7 @@ public class Main implements Runner.OutputListener {
         System.out.println("Commands:");
         System.out.println("  non init LANGUAGE        # initializes new project in this directory for specified LANGUAGE");
         System.out.println("  non run PLATFORM         # start your application for specified PLATFORM");
-        System.out.println("  non build PLATFORM       # build your application for specified <PLATFORM>");
+        System.out.println("  non pack PLATFORM        # package your application for <PLATFORM>");
         System.out.println("  non clean                # clean temporary data for your project");
         System.out.println("  non update               # update your project's runtime version and dependencies");
         System.out.println("  non version              # print current compiler version");
@@ -87,7 +87,7 @@ public class Main implements Runner.OutputListener {
             }
         }
         
-        if (args[0].equals("dist")) {
+        if (args[0].equals("pack")) {
             System.out.println("Packaging your application");
             check();
             
@@ -118,9 +118,9 @@ public class Main implements Runner.OutputListener {
             check();
             
             if (args.length <= 1 || args[1].equals("moon")) {
-                new Main("hellolua");
-            } else if (args[1].equals("lua")) {
                 new Main("hellomoon");
+            } else if (args[1].equals("lua")) {
+                new Main("hellolua");
             } else {
                 printHelp();
             }

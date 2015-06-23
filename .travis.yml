@@ -14,5 +14,5 @@ jdk: oraclejdk7
 
 script:
   - non -d init
-  - non -d build desktop
-  - non -d build android
+  - non -d pack desktop
+  - non -d pack android
