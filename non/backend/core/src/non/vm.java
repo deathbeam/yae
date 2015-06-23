@@ -154,7 +154,7 @@ public class vm implements ApplicationListener, InputProcessor, ResourceFinder {
             Object value = field.getValue();
 
             if (field instanceof Map) {
-                value = convertConfig(value);
+                value = convertConfig((Map)value);
             }
 
             table.set(key, CoerceJavaToLua.coerce(value));
