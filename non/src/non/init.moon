@@ -18,7 +18,7 @@ non._mousereleased = (x, y, buttoncode) ->
 non.run = () ->
   dt = 0
   if non.timer then dt = non.timer.getDelta!
-  if non.update then non.update(dt)
-  if non.draw then non.draw()
+  if non.update then non.update dt
+  if non.draw then non.draw!
 
 require "main"

@@ -107,7 +107,6 @@ keys = {
   "btnstart": 108
   "btnselect": 109
   "btnmode": 110
-  "btncircle": 255
   -- D-pad
   "dpup": 19
   "dpdown": 20
