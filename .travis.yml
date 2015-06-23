@@ -13,6 +13,6 @@ install:
 jdk: oraclejdk7
 
 script:
-  - non -d hello moon
+  - non -d init
   - non -d build desktop
   - non -d build android
