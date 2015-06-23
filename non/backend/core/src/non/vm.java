@@ -22,12 +22,11 @@ import org.luaj.vm2.Varargs;
 import org.luaj.vm2.lib.ResourceFinder;
 import org.luaj.vm2.lib.VarArgFunction;
 import org.luaj.vm2.lib.jse.JsePlatform;
-import org.luaj.vm2.luajc.LuaJC;
+import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 
 public class vm implements ApplicationListener, InputProcessor, ResourceFinder {
     public static final String TAG = "NonVM";
     public static final String VERSION = "v0.7.0";
-    public static Map config;
     public static final Helpers helpers = new Helpers();
     public static Globals lua;
     
@@ -35,6 +34,7 @@ public class vm implements ApplicationListener, InputProcessor, ResourceFinder {
     private LoadingScreen loading;
     private boolean ready;
     private int state;
+    private Map config;
 
     public vm(Map config) {
         this.config = config;
@@ -145,6 +145,24 @@ public class vm implements ApplicationListener, InputProcessor, ResourceFinder {
         return Gdx.files.internal(name).read();
     }
 
+    private LuaTable convertConfig(Map config) {
+        LuaTable table = LuaValue.tableOf();
+
+        for (Object entry : table.entrySet()) {
+            Map.Entry field = (Map.Entry)entry;
+            String key = field.getKey().toString();
+            Object value = field.getValue();
+
+            if (field instanceof Map) {
+                value = convertConfig(value);
+            }
+
+            table.set(key, CoerceJavaToLua.coerce(value));
+        }
+
+        return table;
+    }
+
     private boolean initialize() {
         if (state > 2) return true;
         
@@ -152,6 +170,7 @@ public class vm implements ApplicationListener, InputProcessor, ResourceFinder {
         case 1:
             lua = JsePlatform.standardGlobals();
             lua.get("package").set("path", "?.lua;?/init.lua");
+            lua.set("config", convertConfig(config));
             
             lua.set("print", new VarArgFunction() { @Override public LuaValue invoke(Varargs args) {
                 StringBuffer s = new StringBuffer();

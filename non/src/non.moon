@@ -11,6 +11,7 @@ export non = {
   mouse: require "non.mouse"
   system: require "non.system"
   timer: require "non.timer"
+  window: require "non.window"
 }
 
 input = require "non.internal.input"
