@@ -1,3 +1,8 @@
+Format = java.require "com.badlogic.gdx.graphics.Pixmap.Format"
+TextureFilter = java.require "com.badlogic.gdx.graphics.Texture.TextureFilter"
+TextureWrap = java.require "com.badlogic.gdx.graphics.Texture.TextureWrap"
+GL20 = java.require "com.badlogic.gdx.graphics.GL20"
+
 keys = {
   "unknown": -1
   -- Alpha-numeric
@@ -166,19 +171,72 @@ buttons = {
   "forward": 4
 }
 
--- Create flipped table for keys to be able to convert keycodes to strings
+formats = {
+  "rgba8": Format.RGBA8888
+  "rgb8": Format.RGB888
+  "rgba4": Format.RGBA4444
+  "rgb565": Format.RGB565
+  "alpha": Format.Alpha
+  "intensity": Format.Intensity
+  "luminancealpha": Format.Luminancealpha
+}
+
+wraps = {
+  "mirroredrepeat": TextureWrap.MirroredRepeat
+  "clamp": TextureWrap.ClampToEdge
+  "repeat": TextureWrap.Repeat
+}
+
+filters = {
+  "linear": TextureFilter.Linear
+  "nearest": TextureFilter.Nearest
+  "mipmap": TextureFilter.MipMap
+  "mipmaplinearlinear": TextureFilter.MipMapLinearLinear
+  "mipmapnearestnearest": TextureFilter.MipMapNearestNearest
+  "mipmaplinearnearest": TextureFilter.MipMapLinearNearest
+  "mipmapnearestlinear": TextureFilter.MipMapNearestLinear
+}
+
+blendmodes = {
+  "alpha": { GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA }
+  "multiplicative": { GL20.GL_DST_COLOR, GL20.GL_ZERO }
+  "premultiplied": { GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA }
+  "subtractive": { GL20.GL_ONE_MINUS_SRC_ALPHA, GL20.GL_ONE }
+  "additive": { GL20.GL_SRC_ALPHA, GL20.GL_ONE }
+  "screen": { GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_COLOR }
+  "replace": { GL20.GL_ONE, GL20.GL_ZERO }
+}
+
 keycodes = {}
 for k, v in pairs keys
   keycodes[v] = k
 
--- Create flipped table for buttons to be able to convert buttoncodes to strings
 buttoncodes = {}
 for k, v in pairs buttons
   buttoncodes[v] = k
 
+formatcodes = {}
+for k, v in pairs formats
+  formatcodes[v] = k
+
+wrapcodes = {}
+for k, v in pairs wraps
+  wrapcodes[v] = k
+
+filtercodes = {}
+for k, v in pairs filters
+  filtercodes[v] = k
+
 {
-  key2string: (code) -> keycodes[code]
-  key2code: (name) -> keys[name]
-  btn2string: (code) -> buttoncodes[code]
-  btn2code: (name) -> buttons[name]
+  keys: keys
+  keycodes: keycodes
+  buttons: buttons
+  buttoncodes: buttoncodes
+  formats: formats
+  formatcodes: formatcodes
+  wraps: wraps
+  wrapcodes: wrapcodes
+  filters: filters
+  filtercodes: filtercodes
+  blendmodes: blendmodes
 }

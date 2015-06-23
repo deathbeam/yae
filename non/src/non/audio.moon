@@ -1,15 +1,14 @@
 Source = require("non.objects.Source")
 
 sources = {}
+globalvolume = 1
 
 {
-  volume: 1
-
   getNumSources: ->
     #sources
 
   getVolume: ->
-    @volume
+    globalvolume
 
   newSource: (filename, audiotype, filetype) ->
     source = Source filename, audiotype, filetype
@@ -20,17 +19,17 @@ sources = {}
     source\pause!
 
   play: (source) ->
-    source\setVolume @volume
+    source\setVolume globalvolume
     source\play!
 
   resume: (source) ->
     source\resume!
 
   setVolume: (volume) ->
-    @volume = volume
+    globalvolume = volume
 
     for i, source in ipairs sources
-      source\setVolume @volume
+      source\setVolume globalvolume
 
   stop: (source) ->
     source\stop!

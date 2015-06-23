@@ -8,7 +8,7 @@ helpers = c.helpers
     return clipboard\getContents!
 
   getOS: ->
-    return helpers\os!
+    return helpers\getOS!
 
   getMemoryUse: ->
     return gdx.app\getJavaHeap!

@@ -20,7 +20,7 @@ public class Helpers {
         return Gdx.files.local(name);
     }
 
-    public String os() {
+    public String getOS() {
     	String name = "unknown";
 
         if (Gdx.app.getType() == ApplicationType.Desktop) {

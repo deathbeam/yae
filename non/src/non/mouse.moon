@@ -1,4 +1,4 @@
-input = require("non.internal.input")
+c = require("non.internal.constants")
 gdx = require("non.internal.common").gdx
 
 {
@@ -16,7 +16,7 @@ gdx = require("non.internal.common").gdx
     found = false
 
     for i = 1, args.n
-      btncode = input.btn2code args[i]
+      btncode = c.buttons[args[i]]
       found = found or gdx.input\isButtonPressed btncode
 
     return found
