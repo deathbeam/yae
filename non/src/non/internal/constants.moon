@@ -2,6 +2,8 @@ Format = java.require "com.badlogic.gdx.graphics.Pixmap.Format"
 TextureFilter = java.require "com.badlogic.gdx.graphics.Texture.TextureFilter"
 TextureWrap = java.require "com.badlogic.gdx.graphics.Texture.TextureWrap"
 GL20 = java.require "com.badlogic.gdx.graphics.GL20"
+ShapeType = java.require "com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType"
+HAlignment = java.require "com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment"
 
 keys = {
   "unknown": -1
@@ -207,6 +209,17 @@ blendmodes = {
   "replace": { GL20.GL_ONE, GL20.GL_ZERO }
 }
 
+halignment = {
+  "right": HAlignment.RIGHT
+  "left": HAlignment.LEFT
+  "center": HAlignment.CENTER
+}
+
+shapetype = {
+  "line": ShapeType.Line
+  "fill": ShapeType.Filled
+}
+
 keycodes = {}
 for k, v in pairs keys
   keycodes[v] = k
@@ -239,4 +252,6 @@ for k, v in pairs filters
   filters: filters
   filtercodes: filtercodes
   blendmodes: blendmodes
+  halignment: halignment
+  shapetype: shapetype
 }
