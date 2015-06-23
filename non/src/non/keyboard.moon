@@ -1,4 +1,4 @@
-c = require("non.internal.constants")
+c = require "non.internal.constants"
 Gdx = java.require "com.badlogic.gdx.Gdx"
 Peripheral = java.require("com.badlogic.Gdx.Input.Peripheral")
 
