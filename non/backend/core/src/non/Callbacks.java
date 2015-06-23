@@ -84,8 +84,7 @@ public class Callbacks {
         if (vm.lua == null) return;
 
         LuaValue callback = root.get(name);
-
-        if (callback == null) return;
+        if (!callback.isfunction()) return;
 
         switch (args.length) {
             case 0: callback.call(); break;

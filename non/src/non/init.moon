@@ -1,7 +1,12 @@
 input = require "non.input"
 
-export non = {}
 export java = require "non.java"
+export non = {}
+non.accelerometer = require "non.accelerometer"
+non.compass = require "non.compass"
+non.filesystem = require "non.filesystem"
+non.system = require "non.system"
+non.timer = require "non.timer"
 
 non._keypressed = (keycode) ->
   if non.keypressed then non.keypressed input.key2string(keycode)
