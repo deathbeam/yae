@@ -148,7 +148,7 @@ public class vm implements ApplicationListener, InputProcessor, ResourceFinder {
     private LuaTable convertConfig(Map config) {
         LuaTable table = LuaValue.tableOf();
 
-        for (Object entry : table.entrySet()) {
+        for (Object entry : map.entrySet()) {
             Map.Entry field = (Map.Entry)entry;
             String key = field.getKey().toString();
             Object value = field.getValue();
