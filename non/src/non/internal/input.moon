@@ -167,18 +167,18 @@ buttons = {
 }
 
 -- Create flipped table for keys to be able to convert keycodes to strings
-keys_r = {}
+keycodes = {}
 for k, v in pairs keys
-  keys_r[v] = k
+  keycodes[v] = k
 
 -- Create flipped table for buttons to be able to convert buttoncodes to strings
-buttons_r = {}
+buttoncodes = {}
 for k, v in pairs buttons
-  buttons_r[v] = k
+  buttoncodes[v] = k
 
 {
-  key2string: (code) -> keys_r[code]
+  key2string: (code) -> keycodes[code]
   key2code: (name) -> keys[name]
-  btn2string: (code) -> buttons_r[code]
+  btn2string: (code) -> buttoncodes[code]
   btn2code: (name) -> buttons[name]
 }
