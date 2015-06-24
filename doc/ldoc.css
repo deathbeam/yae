@@ -87,11 +87,7 @@ strong { font-weight: bold;}
 
 em { font-style: italic;}
 
-h1 {
-    font-size: 1.5em;
-    margin: 0 0 20px 0;
-}
-h2, h3, h4 { margin: 15px 0 10px 0; }
+h1, h2, h3, h4 { margin: 15px 0 10px 0; }
 h2 { font-size: 1.25em; }
 h3 { font-size: 1.15em; }
 h4 { font-size: 1.06em; }
@@ -163,10 +159,6 @@ table.index td { text-align: left; vertical-align: top; }
     color: white;
 }
 
-#navigation h2, #content h2 {
-    display: none;
-}
-
 #navigation h1 {
     padding-left:0.4em;
 }
@@ -196,7 +188,6 @@ table.index td { text-align: left; vertical-align: top; }
 #content {
     margin-left: 14em;
     padding: 1em;
-    width: 700px;
     background-color: #fff;
 }
 
@@ -255,7 +246,6 @@ table.module_list td.summary { width: 100%; }
 
 
 table.function_list {
-    margin-top: 30px;
     border-width: 1px;
     border-style: solid;
     border-color: #cccccc;

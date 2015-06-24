@@ -4,6 +4,8 @@ description = "Make cross-platform games in Lua & MoonScript"
 format = "markdown"
 style = true
 
+readme = '../README.md'
+
 file = {
   '../src/non/accelerometer.moon',
   '../src/non/audio.moon',
@@ -15,4 +17,8 @@ file = {
   '../src/non/timer.moon',
   '../src/non/touch.moon',
   '../src/non/window.moon'
+}
+
+examples = {
+  '../src/non/internal/constants.moon'
 }
