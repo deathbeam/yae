@@ -35,10 +35,10 @@ public class Main implements Runner.OutputListener {
         try {
             if (!TEMP.exists()) {
                 TEMP.mkdirs();
-                ZipUtils.unpack(JAR, "non/backend/", TEMP);
-                ZipUtils.unpack(JAR, "non/resources/", new File(TEMP, "resources/"));
-                ZipUtils.unpack(JAR, "non/src/", new File(TEMP, "src/"));
-                ZipUtils.unpack(JAR, "non/VERSION", TEMP);
+                ZipUtils.unpack(JAR, "backend/", TEMP);
+                ZipUtils.unpack(JAR, "resources/", new File(TEMP, "resources/"));
+                ZipUtils.unpack(JAR, "src/", new File(TEMP, "src/"));
+                ZipUtils.unpack(JAR, "VERSION", TEMP);
                 new File(TEMP, "core/precompile.sh").setExecutable(true);
                 new File(TEMP, "core/precompile-engine.sh").setExecutable(true);
                 new Main("clean", true);
@@ -76,7 +76,7 @@ public class Main implements Runner.OutputListener {
         }  
         
         TEMP = new File(new File(System.getProperty("user.dir")), ".non/");
-        VERSION = FileUtils.readStream(Main.class.getResourceAsStream("non/VERSION")).trim();
+        VERSION = FileUtils.readStream(Main.class.getResourceAsStream("VERSION")).trim();
         
         if (args[0].equals("-d")) {
             DEBUG = true;

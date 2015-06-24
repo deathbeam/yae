@@ -1,5 +1,6 @@
-c = require "non.internal.constants"
 Gdx = java.require "com.badlogic.gdx.Gdx"
+
+c = require "non.internal.constants"
 
 {
   getX: ->
