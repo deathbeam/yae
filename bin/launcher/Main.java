@@ -35,7 +35,7 @@ public class Main implements Runner.OutputListener {
         try {
             if (!TEMP.exists()) {
                 TEMP.mkdirs();
-                ZipUtils.unpack(JAR, "backend/", TEMP);
+                ZipUtils.unpack(JAR, "core/", TEMP);
                 ZipUtils.unpack(JAR, "resources/", new File(TEMP, "resources/"));
                 ZipUtils.unpack(JAR, "src/", new File(TEMP, "src/"));
                 ZipUtils.unpack(JAR, "VERSION", TEMP);
