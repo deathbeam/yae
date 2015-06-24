@@ -2,6 +2,7 @@ project = "NÖN"
 title = "NÖN Docs"
 description = "Make cross-platform games in Lua & MoonScript"
 format = "markdown"
+dir = "build"
 style = true
 
 readme = '../README.md'

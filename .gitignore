@@ -5,7 +5,7 @@
 *.res
 
 ## LDoc
-doc/doc/
+doc/build/
 
 ## Java
 build/
