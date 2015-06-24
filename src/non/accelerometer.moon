@@ -8,7 +8,7 @@
 -- is pointing straight towards the center of the earth, its acceleration will
 -- be roughly -10 m/s². If it is pointing in the opposite direction, the
 -- acceleration will be 10 m/s².
--- 
+--
 -- @module non.accelerometer
 
 Gdx = java.require "com.badlogic.gdx.Gdx"
