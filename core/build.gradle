@@ -119,14 +119,14 @@ task hellolua << {
     file("../assets").mkdir()
     
     copy {
-        from "resources"
+        from "res"
         into "../assets"
         include "hello.lua"
         rename "hello.lua", "main.lua"
     }
     
     copy {
-        from "resources"
+        from "res"
         into "../"
         include "hello.yml"
         rename "hello.yml", "config.yml"
@@ -137,14 +137,14 @@ task hellomoon << {
     file("../assets").mkdir()
     
     copy {
-        from "resources"
+        from "res"
         into "../assets"
         include "hello.moon"
         rename "hello.moon", "main.moon"
     }
     
     copy {
-        from "resources"
+        from "res"
         into "../"
         include "hello.yml"
         rename "hello.yml", "config.yml"
@@ -161,7 +161,7 @@ task resolveDependencies << {
 
 task update(dependsOn: ':updateAssets'){
     def src = "../"
-    def res = "resources"
+    def res = "res"
     def out = "android/assets/non"
     def files = [ "logo.png", "splash.png", "font.ttf" ]
     
@@ -225,7 +225,7 @@ task updateAndroid(dependsOn: 'android:copyNatives') << {
 task updateIOS() << {
     deldir(file("ios/src"))
     def src = "../"
-    def res = "resources"
+    def res = "res"
     def out = "ios/data"
     file(out).mkdirs()
     
@@ -333,7 +333,7 @@ import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 
 def copyAndResizeIcon(targetPath, newSize) {
-    def source = file("../icon.png").exists() ? file("../icon.png") : file("resources/icon.png")
+    def source = file("../icon.png").exists() ? file("../icon.png") : file("res/icon.png")
     def target = file(targetPath)
     if (target.exists()) target.delete()
     target.createNewFile()

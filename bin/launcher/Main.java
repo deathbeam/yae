@@ -36,7 +36,7 @@ public class Main implements Runner.OutputListener {
             if (!TEMP.exists()) {
                 TEMP.mkdirs();
                 ZipUtils.unpack(JAR, "core/", TEMP);
-                ZipUtils.unpack(JAR, "resources/", new File(TEMP, "resources/"));
+                ZipUtils.unpack(JAR, "res/", new File(TEMP, "res/"));
                 ZipUtils.unpack(JAR, "src/", new File(TEMP, "src/"));
                 ZipUtils.unpack(JAR, "VERSION", TEMP);
                 new File(TEMP, "core/precompile.sh").setExecutable(true);
