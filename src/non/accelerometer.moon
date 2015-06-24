@@ -1,15 +1,15 @@
 Gdx = java.require "com.badlogic.gdx.Gdx"
 
 {
-  getX: ->
+  get_x: ->
     Gdx.input\getAccelerometerX!
 
-  getY: ->
+  get_y: ->
     Gdx.input\getAccelerometerY!
 
-  getZ: ->
+  get_z: ->
     Gdx.input\getAccelerometerZ!
 
-  getRotation: ->
-    @getX!, @getY!, @getZ!
+  get_rotation: ->
+    @get_x!, @get_y!, @get_z!
 }
