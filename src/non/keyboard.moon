@@ -16,7 +16,7 @@ c = require "non.internal.constants"
 
 {
   ---
-  -- Check one of specified keys is down
+  -- Check if one of specified keys is down
   -- @tparam ... keys keys to check for
   -- @treturn boolean true one of keys is pressed
   -- @usage
