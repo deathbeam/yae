@@ -29,6 +29,9 @@ non.system = require "non.system"
 print "Initializing the timer module"
 non.timer = require "non.timer"
 
+print "Initializing the touch module"
+non.touch = require "non.touch"
+
 print "Initializing the window module"
 non.window = require "non.window"
 
