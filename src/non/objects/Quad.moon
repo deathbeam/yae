@@ -7,10 +7,10 @@ class Quad
     @sw = sw
     @sh = sh
 
-  getViewport: =>
+  get_viewport: =>
     @x, @y, @w, @h
 
-  setViewport: (x, y, w, h) =>
+  set_viewport: (x, y, w, h) =>
     @x = x
     @y = y
     @w = w

@@ -3,16 +3,16 @@ Gdx = java.require "com.badlogic.gdx.Gdx"
 c = require "non.internal.constants"
 
 {
-  getX: ->
+  get_x: ->
     Gdx.input\getX!
 
-  getY: ->
+  get_y: ->
     Gdx.input\getY!
 
-  getPosition: ->
+  get_position: ->
     @getX!, @getY!
 
-  isDown: (...) ->
+  is_down: (...) ->
     args = table.pack ...
     found = false
 
@@ -22,18 +22,18 @@ c = require "non.internal.constants"
 
     return found
 
-  isVisible: ->
+  is_visible: ->
     not Gdx.input\isCursorCatched!
 
-  setPosition: (x, y) ->
+  set_position: (x, y) ->
     Gdx.input\setCursorPosition x, y
 
-  setVisible: (visible) ->
+  set_visible: (visible) ->
     Gdx.input\setCursorCatched visible
 
-  setX: (x) ->
-    @setPosition x, @getY!
+  set_x: (x) ->
+    @set_position x, @get_y!
 
-  setX: (y) ->
-    @setPosition @getX!, y
+  set_y: (y) ->
+    @set_position @get_x!, y
 }

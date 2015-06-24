@@ -4,7 +4,7 @@ Peripheral = java.require("com.badlogic.Gdx.Input.Peripheral")
 c = require "non.internal.constants"
 
 {
-  isDown: (...) ->
+  is_down: (...) ->
     args = table.pack ...
     found = false
 
@@ -14,9 +14,9 @@ c = require "non.internal.constants"
 
     return found
 
-  isVisible: ->
+  is_visible: ->
     return Gdx.input\isPeripheralAvailable Peripheral.OnscreenKeyboard
 
-  setVisible: (visible) ->
+  set_visible: (visible) ->
     Gdx.input\setOnscreenKeyboardVisible visible
 }

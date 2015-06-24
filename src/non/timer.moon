@@ -3,13 +3,13 @@ Thread = java.require "java.lang.Thread"
 Gdx = java.require "com.badlogic.gdx.Gdx"
 
 {
-  getDelta: ->
+  get_delta: ->
     Gdx.graphics\getDeltaTime!
 
-  getFPS: ->
+  get_fps: ->
     Gdx.graphics\getFramesPerSecond!
 
-  getTime: ->
+  get_time: ->
     TimeUtils\millis!
 
   sleep: (seconds) ->

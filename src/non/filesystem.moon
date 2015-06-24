@@ -2,7 +2,7 @@ Gdx = java.require "com.badlogic.gdx.Gdx"
 NonVM = java.require "non.NonVM"
 
 {
-  newFile: (filename, filetype="internal") ->
+  new_file: (filename, filetype="internal") ->
     switch filename
       when "internal"
         return Gdx.files\internal filename
@@ -16,27 +16,27 @@ NonVM = java.require "non.NonVM"
         return Gdx.files\absolute filename
 
   append: (filename, text, filetype) ->
-    file = @newFile filename, filetype
+    file = @new_file filename, filetype
     file\writeString text, true
     return true
 
   copy: (from_filename, to_filename, from_filetype, to_filetype) ->
-    from_file = @newFile from_filename, from_filetype
-    to_file = @newFile from_filename, from_filetype
+    from_file = @new_file from_filename, from_filetype
+    to_file = @new_file from_filename, from_filetype
     from_file\copyTo to_file
     return true
 
-  createDirectory: (filename, filetype) ->
-    file = @newFile filename, filetype
-    @newFile\mkdirs!
+  mkdir: (filename, filetype) ->
+    file = @new_file filename, filetype
+    @new_file\mkdirs!
     return true
 
   exists: (filename, filetype) ->
-    file = @newFile filename, filetype
-    return @newFile\exists!
+    file = @new_file filename, filetype
+    return @new_file\exists!
 
-  getDirectoryItems: (filename, filetype) ->
-    children = @newFile(filename, filetype)\list!
+  list: (filename, filetype) ->
+    children = @new_file(filename, filetype)\list!
     paths = {}
 
     for i = 0, children.length
@@ -44,52 +44,52 @@ NonVM = java.require "non.NonVM"
 
     return paths
 
-  getExternalDirectory: ->
+  get_external_path: ->
     return Gdx.files\getExternalStoragePath!
 
-  getLocalDirectory: ->
+  get_local_path: ->
     return Gdx.files\getLocalStoragePath!
 
-  getWorkingDirectory: ->
-    file = @newFile(".")\file!
+  get_working_path: ->
+    file = @new_file(".")\file!
     return file\getAbsolutePath!
 
-  getLastModified: (filename, filetype) ->
-    file = @newFile filename, filetype
+  last_modified: (filename, filetype) ->
+    file = @new_file filename, filetype
     return file\lastModified!
 
-  getSize: (filename, filetype) ->
-    file = @newFile filename, filetype
+  size: (filename, filetype) ->
+    file = @new_file filename, filetype
     return file\length!
 
-  isDirectory: (filename, filetype) ->
-    file = @newFile filename, filetype
+  is_directory: (filename, filetype) ->
+    file = @new_file filename, filetype
     return file\isDirectory!
 
-  isFile: (filename, filetype) ->
-    return not @isDirectory filename, filetype
+  is_file: (filename, filetype) ->
+    return not @is_directory filename, filetype
 
   load: (filename, filetype) ->
-    file = @newFile filename, filetype
+    file = @new_file filename, filetype
     return NonVM.lua\load file\reader!, filename
 
   move: (from_filename, to_filename, from_filetype, to_filetype) ->
-    from_file = @newFile from_filename, from_filetype
-    to_file = @newFile from_filename, from_filetype
+    from_file = @new_file from_filename, from_filetype
+    to_file = @new_file from_filename, from_filetype
     from_file\moveTo to_file
     return true
 
   read: (filename, filetype) ->
-    file = @newFile filename, filetype
+    file = @new_file filename, filetype
     return file\readString!
 
   remove: (filename, filetype) ->
-    file = @newFile filename, filetype
+    file = @new_file filename, filetype
     file\deleteDirectory!
     return true
 
   write: (filename, text, filetype) ->
-    file = @newFile filename, filetype
+    file = @new_file filename, filetype
     file\writeString text
     return true
 }

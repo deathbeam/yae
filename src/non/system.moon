@@ -2,20 +2,20 @@ Gdx = java.require "com.badlogic.gdx.Gdx"
 NonVM = java.require "non.NonVM"
 
 {
-  getClipboardText: ->
+  get_clipboard: ->
     clipboard = Gdx.app\getClipboard!
     return clipboard\getContents!
 
-  getOS: ->
+  get_os: ->
     return NonVM.util\getOS!
 
-  getMemoryUse: ->
+  get_heap: ->
     return Gdx.app\getJavaHeap!
 
-  openURL: (url) ->
+  open_url: (url) ->
     return Gdx.net\openURI url
 
-  setClipboardText: (text) ->
+  set_clipboard: (text) ->
     clipboard = Gdx.app\getClipboard!
     clipboard\setContents text
 

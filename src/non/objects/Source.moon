@@ -51,25 +51,25 @@ class Source
 
     @playing = true
 
-  getVolume: =>
+  get_volume: =>
     @volume
 
-  isLooping: =>
+  is_looping: =>
     @looping
 
-  isPaused: =>
+  is_paused: =>
     @paused
 
-  isPlaying: =>
+  is_playing: =>
     @playing
 
-  isStatic: =>
+  is_static: =>
     @static
 
-  isStopped: =>
+  is_stopped: =>
     not @playing
 
-  setLooping: (looping) =>
+  set_looping: (looping) =>
     @looping = looping
 
     if @static
@@ -78,7 +78,7 @@ class Source
     else
       source\setLooping @looping
 
-  setVolume: (volume) =>
+  set_volume: (volume) =>
     @volume = volume
 
     if @static

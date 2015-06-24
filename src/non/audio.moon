@@ -4,13 +4,13 @@ sources = {}
 globalvolume = 1
 
 {
-  getNumSources: ->
+  get_num_sources: ->
     #sources
 
-  getVolume: ->
+  get_volume: ->
     globalvolume
 
-  newSource: (filename, audiotype, filetype) ->
+  new_source: (filename, audiotype, filetype) ->
     source = Source filename, audiotype, filetype
     table.insert sources, source
     return source
@@ -25,7 +25,7 @@ globalvolume = 1
   resume: (source) ->
     source\resume!
 
-  setVolume: (volume) ->
+  set_volume: (volume) ->
     globalvolume = volume
 
     for i, source in ipairs sources
@@ -34,7 +34,7 @@ globalvolume = 1
   stop: (source) ->
     source\stop!
 
-  stopAll: ->
+  stop_all: ->
     for i, source in ipairs sources
       source\stop!
       source\free!

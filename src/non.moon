@@ -49,12 +49,12 @@ non._mousereleased = (x, y, buttoncode) ->
 
 non._quit = ->
   if non.quit then non.quit!
-  non.audio.stopAll!
+  non.audio.stop_all!
 
 -- Main loop function
 non.run = () ->
   dt = 0
-  if non.timer then dt = non.timer.getDelta!
+  if non.timer then dt = non.timer.get_delta!
   if non.update then non.update dt
   if non.draw then non.draw!
 
