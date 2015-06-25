@@ -37,4 +37,7 @@ class Image
 	set_wrap: (horiz, vert) =>
 		@texture\setWrap c.wraps[horiz], c.wraps[vert]
 
+	free: =>
+		@texture\dispose!
+
 return Image
