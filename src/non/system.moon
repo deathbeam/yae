@@ -1,3 +1,8 @@
+-------------------------------------------------------------------------------
+-- Provides many usefull methods for managing your current device.
+-------------------------------------------------------------------------------
+-- @module non.system
+
 Gdx = java.require "com.badlogic.gdx.Gdx"
 NonVM = java.require "non.NonVM"
 
@@ -6,6 +11,11 @@ NonVM = java.require "non.NonVM"
     clipboard = Gdx.app\getClipboard!
     return clipboard\getContents!
 
+  ---
+  -- Get current platform. Can return "desktop", "android", "ios" or "unknown"
+  -- @treturn string current platform
+  -- @usage
+  -- platform = non.system.get_os!
   get_os: ->
     return NonVM.util\getOS!
 
@@ -22,6 +32,10 @@ NonVM = java.require "non.NonVM"
   vibrate: (seconds) ->
     Gdx.input\vibrate seconds * 1000
 
+  ---
+  -- Terminate the application
+  -- @usage
+  -- non.system.quit! if something
   quit: ->
     Gdx.app\exit!
 }

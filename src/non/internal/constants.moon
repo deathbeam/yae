@@ -4,6 +4,8 @@ TextureWrap = java.require "com.badlogic.gdx.graphics.Texture.TextureWrap"
 GL20 = java.require "com.badlogic.gdx.graphics.GL20"
 ShapeType = java.require "com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType"
 HAlignment = java.require "com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment"
+Gdx = java.require "com.badlogic.gdx.Gdx"
+NonVM = java.require "non.NonVM"
 
 keys = {
   "unknown": -1
@@ -171,6 +173,14 @@ buttons = {
   "middle": 2
   "back": 3
   "forward": 4
+}
+
+filetype = {
+  "internal": Gdx.files\internal
+  "local": NonVM.util\localfile
+  "external": Gdx.files\external
+  "classpath": Gdx.files\classpath
+  "absolute": Gdx.files\absolute
 }
 
 formats = {

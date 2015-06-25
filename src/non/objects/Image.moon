@@ -1,10 +1,11 @@
+File = require "non.objects.File"
 Texture = java.require "com.badlogic.gdx.graphics.Texture"
 
 c = require "non.internal.constants"
 
 class Image
 	new: (filename, format, filetype) =>
-		file = non.filesystem.newFile filename, filetype
+		file = File filename, filetype
 		@texture = java.new Texture, file, c.formats[format], false
 		texture\setFilter c.filters["linear"], c.filters["linear"]
 

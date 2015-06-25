@@ -1,8 +1,9 @@
+File = require "non.objects.File"
 Gdx = java.require "com.badlogic.gdx.Gdx"
 
 class Source
   new: (filename, audiotype, filetype) =>
-    file = non.filesystem.newFile filename, filetype
+    file = File filename, filetype
     @static = audiotype != "stream"
     @volume = 1
     @looping = false
