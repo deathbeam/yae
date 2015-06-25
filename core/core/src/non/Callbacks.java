@@ -6,11 +6,11 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 
 public class Callbacks {
-    private vm vm;
+    private NonVM vm;
     private LuaValue root;
     private boolean enabled;
 
-    public Callbacks(vm vm) {
+    public Callbacks(NonVM vm) {
         this.vm = vm;
     }
 

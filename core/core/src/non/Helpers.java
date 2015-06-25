@@ -4,6 +4,9 @@ import java.lang.reflect.Field;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
 
 public class Helpers {
 	private boolean runningOnOuya;
@@ -44,5 +47,13 @@ public class Helpers {
         }
 
         return name;
+    }
+
+    public void endBatch(SpriteBatch batch) {
+        batch.end();
+    }
+
+    public void endShapes(ShapeRenderer shapes) {
+        shapes.end();
     }
 }

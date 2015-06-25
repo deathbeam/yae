@@ -4,7 +4,7 @@ Texture = java.require "com.badlogic.gdx.graphics.Texture"
 c = require "non.internal.constants"
 
 class Image
-	new: (filename, format, filetype) =>
+	new: (filename, format="rgba8", filetype) =>
 		file = File filename, filetype
 		@texture = java.new Texture, file, c.formats[format], false
 		texture\setFilter c.filters["linear"], c.filters["linear"]

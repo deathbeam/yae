@@ -1,3 +1,12 @@
+-- Easy type checking for MoonScript classes
+old_type = type
+export type = (value) ->
+  base_type = old_type value
+  if base_type == "table"
+    cls = value.__class
+    return cls.__name if cls
+  base_type
+
 -- Initialize java library
 export java = require "java"
 
@@ -59,6 +68,11 @@ non.run = () ->
   dt = 0
   if non.timer then dt = non.timer.get_delta!
   if non.update then non.update dt
-  if non.draw then non.draw!
+
+  if non.graphics
+    non.graphics.clear!
+    non.graphics.origin!
+    non.draw!
+    non.graphics.present!
 
 require "main"

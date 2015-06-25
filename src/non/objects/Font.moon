@@ -21,7 +21,7 @@ class Font
   get_descent: =>
     @font\getDescent!
 
-  get_lineheight: =>
+  get_line_height: =>
     @font\getLineHeight!
 
   get_bounds: (text) =>
@@ -43,17 +43,17 @@ class Font
 
   has_glyphs: (...) =>
     args = table.pack ...
-      found = true
+    found = true
 
-      for i = 1, args.n
-        found = found and @font\containsCharacter args[i]
+    for i = 1, args.n
+      found = found and @font\containsCharacter args[i]
 
-      return found
+    return found
 
   set_filter: (min, mag) =>
     @font_texture\setFilter c.filters[min], c.filters[mag]
 
-  set_lineheight: (height) =>
+  set_line_height: (height) =>
     @font\getData()\setLineHeight height
 
   free: =>

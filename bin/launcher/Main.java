@@ -59,7 +59,7 @@ public class Main implements Runner.OutputListener {
         System.out.println("  non version              # print current compiler version");
         System.out.println("");
         System.out.println("PLATFORM can be 'desktop', 'android' or 'ios' (defaults to 'desktop')");
-        System.out.println("LANGUAGE can be 'lua' or 'moon' (defaults to 'lua')");
+        System.out.println("LANGUAGE can be 'lua' or 'moon' (defaults to 'moon')");
         System.exit(-1);
     }
     
