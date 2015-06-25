@@ -5,7 +5,11 @@ c = require "non.internal.constants"
 
 class Font
   new: (filename, size=16, filetype) =>
-    file = File filename, filetype
+    if filename = nil
+      file = File "non/font.ttf", filetype
+    else
+      file = File filename, filetype
+    
     @font = java.new FreeTypeFontGenerator(file)\generateFont size
     @font_texture = @font\getRegion(0)\getTexture!
     @font_texture\setFilter c.filters["linear"], c.filters["linear"]
