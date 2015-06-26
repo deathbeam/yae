@@ -115,7 +115,7 @@ task cleanAssets << {
     deldir file("android/assets")
 }
 
-task hellolua << {
+task initlua << {
     file("../assets").mkdir()
     
     copy {
@@ -139,7 +139,7 @@ task hellolua << {
     }
 }
 
-task hellomoon << {
+task initmoon << {
     file("../assets").mkdir()
     
     copy {

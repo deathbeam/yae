@@ -118,9 +118,9 @@ public class Main implements Runner.OutputListener {
             check();
             
             if (args.length <= 1 || args[1].equals("moon")) {
-                new Main("hellomoon");
+                new Main("initmoon");
             } else if (args[1].equals("lua")) {
-                new Main("hellolua");
+                new Main("initlua");
             } else {
                 printHelp();
             }
