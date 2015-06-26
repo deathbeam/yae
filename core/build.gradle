@@ -131,6 +131,12 @@ task hellolua << {
         include "hello.yml"
         rename "hello.yml", "config.yml"
     }
+
+    copy {
+        from "res"
+        into "../assets"
+        include "lint_config.lua"
+    }
 }
 
 task hellomoon << {
@@ -148,6 +154,12 @@ task hellomoon << {
         into "../"
         include "hello.yml"
         rename "hello.yml", "config.yml"
+    }
+
+    copy {
+        from "res"
+        into "../assets"
+        include "lint_config.lua"
     }
 }
 

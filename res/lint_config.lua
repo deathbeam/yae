@@ -3,8 +3,7 @@ return {
     ["."] = {
       "non",
       "config",
-      "java",
-      "luajava"
+      "java"
     }
   }
 }
