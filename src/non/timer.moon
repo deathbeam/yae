@@ -1,4 +1,4 @@
-TimeUtils = java.require "com.badlogic.Gdx.utils.TimeUtils"
+TimeUtils = java.require "com.badlogic.gdx.utils.TimeUtils"
 Thread = java.require "java.lang.Thread"
 Gdx = java.require "com.badlogic.gdx.Gdx"
 

@@ -5,12 +5,15 @@ c = require "non.internal.constants"
 
 class Font
   new: (filename, size=16, filetype) =>
-    if filename = nil
+    file = nil
+
+    if filename == nil
       file = File "non/font.ttf", filetype
     else
       file = File filename, filetype
     
-    @font = java.new FreeTypeFontGenerator(file)\generateFont size
+    generator = java.new FreeTypeFontGenerator, file.file
+    @font = generator\generateFont size
     @font_texture = @font\getRegion(0)\getTexture!
     @font_texture\setFilter c.filters["linear"], c.filters["linear"]
     @glyph_layout = java.new GlyphLayout
@@ -34,11 +37,11 @@ class Font
     c.filtercodes[min_filter], c.filtercodes[mag_filter]
 
   get_height: (text) =>
-    w, h = @get_bounds text
+    w, _ = @get_bounds text
     return w
 
   get_width: (text) =>
-    w, h = @get_bounds text
+    _, h = @get_bounds text
     return h
 
   has_glyphs: (...) =>

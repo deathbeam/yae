@@ -1,6 +1,7 @@
 Font = require "non.objects.Font"
 Image = require "non.objects.Image"
 Transform = require "non.objects.Transform"
+Quad = require "non.objects.Quad"
 c = require "non.internal.constants"
 Color = java.require "com.badlogic.gdx.graphics.Color"
 Gdx = java.require "com.badlogic.gdx.Gdx"
@@ -16,8 +17,8 @@ shapes = java.new ShapeRender
 font = Font!
 shapes\setAutoShapeType true
 transform = Transform!
-color = java.new Color 1, 1, 1, 1
-background = java.new Color 0.4, 0.3, 0.4, 1
+color = java.new Color, 1, 1, 1, 1
+background = java.new Color, 0.4, 0.3, 0.4, 1
 blending = "alpha"
 batch\setColor color
 shapes\setColor color
@@ -34,14 +35,14 @@ check = (texture_based) ->
       batch\setTransformMatrix transform.matrix
       matrix_dirty = false
 
-    if shapes\isDrawing! then NonVM.helpers\endShapes shapes
+    if shapes\isDrawing! then NonVM.util\endShapes shapes
     if not batch\isDrawing! then batch\begin!
   else
     if matrix_dirty
       shapes\setTransformMatrix transform.matrix
       matrix_dirty = false
 
-    if batch\isDrawing! then NonVM.helpers\endBatch batch
+    if batch\isDrawing! then NonVM.util\endBatch batch
     if not shapes\isDrawing! then shapes\begin!
 
 {
@@ -59,30 +60,29 @@ check = (texture_based) ->
     Gdx.gl\glClearColor background.r, background.g, background.b, background.a
     Gdx.gl\glClear GL20.GL_COLOR_BUFFER_BIT
 
-  draw: (image, quad, x=0, y=0, r=0, sx=1, sy=1, ox=0, oy=0) ->
+  draw: (image, x=0, y=0, r=0, sx=1, sy=1, ox=0, oy=0) ->
     check true
 
-    if type(quad) != "Quad"
-      oy = ox
-      ox = sy
-      sy = sx
-      sx = r
-      y = x
-      x = quad
-      w = image\get_width!
-      h = image\get_height!
-      src_x = 0
-      src_y = 0
-      src_w = w
-      src_h = h
-    else
-      w = quad.width
-      h = quad.height
-      src_x = quad.x
-      src_y = quad.y
-      src_w = quad.sw
-      src_h = quad.sh
+    w = image\get_width!
+    h = image\get_height!
+    src_x = 0
+    src_y = 0
+    src_w = w
+    src_h = h
+    x -= ox
+    y -= oy
 
+    batch\draw image.texture, x, y, ox, oy, w, h, sx, sy, r, src_x, src_y, src_w, src_h, false, true
+
+  drawq: (image, quad, x=0, y=0, r=0, sx=1, sy=1, ox=0, oy=0) ->
+    check true
+
+    w = quad.width
+    h = quad.height
+    src_x = quad.x
+    src_y = quad.y
+    src_w = quad.sw
+    src_h = quad.sh
     x -= ox
     y -= oy
 
@@ -137,8 +137,8 @@ check = (texture_based) ->
       shapes\polygon args
 
   present: ->
-    if shapes\isDrawing! then NonVM.helpers\endShapes shapes
-    if batch\isDrawing! then NonVM.helpers\endBatch batch
+    if shapes\isDrawing! then NonVM.util\endShapes shapes
+    if batch\isDrawing! then NonVM.util\endBatch batch
 
   rectangle: (mode, x, y, width, height) ->
     check false

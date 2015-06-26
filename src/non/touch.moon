@@ -12,8 +12,6 @@
 
 Gdx = java.require "com.badlogic.gdx.Gdx"
 
-c = require "non.internal.constants"
-
 {
   ---
   -- Get X coordinate of finger touching the screen

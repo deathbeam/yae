@@ -1,11 +1,8 @@
-Format = java.require "com.badlogic.gdx.graphics.Pixmap.Format"
-TextureFilter = java.require "com.badlogic.gdx.graphics.Texture.TextureFilter"
-TextureWrap = java.require "com.badlogic.gdx.graphics.Texture.TextureWrap"
+Format = java.require "com.badlogic.gdx.graphics.Pixmap$Format"
+TextureFilter = java.require "com.badlogic.gdx.graphics.Texture$TextureFilter"
+TextureWrap = java.require "com.badlogic.gdx.graphics.Texture$TextureWrap"
 GL20 = java.require "com.badlogic.gdx.graphics.GL20"
-ShapeType = java.require "com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType"
-HAlignment = java.require "com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment"
-Gdx = java.require "com.badlogic.gdx.Gdx"
-NonVM = java.require "non.NonVM"
+ShapeType = java.require "com.badlogic.gdx.graphics.glutils.ShapeRenderer$ShapeType"
 
 keys = {
   "unknown": -1
@@ -175,14 +172,6 @@ buttons = {
   "forward": 4
 }
 
-filetype = {
-  "internal": Gdx.files\internal
-  "local": NonVM.util\localfile
-  "external": Gdx.files\external
-  "classpath": Gdx.files\classpath
-  "absolute": Gdx.files\absolute
-}
-
 formats = {
   "rgba8": Format.RGBA8888
   "rgb8": Format.RGB888
@@ -217,12 +206,6 @@ blendmodes = {
   "additive": { GL20.GL_SRC_ALPHA, GL20.GL_ONE }
   "screen": { GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_COLOR }
   "replace": { GL20.GL_ONE, GL20.GL_ZERO }
-}
-
-halignment = {
-  "right": HAlignment.RIGHT
-  "left": HAlignment.LEFT
-  "center": HAlignment.CENTER
 }
 
 shapetype = {
@@ -262,6 +245,5 @@ for k, v in pairs filters
   filters: filters
   filtercodes: filtercodes
   blendmodes: blendmodes
-  halignment: halignment
   shapetype: shapetype
 }

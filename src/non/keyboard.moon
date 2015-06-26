@@ -10,7 +10,7 @@
 -- @module non.keyboard
 
 Gdx = java.require "com.badlogic.gdx.Gdx"
-Peripheral = java.require("com.badlogic.Gdx.Input.Peripheral")
+Peripheral = java.require "com.badlogic.gdx.Input$Peripheral"
 
 c = require "non.internal.constants"
 

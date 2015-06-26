@@ -1,8 +1,19 @@
-c = require "non.internal.constants"
+Gdx = java.require "com.badlogic.gdx.Gdx"
+NonVM = java.require "non.NonVM"
 
 class File
   new: (filename, filetype="internal") =>
-    @file = c.filetypes[filetype] filename
+    switch filetype
+      when "internal"
+        @file = Gdx.files\internal filename
+      when "local"
+        @file = NonVM.util\localfile filename
+      when "external"
+        @file = Gdx.files\external
+      when "classpath"
+        @file = Gdx.files\classpath
+      when "absolute"
+        @file = Gdx.files\absolute
 
   append: (text) =>
     @file\writeString text, true
@@ -51,7 +62,7 @@ class File
     @file\deleteDirectory!
     return true
 
-  write: () =>
+  write: (text) =>
     @file\writeString text
     return true
 

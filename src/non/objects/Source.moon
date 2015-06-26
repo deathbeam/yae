@@ -2,7 +2,7 @@ File = require "non.objects.File"
 Gdx = java.require "com.badlogic.gdx.Gdx"
 
 class Source
-  new: (filename, audiotype, filetype) =>
+  new: (filename, audiotype="stream", filetype) =>
     file = File filename, filetype
     @static = audiotype != "stream"
     @volume = 1
@@ -11,15 +11,15 @@ class Source
     @paused = false
 
     if @static
-      @source = Gdx.audio\newMusic file
+      @source = Gdx.audio\newMusic file.file
     else
-      @source = Gdx.audio\newSound file
+      @source = Gdx.audio\newSound file.file
 
   play: =>
     if @static
-      @soundId = source\play!
+      @soundId = @source\play!
     else
-      source\play!
+      @source\play!
 
     @playing = false
 
@@ -27,9 +27,9 @@ class Source
     if @paused return
 
     if @static
-      source\pause @soundId
+      @source\pause @soundId
     else
-      source\pause!
+      @source\pause!
 
     @paused = true
 
@@ -37,18 +37,18 @@ class Source
     if not @paused return
 
     if @static
-      source\pause @soundId
+      @source\pause @soundId
     else
-      source\pause!
+      @source\pause!
 
   stop: =>
     if not @playing return
 
     if @static
-      source\stop @soundId
+      @source\stop @soundId
       
     else
-      source\stop!
+      @source\stop!
 
     @playing = true
 
@@ -74,21 +74,19 @@ class Source
     @looping = looping
 
     if @static
-      source\setLooping @soundId, @looping
-      
+      @source\setLooping @soundId, @looping
     else
-      source\setLooping @looping
+      @source\setLooping @looping
 
   set_volume: (volume) =>
     @volume = volume
 
     if @static
-      source\setVolume @soundId, @volume
-      
+      @source\setVolume @soundId, @volume
     else
-      source\setVolume @volume
+      @source\setVolume @volume
 
   free: =>
-    source\dispose!
+    @source\dispose!
 
 return Source

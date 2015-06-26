@@ -26,6 +26,9 @@ non.compass = require "non.compass"
 print "Initializing the filesystem module"
 non.filesystem = require "non.filesystem"
 
+print "Initializing the graphics module"
+non.graphics = require "non.graphics"
+
 print "Initializing the keyboard module"
 non.keyboard = require "non.keyboard"
 
@@ -64,7 +67,7 @@ non._quit = ->
   non.audio.stop_all!
 
 -- Main loop function
-non.run = () ->
+non.run = ->
   dt = 0
   if non.timer then dt = non.timer.get_delta!
   if non.update then non.update dt
@@ -72,7 +75,7 @@ non.run = () ->
   if non.graphics
     non.graphics.clear!
     non.graphics.origin!
-    non.draw!
+    if non.draw then non.draw!
     non.graphics.present!
 
 require "main"

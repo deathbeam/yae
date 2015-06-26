@@ -6,8 +6,8 @@ c = require "non.internal.constants"
 class Image
 	new: (filename, format="rgba8", filetype) =>
 		file = File filename, filetype
-		@texture = java.new Texture, file, c.formats[format], false
-		texture\setFilter c.filters["linear"], c.filters["linear"]
+		@texture = java.new Texture, file.file, c.formats[format], false
+		@texture\setFilter c.filters["linear"], c.filters["linear"]
 
 	get_dimensions: =>
 		@get_width!, @get_height!
