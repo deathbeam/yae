@@ -140,6 +140,38 @@ check = (texture_based) ->
     if shapes\isDrawing! then NonVM.util\endShapes shapes
     if batch\isDrawing! then NonVM.util\endBatch batch
 
+  print: (text, x=0, y=0, r=0, sx=1, sy=1, ox=0, oy=0) ->
+    check true
+    tmp = nil
+
+    if r != 0
+      tmp = batch\getTransformMatrix!
+      transform\translate(x, y)\rotate(r)\translate(-x, -y) 
+      batch\setTransformMatrix transform.matrix
+
+    font.font\setScale sx, -sy
+    font.font\draw batch, text, x - ox * sx, y - oy * sy
+
+    if r != 0
+      transform\translate(x, y)\rotate(-r)\translate(-x, -y)
+      batch\setTransformMatrix tmp
+
+  printf: (text, width=0, align="left", x=0, y=0, r=0, sx=1, sy=1, ox=0, oy=0) ->
+    check true
+    tmp = nil
+
+    if r != 0
+      tmp = batch\getTransformMatrix!
+      transform\translate(x, y)\rotate(r)\translate(-x, -y) 
+      batch\setTransformMatrix transform.matrix
+
+    font.font\setScale sx, -sy
+    font.font\draw batch, text, x - ox * sx, y - oy * sy, width, c.aligns[align], true
+
+    if r != 0
+      transform\translate(x, y)\rotate(-r)\translate(-x, -y)
+      batch\setTransformMatrix tmp
+
   rectangle: (mode, x, y, width, height) ->
     check false
     shapes\set c.shapetype[mode]

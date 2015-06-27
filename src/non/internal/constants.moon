@@ -1,3 +1,4 @@
+Align = java.require "com.badlogic.gdx.utils.Align"
 Format = java.require "com.badlogic.gdx.graphics.Pixmap$Format"
 TextureFilter = java.require "com.badlogic.gdx.graphics.Texture$TextureFilter"
 TextureWrap = java.require "com.badlogic.gdx.graphics.Texture$TextureWrap"
@@ -213,6 +214,18 @@ shapetype = {
   "fill": ShapeType.Filled
 }
 
+aligns = {
+  "center": Align.center
+  "top": Align.top
+  "bottom": Align.bottom
+  "left": Align.left
+  "right": Align.right
+  "topleft": Align.topLeft
+  "topright": Align.topRight
+  "bottomleft": Align.bottomLeft
+  "bottomright": Align.bottomRight
+}
+
 keycodes = {}
 for k, v in pairs keys
   keycodes[v] = k
@@ -246,4 +259,5 @@ for k, v in pairs filters
   filtercodes: filtercodes
   blendmodes: blendmodes
   shapetype: shapetype
+  aligns: aligns
 }

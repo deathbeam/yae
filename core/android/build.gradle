@@ -28,13 +28,22 @@ android {
                 keyPassword cfg.sign.keyPassword
             }
         }
-        
-        buildTypes {
-            release {
-                signingConfig signingConfigs.releaseSigning
+    } catch(e) { 
+        signingConfigs {
+            releaseSigning {
+                storeFile file("../debug.keystore")
+                storePassword "nononsense"
+                keyAlias "non"
+                keyPassword "nononsense"
             }
         }
-    } catch(e) { }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.releaseSigning
+        }
+    }
 }
 
 tasks.withType(com.android.build.gradle.tasks.PackageApplication) { pkgTask ->
