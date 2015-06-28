@@ -27,20 +27,20 @@ camera = java.new OrthographicCamera
 camera\setToOrtho true
 batch\setProjectionMatrix camera.combined
 shapes\setProjectionMatrix camera.combined
-matrix_dirty = false
+matrixDirty = false
 
-check = (texture_based) ->
-  if texture_based
-    if matrix_dirty
+check = (textureBased) ->
+  if textureBased
+    if matrixDirty
       batch\setTransformMatrix transform.matrix
-      matrix_dirty = false
+      matrixDirty = false
 
     if shapes\isDrawing! then NonVM.util\endShapes shapes
     if not batch\isDrawing! then batch\begin!
   else
-    if matrix_dirty
+    if matrixDirty
       shapes\setTransformMatrix transform.matrix
-      matrix_dirty = false
+      matrixDirty = false
 
     if batch\isDrawing! then NonVM.util\endBatch batch
     if not shapes\isDrawing! then shapes\begin!
@@ -63,64 +63,64 @@ check = (texture_based) ->
   draw: (image, x=0, y=0, r=0, sx=1, sy=1, ox=0, oy=0) ->
     check true
 
-    w = image\get_width!
-    h = image\get_height!
-    src_x = 0
-    src_y = 0
-    src_w = w
-    src_h = h
+    w = image\getWidth!
+    h = image\getHeight!
+    srcX = 0
+    srcY = 0
+    srcW = w
+    srcH = h
     x -= ox
     y -= oy
 
-    batch\draw image.texture, x, y, ox, oy, w, h, sx, sy, r, src_x, src_y, src_w, src_h, false, true
+    batch\draw image.texture, x, y, ox, oy, w, h, sx, sy, r, srcX, srcY, srcW, srcH, false, true
 
   drawq: (image, quad, x=0, y=0, r=0, sx=1, sy=1, ox=0, oy=0) ->
     check true
 
     w = quad.width
     h = quad.height
-    src_x = quad.x
-    src_y = quad.y
-    src_w = quad.sw
-    src_h = quad.sh
+    srcX = quad.x
+    srcY = quad.y
+    srcW = quad.sw
+    srcH = quad.sh
     x -= ox
     y -= oy
 
-    batch\draw image.texture, x, y, ox, oy, w, h, sx, sy, r, src_x, src_y, src_w, src_h, false, true
+    batch\draw image.texture, x, y, ox, oy, w, h, sx, sy, r, srcX, srcY, srcW, srcH, false, true
 
   ellipse: (mode, x, y, width, height) ->
     check false
     shapes\set c.shapetype[mode]
     shapes\ellipse x, y, width, height
 
-  get_background_color: ->
+  getBackgroundColor: ->
     return background.r * 255, background.g * 255, background.b * 255, background.a * 255
 
-  get_blend_mode: ->
+  getBlendMode: ->
     return blending
 
-  get_color: ->
+  getColor: ->
     return color.r * 255, color.g * 255, color.b * 255, color.a * 255
 
-  get_font: ->
+  getFont: ->
     return font
 
   line: (x1, y1, x2, y2) ->
     check false
     shapes\line x1, y1, x2, y2
 
-  new_font: (filename, size, filetype) ->
+  newFont: (filename, size, filetype) ->
     return Font filename, size, filetype
 
-  new_image: (filename, format, filetype) ->
+  newImage: (filename, format, filetype) ->
     return Image filename, format, filetype
 
-  new_quad: (x, y, width, height, sw, sh) ->
+  newQuad: (x, y, width, height, sw, sh) ->
     return Quad x, y, width, height, sw, sh
 
   origin: ->
     transform\identity!
-    matrix_dirty = true
+    matrixDirty = true
 
   point: (x, y) ->
     check false
@@ -189,37 +189,37 @@ check = (texture_based) ->
     shapes\setColor color
     font.font\setColor color
     transform\identity!
-    matrix_dirty = true
+    matrixDirty = true
 
   rotate: (radians) ->
     transform\rotate radians
-    matrix_dirty = true
+    matrixDirty = true
 
-  set_background_color: (r, g, b, a=255) ->
+  setBackgroundColor: (r, g, b, a=255) ->
     background\set r / 255, g / 255, b / 255, a / 255
 
-  set_blend_mode: (mode) ->
+  setBlendMode: (mode) ->
     blending = mode
     blendmode = c.blendmodes[blending]
     batch\setBlendFunction blendmode[1], blendmode[2]
 
-  set_color:  (r, g, b, a=255) ->
+  setColor:  (r, g, b, a=255) ->
     color\set r / 255, g / 255, b / 255, a / 255
     batch\setColor color
     shapes\setColor color
     font.font\setColor color
 
-  set_font: (new_font) ->
-    font = new_font
+  setFont: (newFont) ->
+    font = newFont
 
-  set_new_font: (filename, size, filetype) ->
-    font = @new_font filename, size, filetype
+  setNewFont: (filename, size, filetype) ->
+    font = @newFont filename, size, filetype
 
   scale: (sx, sy) ->
     transform\scale sx, sy
-    matrix_dirty = true
+    matrixDirty = true
 
   translate: (tx, ty) ->
     transform\translate tx, ty
-    matrix_dirty = true
+    matrixDirty = true
 }

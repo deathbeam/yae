@@ -7,7 +7,7 @@ Gdx = java.require "com.badlogic.gdx.Gdx"
 NonVM = java.require "non.NonVM"
 
 {
-  get_clipboard: ->
+  getClipboardText: ->
     clipboard = Gdx.app\getClipboard!
     return clipboard\getContents!
 
@@ -15,17 +15,17 @@ NonVM = java.require "non.NonVM"
   -- Get current platform. Can return "desktop", "android", "ios" or "unknown"
   -- @treturn string current platform
   -- @usage
-  -- platform = non.system.get_os!
-  get_os: ->
+  -- platform = non.system.getOS!
+  getOS: ->
     return NonVM.util\getOS!
 
-  get_heap: ->
+  getMemoryInfo: ->
     return Gdx.app\getJavaHeap!
 
-  open_url: (url) ->
+  openURL: (url) ->
     return Gdx.net\openURI url
 
-  set_clipboard: (text) ->
+  setClipboardText: (text) ->
     clipboard = Gdx.app\getClipboard!
     clipboard\setContents text
 

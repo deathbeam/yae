@@ -22,16 +22,16 @@ c = require "non.internal.constants"
   -- Get X coordinate of mouse cursor position
   -- @treturn number x coordinate
   -- @usage
-  -- x = non.mouse.get_x!
-  get_x: ->
+  -- x = non.mouse.getX!
+  getX: ->
     Gdx.input\getX!
 
   ---
   -- Get Y coordinate of mouse cursor position
   -- @treturn number y coordinate
   -- @usage
-  -- y = non.mouse.get_y!
-  get_y: ->
+  -- y = non.mouse.getY!
+  getY: ->
     Gdx.input\getY!
 
   ---
@@ -39,8 +39,8 @@ c = require "non.internal.constants"
   -- @treturn number x coordinate of the cursor
   -- @treturn number y coordinate of the cursor
   -- @usage
-  -- x, y = non.mouse.get_position!
-  get_position: ->
+  -- x, y = non.mouse.getPosition!
+  getPosition: ->
     @getX!, @getY!
 
   ---
@@ -48,8 +48,8 @@ c = require "non.internal.constants"
   -- @tparam ... buttons buttons to check for
   -- @treturn boolean true one of buttons is pressed
   -- @usage
-  -- is_down = non.mouse.is_down "left", "right"
-  is_down: (...) ->
+  -- isDown = non.mouse.isDown "left", "right"
+  isDown: (...) ->
     args = table.pack ...
     found = false
 
@@ -64,7 +64,7 @@ c = require "non.internal.constants"
   -- @treturn boolean true if cursor is visible
   -- @usage
   -- visible = non.mouse.isVisible!
-  is_visible: ->
+  isVisible: ->
     not Gdx.input\isCursorCatched!
 
   ---
@@ -72,31 +72,31 @@ c = require "non.internal.constants"
   -- @tparam number x the x coordinate
   -- @tparam number y the y coordinate
   -- @usage
-  -- non.mouse.set_position 10, 10
-  set_position: (x, y) ->
+  -- non.mouse.setPosition 10, 10
+  setPosition: (x, y) ->
     Gdx.input\setCursorPosition x, y
 
   ---
   -- Change mouse cursor visibility
   -- @tparam boolean visible set if cursor will be visible or not
   -- @usage
-  -- non.mouse.set_visible true
-  set_visible: (visible) ->
+  -- non.mouse.setVisible true
+  setVisible: (visible) ->
     Gdx.input\setCursorCatched not visible
 
   ---
   -- Set X coordinate of mouse cursor position
   -- @tparam number x the x coordinate
   -- @usage
-  -- non.mouse.set_x 10
-  set_x: (x) ->
-    @set_position x, @get_y!
+  -- non.mouse.setX 10
+  setX: (x) ->
+    @setPosition x, @getY!
 
   ---
   -- Set Y coordinate of mouse cursor position
   -- @tparam number y the y coordinate
   -- @usage
-  -- non.mouse.set_y 10
-  set_y: (y) ->
-    @set_position @get_x!, y
+  -- non.mouse.setY 10
+  setY: (y) ->
+    @setPosition @getX!, y
 }

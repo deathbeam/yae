@@ -9,32 +9,32 @@ class Image
 		@texture = java.new Texture, file.file, c.formats[format], false
 		@texture\setFilter c.filters["linear"], c.filters["linear"]
 
-	get_dimensions: =>
-		@get_width!, @get_height!
+	getDimensions: =>
+		@getWidth!, @getHeight!
 
-	get_filter: =>
+	getFilter: =>
 		min_filter = @texture\getMinFilter!
 		mag_filter = @texture\getMagFilter!
 		c.filtercodes[min_filter], c.filtercodes[mag_filter]
 
-	get_format: =>
+	getFormat: =>
 		texture_data = @texture\getTextureData!
 		format = texture_data\getFormat!
 		c.formatcodes[format]
 
-	get_height: =>
+	getHeight: =>
 		@texture\getHeight!
 
-	get_width: =>
+	getWidth: =>
 		@texture\getWidth!
 
-	get_wrap: =>
+	getWrap: =>
 		c.wraps[@texture\getUWrap!], c.wraps[@texture\getVWrap!]
 
-	set_filter: (min, mag) =>
+	setFilter: (min, mag) =>
 		@texture\setFilter c.filters[min], c.filters[mag]
 
-	set_wrap: (horiz, vert) =>
+	setWrap: (horiz, vert) =>
 		@texture\setWrap c.wraps[horiz], c.wraps[vert]
 
 	free: =>

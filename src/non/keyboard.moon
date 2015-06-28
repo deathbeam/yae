@@ -20,8 +20,8 @@ c = require "non.internal.constants"
   -- @tparam ... keys keys to check for
   -- @treturn boolean true one of keys is pressed
   -- @usage
-  -- is_down = non.keyboard.is_down "a", "b", "c"
-  is_down: (...) ->
+  -- is_down = non.keyboard.isDown "a", "b", "c"
+  isDown: (...) ->
     args = table.pack ...
     found = false
 
@@ -35,15 +35,15 @@ c = require "non.internal.constants"
   -- Checks if on-screen keyboard is visible (mobile devices only)
   -- @treturn boolean true if keyboard is visible
   -- @usage
-  -- visible = non.keyboard.is_visible!
-  is_visible: ->
+  -- visible = non.keyboard.isVisible!
+  isVisible: ->
     return Gdx.input\isPeripheralAvailable Peripheral.OnscreenKeyboard
 
   ---
   -- Change on-screen keyboard visibility (mobile devices only)
   -- @tparam boolean visible set if keyboard will be visible or not
   -- @usage
-  -- non.keyboard.set_visible true
-  set_visible: (visible) ->
+  -- non.keyboard.setVisible true
+  setVisible: (visible) ->
     Gdx.input\setOnscreenKeyboardVisible visible
 }

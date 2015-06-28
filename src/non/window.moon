@@ -1,7 +1,7 @@
 Gdx = java.require "com.badlogic.gdx.Gdx"
 
 {
-  from_pixels: (px, py) ->
+  fromPixels: (px, py) ->
     scale = @getPixelScale!
 
     if py != nil
@@ -9,10 +9,10 @@ Gdx = java.require "com.badlogic.gdx.Gdx"
 
     return px / scale
 
-  get_mode: ->
-    @get_width!, @get_height!, @is_fullscreen!
+  getMode: ->
+    @getWidth!, @getHeight!, @isFullscreen!
 
-  get_fullscreen_modes: ->
+  getFullscreenModes: ->
     jmodes = Gdx.graphics.getDisplayModes!
     modes = {}
 
@@ -21,32 +21,32 @@ Gdx = java.require "com.badlogic.gdx.Gdx"
 
     return modes
 
-  get_height: ->
+  getHeight: ->
     Gdx.graphics\getHeight!
 
-  get_pixel_scale: ->
+  getPixelScale: ->
     Gdx.graphics\getDensity!
 
-  get_title: ->
+  getTitle: ->
     config.name
 
-  get_width: ->
+  getWidth: ->
     Gdx.graphics\getWidth!
 
-  is_fullscreen: ->
+  isFullscreen: ->
     Gdx.graphics\isFullscreen!
 
-  set_fullscreen: (fullscreen) ->
+  setFullscreen: (fullscreen) ->
     @setMode @getWidth!, @getHeight!, fullscreen
 
-  set_mode: (width, height, fullscreen=false) ->
+  setMode: (width, height, fullscreen=false) ->
     Gdx.graphics\setDisplayMode width, height, fullscreen
 
-  set_title: (title) ->
+  setTitle: (title) ->
     config.name = title
     Gdx.graphics\setTitle config.name
 
-  to_pixels:(dx, dy) ->
+  toPixels:(dx, dy) ->
     scale = @getPixelScale!
 
     if dy != nil

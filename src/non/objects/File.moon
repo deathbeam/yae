@@ -23,14 +23,14 @@ class File
     @file\copyTo to_file
     return true
 
-  create_directory: () =>
+  createDirectory: () =>
     @file\mkdirs!
     return true
 
   exists: () =>
     return @file\exists!
 
-  list: () =>
+  getDirectoryItems: () =>
     children = @file\list!
     paths = {}
 
@@ -39,16 +39,16 @@ class File
 
     return paths
 
-  last_modified: () =>
+  getLastModified: () =>
     return @file\lastModified!
 
-  size: () =>
+  getSize: () =>
     return @file\length!
 
-  is_directory: () =>
+  isDirectory: () =>
     return @file\isDirectory!
 
-  is_file: () =>
+  isFile: () =>
     return not @is_directory!
 
   move: (to_file) =>

@@ -47,7 +47,7 @@ Gdx = java.require "com.badlogic.gdx.Gdx"
 NonVM = java.require "non.NonVM"
 
 {
-  new_file: (filename, filetype) ->
+  newFile: (filename, filetype) ->
     return File filename, filetype
 
   append: (filename, text, filetype) ->
@@ -61,7 +61,7 @@ NonVM = java.require "non.NonVM"
     from_file\copy to_file
     return true
 
-  create_directory: (filename, filetype) ->
+  createDirectory: (filename, filetype) ->
     file = @new_file filename, filetype
     file\create_directory!
     return true
@@ -70,33 +70,33 @@ NonVM = java.require "non.NonVM"
     file = @new_file filename, filetype
     return file\exists!
 
-  list: (filename, filetype) ->
+  getDirectoryItems: (filename, filetype) ->
     file = @new_file filename, filetype
     return file\list!
 
-  get_external_path: ->
+  getExternalPath: ->
     return Gdx.files\getExternalStoragePath!
 
-  get_local_path: ->
+  getLocalPath: ->
     return Gdx.files\getLocalStoragePath!
 
-  get_working_path: ->
+  getWorkingPath: ->
     file = @new_file(".")\file!
     return file\getAbsolutePath!
 
-  last_modified: (filename, filetype) ->
+  getLastModified: (filename, filetype) ->
     file = @new_file filename, filetype
     return file\last_modified!
 
-  size: (filename, filetype) ->
+  getSize: (filename, filetype) ->
     file = @new_file filename, filetype
     return file\size!
 
-  is_directory: (filename, filetype) ->
+  isDirectory: (filename, filetype) ->
     file = @new_file filename, filetype
     return file\is_directory!
 
-  is_file: (filename, filetype) ->
+  isFile: (filename, filetype) ->
     file = @new_file filename, filetype
     return file\is_file!
 

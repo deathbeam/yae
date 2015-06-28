@@ -19,8 +19,8 @@ Gdx = java.require "com.badlogic.gdx.Gdx"
   -- devices (defaults to 0)
   -- @treturn number x coordinate
   -- @usage
-  -- x = non.touch.get_x 1
-  get_x: (pointer=0) ->
+  -- x = non.touch.getX 1
+  getX: (pointer=0) ->
     Gdx.input\getX pointer
 
   ---
@@ -29,8 +29,8 @@ Gdx = java.require "com.badlogic.gdx.Gdx"
   -- devices (defaults to 0)
   -- @treturn number y coordinate
   -- @usage
-  -- y = non.touch.get_y 1
-  get_y: (pointer=0) ->
+  -- y = non.touch.getY 1
+  getY: (pointer=0) ->
     Gdx.input\getY pointer
 
   ---
@@ -40,8 +40,8 @@ Gdx = java.require "com.badlogic.gdx.Gdx"
   -- @treturn number x coordinate
   -- @treturn number y coordinate
   -- @usage
-  -- x, y = non.touch.get_position 1
-  get_position: (pointer) ->
+  -- x, y = non.touch.getPosition 1
+  getPosition: (pointer) ->
     @getX pointer, @getY pointer
 
   ---
@@ -49,7 +49,7 @@ Gdx = java.require "com.badlogic.gdx.Gdx"
   -- @tparam number pointer index of finger touching the screen for multitouch devices (defaults to 0)
   -- @treturn boolean true if finger is touching the screen
   -- @usage
-  -- touching = non.touch.is_down 1
-  is_down: (pointer) ->
+  -- touching = non.touch.isDown 1
+  isDown: (pointer) ->
     Gdx.input\isTouched pointer
 }

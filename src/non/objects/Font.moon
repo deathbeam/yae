@@ -14,37 +14,37 @@ class Font
     
     generator = java.new FreeTypeFontGenerator, file.file
     @font = generator\generateFont size
-    @font_texture = @font\getRegion(0)\getTexture!
-    @font_texture\setFilter c.filters["linear"], c.filters["linear"]
-    @glyph_layout = java.new GlyphLayout
+    @fontTexture = @font\getRegion(0)\getTexture!
+    @fontTexture\setFilter c.filters["linear"], c.filters["linear"]
+    @glyphLayout = java.new GlyphLayout
 
-  get_ascent: =>
+  getAscent: =>
     @font\getAscent!
 
-  get_descent: =>
+  getDescent: =>
     @font\getDescent!
 
-  get_line_height: =>
+  getLineHeight: =>
     @font\getLineHeight!
 
-  get_bounds: (text) =>
-    @glyph_layout\setText text
-    return @glyph_layout.width, @glyph_layout.height
+  getBounds: (text) =>
+    @glyphLayout\setText text
+    return @glyphLayout.width, @glyphLayout.height
 
-  get_filter: =>
-    min_filter = @font_texture\getMinFilter!
-    mag_filter = @font_texture\getMagFilter!
+  getFilter: =>
+    min_filter = @fontTexture\getMinFilter!
+    mag_filter = @fontTexture\getMagFilter!
     c.filtercodes[min_filter], c.filtercodes[mag_filter]
 
-  get_height: (text) =>
-    w, _ = @get_bounds text
+  getHeight: (text) =>
+    w, _ = @getBounds text
     return w
 
-  get_width: (text) =>
-    _, h = @get_bounds text
+  getWidth: (text) =>
+    _, h = @getBounds text
     return h
 
-  has_glyphs: (...) =>
+  hasGlyphs: (...) =>
     args = table.pack ...
     found = true
 
@@ -53,10 +53,10 @@ class Font
 
     return found
 
-  set_filter: (min, mag) =>
-    @font_texture\setFilter c.filters[min], c.filters[mag]
+  setFilter: (min, mag) =>
+    @fontTexture\setFilter c.filters[min], c.filters[mag]
 
-  set_line_height: (height) =>
+  setLineHeight: (height) =>
     @font\getData()\setLineHeight height
 
   free: =>

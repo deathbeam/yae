@@ -18,8 +18,8 @@ Gdx = java.require "com.badlogic.gdx.Gdx"
   -- z-axis points towards the earths center
   -- @treturn number azimuth
   -- @usage
-  -- azimuth = non.compass.get_azimuth!
-  get_azimuth: ->
+  -- azimuth = non.compass.getAzimuth!
+  getAzimuth: ->
     Gdx.input\getAzimuth!
 
   ---
@@ -27,8 +27,8 @@ Gdx = java.require "com.badlogic.gdx.Gdx"
   -- x-axis roughly points to the west and is orthogonal to the z- and y-axis
   -- @treturn number pitch
   -- @usage
-  -- pitch = non.compass.get_pitch!
-  get_pitch: ->
+  -- pitch = non.compass.getPitch!
+  getPitch: ->
     Gdx.input\getPitch!
 
   ---
@@ -37,8 +37,8 @@ Gdx = java.require "com.badlogic.gdx.Gdx"
   -- orthogonal to the other two axes.
   -- @treturn number roll 
   -- @usage
-  -- roll = non.compass.get_roll!
-  get_roll: ->
+  -- roll = non.compass.getRoll!
+  getRoll: ->
     Gdx.input\getRoll!
 
   ---
@@ -47,7 +47,7 @@ Gdx = java.require "com.badlogic.gdx.Gdx"
   -- @treturn number pitch
   -- @treturn number roll
   -- @usage
-  -- azimuth, pitch, roll = non.compass.get_orientation!
-  get_orientation: ->
-    @get_azimuth!, @get_pitch!, @get_roll!
+  -- azimuth, pitch, roll = non.compass.getOrientation!
+  getOrientation: ->
+    @getAzimuth!, @getPitch!, @getRoll!
 }
