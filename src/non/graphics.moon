@@ -149,7 +149,7 @@ check = (textureBased) ->
       transform\translate(x, y)\rotate(r)\translate(-x, -y) 
       batch\setTransformMatrix transform.matrix
 
-    font.font\setScale sx, -sy
+    font.font\getData!\setScale sx, -sy
     font.font\draw batch, text, x - ox * sx, y - oy * sy
 
     if r != 0
@@ -165,7 +165,7 @@ check = (textureBased) ->
       transform\translate(x, y)\rotate(r)\translate(-x, -y) 
       batch\setTransformMatrix transform.matrix
 
-    font.font\setScale sx, -sy
+    font.font\getData!\setScale sx, -sy
     font.font\draw batch, text, x - ox * sx, y - oy * sy, width, c.aligns[align], true
 
     if r != 0

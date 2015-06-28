@@ -115,13 +115,11 @@ project(":ios") {
     }
 }
 
-task cleanAssets << {
+task cleanProject(dependsOn: ':clean'){
     deldir file("android/assets")
 }
 
-clean.dependsOn cleanAssets
-
-task init << {
+task initLua << {
     file("../assets").mkdir()
 
     copy {
@@ -136,9 +134,7 @@ task init << {
         into "../assets"
         include "lint_config.lua"
     }
-}
 
-task initlua(dependsOn: ':init') {
     copy {
         from "res"
         into "../assets"
@@ -149,7 +145,22 @@ task initlua(dependsOn: ':init') {
     
 }
 
-task initmoon(dependsOn: ':init') {
+task initMoon << {
+    file("../assets").mkdir()
+
+    copy {
+        from "res"
+        into "../"
+        include "hello.yml"
+        rename "hello.yml", "config.yml"
+    }
+
+    copy {
+        from "res"
+        into "../assets"
+        include "lint_config.lua"
+    }
+
     copy {
         from "res"
         into "../assets"

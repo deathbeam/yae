@@ -1,8 +1,10 @@
-![logo](https://raw.githubusercontent.com/nondev/non/master/lib/resources/logo.png)
+![logo](https://raw.githubusercontent.com/nondev/non/master/res/logo.png)
 
 [![Build Status](https://travis-ci.org/nondev/non.png)](https://travis-ci.org/nondev/non) [![Join the chat at https://gitter.im/nondev/non](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/nondev/non?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-NÖN is an engine you can use to make 2D games in **Lua** and **MoonScript**. It's free, open-source, and works on **Windows**, **Mac OS X**, **Linux**, **Android** and **iOS**.
+## Game engine in MoonScript, for MoonScript. ##
+
+NÖN is an engine you can use to make games in **Lua** and **MoonScript**. It's free, open-source, and works on **Windows**, **Mac OS X**, **Linux**, **Android** and **iOS**.
 
 ### Installation ###
 

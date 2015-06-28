@@ -41,7 +41,7 @@ public class Main implements Runner.OutputListener {
                 ZipUtils.unpack(JAR, "VERSION", TEMP);
                 new File(TEMP, "core/precompile.sh").setExecutable(true);
                 new File(TEMP, "core/precompile-engine.sh").setExecutable(true);
-                new Main("clean", true);
+                new Main("cleanProject", true);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -118,16 +118,16 @@ public class Main implements Runner.OutputListener {
             check();
             
             if (args.length <= 1 || args[1].equals("moon")) {
-                new Main("initmoon");
+                new Main("initMoon");
             } else if (args[1].equals("lua")) {
-                new Main("initlua");
+                new Main("initLua");
             } else {
                 printHelp();
             }
         } else if (args[0].equals("clean")) {
             System.out.println("Cleaning your project's temporary data");
             check();
-            new Main("clean");
+            new Main("cleanProject");
         } else if (args[0].equals("update")) {
             System.out.println("Updating your project's runtime");
             check();
