@@ -1,0 +1,98 @@
+android {
+    buildToolsVersion "20.0.0"
+    compileSdkVersion 20
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src']
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+        }
+
+        instrumentTest.setRoot('tests')
+    }
+    
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 20
+    }
+    
+    try {
+        signingConfigs {
+            releaseSigning {
+                storeFile file(cfg.sign.storeFile)
+                storePassword cfg.sign.storePassword
+                keyAlias cfg.sign.keyAlias
+                keyPassword cfg.sign.keyPassword
+            }
+        }
+    } catch(e) { 
+        signingConfigs {
+            releaseSigning {
+                storeFile file("../debug.keystore")
+                storePassword "nononsense"
+                keyAlias "non"
+                keyPassword "nononsense"
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.releaseSigning
+        }
+    }
+}
+
+tasks.withType(com.android.build.gradle.tasks.PackageApplication) { pkgTask ->
+    pkgTask.jniFolders = new HashSet<File>()
+    pkgTask.jniFolders.add(new File(projectDir, 'libs'))
+}
+
+task run(type: Exec) << {
+    def adb = sdkDir + "/platform-tools/adb"
+    commandLine "$adb", 'shell', 'am', 'start', '-n', "${packageName}.android/${packageName}.android.AndroidLauncher"
+}
+
+task copyNatives << {
+    file("libs/armeabi/").mkdirs();
+    file("libs/armeabi-v7a/").mkdirs();
+    file("libs/x86/").mkdirs();
+
+    configurations.natives.files.each { jar ->
+        def outputDir = null
+        if(jar.name.endsWith("natives-armeabi-v7a.jar")) outputDir = file("libs/armeabi-v7a")
+        if(jar.name.endsWith("natives-armeabi.jar")) outputDir = file("libs/armeabi")
+        if(jar.name.endsWith("natives-x86.jar")) outputDir = file("libs/x86")
+        if(jar.name.endsWith("natives-android.jar")) outputDir = file("libs")
+        if(outputDir != null) {
+            copy {
+                from zipTree(jar)
+                into outputDir
+                include "**/*.so"
+            }
+        }
+    }
+}
+
+task dist(dependsOn: assembleRelease) << {
+    file("../../build/android").mkdirs()
+    
+    copy {
+        from "build/outputs/apk"
+        into "../../build/android"
+        include "android-release-unsigned.apk"
+        rename "android-release-unsigned.apk", "${appName} v${version}.apk"
+    }
+    
+    copy {
+        from "build/outputs/apk"
+        into "../../build/android"
+        include "android-release.apk"
+        rename "android-release.apk", "${appName} v${version}.apk"
+    }
+    
+    println "You can find ${appName} v${version}.apk in /build/android"
+}

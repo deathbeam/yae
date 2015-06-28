@@ -5,7 +5,7 @@
 *.res
 
 ## LDoc
-doc/doc/
+doc/build/
 
 ## Java
 build/
@@ -18,3 +18,5 @@ bin/non.jar
 ## OS Specific
 .DS_Store
 Thumbs.db
+
+non.jar

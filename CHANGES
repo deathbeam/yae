@@ -2,7 +2,7 @@
 - changed API to be mostly LÖVE compatible
 - renamed background.png to splash.png
 - removed bar.png
-- moved all Lua code to Java, so now engine runs with almost native Java performance
+- added AOT Lua and MoonScript compiler
 - changed loading screen a bit
 - drastically improved view transformations performance
 - drastically reduced build times
@@ -12,17 +12,15 @@
 - to simplify engine removed option to change native iOS splash before actual NON splash
 - reduced log output to console
 - fixed small bug what caused that engine was ignoring directories with name "non"
-- pertially fixed require function (still do not supports package.path)
-- moved installation script to tools/ and added API dumper
+- fixed require function
 - now "require" function works same as LOVE require function
 - fixed engine not be able to load "config.yml" when running from compiled JAR
 - moved desktop.display to window in config.yml
 - fixed %PACKAGE_DIR% not updating for iOS builds
 - added support for changing Android and iOS display orientation ("landscape" or "portrait")
 - added support for "sensor" Android and iOS display orientation and made it default
-- added support for " " character as space for non.keyboard
 - installation from LuaRocks is now fully automated
-- fixed non.mouse.isDown (by accident I mapped there keycodes rather than buttoncodes)
+- fixed non.mouse.isDown (by accident I mapped there keycodes rather than buttoncodes
 
 [0.6.4]
 - fixed documentation for methods that returns multiple values
