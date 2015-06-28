@@ -1,3 +1,7 @@
+import static java.awt.RenderingHints.* 
+import java.awt.image.BufferedImage 
+import javax.imageio.ImageIO
+
 configure()
 
 buildscript {
@@ -115,9 +119,26 @@ task cleanAssets << {
     deldir file("android/assets")
 }
 
-task initlua << {
+clean.dependsOn cleanAssets
+
+task init << {
     file("../assets").mkdir()
-    
+
+    copy {
+        from "res"
+        into "../"
+        include "hello.yml"
+        rename "hello.yml", "config.yml"
+    }
+
+    copy {
+        from "res"
+        into "../assets"
+        include "lint_config.lua"
+    }
+}
+
+task initlua(dependsOn: ':init') {
     copy {
         from "res"
         into "../assets"
@@ -125,53 +146,19 @@ task initlua << {
         rename "hello.lua", "main.lua"
     }
     
-    copy {
-        from "res"
-        into "../"
-        include "hello.yml"
-        rename "hello.yml", "config.yml"
-    }
-
-    copy {
-        from "res"
-        into "../assets"
-        include "lint_config.lua"
-    }
+    
 }
 
-task initmoon << {
-    file("../assets").mkdir()
-    
+task initmoon(dependsOn: ':init') {
     copy {
         from "res"
         into "../assets"
         include "hello.moon"
         rename "hello.moon", "main.moon"
     }
-    
-    copy {
-        from "res"
-        into "../"
-        include "hello.yml"
-        rename "hello.yml", "config.yml"
-    }
-
-    copy {
-        from "res"
-        into "../assets"
-        include "lint_config.lua"
-    }
 }
 
-
-task resolveDependencies << {
-    project.rootProject.allprojects.each { subProject ->
-        subProject.buildscript.configurations.each { configuration -> configuration.resolve() }
-        subProject.configurations.each { configuration -> configuration.resolve() }
-    }
-}
-
-task update(dependsOn: ':updateAssets'){
+task update(dependsOn: ':updateAssets') {
     def src = "../"
     def res = "res"
     def out = "android/assets/non"
@@ -339,10 +326,6 @@ def deldir(file) {
         
     file.delete()
 }
-
-import static java.awt.RenderingHints.* 
-import java.awt.image.BufferedImage 
-import javax.imageio.ImageIO
 
 def copyAndResizeIcon(targetPath, newSize) {
     def source = file("../icon.png").exists() ? file("../icon.png") : file("res/icon.png")
