@@ -247,17 +247,17 @@ for k, v in pairs filters
   filtercodes[v] = k
 
 {
-  keys: keys
-  keycodes: keycodes
-  buttons: buttons
-  buttoncodes: buttoncodes
-  formats: formats
-  formatcodes: formatcodes
-  wraps: wraps
-  wrapcodes: wrapcodes
-  filters: filters
-  filtercodes: filtercodes
-  blendmodes: blendmodes
-  shapetype: shapetype
-  aligns: aligns
+  :keys
+  :keycodes
+  :buttons
+  :buttoncodes
+  :formats
+  :formatcodes
+  :wraps
+  :wrapcodes
+  :filters
+  :filtercodes
+  :blendmodes
+  :shapetype
+  :aligns
 }

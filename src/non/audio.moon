@@ -3,39 +3,49 @@ Source = require "non.objects.Source"
 sources = {}
 globalvolume = 1
 
-{
-  getNumSources: ->
-    #sources
+getNumSources = ->
+  #sources
 
-  getVolume: ->
-    globalvolume
+getVolume = ->
+  globalvolume
 
-  newSource: (filename, audiotype, filetype) ->
-    source = Source filename, audiotype, filetype
-    table.insert sources, source
-    return source
+newSource = (filename, audiotype, filetype) ->
+  source = Source filename, audiotype, filetype
+  table.insert sources, source
+  return source
 
-  pause: (source) ->
-    source\pause!
+pause = (source) ->
+  source\pause!
 
-  play: (source) ->
+play = (source) ->
+  source\setVolume globalvolume
+  source\play!
+
+resume = (source) ->
+  source\resume!
+
+setVolume = (volume) ->
+  globalvolume = volume
+
+  for i, source in ipairs sources
     source\setVolume globalvolume
-    source\play!
 
-  resume: (source) ->
-    source\resume!
+stop = (source) ->
+  source\stop!
 
-  setVolume: (volume) ->
-    globalvolume = volume
-
-    for i, source in ipairs sources
-      source\setVolume globalvolume
-
-  stop: (source) ->
+stopAll = ->
+  for i, source in ipairs sources
     source\stop!
+    source\free!
 
-  stopAll: ->
-    for i, source in ipairs sources
-      source\stop!
-      source\free!
+{
+  :getNumSources
+  :getVolume
+  :newSource
+  :pause
+  :play
+  :resume
+  :setVolume
+  :stop
+  :stopAll
 }

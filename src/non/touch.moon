@@ -12,44 +12,49 @@
 
 Gdx = java.require "com.badlogic.gdx.Gdx"
 
+---
+-- Get X coordinate of finger touching the screen
+-- @tparam number pointer index of finger touching the screen for multitouch
+-- devices (defaults to 0)
+-- @treturn number x coordinate
+-- @usage
+-- x = non.touch.getX 1
+getX = (pointer=0) ->
+  Gdx.input\getX pointer
+
+---
+-- Get Y coordinate of finger touching the screen
+-- @tparam number pointer index of finger touching the screen for multitouch
+-- devices (defaults to 0)
+-- @treturn number y coordinate
+-- @usage
+-- y = non.touch.getY 1
+getY = (pointer=0) ->
+  Gdx.input\getY pointer
+
+---
+-- Get the position of finger touching the screen
+-- @tparam number pointer index of finger touching the screen for multitouch
+-- devices (defaults to 0)
+-- @treturn number x coordinate
+-- @treturn number y coordinate
+-- @usage
+-- x, y = non.touch.getPosition 1
+getPosition = (pointer) ->
+  getX pointer, getY pointer
+
+---
+-- Check if finger is touching the screen
+-- @tparam number pointer index of finger touching the screen for multitouch devices (defaults to 0)
+-- @treturn boolean true if finger is touching the screen
+-- @usage
+-- touching = non.touch.isDown 1
+isDown = (pointer) ->
+  Gdx.input\isTouched pointer
+
 {
-  ---
-  -- Get X coordinate of finger touching the screen
-  -- @tparam number pointer index of finger touching the screen for multitouch
-  -- devices (defaults to 0)
-  -- @treturn number x coordinate
-  -- @usage
-  -- x = non.touch.getX 1
-  getX: (pointer=0) ->
-    Gdx.input\getX pointer
-
-  ---
-  -- Get Y coordinate of finger touching the screen
-  -- @tparam number pointer index of finger touching the screen for multitouch
-  -- devices (defaults to 0)
-  -- @treturn number y coordinate
-  -- @usage
-  -- y = non.touch.getY 1
-  getY: (pointer=0) ->
-    Gdx.input\getY pointer
-
-  ---
-  -- Get the position of finger touching the screen
-  -- @tparam number pointer index of finger touching the screen for multitouch
-  -- devices (defaults to 0)
-  -- @treturn number x coordinate
-  -- @treturn number y coordinate
-  -- @usage
-  -- x, y = non.touch.getPosition 1
-  getPosition: (pointer) ->
-    @getX pointer, @getY pointer
-
-  ---
-  -- Check if finger is touching the screen
-  -- @tparam number pointer index of finger touching the screen for multitouch devices (defaults to 0)
-  -- @treturn boolean true if finger is touching the screen
-  -- @usage
-  -- touching = non.touch.isDown 1
-  isDown: (pointer) ->
-    Gdx.input\isTouched pointer
+  :getX
+  :getY
+  :getPosition
+  :isDown
 }

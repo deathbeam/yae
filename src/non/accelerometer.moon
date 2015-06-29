@@ -13,38 +13,43 @@
 
 Gdx = java.require "com.badlogic.gdx.Gdx"
 
+---
+-- Get current X relative to the center of earth
+-- @treturn number x value of accelerometer
+-- @usage
+-- x = non.accelerometer.getX!
+getX = ->
+  Gdx.input\getAccelerometerX!
+
+---
+-- Get current Y relative to the center of earth
+-- @treturn number y value of accelerometer
+-- @usage
+-- y = non.accelerometer.getY!
+getY = ->
+  Gdx.input\getAccelerometerY!
+
+---
+-- Get current Z relative to the center of earth
+-- @treturn number z value of accelerometer
+-- @usage
+-- z = non.accelerometer.getZ!
+getZ = ->
+  Gdx.input\getAccelerometerZ!
+
+---
+-- Get current X, Y and Z relative to the center of earth
+-- @treturn number x value of accelerometer
+-- @treturn number y value of accelerometer
+-- @treturn number z value of accelerometer
+-- @usage
+-- x, y, z = non.accelerometer.getRotation!
+getRotation = ->
+  getX!, getY!, getZ!
+
 {
-  ---
-  -- Get current X relative to the center of earth
-  -- @treturn number x value of accelerometer
-  -- @usage
-  -- x = non.accelerometer.getX!
-  getX: ->
-    Gdx.input\getAccelerometerX!
-
-  ---
-  -- Get current Y relative to the center of earth
-  -- @treturn number y value of accelerometer
-  -- @usage
-  -- y = non.accelerometer.getY!
-  getY: ->
-    Gdx.input\getAccelerometerY!
-
-  ---
-  -- Get current Z relative to the center of earth
-  -- @treturn number z value of accelerometer
-  -- @usage
-  -- z = non.accelerometer.getZ!
-  getZ: ->
-    Gdx.input\getAccelerometerZ!
-
-  ---
-  -- Get current X, Y and Z relative to the center of earth
-  -- @treturn number x value of accelerometer
-  -- @treturn number y value of accelerometer
-  -- @treturn number z value of accelerometer
-  -- @usage
-  -- x, y, z = non.accelerometer.getRotation!
-  get_rotation: ->
-    @getX!, @getY!, @getZ!
+  :getX
+  :getY
+  :getZ
+  :getRotation
 }

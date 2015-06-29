@@ -14,36 +14,40 @@ Peripheral = java.require "com.badlogic.gdx.Input$Peripheral"
 
 c = require "non.internal.constants"
 
+---
+-- Check if one of specified keys is down
+-- @tparam ... keys keys to check for
+-- @treturn boolean true one of keys is pressed
+-- @usage
+-- is_down = non.keyboard.isDown "a", "b", "c"
+isDown = (...) ->
+  args = table.pack ...
+  found = false
+
+  for i = 1, args.n
+    keycode = c.keys[args[i]]
+    found = found or Gdx.input\isKeyPressed keycode
+
+  return found
+
+---
+-- Checks if on-screen keyboard is visible (mobile devices only)
+-- @treturn boolean true if keyboard is visible
+-- @usage
+-- visible = non.keyboard.isVisible!
+isVisible = ->
+  return Gdx.input\isPeripheralAvailable Peripheral.OnscreenKeyboard
+
+---
+-- Change on-screen keyboard visibility (mobile devices only)
+-- @tparam boolean visible set if keyboard will be visible or not
+-- @usage
+-- non.keyboard.setVisible true
+setVisible = (visible) ->
+  Gdx.input\setOnscreenKeyboardVisible visible
+
 {
-  ---
-  -- Check if one of specified keys is down
-  -- @tparam ... keys keys to check for
-  -- @treturn boolean true one of keys is pressed
-  -- @usage
-  -- is_down = non.keyboard.isDown "a", "b", "c"
-  isDown: (...) ->
-    args = table.pack ...
-    found = false
-
-    for i = 1, args.n
-      keycode = c.keys[args[i]]
-      found = found or Gdx.input\isKeyPressed keycode
-
-    return found
-
-  ---
-  -- Checks if on-screen keyboard is visible (mobile devices only)
-  -- @treturn boolean true if keyboard is visible
-  -- @usage
-  -- visible = non.keyboard.isVisible!
-  isVisible: ->
-    return Gdx.input\isPeripheralAvailable Peripheral.OnscreenKeyboard
-
-  ---
-  -- Change on-screen keyboard visibility (mobile devices only)
-  -- @tparam boolean visible set if keyboard will be visible or not
-  -- @usage
-  -- non.keyboard.setVisible true
-  setVisible: (visible) ->
-    Gdx.input\setOnscreenKeyboardVisible visible
+  :isDown
+  :isVisible
+  :setVisible
 }
