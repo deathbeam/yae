@@ -50,6 +50,6 @@ Gdx = java.require "com.badlogic.gdx.Gdx"
   -- @treturn boolean true if finger is touching the screen
   -- @usage
   -- touching = non.touch.isDown 1
-  isDown: (pointer) ->
+  isDown: (pointer=0) ->
     Gdx.input\isTouched pointer
 }
