@@ -8,9 +8,11 @@ style = true
 readme = '../README.md'
 
 file = {
+  '../src/java.moon',
   '../src/non/accelerometer.moon',
   '../src/non/audio.moon',
   '../src/non/compass.moon',
+  '../src/non/graphics.moon',
   '../src/non/filesystem.moon',
   '../src/non/keyboard.moon',
   '../src/non/mouse.moon',

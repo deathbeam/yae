@@ -1,3 +1,17 @@
+-------------------------------------------------------------------------------
+-- Provides simple way to load, render and draw things.
+-------------------------------------------------------------------------------
+-- The primary responsibility for the non.graphics module is the drawing of
+-- lines, shapes, text, Images and other Drawable objects onto the screen. Its
+-- secondary responsibilities include loading external files (including Images
+-- and Fonts) into memory and managing screen geometry.
+-- NÖN's coordinate system is rooted in the upper-left corner of the screen,
+-- which is at location (0, 0). The x axis is horizontal: larger values are
+-- further to the right. The y axis is vertical: larger values are further
+-- towards the bottom.
+--
+-- @module non.graphics
+
 Font = require "non.objects.Font"
 Image = require "non.objects.Image"
 Transform = require "non.objects.Transform"
