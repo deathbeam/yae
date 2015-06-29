@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------
 -- Allows manipulation with files and directories.
 -------------------------------------------------------------------------------
--- NÖN applications run on three different platforms =  
+-- NÖN applications run on three different platforms
 -- * desktop systems (Windows, Linux, Mac OS X)  
 -- * Android  
 -- * and iOS.  

@@ -17,7 +17,7 @@ c = require "non.internal.constants"
 ---
 -- Check if one of specified keys is down
 -- @tparam ... keys keys to check for
--- @treturn boolean true one of keys is pressed
+-- @treturn bool true one of keys is pressed
 -- @usage
 -- is_down = non.keyboard.isDown "a", "b", "c"
 isDown = (...) ->
@@ -32,7 +32,7 @@ isDown = (...) ->
 
 ---
 -- Checks if on-screen keyboard is visible (mobile devices only)
--- @treturn boolean true if keyboard is visible
+-- @treturn bool true if keyboard is visible
 -- @usage
 -- visible = non.keyboard.isVisible!
 isVisible = ->
@@ -40,7 +40,7 @@ isVisible = ->
 
 ---
 -- Change on-screen keyboard visibility (mobile devices only)
--- @tparam boolean visible set if keyboard will be visible or not
+-- @tparam bool visible set if keyboard will be visible or not
 -- @usage
 -- non.keyboard.setVisible true
 setVisible = (visible) ->

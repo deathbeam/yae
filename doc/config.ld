@@ -1,5 +1,5 @@
 project = "NÖN"
-title = "NÖN Docs"
+title = "NÖN Documentation"
 description = "Make cross-platform games in Lua & MoonScript"
 format = "markdown"
 dir = "build"

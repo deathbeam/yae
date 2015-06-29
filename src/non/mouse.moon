@@ -45,7 +45,7 @@ getPosition = ->
 ---
 -- Check if one of specified buttons is down
 -- @tparam ... buttons buttons to check for
--- @treturn boolean true one of buttons is pressed
+-- @treturn bool true one of buttons is pressed
 -- @usage
 -- isDown = non.mouse.isDown "left", "right"
 isDown = (...) ->
@@ -60,7 +60,7 @@ isDown = (...) ->
 
 ---
 -- Check if mouse cursor is visible
--- @treturn boolean true if cursor is visible
+-- @treturn bool true if cursor is visible
 -- @usage
 -- visible = non.mouse.isVisible!
 isVisible = ->
@@ -77,7 +77,7 @@ setPosition = (x, y) ->
 
 ---
 -- Change mouse cursor visibility
--- @tparam boolean visible set if cursor will be visible or not
+-- @tparam bool visible set if cursor will be visible or not
 -- @usage
 -- non.mouse.setVisible true
 setVisible = (visible) ->

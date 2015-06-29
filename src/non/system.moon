@@ -34,7 +34,7 @@ getMemoryInfo = ->
 ---
 -- Opens a URL with the user's web or file browser. 
 -- @tparam string url The URL to open. Must be formatted as a proper URL.
--- @treturn boolean Whether the URL was opened successfully.
+-- @treturn bool Whether the URL was opened successfully.
 -- @usage
 -- success = non.system.openURL url
 openURL = (url) ->
