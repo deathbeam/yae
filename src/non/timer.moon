@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------
 -- Provides high-resolution timing functionality.
 -------------------------------------------------------------------------------
--- @module non.system
+-- @module non.timer
 
 TimeUtils = java.require "com.badlogic.gdx.utils.TimeUtils"
 Thread = java.require "java.lang.Thread"

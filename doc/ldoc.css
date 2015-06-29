@@ -147,8 +147,7 @@ table.index td { text-align: left; vertical-align: top; }
 }
 
 #main {
-    background: #5C3671 url(http://non2d.github.io/img/bg.png);
-    background-position-x: center;
+    background: #333
 }
 
 #navigation {
