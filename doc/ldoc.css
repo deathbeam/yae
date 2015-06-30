@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700");
+
 /* BEGIN RESET
 
 Copyright (c) 2010, Yahoo! Inc. All rights reserved.
@@ -68,7 +70,7 @@ input,button,textarea,select {*font-size:100%;
 body {
     margin-left: 1em;
     margin-right: 1em;
-    font-family: arial, helvetica, geneva, sans-serif;
+    font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
     background-color: #ffffff; margin: 0px;
 }
 
@@ -92,8 +94,8 @@ h2 { font-size: 1.25em; }
 h3 { font-size: 1.15em; }
 h4 { font-size: 1.06em; }
 
-a:link { font-weight: normal; color: #C147C1; text-decoration: none; }
-a:visited { font-weight: normal; color: #C147C1; text-decoration: none; }
+a:link { font-weight: normal; color: #008CBA; text-decoration: none; }
+a:visited { font-weight: normal; color: #008CBA; text-decoration: none; }
 a:link:hover { text-decoration: underline; }
 
 hr {

@@ -1,6 +1,9 @@
 project = "NÖN"
 title = "NÖN Documentation"
-description = "Make cross-platform games in Lua & MoonScript"
+description = [[
+  Game engine for MoonScript, in MoonScript<br/>
+  <small>Open Source. Windows, Mac OS X, Linux, Android, iOS and Ouya.</small>
+]]
 format = "markdown"
 dir = "build"
 style = true
