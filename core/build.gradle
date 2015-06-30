@@ -18,6 +18,8 @@ buildscript {
     }
 }
 
+apply plugin: "base"
+
 allprojects {
     version = cfg.version
     
@@ -122,9 +124,11 @@ project(":ios") {
     }
 }
 
-task cleanProject(dependsOn: ':clean'){
+task cleanAssets << {
     deldir file("android/assets")
 }
+
+clean.dependsOn cleanAssets
 
 task initLua << {
     file("../assets").mkdir()
