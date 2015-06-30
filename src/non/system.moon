@@ -13,7 +13,7 @@ NonVM = java.require "non.NonVM"
 -- text = non.system.getClipboardText!
 getClipboardText = ->
   clipboard = Gdx.app\getClipboard!
-  return clipboard\getContents!
+  clipboard\getContents!
 
 ---
 -- Get current platform. Can return "desktop", "android", "ios" or "unknown"
@@ -21,7 +21,7 @@ getClipboardText = ->
 -- @usage
 -- platform = non.system.getOS!
 getOS = ->
-  return NonVM.util\getOS!
+  NonVM.util\getOS!
 
 ---
 -- Get info about current memory usage
@@ -29,7 +29,7 @@ getOS = ->
 -- @usage
 -- heap = non.system.getMemoryInfo!
 getMemoryInfo = ->
-  return Gdx.app\getJavaHeap!
+  Gdx.app\getJavaHeap!
 
 ---
 -- Opens a URL with the user's web or file browser. 
@@ -38,7 +38,7 @@ getMemoryInfo = ->
 -- @usage
 -- success = non.system.openURL url
 openURL = (url) ->
-  return Gdx.net\openURI url
+  Gdx.net\openURI url
 
 ---
 -- Puts text in the clipboard. 

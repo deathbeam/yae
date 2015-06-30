@@ -23,7 +23,7 @@ fromPixels = (px, py) ->
   if py != nil
     return px / scale, py / scale
 
-  return px / scale
+  px / scale
 
 ---
 -- Gets a list of supported display modes. 
@@ -38,7 +38,7 @@ getDisplayModes = ->
   for i = 0, jmodes.length
     modes[i + 1] = jmodes[i]
 
-  return modes
+  modes
 
 ---
 -- Gets the display mode and properties of the window. 
@@ -137,7 +137,7 @@ toPixels = (x, y) ->
   if y != nil
     return x * scale, y * scale
 
-  return x * scale
+  x * scale
 
 {
   :fromPixels

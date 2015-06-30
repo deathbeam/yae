@@ -23,12 +23,12 @@ file = {
 }
 
 examples = {
-  '../src/non/internal/aligns.moon',
-  '../src/non/internal/blendmodes.moon',
-  '../src/non/internal/buttons.moon',
-  '../src/non/internal/filters.moon',
-  '../src/non/internal/formats.moon',
-  '../src/non/internal/keys.moon',
-  '../src/non/internal/shapetypes.moon',
-  '../src/non/internal/wraps.moon'
+  '../src/non/constants/aligns.moon',
+  '../src/non/constants/blendmodes.moon',
+  '../src/non/constants/buttons.moon',
+  '../src/non/constants/filters.moon',
+  '../src/non/constants/formats.moon',
+  '../src/non/constants/keys.moon',
+  '../src/non/constants/shapetypes.moon',
+  '../src/non/constants/wraps.moon'
 }
