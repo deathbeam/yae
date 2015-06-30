@@ -1,4 +1,4 @@
-public class Runner implements Runnable {
+public class Runner {
     public interface OutputListener {
         void print(String message);
     }
@@ -7,7 +7,6 @@ public class Runner implements Runnable {
     private boolean error = false;
     private boolean silent = false;
     private String errorLog = "";
-    private Thread thread;
     private OutputListener listener;
     
     private long start;
@@ -16,33 +15,12 @@ public class Runner implements Runnable {
         this.listener = listener;
     }
     
-    public void run() {
-        String loadString = "";
-                
-        while (draw) {
-            if (loadString == "") loadString = "   ";
-            else if (loadString == "   ") loadString = ".  ";
-            else if (loadString == ".  ") loadString = ".. ";
-            else if (loadString == ".. ") loadString = "...";
-            else if (loadString == "...") loadString = "   ";
-            
-            listener.print(loadString + "\b\b\b");
-                    
-            try { thread.sleep(250); } catch (Exception e) { }
-        }
-    }
-    
     public void start(boolean silent) {
         start = System.currentTimeMillis();
-        draw = true;
-        thread = new Thread(this);
-        thread.start();
         this.silent = silent;
     }
     
     public void stop() {
-        thread.interrupt();
-        
         if (silent) return;
         
         if (error) {
@@ -76,7 +54,6 @@ public class Runner implements Runnable {
 
     public void finish() {
         draw = false;
-        thread.interrupt();
         if (error) stop();
     }
 }
