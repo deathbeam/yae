@@ -14,8 +14,7 @@
 -- @module non.mouse
 
 Gdx = java.require "com.badlogic.gdx.Gdx"
-
-c = require "non.internal.constants"
+Constants = require "non.constants"
 
 ---
 -- Get X coordinate of mouse cursor position
@@ -54,7 +53,7 @@ isDown = (...) ->
   found = false
 
   for i = 1, args.n
-    btncode = c.buttons[args[i]]
+    btncode = Constants.buttons[args[i]]
     found = found or Gdx.input\isButtonPressed btncode
 
   return found

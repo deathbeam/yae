@@ -11,8 +11,7 @@
 
 Gdx = java.require "com.badlogic.gdx.Gdx"
 Peripheral = java.require "com.badlogic.gdx.Input$Peripheral"
-
-c = require "non.internal.constants"
+Constants = require "non.constants"
 
 ---
 -- Checks if keyboard is available on current device
@@ -34,7 +33,7 @@ isDown = (...) ->
   found = false
 
   for i = 1, args.n
-    keycode = c.keys[args[i]]
+    keycode = Constants.keys[args[i]]
     found = found or Gdx.input\isKeyPressed keycode
 
   found

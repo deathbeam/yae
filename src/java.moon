@@ -10,8 +10,7 @@
 -- @usage
 -- System = java.bind "java.lang.System"
 -- print System\currentTimeMillis!
-require = (name) ->
-  luajava.bindClass name
+require = luajava.bindClass
 
 ---
 -- Create new instance of specified Java object
@@ -23,8 +22,7 @@ require = (name) ->
 -- scanner = java.new Scanner, "1 fish 2 fish red fish blue fish"
 -- scanner\useDelimiter "\\s*fish\\s*"
 -- print scanner\next!
-new = (name, ...) ->
-  luajava.newInstance name, ...
+new = luajava.new
 
 ---
 -- Extend specified Java object
@@ -34,8 +32,7 @@ new = (name, ...) ->
 -- @usage
 -- runnable = java.extend "java.lang.Runnable",
 --  run: ->
-extend = (name, options) ->
-  luajava.newInstance name, options
+extend = luajava.createProxy
 
 {
   :require

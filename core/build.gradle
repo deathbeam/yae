@@ -152,8 +152,6 @@ task initLua << {
         include "hello.lua"
         rename "hello.lua", "main.lua"
     }
-    
-    
 }
 
 task initMoon << {

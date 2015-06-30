@@ -1,13 +1,12 @@
 File = require "non.objects.File"
 Texture = java.require "com.badlogic.gdx.graphics.Texture"
-
-c = require "non.internal.constants"
+Constants = require "non.constants"
 
 class Image
 	new: (filename, format="rgba8", filetype) =>
 		file = File filename, filetype
 		@texture = java.new Texture, file.file, c.formats[format], false
-		@texture\setFilter c.filters["linear"], c.filters["linear"]
+		@texture\setFilter Constants.filters["linear"], Constants.filters["linear"]
 
 	getDimensions: =>
 		@getWidth!, @getHeight!
@@ -15,12 +14,12 @@ class Image
 	getFilter: =>
 		min_filter = @texture\getMinFilter!
 		mag_filter = @texture\getMagFilter!
-		c.filtercodes[min_filter], c.filtercodes[mag_filter]
+		Constants.filtercodes[min_filter], Constants.filtercodes[mag_filter]
 
 	getFormat: =>
 		texture_data = @texture\getTextureData!
 		format = texture_data\getFormat!
-		c.formatcodes[format]
+		Constants.formatcodes[format]
 
 	getHeight: =>
 		@texture\getHeight!
@@ -29,13 +28,13 @@ class Image
 		@texture\getWidth!
 
 	getWrap: =>
-		c.wraps[@texture\getUWrap!], c.wraps[@texture\getVWrap!]
+		Constants.wraps[@texture\getUWrap!], Constants.wraps[@texture\getVWrap!]
 
 	setFilter: (min, mag) =>
-		@texture\setFilter c.filters[min], c.filters[mag]
+		@texture\setFilter Constants.filters[min], Constants.filters[mag]
 
 	setWrap: (horiz, vert) =>
-		@texture\setWrap c.wraps[horiz], c.wraps[vert]
+		@texture\setWrap Constants.wraps[horiz], Constants.wraps[vert]
 
 	free: =>
 		@texture\dispose!

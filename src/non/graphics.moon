@@ -16,7 +16,7 @@ Font = require "non.objects.Font"
 Image = require "non.objects.Image"
 Transform = require "non.objects.Transform"
 Quad = require "non.objects.Quad"
-c = require "non.internal.constants"
+Constants = require "non.constants"
 Color = java.require "com.badlogic.gdx.graphics.Color"
 Gdx = java.require "com.badlogic.gdx.Gdx"
 GL20 = java.require "com.badlogic.gdx.graphics.GL20"
@@ -62,12 +62,12 @@ check = (textureBased) ->
 
 arc = (mode, x, y, radius, angle1, angle2) ->
   check false
-  shapes\set c.shapetypes[mode]
+  shapes\set Constants.shapetypes[mode]
   shapes\arc x, y, radius, math.deg(angle1), math.deg(angle2)
 
 circle = (mode, x, y, radius) ->
   check false
-  shapes\set c.shapetypes[mode]
+  shapes\set Constants.shapetypes[mode]
   shapes\circle x, y, radius
 
 clear = ->
@@ -104,7 +104,7 @@ drawq = (image, quad, x=0, y=0, r=0, sx=1, sy=1, ox=0, oy=0) ->
 
 ellipse = (mode, x, y, width, height) ->
   check false
-  shapes\set c.shapetypes[mode]
+  shapes\set Constants.shapetypes[mode]
   shapes\ellipse x, y, width, height
 
 getBackgroundColor = ->
@@ -142,7 +142,7 @@ point = (x, y) ->
 
 polygon = (mode, ...) ->
   check false
-  shapes\set c.shapetypes[mode]
+  shapes\set Constants.shapetypes[mode]
   args = table.pack ...
 
   if type args[1] == "table"
@@ -180,7 +180,7 @@ printf = (text, width=0, align="left", x=0, y=0, r=0, sx=1, sy=1, ox=0, oy=0) ->
     batch\setTransformMatrix transform.matrix
 
   font.font\getData!\setScale sx, -sy
-  font.font\draw batch, text, x - ox * sx, y - oy * sy, width, c.aligns[align], true
+  font.font\draw batch, text, x - ox * sx, y - oy * sy, width, Constants.aligns[align], true
 
   if r != 0
     transform\translate(x, y)\rotate(-r)\translate(-x, -y)
@@ -188,7 +188,7 @@ printf = (text, width=0, align="left", x=0, y=0, r=0, sx=1, sy=1, ox=0, oy=0) ->
 
 rectangle = (mode, x, y, width, height) ->
   check false
-  shapes\set c.shapetypes[mode]
+  shapes\set Constants.shapetypes[mode]
 
   shapes\rect x, y, width, height
 
@@ -218,7 +218,7 @@ setBackgroundColor = (r, g, b, a=255) ->
 
 setBlendMode = (mode) ->
   blending = mode
-  blendmode = c.blendmodes[blending]
+  blendmode = Constants.blendmodes[blending]
   batch\setBlendFunction blendmode[1], blendmode[2]
 
 setColor =  (r, g, b, a=255) ->

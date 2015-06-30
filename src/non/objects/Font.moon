@@ -1,7 +1,7 @@
 File = require "non.objects.File"
 FreeTypeFontGenerator = java.require "com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator"
 GlyphLayout = java.require "com.badlogic.gdx.graphics.g2d.GlyphLayout"
-c = require "non.internal.constants"
+Constants = require "non.constants"
 
 class Font
   new: (filename, size=16, filetype) =>
@@ -15,7 +15,7 @@ class Font
     generator = java.new FreeTypeFontGenerator, file.file
     @font = generator\generateFont size
     @fontTexture = @font\getRegion(0)\getTexture!
-    @fontTexture\setFilter c.filters["linear"], c.filters["linear"]
+    @fontTexture\setFilter Constants.filters["linear"], Constants.filters["linear"]
     @glyphLayout = java.new GlyphLayout
 
   getAscent: =>
@@ -34,7 +34,7 @@ class Font
   getFilter: =>
     min_filter = @fontTexture\getMinFilter!
     mag_filter = @fontTexture\getMagFilter!
-    c.filtercodes[min_filter], c.filtercodes[mag_filter]
+    Constants.filtercodes[min_filter], Constants.filtercodes[mag_filter]
 
   getHeight: (text) =>
     w, _ = @getBounds text
@@ -54,7 +54,7 @@ class Font
     return found
 
   setFilter: (min, mag) =>
-    @fontTexture\setFilter c.filters[min], c.filters[mag]
+    @fontTexture\setFilter Constants.filters[min], Constants.filters[mag]
 
   setLineHeight: (height) =>
     @font\getData()\setLineHeight height

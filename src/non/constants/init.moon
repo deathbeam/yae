@@ -1,11 +1,11 @@
-buttons = require "non.internal.buttons"
-keys = require "non.internal.keys"
-formats = require "non.internal.formats"
-wraps = require "non.internal.wraps"
-filters = require "non.internal.filters"
-blendmodes = require "non.internal.blendmodes"
-shapetypes = require "non.internal.shapetypes"
-aligns = require "non.internal.aligns"
+buttons = require "non.constants.buttons"
+keys = require "non.constants.keys"
+formats = require "non.constants.formats"
+wraps = require "non.constants.wraps"
+filters = require "non.constants.filters"
+blendmodes = require "non.constants.blendmodes"
+shapetypes = require "non.constants.shapetypes"
+aligns = require "non.constants.aligns"
 
 keycodes = {}
 for k, v in pairs keys

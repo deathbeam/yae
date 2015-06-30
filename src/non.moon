@@ -48,7 +48,7 @@ print "Initializing the window module"
 non.window = require "non.window"
 
 -- Wrap the callbacks to be usefull for the engine
-c = require "non.internal.constants"
+c = require "non.constants"
 
 non._keypressed = (keycode) ->
   if non.keypressed then non.keypressed c.keycodes[keycode]
