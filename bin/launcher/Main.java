@@ -37,7 +37,7 @@ public class Main implements Runner.OutputListener {
                 TEMP.mkdirs();
                 ZipUtils.unpack(JAR, "core/", TEMP);
                 ZipUtils.unpack(JAR, "res/", new File(TEMP, "res/"));
-                ZipUtils.unpack(JAR, "src/", new File(TEMP, "src/"));
+                ZipUtils.unpack(JAR, "src/build/classes/", new File(TEMP, "classes/"));
                 ZipUtils.unpack(JAR, "VERSION", TEMP);
                 new File(TEMP, "core/precompile.sh").setExecutable(true);
                 new File(TEMP, "core/precompile-engine.sh").setExecutable(true);
@@ -51,15 +51,14 @@ public class Main implements Runner.OutputListener {
     
     private static void printHelp() {
         System.out.println("Commands:");
-        System.out.println("  non init LANGUAGE        # initializes new project in this directory for specified LANGUAGE");
+        System.out.println("  non init                 # initializes new project in this directory");
         System.out.println("  non run PLATFORM         # start your application for specified PLATFORM");
         System.out.println("  non pack PLATFORM        # package your application for <PLATFORM>");
         System.out.println("  non clean                # clean temporary data for your project");
         System.out.println("  non update               # update your project's runtime version and dependencies");
         System.out.println("  non version              # print current compiler version");
         System.out.println("");
-        System.out.println("PLATFORM can be 'desktop', 'android' or 'ios' (defaults to 'desktop')");
-        System.out.println("LANGUAGE can be 'lua' or 'moon' (defaults to 'moon')");
+        System.out.println("PLATFORM can be 'desktop', 'android' or 'ios' (default 'desktop')");
         System.exit(-1);
     }
     
@@ -116,14 +115,7 @@ public class Main implements Runner.OutputListener {
         } else if (args[0].equals("init")) {
             System.out.println("Initializing new project");
             check();
-            
-            if (args.length <= 1 || args[1].equals("moon")) {
-                new Main("initMoon");
-            } else if (args[1].equals("lua")) {
-                new Main("initLua");
-            } else {
-                printHelp();
-            }
+            new Main("init");
         } else if (args[0].equals("clean")) {
             System.out.println("Cleaning your project's temporary data");
             check();
