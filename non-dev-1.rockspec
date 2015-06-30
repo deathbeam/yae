@@ -6,7 +6,7 @@ source = {
 }
 
 description = {
-  summary = "Make cross-platform games in Lua and MoonScript",
+  summary = "Game engine for MoonScript, in MoonScript.",
   homepage = "http://nondev.io",
   maintainer = "Thomas Slusny <slusnucky@gmail.com>",
   license = "MIT"
