@@ -4,14 +4,14 @@
 
 ### Game engine for MoonScript, in MoonScript.
 
-NÖN is an engine you can use to make games in **Lua** and **MoonScript**. It's free, open-source, and works on **Windows**, **Mac OS X**, **Linux**, **Android** and **iOS**.
+NÖN is an engine you can use to make games in **MoonScript**. It's free, open-source, and works on **Windows**, **Mac OS X**, **Linux**, **Android** and **iOS**.
 
 ### Installation
 
 You will need to have [JDK 7+](http://www.oracle.com/technetwork/java/javase/downloads/index.html) installed. Then you can install NÖN as rock ([LuaRocks](https://luarocks.org/) required)
 
 ```lua
-luarocks install non
+luarocks install --server=http://luarocks.org/dev non
 ```
 
 ### Getting Started
@@ -23,7 +23,7 @@ luarocks install non
 
 ### Documentation
 
-The [Wiki](https://github.com/nondev/non/wiki) contains all the information you'll need to write game. You can contribute to the Wiki directly here on GitHub!
+The [Wiki](https://github.com/nondev/non/wiki) contains all the information you'll need to write game. You can contribute to the Wiki directly here on GitHub! Also, you can view online documentation generated right from the source code [here](http://nondev.io/doc/).
 
 ### Reporting Issues
 
