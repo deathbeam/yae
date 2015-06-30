@@ -50,9 +50,18 @@ getRoll = ->
 getOrientation = ->
   getAzimuth!, getPitch!, getRoll!
 
+---
+-- Checks if compass is available on current device
+-- @treturn bool True if compass is available
+-- @usage
+-- available = non.compass.isAvailable!
+isAvailable = ->
+  Gdx.input\isPeripheralAvailable Peripheral.Compass
+
 {
   :getAzimuth
   :getPitch
   :getRoll
   :getOrientation
+  :isAvailable
 }

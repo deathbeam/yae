@@ -12,6 +12,7 @@
 -- @module non.accelerometer
 
 Gdx = java.require "com.badlogic.gdx.Gdx"
+Peripheral = java.require "com.badlogic.gdx.Input$Peripheral"
 
 ---
 -- Get current X relative to the center of earth
@@ -47,9 +48,18 @@ getZ = ->
 getRotation = ->
   getX!, getY!, getZ!
 
+---
+-- Checks if accelerometer is available on current device
+-- @treturn bool True if accelerometer is available
+-- @usage
+-- available = non.accelerometer.isAvailable!
+isAvailable = ->
+  Gdx.input\isPeripheralAvailable Peripheral.Accelerometer
+
 {
   :getX
   :getY
   :getZ
   :getRotation
+  :isAvailable
 }

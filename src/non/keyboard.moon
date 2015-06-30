@@ -28,7 +28,15 @@ isDown = (...) ->
     keycode = c.keys[args[i]]
     found = found or Gdx.input\isKeyPressed keycode
 
-  return found
+  found
+
+---
+-- Checks if keyboard is available on current device
+-- @treturn bool True if keyboard is available
+-- @usage
+-- available = non.keyboard.isAvailable!
+isAvailable = ->
+  isVisible or Gdx.input\isPeripheralAvailable Peripheral.HardwareKeyboard
 
 ---
 -- Checks if on-screen keyboard is visible (mobile devices only)
@@ -36,7 +44,7 @@ isDown = (...) ->
 -- @usage
 -- visible = non.keyboard.isVisible!
 isVisible = ->
-  return Gdx.input\isPeripheralAvailable Peripheral.OnscreenKeyboard
+  Gdx.input\isPeripheralAvailable Peripheral.OnscreenKeyboard
 
 ---
 -- Change on-screen keyboard visibility (mobile devices only)
@@ -49,5 +57,6 @@ setVisible = (visible) ->
 {
   :isDown
   :isVisible
+  :isAvailable
   :setVisible
 }
