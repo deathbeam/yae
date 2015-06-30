@@ -14,9 +14,6 @@
 --
 -- @module non.audio
 
-@module non.audio
-]]
-
 Source = require "non.objects.Source"
 
 sources = {}
