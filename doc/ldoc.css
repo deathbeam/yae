@@ -156,6 +156,7 @@ table.index td { text-align: left; vertical-align: top; }
     vertical-align: top;
     overflow: visible;
     color: white;
+    background: #333;
 }
 
 #navigation h1 {

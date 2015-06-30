@@ -48,6 +48,7 @@ getPosition = ->
 -- @treturn bool true one of buttons is pressed
 -- @usage
 -- isDown = non.mouse.isDown "left", "right"
+-- @see buttons.moon
 isDown = (...) ->
   args = table.pack ...
   found = false

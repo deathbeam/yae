@@ -1,3 +1,22 @@
+-------------------------------------------------------------------------------
+-- Handles creating, playing and manipulating sound and music instances.
+-------------------------------------------------------------------------------
+-- Sound effects are small audio samples, usually no longer than a few seconds,
+-- that are played back on specific game events such as a character jumping or
+-- shooting a gun.  
+-- For any sound that's longer than a few seconds it is preferable to stream it
+-- from disk instead of fully loading it into RAM. NÖN provides a "stream"
+-- source that lets you do that.  
+--   
+-- NÖN supports MP3, OGG and WAV files.  
+-- ***note1:*** iOS currently does not support OGG files.  
+-- ***note2:*** On Android, a static source cannot be over 1 MB
+--
+-- @module non.audio
+
+@module non.audio
+]]
+
 Source = require "non.objects.Source"
 
 sources = {}

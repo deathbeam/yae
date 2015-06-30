@@ -15,11 +15,20 @@ Peripheral = java.require "com.badlogic.gdx.Input$Peripheral"
 c = require "non.internal.constants"
 
 ---
+-- Checks if keyboard is available on current device
+-- @treturn bool True if keyboard is available
+-- @usage
+-- available = non.keyboard.isAvailable!
+isAvailable = ->
+  isVisible or Gdx.input\isPeripheralAvailable Peripheral.HardwareKeyboard
+
+---
 -- Check if one of specified keys is down
 -- @tparam ... keys keys to check for
 -- @treturn bool true one of keys is pressed
 -- @usage
 -- is_down = non.keyboard.isDown "a", "b", "c"
+-- @see keys.moon
 isDown = (...) ->
   args = table.pack ...
   found = false
@@ -29,14 +38,6 @@ isDown = (...) ->
     found = found or Gdx.input\isKeyPressed keycode
 
   found
-
----
--- Checks if keyboard is available on current device
--- @treturn bool True if keyboard is available
--- @usage
--- available = non.keyboard.isAvailable!
-isAvailable = ->
-  isVisible or Gdx.input\isPeripheralAvailable Peripheral.HardwareKeyboard
 
 ---
 -- Checks if on-screen keyboard is visible (mobile devices only)

@@ -62,12 +62,12 @@ check = (textureBased) ->
 
 arc = (mode, x, y, radius, angle1, angle2) ->
   check false
-  shapes\set c.shapetype[mode]
+  shapes\set c.shapetypes[mode]
   shapes\arc x, y, radius, math.deg(angle1), math.deg(angle2)
 
 circle = (mode, x, y, radius) ->
   check false
-  shapes\set c.shapetype[mode]
+  shapes\set c.shapetypes[mode]
   shapes\circle x, y, radius
 
 clear = ->
@@ -104,7 +104,7 @@ drawq = (image, quad, x=0, y=0, r=0, sx=1, sy=1, ox=0, oy=0) ->
 
 ellipse = (mode, x, y, width, height) ->
   check false
-  shapes\set c.shapetype[mode]
+  shapes\set c.shapetypes[mode]
   shapes\ellipse x, y, width, height
 
 getBackgroundColor = ->
@@ -142,7 +142,7 @@ point = (x, y) ->
 
 polygon = (mode, ...) ->
   check false
-  shapes\set c.shapetype[mode]
+  shapes\set c.shapetypes[mode]
   args = table.pack ...
 
   if type args[1] == "table"
@@ -188,7 +188,7 @@ printf = (text, width=0, align="left", x=0, y=0, r=0, sx=1, sy=1, ox=0, oy=0) ->
 
 rectangle = (mode, x, y, width, height) ->
   check false
-  shapes\set c.shapetype[mode]
+  shapes\set c.shapetypes[mode]
 
   shapes\rect x, y, width, height
 
