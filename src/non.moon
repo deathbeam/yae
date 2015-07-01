@@ -48,19 +48,20 @@ print "Initializing the window module"
 non.window = require "non.window"
 
 -- Wrap the callbacks to be usefull for the engine
-c = require "non.constants"
+Constants = require "non.constants"
+import keycodes, buttoncodes from Constants
 
 non._keypressed = (keycode) ->
-  if non.keypressed then non.keypressed c.keycodes[keycode]
+  if non.keypressed then non.keypressed keycodes[keycode]
 
 non._keyreleased = (keycode) ->
-  if non.keyreleased then non.keyreleased c.keycodes[keycode]
+  if non.keyreleased then non.keyreleased keycodes[keycode]
 
 non._mousepressed = (x, y, buttoncode) ->
-  if non.mousepressed then non.mousepressed c.buttoncodes[buttoncode]
+  if non.mousepressed then non.mousepressed buttoncodes[buttoncode]
 
 non._mousereleased = (x, y, buttoncode) ->
-  if non.mousereleased then non.mousereleased c.buttoncodes[buttoncode]
+  if non.mousereleased then non.mousereleased buttoncodes[buttoncode]
 
 non._quit = ->
   if non.quit then non.quit!
