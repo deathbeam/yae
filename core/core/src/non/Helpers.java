@@ -9,15 +9,15 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 
 public class Helpers {
-	private boolean runningOnOuya;
+    private boolean runningOnOuya;
 
-	public Helpers() {
-		try {
+    public Helpers() {
+        try {
             Field field = Class.forName("android.os.Build").getDeclaredField("DEVICE");
             Object device = field.get(null);
             runningOnOuya = "ouya_1_1".equals(device) || "cardhu".equals(device);
         } catch (Exception e) { }
-	}
+    }
 
     public FileHandle localfile(String name) {
         return Gdx.files.local(name);
