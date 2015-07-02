@@ -55,7 +55,7 @@ stopAll = ->
     source\free!
 
 {
-  :getNumSources
+  :getSourceCount
   :getVolume
   :newSource
   :pause
