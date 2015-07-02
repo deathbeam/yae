@@ -19,7 +19,7 @@ Source = require "non.objects.Source"
 sources = {}
 globalvolume = 1
 
-getNumSources = ->
+getSourceCount = ->
   #sources
 
 getVolume = ->
