@@ -138,7 +138,7 @@ task init << {
 	def origname = project.hasProperty("initName") ? initName : "My Project"
     def pname = Normalizer
            .normalize(origname, Normalizer.Form.NFD)
-           .replace(" ", "")
+           .replace(" ", "_")
            .replaceAll("[^\\p{ASCII}]", "")
            .toLowerCase()
 
