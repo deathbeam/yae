@@ -51,12 +51,12 @@ public class Main implements Runner.OutputListener {
     
     private static void printHelp() {
         System.out.println("Commands:");
-        System.out.println("  non init                 # initializes new project in this directory");
-        System.out.println("  non run PLATFORM         # start your application for specified PLATFORM");
-        System.out.println("  non pack PLATFORM        # package your application for <PLATFORM>");
-        System.out.println("  non clean                # clean temporary data for your project");
-        System.out.println("  non update               # update your project's runtime version and dependencies");
-        System.out.println("  non version              # print current compiler version");
+        System.out.println("  non init PROJECT_NAME  # initializes new project with specified PROJECT_NAME in this directory");
+        System.out.println("  non run PLATFORM       # start your application for specified PLATFORM");
+        System.out.println("  non pack PLATFORM      # package your application for <PLATFORM>");
+        System.out.println("  non clean              # clean temporary data for your project");
+        System.out.println("  non update             # update your project's runtime version and dependencies");
+        System.out.println("  non version            # print current compiler version");
         System.out.println("");
         System.out.println("PLATFORM can be 'desktop', 'android' or 'ios' (default 'desktop')");
         System.exit(-1);
