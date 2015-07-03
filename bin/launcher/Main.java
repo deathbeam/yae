@@ -119,7 +119,7 @@ public class Main implements Runner.OutputListener {
             if (args.length <= 1) {
                 new Main("init");
             } else {
-                new Main("init --project-prop initName="args[1])
+                new Main("init --project-prop initName=\"" + args[1] + "\"")
             }
         } else if (args[0].equals("clean")) {
             System.out.println("Cleaning your project's temporary data");

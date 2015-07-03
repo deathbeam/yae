@@ -135,7 +135,7 @@ clean.dependsOn cleanAssets
 task init << {
     file("../assets").mkdir()
 	
-	def origname = project.hasProperty("initName") ? initName : "My Project"
+    def origname = project.hasProperty("initName") ? initName : "My Project"
     def pname = Normalizer
            .normalize(origname, Normalizer.Form.NFD)
            .replace(" ", "_")
