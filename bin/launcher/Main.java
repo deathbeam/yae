@@ -115,7 +115,12 @@ public class Main implements Runner.OutputListener {
         } else if (args[0].equals("init")) {
             System.out.println("Initializing new project");
             check();
-            new Main("init");
+
+            if (args.length <= 1) {
+                new Main("init");
+            } else {
+                new Main("init --project-prop initName="args[1])
+            }
         } else if (args[0].equals("clean")) {
             System.out.println("Cleaning your project's temporary data");
             check();

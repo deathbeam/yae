@@ -1,6 +1,7 @@
 import static java.awt.RenderingHints.* 
 import java.awt.image.BufferedImage 
 import javax.imageio.ImageIO
+import java.text.Normalizer
 
 configure()
 
@@ -134,24 +135,26 @@ clean.dependsOn cleanAssets
 task init << {
     file("../assets").mkdir()
 
-    copy {
-        from "res"
-        into "../"
-        include "hello.yml"
-        rename "hello.yml", "config.yml"
-    }
+    def pname = project.hasProperty("initName") ? initName : "My Project"
+    pname = Normalizer
+           .normalize(input, Normalizer.Form.NFD)
+           .replace(" ", "")
+           .replaceAll("[^\\p{ASCII}]", "")
+           .toLowerCase()
+
+    def uname = System.getProperty("user.name", "username")
+    def text = "---\n"
+    text += "name: \"My Project\"\n"
+    text += "package: \"com." + uname + "." + pname + "\"\n"
+    text += "version: \"1.0.0\""
+    def fl = new File("../assets/config.yml")
+    fl.text = text
 
     copy {
         from "res"
         into "../assets"
+        include "main.moon"
         include "lint_config.lua"
-    }
-
-    copy {
-        from "res"
-        into "../assets"
-        include "hello.moon"
-        rename "hello.moon", "main.moon"
     }
 }
 
