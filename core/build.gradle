@@ -134,17 +134,17 @@ clean.dependsOn cleanAssets
 
 task init << {
     file("../assets").mkdir()
-
-    def pname = project.hasProperty("initName") ? initName : "My Project"
-    pname = Normalizer
-           .normalize(input, Normalizer.Form.NFD)
+	
+	def origname = project.hasProperty("initName") ? initName : "My Project"
+    def pname = Normalizer
+           .normalize(origname, Normalizer.Form.NFD)
            .replace(" ", "")
            .replaceAll("[^\\p{ASCII}]", "")
            .toLowerCase()
 
     def uname = System.getProperty("user.name", "username")
     def text = "---\n"
-    text += "name: \"My Project\"\n"
+    text += "name: \"" + origname + "\"\n"
     text += "package: \"com." + uname + "." + pname + "\"\n"
     text += "version: \"1.0.0\""
     def fl = new File("../assets/config.yml")
