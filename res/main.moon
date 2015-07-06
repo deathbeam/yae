@@ -1,8 +1,14 @@
-export x, y
+-- Import non.graphics and non.system for easier usage
+import graphics from non
+import system from non
+
+-- Pre-declaring x and y allows to use them in draw callback
+-- and to modify them in resize callback
+local x, y
 
 non.draw = ->
   -- Draw the text on specified coordinates
-  non.graphics.print "What hath deathbeam wrought?", x, y
+  graphics.print "What hath deathbeam wrought?", x, y
 
 non.resize = (w, h) ->
   -- Calculate center of the window for text position
@@ -12,4 +18,4 @@ non.resize = (w, h) ->
 non.keypressed = (key) ->
   -- Quit application if Q or Escape key was pressed
   if key == "q" or key == "escape"
-    non.system.quit!
+    system.quit!
