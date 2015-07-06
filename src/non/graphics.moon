@@ -12,6 +12,7 @@
 --
 -- @module non.graphics
 
+import java from non
 Font = require "non.objects.Font"
 Image = require "non.objects.Image"
 Transform = require "non.objects.Transform"

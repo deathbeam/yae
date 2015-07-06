@@ -1,4 +1,4 @@
-TextureFilter = java.require "com.badlogic.gdx.graphics.Texture$TextureFilter"
+TextureFilter = non.java.require "com.badlogic.gdx.graphics.Texture$TextureFilter"
 
 {
   "linear": TextureFilter.Linear

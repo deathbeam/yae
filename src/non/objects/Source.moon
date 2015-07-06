@@ -1,3 +1,4 @@
+import java from non
 File = require "non.objects.File"
 Gdx = java.require "com.badlogic.gdx.Gdx"
 

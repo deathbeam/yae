@@ -13,6 +13,7 @@
 --
 -- @module non.mouse
 
+import java from non
 Gdx = java.require "com.badlogic.gdx.Gdx"
 Constants = require "non.constants"
 

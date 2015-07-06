@@ -7,13 +7,10 @@ export type = (value) ->
     return cls.__name if cls
   baseType
 
--- Initialize java library
-export java = require "java"
-
--- Initialize main non table
-export non = {}
-
 -- Initialize the modules
+print "Initializing the java module"
+non.java = require "non.java"
+
 print "Initializing the accelerometer module"
 non.accelerometer = require "non.accelerometer"
 

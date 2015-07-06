@@ -10,6 +10,7 @@
 --
 -- @module non.compass
 
+import java from non
 Gdx = java.require "com.badlogic.gdx.Gdx"
 
   ---

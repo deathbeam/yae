@@ -1,4 +1,4 @@
-GL20 = java.require "com.badlogic.gdx.graphics.GL20"
+GL20 = non.java.require "com.badlogic.gdx.graphics.GL20"
 
 {
   "alpha": { GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA }

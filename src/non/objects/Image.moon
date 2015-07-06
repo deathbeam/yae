@@ -1,3 +1,4 @@
+import java from non
 File = require "non.objects.File"
 Texture = java.require "com.badlogic.gdx.graphics.Texture"
 Constants = require "non.constants"

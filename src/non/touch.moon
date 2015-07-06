@@ -10,6 +10,7 @@
 --
 -- @module non.touch
 
+import java from non
 Gdx = java.require "com.badlogic.gdx.Gdx"
 
 ---

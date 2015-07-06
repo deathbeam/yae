@@ -1,4 +1,4 @@
-ShapeType = java.require "com.badlogic.gdx.graphics.glutils.ShapeRenderer$ShapeType"
+ShapeType = non.java.require "com.badlogic.gdx.graphics.glutils.ShapeRenderer$ShapeType"
 
 {
   "line": ShapeType.Line

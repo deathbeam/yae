@@ -26,7 +26,7 @@ getVolume = ->
   globalvolume
 
 newSource = (filename, audiotype, filetype) ->
-  source = Source filename, audiotype, filetype
+  source = Source(filename, audiotype, filetype)
   table.insert sources, source
   return source
 

@@ -1,4 +1,4 @@
-TextureWrap = java.require "com.badlogic.gdx.graphics.Texture$TextureWrap"
+TextureWrap = non.java.require "com.badlogic.gdx.graphics.Texture$TextureWrap"
 
 {
   "mirroredrepeat": TextureWrap.MirroredRepeat

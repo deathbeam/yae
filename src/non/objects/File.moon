@@ -1,3 +1,4 @@
+import java from non
 Gdx = java.require "com.badlogic.gdx.Gdx"
 NonVM = java.require "non.NonVM"
 

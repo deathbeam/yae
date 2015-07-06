@@ -11,6 +11,7 @@
 --
 -- @module non.accelerometer
 
+import java from non
 Gdx = java.require "com.badlogic.gdx.Gdx"
 Peripheral = java.require "com.badlogic.gdx.Input$Peripheral"
 

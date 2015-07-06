@@ -3,6 +3,7 @@
 -------------------------------------------------------------------------------
 -- @module non.timer
 
+import java from non
 TimeUtils = java.require "com.badlogic.gdx.utils.TimeUtils"
 Thread = java.require "java.lang.Thread"
 Gdx = java.require "com.badlogic.gdx.Gdx"
