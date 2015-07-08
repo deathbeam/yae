@@ -147,7 +147,7 @@ task init << {
     text += "name: \"" + origname + "\"\n"
     text += "package: \"com." + uname + "." + pname + "\"\n"
     text += "version: \"1.0.0\""
-    def fl = new File("../assets/config.yml")
+    def fl = new File("../config.yml")
     fl.text = text
 
     copy {

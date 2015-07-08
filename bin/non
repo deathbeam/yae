@@ -1,6 +1,12 @@
 #!/usr/bin/env lua
 
 local FILE = debug.getinfo(1,"S").source:sub(2)..".jar"
-local ARGS = table.concat(arg, " ")
+local ARGS
+
+if arg[1] == "init" then
+  ARGS = "init" .. (arg[2] and " \""..arg[2].."\"" or "")
+else
+  ARGS = table.concat(arg, " ")
+end
 
 os.execute("java -jar \""..FILE.."\" "..ARGS)
