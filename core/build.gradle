@@ -135,16 +135,25 @@ clean.dependsOn cleanAssets
 task init << {
     file("../assets").mkdir()
 	
-    def origname = project.hasProperty("initName") ? initName : "My Project"
+    def origpname = project.hasProperty("initName") ? initName : "My Project"
     def pname = Normalizer
-           .normalize(origname, Normalizer.Form.NFD)
-           .replace(" ", "_")
+           .normalize(origpname, Normalizer.Form.NFD)
+           .replace(" ", "")
            .replaceAll("[^\\p{ASCII}]", "")
            .toLowerCase()
 
-    def uname = System.getProperty("user.name", "username")
+    def origuname = System.getProperty("user.name", "username")
+    def uname = Normalizer
+           .normalize(origpname, Normalizer.Form.NFD)
+           .replace(" ", "")
+           .replace(".", "")
+           .replace("_", "")
+           .replace("-", "")
+           .replaceAll("[^\\p{ASCII}]", "")
+           .toLowerCase()
+
     def text = "---\n"
-    text += "name: \"" + origname + "\"\n"
+    text += "name: \"" + origpname + "\"\n"
     text += "package: \"com." + uname + "." + pname + "\"\n"
     text += "version: \"1.0.0\""
     def fl = new File("../config.yml")
