@@ -154,7 +154,6 @@ task init << {
         from "res"
         into "../assets"
         include "main.moon"
-        include "lint_config.lua"
     }
 }
 
