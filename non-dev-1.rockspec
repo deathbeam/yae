@@ -26,10 +26,10 @@ build = {
   
   platforms = {
     unix = {
-      build_command = "sh build.sh"
+      build_command = "./build"
     },
     windows = {
-      build_command = "call build.bat"
+      build_command = "build"
     }
   }
 }
