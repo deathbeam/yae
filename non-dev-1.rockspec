@@ -26,7 +26,7 @@ build = {
   
   platforms = {
     unix = {
-      build_command = "./build"
+      build_command = "sh build"
     },
     windows = {
       build_command = "build"
