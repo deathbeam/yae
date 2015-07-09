@@ -23,29 +23,12 @@ OrthographicCamera = java.require "com.badlogic.gdx.graphics.OrthographicCamera"
 ShapeRender = java.require "com.badlogic.gdx.graphics.glutils.ShapeRenderer"
 SpriteBatch = java.require "com.badlogic.gdx.graphics.g2d.SpriteBatch"
 
-class Transform
-  new: =>
-    @matrix = java.new Matrix4
-
-  identity: =>
-    @matrix\idt!
-
-  rotate: (radians) =>
-    degrees = math.deg radians
-    @matrix\rotate 0, 0, 1, degrees
-
-  scale: (x, y) =>
-    @matrix\scale x, y, 1
-
-  translate: (x, y) =>
-    @matrix\translate x, y, 0
-
 shader = SpriteBatch\createDefaultShader!
 batch = java.new SpriteBatch, 1000, shader
 shapes = java.new ShapeRender
 font = Font!
 shapes\setAutoShapeType true
-transform = Transform!
+matrix = java.new Matrix4
 color = java.new Color, 1, 1, 1, 1
 background = java.new Color, 0.4, 0.3, 0.4, 1
 blending = "alpha"
@@ -61,14 +44,14 @@ matrixDirty = false
 check = (textureBased) ->
   if textureBased
     if matrixDirty
-      batch\setTransformMatrix transform.matrix
+      batch\setTransformMatrix matrix
       matrixDirty = false
 
     if shapes\isDrawing! then NonVM.util\endShapes shapes
     if not batch\isDrawing! then batch\begin!
   else
     if matrixDirty
-      shapes\setTransformMatrix transform.matrix
+      shapes\setTransformMatrix matrix
       matrixDirty = false
 
     if batch\isDrawing! then NonVM.util\endBatch batch
@@ -148,7 +131,7 @@ newQuad = (x, y, width, height, sw, sh) ->
   return Quad x, y, width, height, sw, sh
 
 origin = ->
-  transform\identity!
+  matrix\idt!
   matrixDirty = true
 
 point = (x, y) ->
@@ -175,15 +158,21 @@ print = (text, x=0, y=0, r=0, sx=1, sy=1, ox=0, oy=0) ->
 
   if r != 0
     tmp = batch\getTransformMatrix!
-    transform\translate(x, y)\rotate(r)\translate(-x, -y) 
-    batch\setTransformMatrix transform.matrix
+    translate x, y
+    rotate r
+    translate -x, -y
+    batch\setTransformMatrix matrix
+    matrixDirty = false
 
   font.font\getData!\setScale sx, -sy
   font.font\draw batch, text, x - ox * sx, y - oy * sy
 
   if r != 0
-    transform\translate(x, y)\rotate(-r)\translate(-x, -y)
+    translate x, y
+    rotate -r
+    translate -x, -y
     batch\setTransformMatrix tmp
+    matrixDirty = false
 
 printf = (text, width=0, align="left", x=0, y=0, r=0, sx=1, sy=1, ox=0, oy=0) ->
   check true
@@ -191,15 +180,21 @@ printf = (text, width=0, align="left", x=0, y=0, r=0, sx=1, sy=1, ox=0, oy=0) ->
 
   if r != 0
     tmp = batch\getTransformMatrix!
-    transform\translate(x, y)\rotate(r)\translate(-x, -y) 
-    batch\setTransformMatrix transform.matrix
+    translate x, y
+    rotate r
+    translate -x, -y
+    batch\setTransformMatrix matrix
+    matrixDirty = false
 
   font.font\getData!\setScale sx, -sy
   font.font\draw batch, text, x - ox * sx, y - oy * sy, width, Constants.aligns[align], true
 
   if r != 0
-    transform\translate(x, y)\rotate(-r)\translate(-x, -y)
+    translate x, y
+    rotate -r
+    translate -x, -y
     batch\setTransformMatrix tmp
+    matrixDirty = false
 
 rectangle = (mode, x, y, width, height) ->
   check false
@@ -217,15 +212,15 @@ reset = ->
   batch\setColor color
   shapes\setColor color
   font.font\setColor color
-  transform\identity!
+  matrix\idt!
   matrixDirty = true
 
 rotate = (radians) ->
-  transform\rotate radians
+  matrix\rotate 0, 0, 1, math.deg(radians)
   matrixDirty = true
 
 scale = (sx, sy) ->
-  transform\scale sx, sy
+  matrix\scale sx, sy, 1
   matrixDirty = true
 
 setBackgroundColor = (r, g, b, a=255) ->
@@ -249,7 +244,7 @@ setNewFont = (filename, size, filetype) ->
   font = newFont filename, size, filetype
 
 translate = (tx, ty) ->
-  transform\translate tx, ty
+  matrix\translate tx, ty, 0
   matrixDirty = true
 
 {
