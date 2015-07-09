@@ -6,7 +6,7 @@ Constants = require "non.constants"
 class Image
   new: (filename, format="rgba8", filetype) =>
     file = File filename, filetype
-    @texture = java.new Texture, file.file, c.formats[format], false
+    @texture = java.new Texture, file.file, Constants.formats[format], false
     @texture\setFilter Constants.filters["linear"], Constants.filters["linear"]
 
   getDimensions: =>
