@@ -1,5 +1,4 @@
-import java from non
-File = require "non.objects.File"
+import java, File from non
 FreeTypeFontGenerator = java.require "com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator"
 GlyphLayout = java.require "com.badlogic.gdx.graphics.g2d.GlyphLayout"
 Constants = require "non.constants"

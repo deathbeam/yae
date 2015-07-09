@@ -22,7 +22,12 @@ file = {
   '../src/non/system.moon',
   '../src/non/timer.moon',
   '../src/non/touch.moon',
-  '../src/non/window.moon'
+  '../src/non/window.moon',
+  '../src/non/objects/File.moon',
+  '../src/non/objects/Font.moon',
+  '../src/non/objects/Image.moon',
+  '../src/non/objects/Quad.moon',
+  '../src/non/objects/Source.moon'
 }
 
 examples = {

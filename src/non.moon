@@ -7,10 +7,19 @@ export type = (value) ->
     return cls.__name if cls
   baseType
 
--- Initialize the modules
+-- Initialize java module first
 print "Initializing the java module"
 non.java = require "non.java"
 
+-- Initialize the objects
+print "Initializing the objects"
+non.File = require "non.objects.File"
+non.Font = require "non.objects.Font"
+non.Image = require "non.objects.Image"
+non.Quad = require "non.objects.Quad"
+non.Source = require "non.objects.Source"
+
+-- Initialize the modules
 print "Initializing the accelerometer module"
 non.accelerometer = require "non.accelerometer"
 

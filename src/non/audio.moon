@@ -14,7 +14,7 @@
 --
 -- @module non.audio
 
-Source = require "non.objects.Source"
+import Source from non
 
 sources = {}
 globalvolume = 1

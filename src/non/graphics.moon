@@ -12,19 +12,33 @@
 --
 -- @module non.graphics
 
-import java from non
-Font = require "non.objects.Font"
-Image = require "non.objects.Image"
-Transform = require "non.objects.Transform"
-Quad = require "non.objects.Quad"
+import java, Font, Image, Quad from non
 Constants = require "non.constants"
 Color = java.require "com.badlogic.gdx.graphics.Color"
 Gdx = java.require "com.badlogic.gdx.Gdx"
 GL20 = java.require "com.badlogic.gdx.graphics.GL20"
+Matrix4 = java.require "com.badlogic.gdx.math.Matrix4"
 NonVM = java.require "non.NonVM"
 OrthographicCamera = java.require "com.badlogic.gdx.graphics.OrthographicCamera"
 ShapeRender = java.require "com.badlogic.gdx.graphics.glutils.ShapeRenderer"
 SpriteBatch = java.require "com.badlogic.gdx.graphics.g2d.SpriteBatch"
+
+class Transform
+  new: =>
+    @matrix = java.new Matrix4
+
+  identity: =>
+    @matrix\idt!
+
+  rotate: (radians) =>
+    degrees = math.deg radians
+    @matrix\rotate 0, 0, 1, degrees
+
+  scale: (x, y) =>
+    @matrix\scale x, y, 1
+
+  translate: (x, y) =>
+    @matrix\translate x, y, 0
 
 shader = SpriteBatch\createDefaultShader!
 batch = java.new SpriteBatch, 1000, shader
