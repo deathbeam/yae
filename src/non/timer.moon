@@ -14,7 +14,7 @@ Gdx = java.require "com.badlogic.gdx.Gdx"
 -- @usage
 -- dt = non.timer.getDelta!
 getDelta = ->
-  Gdx.graphics\getDeltaTime! * 1000
+  Gdx.graphics\getDeltaTime! / 1000
 
 ---
 -- Returns the current frames per second. 
@@ -32,7 +32,7 @@ getFPS = ->
 -- @usage
 -- time = non.timer.getTime!
 getTime = ->
-  TimeUtils\millis! * 1000
+  TimeUtils\millis! / 1000
 
 ---
 -- Pauses the current thread for the specified amount of time.
@@ -40,7 +40,7 @@ getTime = ->
 -- @usage
 -- non.timer.sleep seconds
 sleep = (seconds) ->
-  Thread\sleep seconds / 1000
+  Thread\sleep seconds * 1000
 
 {
   :getDelta
