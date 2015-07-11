@@ -1,3 +1,8 @@
+-------------------------------------------------------------------------------
+-- Drawable image type
+-------------------------------------------------------------------------------
+-- @classmod non.Image
+
 import java, File from non
 Texture = java.require "com.badlogic.gdx.graphics.Texture"
 Constants = require "non.constants"

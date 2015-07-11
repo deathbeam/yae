@@ -1,3 +1,8 @@
+-------------------------------------------------------------------------------
+-- Represents a file on the filesystem.
+-------------------------------------------------------------------------------
+-- @classmod non.File
+
 import java from non
 Gdx = java.require "com.badlogic.gdx.Gdx"
 NonVM = java.require "non.NonVM"
@@ -16,12 +21,24 @@ class File
       when "absolute"
         @file = Gdx.files\absolute
 
+  ---
+  -- Append data to an existing file.
+  -- @tparam File self
+  -- @string text The string data to append to the file.
+  -- @usage
+  -- file\append text
   append: (text) =>
     @file\writeString text, true
     return true
 
-  copy: (to_file) =>
-    @file\copyTo to_file
+  ---
+  -- Copy file.
+  -- @tparam File self
+  -- @tparam File to The destination file.
+  -- @usage
+  -- file\copy to
+  copy: (to) =>
+    @file\copyTo to
     return true
 
   createDirectory: () =>

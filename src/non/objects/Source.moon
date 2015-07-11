@@ -1,3 +1,8 @@
+-------------------------------------------------------------------------------
+-- A Source represents audio you can play back.
+-------------------------------------------------------------------------------
+-- @classmod non.Source
+
 import java, File from non
 Gdx = java.require "com.badlogic.gdx.Gdx"
 
@@ -51,6 +56,9 @@ class Source
       @source\stop!
 
     @playing = true
+
+  getType: =>
+    @static and "static" or "stream"
 
   getVolume: =>
     @volume

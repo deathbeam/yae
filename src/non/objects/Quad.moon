@@ -1,5 +1,6 @@
 -------------------------------------------------------------------------------
--- A quadrilateral (a polygon with four sides and four corners) with texture coordinate information.
+-- A quadrilateral (a polygon with four sides and four corners) with texture
+-- coordinate information.
 -------------------------------------------------------------------------------
 -- @classmod non.Quad
 
@@ -20,7 +21,7 @@ class Quad
   -- @treturn number w The width of the viewport.
   -- @treturn number h The height of the viewport.
   -- @usage
-  -- x, y, width, height = Quad\getViewport!
+  -- x, y, width, height = quad\getViewport!
   getViewport: =>
     @x, @y, @w, @h
 
@@ -32,7 +33,7 @@ class Quad
   -- @number w The width of the viewport.
   -- @number h The height of the viewport.
   -- @usage
-  -- Quad\setViewport x, y, width, height
+  -- quad\setViewport x, y, width, height
   setViewport: (x, y, w, h) =>
     @x = x
     @y = y

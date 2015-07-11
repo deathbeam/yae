@@ -1,3 +1,8 @@
+-------------------------------------------------------------------------------
+-- Defines the shape of characters that can be drawn onto the screen.
+-------------------------------------------------------------------------------
+-- @classmod non.Font
+
 import java, File from non
 FreeTypeFontGenerator = java.require "com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator"
 GlyphLayout = java.require "com.badlogic.gdx.graphics.g2d.GlyphLayout"
