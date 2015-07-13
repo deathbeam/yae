@@ -26,7 +26,7 @@ class File
   -- @tparam File self
   -- @string text The string data to append to the file.
   -- @usage
-  -- file\append text
+  -- File\append text
   append: (text) =>
     @file\writeString text, true
     return true
@@ -36,7 +36,7 @@ class File
   -- @tparam File self
   -- @tparam File to The destination file.
   -- @usage
-  -- file\copy to
+  -- File\copy to
   copy: (to) =>
     @file\copyTo to
     return true

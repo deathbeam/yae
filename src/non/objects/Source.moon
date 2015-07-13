@@ -20,6 +20,11 @@ class Source
     else
       @source = Gdx.audio\newSound file.file
 
+  ---
+  -- Starts playing the Source.
+  -- @tparam Source self
+  -- @usage
+  -- Source\play!
   play: =>
     if @static
       @soundId = @source\play!
@@ -28,6 +33,11 @@ class Source
 
     @playing = false
 
+  ---
+  -- Pauses the Source
+  -- @tparam Source self
+  -- @usage
+  -- Source\pause!
   pause: =>
     if @paused return
 
@@ -38,6 +48,11 @@ class Source
 
     @paused = true
 
+  ---
+  -- Resumes a paused Source
+  -- @tparam Source self
+  -- @usage
+  -- Source\resume!
   resume: =>
     if not @paused return
 
@@ -46,6 +61,11 @@ class Source
     else
       @source\pause!
 
+  ---
+  -- Stops a Source
+  -- @tparam Source self
+  -- @usage
+  -- Source\stop!
   stop: =>
     if not @playing return
 
@@ -57,27 +77,66 @@ class Source
 
     @playing = true
 
+  ---
+  -- Returns a type of a Source
+  -- @tparam Source self
+  -- @treturn string Type of a Source ("static" or "stram")
+  -- @usage
+  -- type = Source\getType!
   getType: =>
     @static and "static" or "stream"
 
+  ---
+  -- Gets the current volume of the Source.
+  -- @tparam Source self
+  -- @treturn number Volume of a Source
+  -- @usage
+  -- volume = Source\getVolume!
   getVolume: =>
     @volume
 
+  ---
+  -- Returns whether the Source will loop.
+  -- @tparam Source self
+  -- @treturn bool True if the Source will loop, false otherwise.
+  -- @usage
+  -- loop = Source\isLooping!
   isLooping: =>
     @looping
 
+  ---
+  -- Returns whether the Source is paused.
+  -- @tparam Source self
+  -- @treturn bool True if the Source is paused, false otherwise.
+  -- @usage
+  -- paused = Source\isPaused!
   isPaused: =>
     @paused
 
+  ---
+  -- Returns whether the Source is playing.
+  -- @tparam Source self
+  -- @treturn bool True if the Source is playing, false otherwise.
+  -- @usage
+  -- playing = Source\isPlaying!
   isPlaying: =>
     @playing
 
-  isStatic: =>
-    @static
-
+  ---
+  -- Returns whether the Source is stopped.
+  -- @tparam Source self
+  -- @treturn bool True if the Source is stopped, false otherwise.
+  -- @usage
+  -- stopped = Source\isStopped!
   isStopped: =>
     not @playing
 
+  ---
+  -- Sets whether the Source should loop.
+  -- @tparam File self
+  -- @tparam bool looping True if the source should loop, false otherwise.
+  -- @usage
+  -- Source\setLooping looping
   setLooping: (looping) =>
     @looping = looping
 
@@ -86,6 +145,12 @@ class Source
     else
       @source\setLooping @looping
 
+  ---
+  -- Sets the current volume of the Source.
+  -- @tparam File self
+  -- @tparam number volume The volume for a Source, where 1.0 is normal volume. Volume cannot be raised above 1.0.
+  -- @usage
+  -- Source\setVolume volume
   setVolume: (volume) =>
     @volume = volume
 

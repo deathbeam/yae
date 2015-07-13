@@ -21,7 +21,7 @@ class Quad
   -- @treturn number w The width of the viewport.
   -- @treturn number h The height of the viewport.
   -- @usage
-  -- x, y, width, height = quad\getViewport!
+  -- x, y, width, height = Quad\getViewport!
   getViewport: =>
     @x, @y, @w, @h
 
@@ -33,7 +33,7 @@ class Quad
   -- @number w The width of the viewport.
   -- @number h The height of the viewport.
   -- @usage
-  -- quad\setViewport x, y, width, height
+  -- Quad\setViewport x, y, width, height
   setViewport: (x, y, w, h) =>
     @x = x
     @y = y
