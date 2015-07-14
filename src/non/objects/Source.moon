@@ -7,6 +7,15 @@ import java, File from non
 Gdx = java.require "com.badlogic.gdx.Gdx"
 
 class Source
+  ---
+  -- Creates a new Source from a filepath.
+  -- @tparam Source self
+  -- @string filename The name (and path) of the file.
+  -- @string[opt="stream"] audiotype Type of the audio.
+  -- @string[opt="internal"] filetype Type of the file
+  -- @treturn Source A new Source that can play the specified audio.
+  -- @usage
+  -- source = Source(filename, audiotype, filetype)
   new: (filename, audiotype="stream", filetype) =>
     file = File filename, filetype
     @static = audiotype != "stream"
