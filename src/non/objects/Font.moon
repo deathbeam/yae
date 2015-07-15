@@ -3,19 +3,18 @@
 -------------------------------------------------------------------------------
 -- @classmod non.Font
 
-import java, File from non
-FreeTypeFontGenerator = java.require "com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator"
-GlyphLayout = java.require "com.badlogic.gdx.graphics.g2d.GlyphLayout"
+FreeTypeFontGenerator = non.java.require "com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator"
+GlyphLayout = non.java.require "com.badlogic.gdx.graphics.g2d.GlyphLayout"
 Constants = require "non.constants"
 
-class Font
+class
   new: (filename, size=16, filetype) =>
     file = nil
 
     if filename == nil
-      file = File "non/font.ttf", filetype
+      file = non.File("non/font.ttf", filetype)
     else
-      file = File filename, filetype
+      file = non.File(filename, filetype)
     
     generator = java.new FreeTypeFontGenerator, file.file
     @font = generator\generateFont size
@@ -34,7 +33,7 @@ class Font
 
   getBounds: (text) =>
     @glyphLayout\setText text
-    return @glyphLayout.width, @glyphLayout.height
+    @glyphLayout.width, @glyphLayout.height
 
   getFilter: =>
     min_filter = @fontTexture\getMinFilter!
@@ -42,12 +41,12 @@ class Font
     Constants.filtercodes[min_filter], Constants.filtercodes[mag_filter]
 
   getHeight: (text) =>
-    w, _ = @getBounds text
-    return w
+    _, h = @getBounds text
+    h
 
   getWidth: (text) =>
-    _, h = @getBounds text
-    return h
+    w, _ = @getBounds text
+    w
 
   hasGlyphs: (...) =>
     args = table.pack ...
@@ -56,7 +55,7 @@ class Font
     for i = 1, args.n
       found = found and @font\containsCharacter args[i]
 
-    return found
+    found
 
   setFilter: (min, mag) =>
     @fontTexture\setFilter Constants.filters[min], Constants.filters[mag]
@@ -66,5 +65,3 @@ class Font
 
   free: =>
     @font\dispose!
-
-return Font

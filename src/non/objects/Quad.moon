@@ -4,7 +4,7 @@
 -------------------------------------------------------------------------------
 -- @classmod non.Quad
 
-class Quad
+class
   new: (x, y, w, h, sw, sh) =>
     @x = x
     @y = y
@@ -39,5 +39,3 @@ class Quad
     @y = y
     @w = w
     @h = h
-
-return Quad

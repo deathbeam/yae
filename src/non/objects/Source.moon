@@ -3,10 +3,9 @@
 -------------------------------------------------------------------------------
 -- @classmod non.Source
 
-import java, File from non
-Gdx = java.require "com.badlogic.gdx.Gdx"
+Gdx = non.java.require "com.badlogic.gdx.Gdx"
 
-class Source
+class
   ---
   -- Creates a new Source from a filepath.
   -- @tparam Source self
@@ -17,7 +16,7 @@ class Source
   -- @usage
   -- source = Source(filename, audiotype, filetype)
   new: (filename, audiotype="stream", filetype) =>
-    file = File filename, filetype
+    file = non.File(filename, filetype)
     @static = audiotype != "stream"
     @volume = 1
     @looping = false
@@ -157,7 +156,8 @@ class Source
   ---
   -- Sets the current volume of the Source.
   -- @tparam File self
-  -- @tparam number volume The volume for a Source, where 1.0 is normal volume. Volume cannot be raised above 1.0.
+  -- @tparam number volume The volume for a Source, where 1.0 is normal volume.
+  -- Volume cannot be raised above 1.0.
   -- @usage
   -- Source\setVolume volume
   setVolume: (volume) =>
@@ -170,5 +170,3 @@ class Source
 
   free: =>
     @source\dispose!
-
-return Source

@@ -3,11 +3,10 @@
 -------------------------------------------------------------------------------
 -- @classmod non.File
 
-import java from non
-Gdx = java.require "com.badlogic.gdx.Gdx"
-NonVM = java.require "non.NonVM"
+Gdx = non.java.require "com.badlogic.gdx.Gdx"
+NonVM = non.java.require "non.NonVM"
 
-class File
+class
   new: (filename, filetype="internal") =>
     switch filetype
       when "internal"
@@ -29,7 +28,6 @@ class File
   -- File\append text
   append: (text) =>
     @file\writeString text, true
-    return true
 
   ---
   -- Copy file.
@@ -39,49 +37,42 @@ class File
   -- File\copy to
   copy: (to) =>
     @file\copyTo to
-    return true
 
-  createDirectory: () =>
+  createDirectory: =>
     @file\mkdirs!
-    return true
 
-  exists: () =>
-    return @file\exists!
+  exists: =>
+    @file\exists!
 
-  getDirectoryItems: () =>
+  getDirectoryItems: =>
     children = @file\list!
     paths = {}
 
     for i = 0, children.length
       paths[i + 1] = children[i]\path!
 
-    return paths
+    paths
 
-  getLastModified: () =>
-    return @file\lastModified!
+  getLastModified: =>
+    @file\lastModified!
 
-  getSize: () =>
-    return @file\length!
+  getSize: =>
+    @file\length!
 
-  isDirectory: () =>
-    return @file\isDirectory!
+  isDirectory: =>
+    @file\isDirectory!
 
-  isFile: () =>
-    return not @is_directory!
+  isFile: =>
+    not @is_directory!
 
   move: (to_file) =>
     @file\moveTo to_file
-    return true
 
-  read: () =>
-    return @file\readString!
+  read: =>
+    @file\readString!
 
-  remove: () =>
+  remove: =>
     @file\deleteDirectory!
-    return true
 
   write: (text) =>
     @file\writeString text
-    return true
-
-return File

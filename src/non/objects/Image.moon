@@ -3,13 +3,12 @@
 -------------------------------------------------------------------------------
 -- @classmod non.Image
 
-import java, File from non
-Texture = java.require "com.badlogic.gdx.graphics.Texture"
+Texture = non.java.require "com.badlogic.gdx.graphics.Texture"
 Constants = require "non.constants"
 
-class Image
+class
   new: (filename, format="rgba8", filetype) =>
-    file = File filename, filetype
+    file = non.File(filename, filetype)
     @texture = java.new Texture, file.file, Constants.formats[format], false
     @texture\setFilter Constants.filters["linear"], Constants.filters["linear"]
 
@@ -43,5 +42,3 @@ class Image
 
   free: =>
     @texture\dispose!
-
-return Image
