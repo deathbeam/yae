@@ -153,9 +153,9 @@ task init << {
            .toLowerCase()
 
     def text = "---\n"
-    text += "name: \"" + origpname + "\"\n"
-    text += "package: \"com." + uname + "." + pname + "\"\n"
-    text += "version: \"1.0.0\""
+    text += "name: " + origpname + "\n"
+    text += "package: com." + uname + "." + pname + "\n"
+    text += "version: 1.0.0"
     def fl = new File("../config.yml")
     fl.text = text
 
