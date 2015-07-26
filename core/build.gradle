@@ -54,7 +54,7 @@ allprojects {
     }
 }
 
-project(":core") {
+project(":shared") {
     apply plugin: "java"
 
     dependencies {
@@ -76,7 +76,7 @@ project(":desktop") {
     apply plugin: "java"
     
     dependencies {
-        compile project(":core")
+        compile project(":shared")
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
@@ -91,7 +91,7 @@ project(":android") {
     configurations { natives }
 
     dependencies {
-        compile project(":core")
+        compile project(":shared")
         compile files("../libs/luaj.jar")
         compile files("../libs/snakeyaml.jar")
         compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
@@ -113,7 +113,7 @@ project(":ios") {
     apply plugin: "robovm"
 
     dependencies {
-        compile project(":core")
+        compile project(":shared")
         compile files("../libs/luaj.jar")
         compile files("../libs/snakeyaml.jar")
         compile "org.robovm:robovm-rt:${roboVMVersion}"

@@ -8,14 +8,14 @@ sourceSets.main.java.srcDirs = [ "src/" ]
 
 task precompile(type:Exec) {
     copy {
-        from "../classes"
+        from "precompiled"
         into "build/classes/main"
     }
 
     if (System.getProperty('os.name').toLowerCase().contains('windows')) {
         commandLine 'cmd', '/c', 'precompile.bat'
     } else {
-        commandLine './precompile.sh'
+        commandLine './precompile'
     }
 }
 

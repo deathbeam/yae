@@ -6,7 +6,7 @@ ext.mainClassName = packageName + ".ios.IOSLauncher"
 task run(dependsOn: launchIPhoneSimulator)
 
 task dist(dependsOn: createIPA) << {
-    println "You can find ${appName}-${version}.ipa in /build/ios"
+    println "You can find ${appName} v${version}.ipa in /build/ios"
 }
 
 launchIPhoneSimulator.dependsOn build
