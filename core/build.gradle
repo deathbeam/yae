@@ -135,17 +135,16 @@ clean.dependsOn cleanAssets
 task init << {
     file("../assets").mkdir()
 	
-    def origpname = project.hasProperty("initName") ? initName : "My Project"
+    def origpname = (project.hasProperty("initName") ? initName : "My Project").replace("\"", "")
     def pname = Normalizer
            .normalize(origpname, Normalizer.Form.NFD)
            .replace(" ", "")
-           .replace("\"", "")
            .replaceAll("[^\\p{ASCII}]", "")
            .toLowerCase()
 
     def origuname = System.getProperty("user.name", "username")
     def uname = Normalizer
-           .normalize(origpname, Normalizer.Form.NFD)
+           .normalize(origuname, Normalizer.Form.NFD)
            .replace(" ", "")
            .replace(".", "")
            .replace("_", "")
