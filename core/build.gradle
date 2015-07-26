@@ -139,6 +139,7 @@ task init << {
     def pname = Normalizer
            .normalize(origpname, Normalizer.Form.NFD)
            .replace(" ", "")
+           .replace("\"", "")
            .replaceAll("[^\\p{ASCII}]", "")
            .toLowerCase()
 
