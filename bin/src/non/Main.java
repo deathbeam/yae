@@ -41,7 +41,7 @@ public class Main implements Runner.OutputListener {
                 ZipUtils.unpack(JAR, "VERSION", TEMP);
                 new File(TEMP, "core/precompile.sh").setExecutable(true);
                 new File(TEMP, "core/precompile-engine.sh").setExecutable(true);
-                new Main({"clean"}, true);
+                new Main(new String[] {"clean"}, true);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -91,11 +91,11 @@ public class Main implements Runner.OutputListener {
             check();
             
             if (args.length <= 1 || args[1].equals("desktop")) {
-                new Main({"update", "updateDesktop", "desktop:dist"});
+                new Main(new String[] {"update", "updateDesktop", "desktop:dist"});
             } else if (args[1].equals("android")) {
-                new Main({"update", "updateAndroid", "android:dist"});
+                new Main(new String[] {"update", "updateAndroid", "android:dist"});
             } else if (args[1].equals("ios")) {
-                new Main({"update", "updateIOS", "ios:dist"});
+                new Main(new String[] {"update", "updateIOS", "ios:dist"});
             } else {
                 printHelp();
             }
@@ -104,11 +104,11 @@ public class Main implements Runner.OutputListener {
             check();
             
             if (args.length <= 1 || args[1].equals("desktop")) {
-                new Main({"update", "updateDesktop", "desktop:run"});
+                new Main(new String[] {"update", "updateDesktop", "desktop:run"});
             } else if (args[1].equals("android")) {
-                new Main({"update", "updateAndroid", "android:run"});
+                new Main(new String[] {"update", "updateAndroid", "android:run"});
             } else if (args[1].equals("ios")) {
-                new Main({"update", "updateIOS", "ios:run"});
+                new Main(new String[] {"update", "updateIOS", "ios:run"});
             } else {
                 printHelp();
             }
@@ -117,9 +117,9 @@ public class Main implements Runner.OutputListener {
             check();
 
             if (args.length <= 1) {
-                new Main({"init"});
+                new Main(new String[] {"init"});
             } else {
-                new Main({"init", "-PinitName=\"" + args[1] + "\""});
+                new Main(new String[] {"init", "-PinitName=\"" + args[1] + "\""});
             }
         } else if (args[0].equals("clean")) {
             System.out.println("Cleaning your project's temporary data");
