@@ -17,11 +17,10 @@ public class Gradle {
         new File(workingDir, unixFile).setExecutable(true);
     }
 
-    public void execute (String parameters) throws Exception {
+    public void execute (String[] params) throws Exception {
         String targetFile = (System.getProperty("os.name").contains("Windows") ? windowsFile : unixFile);
         String exec = (workingDir.getAbsolutePath() + "/" + targetFile).replace("\\", "/");
 
-        String[] params = parameters.split(" ");
         String[] commands = new String[params.length + 1];
         commands[0] = exec;
 

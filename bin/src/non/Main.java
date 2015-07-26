@@ -10,7 +10,7 @@ public class Main implements Runner.OutputListener {
         this(args, false);
     }
     
-    public Main(String args, boolean silent) {
+    public Main(String[] args, boolean silent) {
         Runner runner = new Runner(this);
         runner.start(silent);
         
@@ -41,7 +41,7 @@ public class Main implements Runner.OutputListener {
                 ZipUtils.unpack(JAR, "VERSION", TEMP);
                 new File(TEMP, "core/precompile.sh").setExecutable(true);
                 new File(TEMP, "core/precompile-engine.sh").setExecutable(true);
-                new Main("clean", true);
+                new Main({"clean"}, true);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -91,11 +91,11 @@ public class Main implements Runner.OutputListener {
             check();
             
             if (args.length <= 1 || args[1].equals("desktop")) {
-                new Main("update updateDesktop desktop:dist");
+                new Main({"update", "updateDesktop", "desktop:dist"});
             } else if (args[1].equals("android")) {
-                new Main("update updateAndroid android:dist");
+                new Main({"update", "updateAndroid", "android:dist"});
             } else if (args[1].equals("ios")) {
-                new Main("update updateIOS ios:dist");
+                new Main({"update", "updateIOS", "ios:dist"});
             } else {
                 printHelp();
             }
@@ -104,11 +104,11 @@ public class Main implements Runner.OutputListener {
             check();
             
             if (args.length <= 1 || args[1].equals("desktop")) {
-                new Main("update updateDesktop desktop:run");
+                new Main({"update", "updateDesktop", "desktop:run"});
             } else if (args[1].equals("android")) {
-                new Main("update updateAndroid android:run");
+                new Main({"update", "updateAndroid", "android:run"});
             } else if (args[1].equals("ios")) {
-                new Main("update updateIOS ios:run");
+                new Main({"update", "updateIOS", "ios:run"});
             } else {
                 printHelp();
             }
@@ -117,14 +117,14 @@ public class Main implements Runner.OutputListener {
             check();
 
             if (args.length <= 1) {
-                new Main("init");
+                new Main({"init"});
             } else {
-                new Main("init --project-prop initName=\"" + args[1] + "\"");
+                new Main({"init", "-PinitName=\"" + args[1] + "\""});
             }
         } else if (args[0].equals("clean")) {
             System.out.println("Cleaning your project's temporary data");
             check();
-            new Main("clean");
+            new Main({"clean"});
         } else if (args[0].equals("update")) {
             System.out.println("Updating your project's runtime");
             check();
