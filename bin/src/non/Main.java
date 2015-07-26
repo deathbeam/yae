@@ -6,7 +6,7 @@ public class Main implements Runner.OutputListener {
     private static String VERSION;
     private static File JAR, TEMP;
     
-    public Main(String args) {
+    public Main(String[] args) {
         this(args, false);
     }
     
