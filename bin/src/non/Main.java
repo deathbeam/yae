@@ -124,7 +124,7 @@ public class Main implements Runner.OutputListener {
         } else if (args[0].equals("clean")) {
             System.out.println("Cleaning your project's temporary data");
             check();
-            new Main({"clean"});
+            new Main(new String[] {"clean"});
         } else if (args[0].equals("update")) {
             System.out.println("Updating your project's runtime");
             check();
