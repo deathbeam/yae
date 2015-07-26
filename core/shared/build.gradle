@@ -13,9 +13,9 @@ task precompile(type:Exec) {
     }
 
     if (System.getProperty('os.name').toLowerCase().contains('windows')) {
-        commandLine 'cmd', '/c', 'precompile.bat'
+        commandLine 'cmd', 'precompile.bat'
     } else {
-        commandLine './precompile'
+        commandLine 'sh', 'precompile'
     }
 }
 
