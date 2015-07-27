@@ -16,11 +16,11 @@ class
     else
       file = non.File(filename, filetype)
     
-    generator = java.new FreeTypeFontGenerator, file.file
+    generator = non.java.new FreeTypeFontGenerator, file.file
     @font = generator\generateFont size
     @fontTexture = @font\getRegion(0)\getTexture!
     @fontTexture\setFilter Constants.filters["linear"], Constants.filters["linear"]
-    @glyphLayout = java.new GlyphLayout
+    @glyphLayout = non.java.new GlyphLayout
 
   getAscent: =>
     @font\getAscent!
