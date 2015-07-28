@@ -100,7 +100,7 @@ elseif arg[1] == "init" then
   if #arg < 2 then
     exec("init")
   else
-    exec("init -PinitName=\""..args[2].."\"")
+    exec("init -PinitName=\""..arg[2].."\"")
   end
 elseif arg[1] == "clean" then
   check("Cleaning your project's temporary data")
