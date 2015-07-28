@@ -13,6 +13,6 @@ install:
 jdk: oraclejdk7
 
 script:
-  - non -d init
-  - non -d pack desktop
-  - non -d pack android
+  - non init "My Game"
+  - non pack desktop
+  - non pack android
