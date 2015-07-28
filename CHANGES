@@ -22,8 +22,8 @@
 - installation from LuaRocks is now fully automated
 - fixed non.mouse.isDown (by accident I mapped there keycodes rather than buttoncodes
 - documented entire source code and added LDoc support
-- added MoonScript linter
-- added non.config
+- added non.config module
+- rewrote entire command-line launcher in Lua
 
 [0.6.4]
 - fixed documentation for methods that returns multiple values
