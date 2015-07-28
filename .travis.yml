@@ -1,4 +1,9 @@
-language: java
+language: android
+
+android:
+  components:
+    - build-tools-20.0.0
+    - android-20
 
 install:
   - sudo apt-get install luarocks
