@@ -21,7 +21,7 @@ build = {
   type = "command",
   
   install = {
-    bin = { "bin/non.jar", "bin/non" }
+    bin = { "bin/non" }
   },
   
   platforms = {
@@ -31,5 +31,7 @@ build = {
     windows = {
       build_command = "build"
     }
-  }
+  },
+
+  copy_directories = { "core", "res", "src" }
 }

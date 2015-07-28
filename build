@@ -3,7 +3,3 @@ cd src
 moonc -t build/lua .
 cd ../
 java -cp core/libs/bcel.jar:core/libs/luaj.jar luajc -r -d src/build/classes src/build/lua
-javac bin/src/non/*.java
-jar cvfe bin/non.jar Main -C bin/src/non/ .
-jar fu bin/non.jar core res src VERSION
-chmod 777 bin/non.jar

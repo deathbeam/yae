@@ -1,12 +1,120 @@
 #!/usr/bin/env lua
 
-local FILE = debug.getinfo(1,"S").source:sub(2)..".jar"
-local ARGS
+local cfg = require("luarocks.cfg")
+local fs = require("luarocks.fs")
+local workingPath = fs.current_dir().."/"
+local enginePath = debug.getinfo(1,"S").source:match("(.*/)"):sub(2, -5)
+local gradlew = cfg.platforms.windows and "gradlew" or "./gradlew"
+local tempPath = ".non/"
+local needsClean = false
 
-if arg[1] == "init" then
-  ARGS = "init" .. (arg[2] and " \""..arg[2].."\"" or "")
-else
-  ARGS = table.concat(arg, " ")
+local function copy(source, dest)
+  local src = enginePath..source
+  local dst = workingPath..dest
+
+  if fs.is_dir(src) then
+    fs.make_dir(dst)
+    fs.copy_contents(src, dst)
+  else
+    fs.copy(src, dst)
+  end
 end
 
-os.execute("java -jar \""..FILE.."\" "..ARGS)
+local function exec(args, quiet)
+  if (needsClean) then
+    args = "clean "..args
+    needsClean = false
+  end
+
+  fs.change_dir(workingPath..tempPath)
+  if quiet then
+    fs.execute_quiet(gradlew.." "..args)
+  else
+    fs.execute(gradlew.." "..args)
+  end
+end
+
+local function help()
+  print("Commands:");
+  print("  non init PROJECT_NAME  # initializes new project with specified PROJECT_NAME in this directory")
+  print("  non run PLATFORM       # start your application for specified PLATFORM")
+  print("  non pack PLATFORM      # package your application for PLATFORM")
+  print("  non clean              # clean temporary data for your project")
+  print("  non update             # update your project's runtime version and dependencies")
+  print("  non version            # print current compiler version");
+  print("")
+  print("PLATFORM can be 'desktop', 'android' or 'ios' (default 'desktop')")
+  os.exit(-1)
+end
+
+local function mkex(file)
+  fs.chmod(workingPath..file, "777")
+end
+
+local function read(file)
+    local f = io.open(file, "rb")
+    local content = f:read("*all")
+    f:close()
+    return content
+end
+
+local function version()
+  return read(enginePath.."core/VERSION")
+end
+
+local function check(msg)
+  print(msg:upper())
+  if fs.exists(workingPath..tempPath) then return end
+  copy("core", tempPath)
+  copy("res", tempPath.."res")
+  copy("src/build/classes", tempPath.."shared/precompiled")
+  mkex(tempPath.."gradlew")
+  mkex(tempPath.."shared/precompile")
+  needsClean = true
+end
+
+if arg[1] == "pack" then
+  check("Packaging your application")
+  if #arg < 2 or arg[2] == "desktop" then
+    exec("update updateDesktop desktop:dist")
+  elseif arg[2] == "android" then
+    exec("update updateAndroid android:dist")
+  elseif arg[2] == "ios" then
+    exec("update updateIOS ios:dist")
+  else
+    help()
+  end
+elseif arg[1] == "run" then
+  check("Starting your application")
+  if #arg < 2 or arg[2] == "desktop" then
+    exec("update updateDesktop desktop:run")
+  elseif arg[2] == "android" then
+    exec("update updateAndroid android:run")
+  elseif arg[2] == "ios" then
+    exec("update updateIOS ios:run")
+  else
+    help()
+  end
+elseif arg[1] == "init" then
+  check("Initializing new project")
+  if #arg < 2 then
+    exec("init")
+  else
+    exec("init -PinitName=\""..args[2].."\"")
+  end
+elseif arg[1] == "clean" then
+  check("Cleaning your project's temporary data")
+  exec("clean")
+elseif arg[1] == "update" then
+  local curversion = read(workingPath..tempPath.."VERSION")
+  if not version() == curversion then
+    fs.delete(workingPath..tempPath)
+    check("Updating your project's runtime to "..version)
+  else
+    check("You are using latest version of compiler.")
+  end
+elseif arg[1] == "version" then
+  print(version())
+else
+  help()
+end
