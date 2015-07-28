@@ -1,14 +1,8 @@
-language: android
-
-android:
-  components:
-    - build-tools-20.0.0
-    - android-20
+language: java
 
 install:
-  - sudo apt-get install luajit
   - sudo apt-get install luarocks
-  - sudo luarocks make non-dev-1.rockspec
+  - sudo luarocks make
 
 jdk: oraclejdk7
 
