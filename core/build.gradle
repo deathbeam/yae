@@ -170,7 +170,7 @@ task update(dependsOn: ':updateAssets') {
     def src = "../"
     def res = "res"
     def out = "android/assets/non"
-    def files = [ "logo.png", "splash.png", "font.ttf" ]
+    def files = [ "splash.png", "font.ttf" ]
     
     for(fl in files) {
         if (file("${src}/${fl}").exists()) {

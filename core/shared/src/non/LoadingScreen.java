@@ -15,8 +15,7 @@ import com.badlogic.gdx.utils.Disposable;
 public class LoadingScreen implements Disposable {
     private final SpriteBatch batch;
     private final BitmapFont font;
-    private final Sprite background, logo;
-    private final Vector2 textPos = new Vector2();
+    private final Sprite background;
     private final GlyphLayout glyphs = new GlyphLayout();
     private String text = "";
 
@@ -26,7 +25,6 @@ public class LoadingScreen implements Disposable {
         font.getRegion(0).getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
         background = new Sprite(new Texture(Gdx.files.internal("non/splash.png")));
         background.setOrigin(0, 0);
-        logo = new Sprite(new Texture(Gdx.files.internal("non/logo.png")));
     }
 
     public void render () {
@@ -34,8 +32,7 @@ public class LoadingScreen implements Disposable {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         background.draw(batch);
-        logo.draw(batch);
-        font.draw(batch, text, (Gdx.graphics.getWidth() - glyphs.width) / 2, logo.getY() - 18);
+        font.draw(batch, text, (Gdx.graphics.getWidth() - glyphs.width) / 2, (Gdx.graphics.getHeight() - glyphs.height) / 2);
         batch.end();
     }
 
@@ -43,7 +40,6 @@ public class LoadingScreen implements Disposable {
         batch.setProjectionMatrix(batch.getProjectionMatrix().setToOrtho2D(0, 0, width, height));
         float scale = (float)width / (float)background.getWidth();
         background.setScale(scale);
-        logo.setCenter(width/2, height/2);
     }
 
     public void setText(String text) {
