@@ -12,6 +12,8 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 
+
+@SuppressWarnings("deprecation")
 public class LoadingScreen implements Disposable {
     private final SpriteBatch batch;
     private final BitmapFont font;
