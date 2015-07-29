@@ -5,13 +5,18 @@ sourceCompatibility = 1.6
 
 sourceSets.main.java.srcDirs = [ "src/" ]
 
+task copyEngineCore(type: Copy) {
+    from "precompiled"
+    into "build/classes/main"
+}
 
-task precompile(type:Exec) {
-    copy {
-        from "precompiled"
-        into "build/classes/main"
-    }
+task includeLuaSources(type: Copy) {
+    from "../../assets"
+    into "build/lua"
+    include "**/*.lua"
+}
 
+task precompile(type: Exec, dependsOn: ["copyEngineCore", "includeLuaSources"]) {
     if (System.getProperty('os.name').toLowerCase().contains('windows')) {
         commandLine 'cmd', 'precompile.bat'
     } else {

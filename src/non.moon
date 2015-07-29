@@ -58,16 +58,16 @@ Constants = require "non.constants"
 import keycodes, buttoncodes from Constants
 
 non._keypressed = (keycode) ->
-  if non.keypressed then non.keypressed keycodes[keycode]
+  non.keypressed(keycodes[keycode]) if non.keypressed
 
 non._keyreleased = (keycode) ->
-  if non.keyreleased then non.keyreleased keycodes[keycode]
+  non.keyreleased(keycodes[keycode]) if non.keyreleased
 
 non._mousepressed = (x, y, buttoncode) ->
-  if non.mousepressed then non.mousepressed buttoncodes[buttoncode]
+  non.mousepressed(buttoncodes[buttoncode]) if non.mousepressed
 
 non._mousereleased = (x, y, buttoncode) ->
-  if non.mousereleased then non.mousereleased buttoncodes[buttoncode]
+  non.mousereleased(buttoncodes[buttoncode]) if non.mousereleased
 
 non._quit = ->
   if non.quit then non.quit!
@@ -75,14 +75,11 @@ non._quit = ->
 
 -- Main loop function
 non.run = ->
-  dt = 0
-  if non.timer then dt = non.timer.getDelta!
-  if non.update then non.update dt
-
-  if non.graphics
-    non.graphics.clear!
-    non.graphics.origin!
-    if non.draw then non.draw!
-    non.graphics.present!
+  dt = non.timer.getDelta!
+  non.update(dt) if non.update
+  non.graphics.clear!
+  non.graphics.origin!
+  non.draw! if non.draw
+  non.graphics.present!
 
 require "main"
