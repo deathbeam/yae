@@ -1,0 +1,10 @@
+#!/usr/bin/env lua
+
+local fs = require("luarocks.fs")
+local rockPath = fs.current_dir().."/rocks"
+
+local function exec(args)
+  fs.execute("luarocks "..args.." --tree=\""..rockPath.."\"")
+end
+
+exec(table.concat(arg, " "))
