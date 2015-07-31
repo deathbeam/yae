@@ -127,7 +127,7 @@ project(":ios") {
 
 task cleanAssets << {
     deldir file("android/assets")
-    deldir file("lua")
+    deldir file("shared/build/lua")
 }
 
 clean.dependsOn cleanAssets
@@ -166,7 +166,15 @@ task init << {
     }
 }
 
-task update(dependsOn: ':updateAssets') {
+task rocks << {
+    if (!cfg.rocks) return
+
+    for (rock in cfg.rocks) {
+        exec { commandLine "luarocks", "install", rock, '--tree="' + file("rocks").absolutePath + '"' }
+    }
+}
+
+task update(dependsOn: [':rocks', ':updateAssets') {
     def src = "../"
     def res = "res"
     def out = "android/assets/non"
@@ -223,7 +231,7 @@ task updateAndroid(dependsOn: 'android:copyNatives') << {
     copyAndResizeIcon("android/ic_launcher-web.png", 512)
 }
 
-task updateIOS() << {
+task updateIOS << {
     deldir(file("ios/src"))
     def out = "ios/data"
     file(out).mkdirs()

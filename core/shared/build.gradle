@@ -11,7 +11,7 @@ task copyEngineCore(type: Copy) {
 }
 
 task includeLuaRocks(type: Copy) {
-    from "../../rocks/share/lua/5.1"
+    from "../rocks/share/lua/5.1"
     into "build/lua"
     include "**/*.lua"
 }

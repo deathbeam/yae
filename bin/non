@@ -73,6 +73,11 @@ local function check(msg)
   needsClean = true
 end
 
+if arg[1] ~= "init" and not fs.exists(workingPath.."config.yml) then
+  print("No project found.")
+  os.exit(-1)
+end
+
 if arg[1] == "pack" then
   check("Packaging your application")
   if #arg < 2 or arg[2] == "desktop" then

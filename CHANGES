@@ -1,7 +1,8 @@
 [0.7.0]
 - changed API to be mostly LÖVE compatible
-- renamed background.png to splash.png
+- renamed background.png to bg.png
 - removed bar.png
+- removed logo.png
 - added AOT Lua and MoonScript compiler
 - changed loading screen a bit
 - drastically improved view transformations performance
@@ -24,6 +25,7 @@
 - documented entire source code and added LDoc support
 - added non.config module
 - rewrote entire command-line launcher in Lua
+- added support for LuaRocks
 
 [0.6.4]
 - fixed documentation for methods that returns multiple values
