@@ -10,13 +10,19 @@ task copyEngineCore(type: Copy) {
     into "build/classes/main"
 }
 
+task includeLuaRocks(type: Copy) {
+    from "../../rocks/share/lua/5.1"
+    into "build/lua"
+    include "**/*.lua"
+}
+
 task includeLuaSources(type: Copy) {
     from "../../assets"
     into "build/lua"
     include "**/*.lua"
 }
 
-task precompile(type: Exec, dependsOn: ["copyEngineCore", "includeLuaSources"]) {
+task precompile(type: Exec, dependsOn: ["copyEngineCore", "includeLuaRocks", "includeLuaSources"]) {
     if (System.getProperty('os.name').toLowerCase().contains('windows')) {
         commandLine 'cmd', 'precompile.bat'
     } else {
