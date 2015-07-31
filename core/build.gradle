@@ -170,7 +170,7 @@ task update(dependsOn: ':updateAssets') {
     def src = "../"
     def res = "res"
     def out = "android/assets/non"
-    def files = [ "splash.png", "font.ttf" ]
+    def files = [ "bg.png", "font.ttf" ]
     
     for(fl in files) {
         if (file("${src}/${fl}").exists()) {
@@ -225,8 +225,6 @@ task updateAndroid(dependsOn: 'android:copyNatives') << {
 
 task updateIOS() << {
     deldir(file("ios/src"))
-    def src = "../"
-    def res = "res"
     def out = "ios/data"
     file(out).mkdirs()
     
@@ -236,40 +234,6 @@ task updateIOS() << {
     copyAndResizeIcon("${out}/Icon-72.png", 72)
     copyAndResizeIcon("${out}/Icon@2x.png", 114)
     copyAndResizeIcon("${out}/Icon-72@2x.png", 144)
-    
-    def files = [
-        [ 
-            "splash-320x480", "splash-640x960", "splash-640x1136", "splash-750x1134",
-            "splash-768x1004", "splash-1242x2208", "splash-1536x2008"
-        ],
-        [
-            "Default", "Default@2x", "Default-568h@2x", "Default-375w-667h@2x", 
-            "Default~ipad", "Default-414w-736h@3x", "Default@2x~ipad"
-        ]
-    ]
-    
-    def total = files[0].size() - 1
-    
-    for(i in 0..total) {
-        def fl = files[0][i]
-        def newFile = files[1][i]
-        
-        if (file("${src}/${fl}.png").exists()) {
-            copy {
-                from src
-                into out
-                include "${fl}.png"
-                rename "${fl}.png", "${newFile}.png"
-            }
-        } else {
-            copy {
-                from res
-                into out
-                include "${fl}.png"
-                rename "${fl}.png", "${newFile}.png"
-            }
-        }
-    }
 }
 
 task updateAssets(type: Copy) {

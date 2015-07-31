@@ -25,7 +25,7 @@ public class LoadingScreen implements Disposable {
         batch = new SpriteBatch();
         font = new FreeTypeFontGenerator(Gdx.files.internal("non/font.ttf")).generateFont(16);
         font.getRegion(0).getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-        background = new Sprite(new Texture(Gdx.files.internal("non/splash.png")));
+        background = new Sprite(new Texture(Gdx.files.internal("non/bg.png")));
         background.setOrigin(0, 0);
     }
 
