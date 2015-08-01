@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-cd ../../assets
-moonc -t ../.non/shared/build/lua .
-cd ../.non
+cd build/moon
+moonc -t ../lua .
+cd ../../
 java -cp libs/bcel.jar:libs/luaj.jar luajc -r -d shared/build/classes/main shared/build/lua/

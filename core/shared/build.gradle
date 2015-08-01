@@ -5,24 +5,26 @@ sourceCompatibility = 1.7
 
 sourceSets.main.java.srcDirs = [ "src/" ]
 
-task copyEngineCore(type: Copy) {
+task includeEngineCore(type: Copy) {
     from "precompiled"
     into "build/classes/main"
 }
 
-task includeLuaRocks(type: Copy) {
+task includeLuaSources(type: Sync) {
     from "../rocks/share/lua/5.1"
-    into "build/lua"
-    include "**/*.lua"
-}
-
-task includeLuaSources(type: Copy) {
     from "../../assets"
     into "build/lua"
     include "**/*.lua"
 }
 
-task precompile(type: Exec, dependsOn: ["copyEngineCore", "includeLuaRocks", "includeLuaSources"]) {
+task includeMoonSources(type: Sync) {
+    from "../rocks/share/lua/5.1"
+    from "../../assets"
+    into "build/lua"
+    include "**/*.moon"
+}
+
+task precompile(type: Exec, dependsOn: ["includeEngineCore", "includeMoonSources", "includeLuaSources"]) {
     if (System.getProperty('os.name').toLowerCase().contains('windows')) {
         commandLine 'cmd', 'precompile.bat'
     } else {

@@ -63,12 +63,7 @@ project(":shared") {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        if (cfg.libs) {
-            for (lib in cfg.libs) {
-                compile lib
-            }
-        }
-
+        if (cfg.libs) { for (lib in cfg.libs) { compile lib } }
     }
 }
 
@@ -159,18 +154,14 @@ task init << {
     def fl = new File("../config.yml")
     fl.text = text
 
-    copy {
-        from "res"
-        into "../assets"
-        include "main.moon"
-    }
+    copy { from "res"; into "../assets"; include "main.moon" }
 }
 
 task rocks << {
     if (!cfg.rocks) return
 
     for (rock in cfg.rocks) {
-        exec { commandLine "luarocks", "install", rock, '--tree="' + file("rocks").absolutePath + '"' }
+        exec { commandLine "luarocks", "install", rock, "--tree=rocks" }
     }
 }
 
@@ -182,25 +173,13 @@ task update(dependsOn: [':rocks', ':updateAssets']) {
     
     for(fl in files) {
         if (file("${src}/${fl}").exists()) {
-            copy {
-                from src
-                into out
-                include "${fl}"
-            }
+            copy { from src; into out; include "${fl}" }
         } else {
-            copy {
-                from res
-                into out
-                include "${fl}"
-            }
+            copy { from res; into out; include "${fl}" }
         }
     }
     
-    copy {
-        from "../"
-        into "android/assets/non"
-        include "config.yml"
-    }
+    copy { from src; into out; include "config.yml" }
 }
 
 task updateDesktop << {
@@ -232,8 +211,8 @@ task updateAndroid(dependsOn: 'android:copyNatives') << {
 }
 
 task updateIOS << {
-    deldir(file("ios/src"))
     def out = "ios/data"
+    deldir(file(out))
     file(out).mkdirs()
     
     copyAndReplace("platforms/ios/robovm.properties", "ios/robovm.properties")
@@ -244,7 +223,7 @@ task updateIOS << {
     copyAndResizeIcon("${out}/Icon-72@2x.png", 144)
 }
 
-task updateAssets(type: Copy) {
+task updateAssets(type: Sync) {
     from "../assets"
     into "android/assets"
     exclude "**/*.moon"
@@ -261,9 +240,9 @@ def configure() {
     } else {
         ext.cfg = new org.yaml.snakeyaml.Yaml().load(
             '---\n' +
-            '  name: "non"\n' +
-            '  package: "non"\n' +
-            '  version: "1.0.0"'
+            'name: non\n' +
+            'package: non\n' +
+            'version: 1.0'
         )
     }
 }
