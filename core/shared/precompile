@@ -2,4 +2,4 @@
 cd build/moon
 moonc -t ../lua .
 cd ../../
-java -cp libs/bcel.jar:libs/luaj.jar luajc -r -d shared/build/classes/main shared/build/lua/
+java -cp ../libs/bcel.jar:../libs/luaj.jar luajc -r -d build/classes/main build/lua/

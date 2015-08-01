@@ -20,7 +20,7 @@ task includeLuaSources(type: Sync) {
 task includeMoonSources(type: Sync) {
     from "../rocks/share/lua/5.1"
     from "../../assets"
-    into "build/lua"
+    into "build/moon"
     include "**/*.moon"
 }
 
