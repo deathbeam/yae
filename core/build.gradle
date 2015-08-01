@@ -174,7 +174,7 @@ task rocks << {
     }
 }
 
-task update(dependsOn: [':rocks', ':updateAssets') {
+task update(dependsOn: [':rocks', ':updateAssets']) {
     def src = "../"
     def res = "res"
     def out = "android/assets/non"
