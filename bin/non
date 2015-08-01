@@ -62,8 +62,17 @@ local function version()
   return read(enginePath.."core/VERSION")
 end
 
-local function check(msg)
-  print(msg:upper())
+local function check(msg, normal)
+  if arg[1] ~= "init" and arg[1] ~= "help" and not fs.exists(workingPath.."config.yml") then
+    print("No project found.")
+    os.exit(-1)
+  end
+
+  if not normal then
+    msg = msg:upper()
+  end
+
+  print(msg)
   if fs.exists(workingPath..tempPath) then return end
   copy("core", tempPath)
   copy("res", tempPath.."res")
@@ -71,11 +80,6 @@ local function check(msg)
   mkex(tempPath.."gradlew")
   mkex(tempPath.."shared/precompile")
   needsClean = true
-end
-
-if arg[1] ~= "init" and not fs.exists(workingPath.."config.yml) then
-  print("No project found.")
-  os.exit(-1)
 end
 
 if arg[1] == "pack" then
@@ -111,12 +115,13 @@ elseif arg[1] == "clean" then
   check("Cleaning your project's temporary data")
   exec("clean")
 elseif arg[1] == "update" then
+  check("Checking your project's runtime")
   local curversion = read(workingPath..tempPath.."VERSION")
   if not version() == curversion then
     fs.delete(workingPath..tempPath)
-    check("Updating your project's runtime to "..version)
+    check("Updating your project's runtime to "..version(), true)
   else
-    check("You are using latest version of compiler.")
+    check("You are using latest runtime.", true)
   end
 elseif arg[1] == "version" then
   print(version())
