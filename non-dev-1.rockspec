@@ -21,7 +21,7 @@ build = {
   type = "command",
   
   install = {
-    bin = { "bin/non", "bin/kaizo" }
+    bin = { "bin/non" }
   },
   
   platforms = {
