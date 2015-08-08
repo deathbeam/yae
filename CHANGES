@@ -26,6 +26,9 @@
 - added non.config module
 - rewrote entire command-line launcher in Lua
 - added support for LuaRocks
+- changed "init" cli command to "new"
+- added checks for cli task if project is not present or already exists
+- now console output is sexy and colorful
 
 [0.6.4]
 - fixed documentation for methods that returns multiple values

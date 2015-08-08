@@ -6,6 +6,7 @@ local workingPath = fs.current_dir().."/"
 local enginePath = debug.getinfo(1,"S").source:match("(.*/)"):sub(2, -5)
 local gradlew = cfg.platforms.windows and "gradlew" or "./gradlew"
 local tempPath = ".non/"
+local configFile = "config.yml"
 local needsClean = false
 
 local function copy(source, dest)
@@ -34,28 +35,15 @@ local function exec(args, quiet)
   end
 end
 
-local function help()
-  print("Commands:");
-  print("  non init PROJECT_NAME  # initializes new project with specified PROJECT_NAME in this directory")
-  print("  non run PLATFORM       # start your application for specified PLATFORM")
-  print("  non pack PLATFORM      # package your application for PLATFORM")
-  print("  non clean              # clean temporary data for your project")
-  print("  non update             # update your project's runtime version and dependencies")
-  print("  non version            # print current compiler version");
-  print("")
-  print("PLATFORM can be 'desktop', 'android' or 'ios' (default 'desktop')")
-  os.exit(-1)
-end
-
 local function mkex(file)
   fs.chmod(workingPath..file, "777")
 end
 
 local function read(file)
-    local f = io.open(file, "rb")
-    local content = f:read("*all")
-    f:close()
-    return content
+  local f = io.open(file, "rb")
+  local content = f:read("*all")
+  f:close()
+  return content
 end
 
 local function version()
@@ -63,8 +51,13 @@ local function version()
 end
 
 local function check(msg, normal)
-  if arg[1] ~= "init" and arg[1] ~= "help" and not fs.exists(workingPath.."config.yml") then
+  if arg[1] ~= "new" and not fs.exists(workingPath..configFile) then
     print("No project found.")
+    os.exit(-1)
+  end
+
+  if arg[1] == "new" and fs.exists(workingPath..configFile) then
+    print("Project already exists.")
     os.exit(-1)
   end
 
@@ -73,7 +66,11 @@ local function check(msg, normal)
   end
 
   print(msg)
-  if fs.exists(workingPath..tempPath) then return end
+
+  if fs.exists(workingPath..tempPath) then
+    return
+  end
+
   copy("core", tempPath)
   copy("res", tempPath.."res")
   copy("src/build/classes", tempPath.."shared/precompiled")
@@ -82,8 +79,22 @@ local function check(msg, normal)
   needsClean = true
 end
 
-if arg[1] == "pack" then
-  check("Packaging your application")
+local function help()
+  print("Commands:");
+  print("  non new PROJECT_NAME   # initializes new project with specified PROJECT_NAME")
+  print("  non run PLATFORM       # start your application for specified PLATFORM")
+  print("  non build PLATFORM     # build your application for PLATFORM")
+  print("  non clean              # clean temporary data for your project")
+  print("  non update             # update your project's runtime version and dependencies")
+  print("  non version            # print current compiler version")
+  print("")
+  print("PLATFORM can be 'desktop', 'android' or 'ios' (default 'desktop')")
+  os.exit(-1)
+end
+
+if arg[1] == "build" then
+  check("Building your project")
+
   if #arg < 2 or arg[2] == "desktop" then
     exec("update updateDesktop desktop:dist")
   elseif arg[2] == "android" then
@@ -94,7 +105,8 @@ if arg[1] == "pack" then
     help()
   end
 elseif arg[1] == "run" then
-  check("Starting your application")
+  check("Starting your project")
+
   if #arg < 2 or arg[2] == "desktop" then
     exec("update updateDesktop desktop:run")
   elseif arg[2] == "android" then
@@ -104,24 +116,28 @@ elseif arg[1] == "run" then
   else
     help()
   end
-elseif arg[1] == "init" then
-  check("Initializing new project")
-  if #arg < 2 then
-    exec("init")
-  else
-    exec("init -PinitName=\""..arg[2].."\"")
+elseif arg[1] == "new" then
+  check("Creating new project")
+  local projname = "My Project"
+
+  if #arg > 1 then
+    projname = arg[2]
   end
+
+  exec("init -PinitName=\""..projname.."\"")
 elseif arg[1] == "clean" then
   check("Cleaning your project's temporary data")
   exec("clean")
 elseif arg[1] == "update" then
   check("Checking your project's runtime")
-  local curversion = read(workingPath..tempPath.."VERSION")
-  if not version() == curversion then
+  local projversion = read(workingPath..tempPath.."VERSION")
+  local curversion = version()
+
+  if not curversion == projversion then
     fs.delete(workingPath..tempPath)
-    check("Updating your project's runtime to "..version(), true)
+    check("Updating your project's runtime to "..curversion, true)
   else
-    check("You are using latest runtime.", true)
+    print("You are using latest runtime.")
   end
 elseif arg[1] == "version" then
   print(version())
