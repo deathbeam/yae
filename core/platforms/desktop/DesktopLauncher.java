@@ -29,9 +29,9 @@ public class DesktopLauncher {
         Map config;
         
         try {
-            config = (Map<String, Object>)yaml.load(DesktopLauncher.class.getResourceAsStream("/non/config.yml"));
+            config = (Map<String, Object>)yaml.load(DesktopLauncher.class.getResourceAsStream("/non/project.yml"));
         } catch (Exception e) {
-            config = (Map<String, Object>)yaml.load(new FileInputStream(new File("non/config.yml")));
+            config = (Map<String, Object>)yaml.load(new FileInputStream(new File("non/project.yml")));
         }
         
         cfg.title = (String)config.get("name");

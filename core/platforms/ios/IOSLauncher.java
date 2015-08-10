@@ -22,9 +22,9 @@ public class IOSLauncher extends IOSApplication.Delegate {
         Map config;
         
         try {
-            config = (Map<String, Object>)yaml.load(IOSLauncher.class.getResourceAsStream("/non/config.yml"));
+            config = (Map<String, Object>)yaml.load(IOSLauncher.class.getResourceAsStream("/non/project.yml"));
         } catch (Exception e) {
-            config = (Map<String, Object>)yaml.load(new FileInputStream(new File("non/config.yml")));
+            config = (Map<String, Object>)yaml.load(new FileInputStream(new File("non/project.yml")));
         } catch (FileNotFoundException e) {
             System.err.println(e.getMessage());
             System.exit(-1);

@@ -16,7 +16,7 @@ public class AndroidLauncher extends AndroidApplication {
         AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
 
         try {
-            Map config = (Map<String, Object>)new Yaml().load(getAssets().open("non/config.yml"));
+            Map config = (Map<String, Object>)new Yaml().load(getAssets().open("non/project.yml"));
             initialize(new NonVM(config), cfg);
         } catch (IOException e) {
             System.err.println(e.getMessage());

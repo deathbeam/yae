@@ -171,7 +171,7 @@ public class NonVM implements ApplicationListener, InputProcessor, ResourceFinde
             lua = JsePlatform.standardGlobals();
             lua.get("package").set("path", "?.lua;?/init.lua");
             lua.set("non", LuaValue.tableOf());
-            lua.get("non").set("config", convertConfig(config));
+            lua.get("non").set("project", convertConfig(config));
             
             lua.set("print", new VarArgFunction() { @Override public LuaValue invoke(Varargs args) {
                 StringBuffer s = new StringBuffer();

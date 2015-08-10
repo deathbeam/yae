@@ -6,7 +6,7 @@ local workingPath = fs.current_dir().."/"
 local enginePath = debug.getinfo(1,"S").source:match("(.*/)"):sub(2, -5)
 local gradlew = cfg.platforms.windows and "gradlew" or "./gradlew"
 local tempPath = ".non/"
-local configFile = "config.yml"
+local configFile = "project.yml"
 local needsClean = false
 
 local function copy(source, dest)
