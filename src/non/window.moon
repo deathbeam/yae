@@ -4,9 +4,9 @@
 -------------------------------------------------------------------------------
 -- @module non.window
 
-import config, java from non
+import project, java from non
 Gdx = java.require "com.badlogic.gdx.Gdx"
-windowTitle = config.name
+windowTitle = project.name
 
 ---
 -- Converts a number from pixels to density-independent units. 
@@ -27,7 +27,7 @@ fromPixels = (px, py) ->
   px / scale
 
 ---
--- Gets a list of supported display modes. 
+-- Gets a list of supported display modes.
 -- @treturn table modes A table of width/height pairs.
 -- (Note that this may not be in order.)
 -- @usage
@@ -42,7 +42,7 @@ getDisplayModes = ->
   modes
 
 ---
--- Gets the display mode and properties of the window. 
+-- Gets the display mode and properties of the window.
 -- @treturn number width Window width
 -- @treturn number height Window height
 -- @treturn number fullscreen True if window is fullscreen
@@ -52,7 +52,7 @@ getMode = ->
   getWidth!, getHeight!, isFullscreen!
 
 ---
--- Gets the height of the window. 
+-- Gets the height of the window.
 -- @treturn number The height of the window.
 -- @usage
 -- height = non.window.getHeight!
@@ -62,7 +62,7 @@ getHeight = ->
 ---
 -- Gets the DPI scale factor associated with the window. In Mac OS X with the
 -- window in a retina screen and the highdpi window flag enabled this will be
--- 2.0, otherwise it will be 1.0. 
+-- 2.0, otherwise it will be 1.0.
 -- @treturn number The pixel scale factor associated with the window.
 -- @usage
 -- scale = non.window.getPixelScale!
@@ -78,7 +78,7 @@ getTitle = ->
   windowTitle
 
 ---
--- Gets the width of the window. 
+-- Gets the width of the window.
 -- @treturn number The width of the window.
 -- @usage
 -- width = non.window.getWidth!
@@ -96,7 +96,7 @@ isFullscreen = ->
 ---
 -- Enters or exits fullscreen. The display to use when entering fullscreen is
 -- chosen based on which display the window is currently in, if multiple
--- monitors are connected. 
+-- monitors are connected.
 -- @bool fullscreen Whether to enter or exit fullscreen mode.
 -- @usage
 -- non.window.setFullscreen fullscreen
@@ -123,7 +123,7 @@ setTitle = (title) ->
   Gdx.graphics\setTitle windowTitle
 
 ---
--- Converts a number from density-independent units to pixels. 
+-- Converts a number from density-independent units to pixels.
 -- @number x The x-axis value of a coordinate in density-independent units to
 -- convert to pixels.
 -- @number y The y-axis value of a coordinate in density-independent units to

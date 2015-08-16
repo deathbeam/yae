@@ -2,7 +2,6 @@ package %PACKAGE%.ios;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.Map;
 import org.yaml.snakeyaml.Yaml;
 import org.robovm.apple.foundation.NSAutoreleasePool;
@@ -18,24 +17,27 @@ public class IOSLauncher extends IOSApplication.Delegate {
         IOSApplicationConfiguration cfg = new IOSApplicationConfiguration();
         cfg.orientationLandscape = true;
         cfg.orientationPortrait = true;
-        
+
+        Yaml yaml = new Yaml();
         Map config;
-        
+
         try {
             config = (Map<String, Object>)yaml.load(IOSLauncher.class.getResourceAsStream("/non/project.yml"));
-        } catch (Exception e) {
-            config = (Map<String, Object>)yaml.load(new FileInputStream(new File("non/project.yml")));
-        } catch (FileNotFoundException e) {
-            System.err.println(e.getMessage());
-            System.exit(-1);
-            return null;
+        } catch (Exception e1) {
+            try {
+                config = (Map<String, Object>)yaml.load(new FileInputStream(new File("non/project.yml")));
+            } catch (Exception e2) {
+                System.err.println(e2.getMessage());
+                System.exit(-1);
+                return null;
+            }
         }
-        
+
         if (config.containsKey("window")) {
             Map window = (Map<String, Object>)config.get("window");
             if (window.containsKey("orientation")) {
                 String orientation = (String)window.get("orientation");
-                
+
                 if (orientation.equals("portrait")) {
                     cfg.orientationLandscape = false;
                     cfg.orientationPortrait = true;
@@ -48,7 +50,7 @@ public class IOSLauncher extends IOSApplication.Delegate {
                 }
             }
         }
-        
+
         return new IOSApplication(new NonVM(config), cfg);
     }
 
