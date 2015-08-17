@@ -9,7 +9,7 @@
 
 An engine you can use to make games in **MoonScript**. It's free, open-source, and works on **Windows**, **Mac OS X**, **Linux**, **Android**, **iOS** and **Ouya**.
 
-<br/><br/><br/><br/>
+<br clear="both"/>
 
 ### Installation
 
