@@ -1,7 +1,7 @@
 # Yet Another Engine
 
 <img src="http://yae.io/img/yae.jpg"
- alt="Yae logo" title="Yae from Ganbare Goemon" align="left" width="250px"/>
+ alt="Yae logo" title="Yae from Ganbare Goemon" align="left" vspace="40" width="250px"/>
 
 > **Kaizo**: Oh! Even someone with a tender face like yours has a great weapon like that! It doesn't fit someone like you!  
 > **Yae**: Eh? This bazooka?  
