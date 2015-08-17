@@ -13,8 +13,6 @@ An engine you can use to make games in **MoonScript**. It's free, open-source, a
 
 ### Installation
 
-You will need to have [JDK 7+](http://www.oracle.com/technetwork/java/javase/downloads/index.html) installed. Then you can install NÖN as rock ([LuaRocks](https://luarocks.org/) required)
-
 ```
 luarocks install --server=http://luarocks.org/dev yae
 ```
