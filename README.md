@@ -1,7 +1,7 @@
 # Yet Another Engine
 
 <img src="http://yae.io/img/yae.jpg"
- alt="Yae logo" title="The man himself" align="left" style="padding-right:20px" width="250px"/>
+ alt="Yae logo" title="Yae from Ganbare Goemon" align="left" width="250px"/>
 
 > **Kaizo**: Oh! Even someone with a tender face like yours has a great weapon like that! It doesn't fit someone like you!  
 > **Yae**: Eh? This bazooka?  
@@ -11,7 +11,7 @@ An engine you can use to make games in **MoonScript**. It's free, open-source, a
 
 [![Build Status](https://travis-ci.org/yaedev/yae.png)](https://travis-ci.org/yaedev/yae) [![Join the chat at https://gitter.im/yaedev/yae](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/yaedev/yae?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-<br style="clear: both"/>
+<br/><br/>
 
 ### Installation
 
