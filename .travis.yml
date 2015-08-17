@@ -12,6 +12,6 @@ install:
 jdk: oraclejdk7
 
 script:
-  - non new "My Game"
-  - non build desktop
-  - non build android
+  - yae new "My Game"
+  - yae build desktop
+  - yae build android

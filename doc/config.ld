@@ -1,5 +1,5 @@
-project = "NÖN"
-title = "NÖN Documentation"
+project = "Yae"
+title = "Yae documentation"
 description = [[
   Game engine for MoonScript, in MoonScript<br/>
   <small>Open Source. Windows, Mac OS X, Linux, Android, iOS and Ouya.</small>
@@ -11,32 +11,32 @@ style = true
 readme = '../README.md'
 
 file = {
-  '../src/non/accelerometer.moon',
-  '../src/non/audio.moon',
-  '../src/non/compass.moon',
-  '../src/non/filesystem.moon',
-  '../src/non/graphics.moon',
-  '../src/non/java.moon',
-  '../src/non/keyboard.moon',
-  '../src/non/mouse.moon',
-  '../src/non/system.moon',
-  '../src/non/timer.moon',
-  '../src/non/touch.moon',
-  '../src/non/window.moon',
-  '../src/non/objects/File.moon',
-  '../src/non/objects/Font.moon',
-  '../src/non/objects/Image.moon',
-  '../src/non/objects/Quad.moon',
-  '../src/non/objects/Source.moon'
+  '../src/yae/accelerometer.moon',
+  '../src/yae/audio.moon',
+  '../src/yae/compass.moon',
+  '../src/yae/filesystem.moon',
+  '../src/yae/graphics.moon',
+  '../src/yae/java.moon',
+  '../src/yae/keyboard.moon',
+  '../src/yae/mouse.moon',
+  '../src/yae/system.moon',
+  '../src/yae/timer.moon',
+  '../src/yae/touch.moon',
+  '../src/yae/window.moon',
+  '../src/yae/objects/File.moon',
+  '../src/yae/objects/Font.moon',
+  '../src/yae/objects/Image.moon',
+  '../src/yae/objects/Quad.moon',
+  '../src/yae/objects/Source.moon'
 }
 
 examples = {
-  '../src/non/constants/aligns.moon',
-  '../src/non/constants/blendmodes.moon',
-  '../src/non/constants/buttons.moon',
-  '../src/non/constants/filters.moon',
-  '../src/non/constants/formats.moon',
-  '../src/non/constants/keys.moon',
-  '../src/non/constants/shapetypes.moon',
-  '../src/non/constants/wraps.moon'
+  '../src/yae/constants/aligns.moon',
+  '../src/yae/constants/blendmodes.moon',
+  '../src/yae/constants/buttons.moon',
+  '../src/yae/constants/filters.moon',
+  '../src/yae/constants/formats.moon',
+  '../src/yae/constants/keys.moon',
+  '../src/yae/constants/shapetypes.moon',
+  '../src/yae/constants/wraps.moon'
 }

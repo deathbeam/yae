@@ -8,17 +8,17 @@ import org.yaml.snakeyaml.Yaml;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import non.NonVM;
+import yae.YaeVM;
 
 public class DesktopLauncher {
     @SuppressWarnings("unchecked")
     public static void main (String[] args) {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-        cfg.addIcon("non/icon-256.png", Files.FileType.Internal);
-        cfg.addIcon("non/icon-192.png", Files.FileType.Internal);
-        cfg.addIcon("non/icon-64.png", Files.FileType.Internal);
-        cfg.addIcon("non/icon-32.png", Files.FileType.Internal);
-        cfg.addIcon("non/icon-16.png", Files.FileType.Internal);
+        cfg.addIcon("yae/icon-256.png", Files.FileType.Internal);
+        cfg.addIcon("yae/icon-192.png", Files.FileType.Internal);
+        cfg.addIcon("yae/icon-64.png", Files.FileType.Internal);
+        cfg.addIcon("yae/icon-32.png", Files.FileType.Internal);
+        cfg.addIcon("yae/icon-16.png", Files.FileType.Internal);
         cfg.forceExit = false;
         cfg.width = 800;
         cfg.height = 600;
@@ -28,10 +28,10 @@ public class DesktopLauncher {
         Map config;
 
         try {
-            config = (Map<String, Object>)yaml.load(DesktopLauncher.class.getResourceAsStream("/non/project.yml"));
+            config = (Map<String, Object>)yaml.load(DesktopLauncher.class.getResourceAsStream("/yae/project.yml"));
         } catch (Exception e1) {
             try {
-                config = (Map<String, Object>)yaml.load(new FileInputStream(new File("non/project.yml")));
+                config = (Map<String, Object>)yaml.load(new FileInputStream(new File("yae/project.yml")));
             } catch (Exception e2) {
                 System.err.println(e2.getMessage());
                 System.exit(-1);
@@ -49,6 +49,6 @@ public class DesktopLauncher {
             if (window.containsKey("fullscreen")) cfg.fullscreen = (Boolean)window.get("fullscreen");
         }
 
-        new LwjglApplication(new NonVM(config), cfg);
+        new LwjglApplication(new YaeVM(config), cfg);
     }
 }

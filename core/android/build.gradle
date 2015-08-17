@@ -13,12 +13,12 @@ android {
 
         instrumentTest.setRoot('tests')
     }
-    
+
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 20
     }
-    
+
     try {
         signingConfigs {
             releaseSigning {
@@ -28,7 +28,7 @@ android {
                 keyPassword cfg.sign.keyPassword
             }
         }
-    } catch(e) { 
+    } catch(e) {
         signingConfigs {
             releaseSigning {
                 storeFile file("../debug.keystore")
@@ -79,20 +79,20 @@ task copyNatives << {
 
 task dist(dependsOn: assembleRelease) << {
     file("../../build/android").mkdirs()
-    
+
     copy {
         from "build/outputs/apk"
         into "../../build/android"
         include "android-release-unsigned.apk"
         rename "android-release-unsigned.apk", "${appName} v${version}.apk"
     }
-    
+
     copy {
         from "build/outputs/apk"
         into "../../build/android"
         include "android-release.apk"
         rename "android-release.apk", "${appName} v${version}.apk"
     }
-    
+
     println "You can find ${appName} v${version}.apk in /build/android"
 }

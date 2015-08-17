@@ -16,11 +16,11 @@ task dist(type: Jar, dependsOn: classes) {
     from files(sourceSets.main.output.resourcesDir)
     from {configurations.compile.collect {zipTree(it)}}
     from files(project.assetsDir);
- 
+
     manifest {
         attributes 'Main-Class': project.mainClassName
     }
-    
+
     doLast {
         try {
             ant.signjar(
@@ -31,16 +31,16 @@ task dist(type: Jar, dependsOn: classes) {
                 keypass: cfg.sign.keyPassword
             )
         } catch(e) { }
-        
+
         file("../../build/desktop").mkdirs()
-        
+
         copy {
             from "build/libs"
             into "../../build/desktop"
             include "desktop-${version}.jar"
             rename "desktop-${version}.jar", "${appName} v${version}.jar"
         }
-        
+
         println "You can find ${appName} v${version}.jar in /build/desktop"
     }
 }

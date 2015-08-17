@@ -9,7 +9,7 @@ import org.robovm.apple.uikit.UIApplication;
 import org.yaml.snakeyaml.Yaml;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplication;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
-import non.NonVM;
+import yae.YaeVM;
 
 public class IOSLauncher extends IOSApplication.Delegate {
     @SuppressWarnings("unchecked")
@@ -22,10 +22,10 @@ public class IOSLauncher extends IOSApplication.Delegate {
         Map config;
 
         try {
-            config = (Map<String, Object>)yaml.load(IOSLauncher.class.getResourceAsStream("/non/project.yml"));
+            config = (Map<String, Object>)yaml.load(IOSLauncher.class.getResourceAsStream("/yae/project.yml"));
         } catch (Exception e1) {
             try {
-                config = (Map<String, Object>)yaml.load(new FileInputStream(new File("non/project.yml")));
+                config = (Map<String, Object>)yaml.load(new FileInputStream(new File("yae/project.yml")));
             } catch (Exception e2) {
                 System.err.println(e2.getMessage());
                 System.exit(-1);
@@ -51,7 +51,7 @@ public class IOSLauncher extends IOSApplication.Delegate {
             }
         }
 
-        return new IOSApplication(new NonVM(config), cfg);
+        return new IOSApplication(new YaeVM(config), cfg);
     }
 
     public static void main(String[] args) {

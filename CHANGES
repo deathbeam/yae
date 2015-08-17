@@ -31,6 +31,7 @@
 - now console output is sexy and colorful
 - renamed "config.yml" to "project.yml"
 - renamed non.config to non.project
+- renamed engine to "Yae"
 
 [0.6.4]
 - fixed documentation for methods that returns multiple values
@@ -415,7 +416,7 @@
 - fixed calling of resize event
 
 [0.2.0]
-- added asynchromous resource loading (use non.load(assets) event) along with super sexy loading screen what is displayed during loading 
+- added asynchromous resource loading (use non.load(assets) event) along with super sexy loading screen what is displayed during loading
 - removed TILED support (sorry, I wasn´t able to make it work with normal coordinate system)
 - totally revamped graphics, audio and input plugin
 - added some new events for handling input

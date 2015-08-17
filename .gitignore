@@ -13,7 +13,6 @@ build/
 local.properties
 .gradle-app.setting
 *.class
-bin/non.jar
 
 ## OS Specific
 .DS_Store
