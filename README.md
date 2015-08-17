@@ -9,9 +9,7 @@
 
 An engine you can use to make games in **MoonScript**. It's free, open-source, and works on **Windows**, **Mac OS X**, **Linux**, **Android**, **iOS** and **Ouya**.
 
-[![Build Status](https://travis-ci.org/yaedev/yae.png)](https://travis-ci.org/yaedev/yae) [![Join the chat at https://gitter.im/yaedev/yae](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/yaedev/yae?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-<br/><br/>
+<br/><br/><br/><br/>
 
 ### Installation
 
