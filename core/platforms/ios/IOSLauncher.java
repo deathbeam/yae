@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.util.Map;
 import org.yaml.snakeyaml.Yaml;
 import org.robovm.apple.foundation.NSAutoreleasePool;
+import org.robovm.apple.foundation.NSBundle;
 import org.robovm.apple.uikit.UIApplication;
 import org.yaml.snakeyaml.Yaml;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplication;
@@ -22,15 +23,11 @@ public class IOSLauncher extends IOSApplication.Delegate {
         Map config;
 
         try {
-            config = (Map<String, Object>)yaml.load(IOSLauncher.class.getResourceAsStream("/yae/project.yml"));
-        } catch (Exception e1) {
-            try {
-                config = (Map<String, Object>)yaml.load(new FileInputStream(new File("yae/project.yml")));
-            } catch (Exception e2) {
-                System.err.println(e2.getMessage());
-                System.exit(-1);
-                return null;
-            }
+            config = (Map<String, Object>)yaml.load(new FileInputStream(new File(NSBundle.getMainBundle().getBundlePath(), "yae/project.yml")));
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            System.exit(-1);
+            return null;
         }
 
         if (config.containsKey("window")) {
