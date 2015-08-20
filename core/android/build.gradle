@@ -51,8 +51,11 @@ tasks.withType(com.android.build.gradle.tasks.PackageApplication) { pkgTask ->
     pkgTask.jniFolders.add(new File(projectDir, 'libs'))
 }
 
-task run(type: Exec) {
-    commandLine "${sdkDir}/platform-tools/adb", 'shell', 'am', 'start', '-n', "${packageName}.android/${packageName}.android.AndroidLauncher"
+task run(type: Exec, dependsOn: ':android:installDebug') {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    def sdkDir = properties.getProperty('sdk.dir')
+    commandLine sdkDir + "/platform-tools/adb", 'shell', 'am', 'start', '-n', "${packageName}.android/${packageName}.android.AndroidLauncher"
 }
 
 task copyNatives() << {
