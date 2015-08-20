@@ -221,7 +221,7 @@ task updateIOS() << {
     copyAndResizeIcon("ios/data/Icon-72@2x.png", 144)
 }
 
-task updateAssets(type: Sync) << {
+task updateAssets(type: Sync) {
     from "../assets"
     into "android/assets"
     exclude "**/*.moon"

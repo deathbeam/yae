@@ -51,12 +51,11 @@ tasks.withType(com.android.build.gradle.tasks.PackageApplication) { pkgTask ->
     pkgTask.jniFolders.add(new File(projectDir, 'libs'))
 }
 
-task run(type: Exec) << {
-    def adb = sdkDir + "/platform-tools/adb"
-    commandLine "$adb", 'shell', 'am', 'start', '-n', "${packageName}.android/${packageName}.android.AndroidLauncher"
+task run(type: Exec) {
+    commandLine "${sdkDir}/platform-tools/adb", 'shell', 'am', 'start', '-n', "${packageName}.android/${packageName}.android.AndroidLauncher"
 }
 
-task copyNatives << {
+task copyNatives() << {
     file("libs/armeabi/").mkdirs();
     file("libs/armeabi-v7a/").mkdirs();
     file("libs/x86/").mkdirs();
