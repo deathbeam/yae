@@ -26,7 +26,7 @@ luarocks install --server=http://luarocks.org/dev yae
 
 ### Documentation
 
-The [Wiki](https://github.com/yaedev/yae/wiki) contains all the information you'll need to write game. You can contribute to the Wiki directly here on GitHub! Also, you can view [online documentation](http://yae.io/doc/) generated right from the source code.
+The [Wiki](https://github.com/yaedev/yae/wiki) contains all the information you'll need to write game. You can contribute to the Wiki directly here on GitHub! Also, you can view [online documentation](https://yae.io/doc/) generated right from the source code.
 
 ### Reporting Issues
 
