@@ -1,3 +1,5 @@
+import com.badlogicgames.packr.Packr
+
 sourceCompatibility = 1.7
 sourceSets.main.java.srcDirs = [ "src/" ]
 
@@ -9,6 +11,47 @@ task run(type: JavaExec, dependsOn: classes) {
     classpath = sourceSets.main.runtimeClasspath
     standardInput = System.in
     workingDir = project.assetsDir
+}
+
+task windows() << {
+  def config = new Packr.Config()
+  config.platform = Packr.Platform.windows
+  config.jdk = "https://bitbucket.org/alexkasko/openjdk-unofficial-builds/downloads/openjdk-1.7.0-u80-unofficial-windows-i586-image.zip"
+  config.executable = appName
+  config.jar = file("build/libs/desktop-${version}.jar").absolutePath
+  config.mainClass = project.mainClassName
+  config.vmArgs = ["-Xmx1G"]
+  config.outDir = file("../../build/windows").absolutePath
+  new Packr().pack(config)
+}
+
+task linux() << {
+  def config = new Packr.Config()
+  config.platform = Packr.Platform.linux32
+  config.jdk = "https://bitbucket.org/alexkasko/openjdk-unofficial-builds/downloads/openjdk-1.7.0-u80-unofficial-linux-i586-image.zip"
+  config.executable = appName
+  config.jar = file("build/libs/desktop-${version}.jar").absolutePath
+  config.mainClass = project.mainClassName
+  config.vmArgs = ["-Xmx1G"]
+  config.outDir = file("../../build/linux32").absolutePath
+  new Packr().pack(config)
+
+  config.platform = Packr.Platform.linux64
+  config.jdk = "https://bitbucket.org/alexkasko/openjdk-unofficial-builds/downloads/openjdk-1.7.0-u80-unofficial-linux-amd64-image.zip"
+  config.outDir = file("../../build/linux64").absolutePath
+  new Packr().pack(config)
+}
+
+task mac() << {
+  def config = new Packr.Config()
+  config.platform = Packr.Platform.mac
+  config.jdk = "https://bitbucket.org/alexkasko/openjdk-unofficial-builds/downloads/openjdk-1.7.0-u80-unofficial-macosx-x86_64-image.zip"
+  config.executable = appName
+  config.jar = file("build/libs/desktop-${version}.jar").absolutePath
+  config.mainClass = project.mainClassName
+  config.vmArgs = ["-Xmx1G"]
+  config.outDir = file("../../build/mac").absolutePath + "/${appName} v${version}.app"
+  new Packr().pack(config)
 }
 
 task dist(type: Jar, dependsOn: classes) {

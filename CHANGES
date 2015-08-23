@@ -32,6 +32,8 @@
 - renamed "config.yml" to "project.yml"
 - renamed non.config to non.project
 - renamed engine to "Yae"
+- added support for building native Windows, Linux and Mac OS X executables
+- updated LibGDX, RoboVM, Android and YAML runtime to latest versions
 
 [0.6.4]
 - fixed documentation for methods that returns multiple values

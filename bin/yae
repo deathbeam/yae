@@ -81,15 +81,17 @@ end
 
 local function help()
   print("Commands:");
-  print("  yae new PROJECT_NAME   # initializes new project with specified PROJECT_NAME")
-  print("  yae run PLATFORM       # start your application for specified PLATFORM")
-  print("  yae build PLATFORM     # build your application for PLATFORM")
-  print("  yae clean              # clean temporary data for your project")
-  print("  yae update             # update your project's runtime version and dependencies")
-  print("  yae forceupdate        # force update your project's runtime version and dependencies")
-  print("  yae version            # print current compiler version")
+  print("  yae new PROJECT           # initializes new project")
+  print("  yae run PLATFORM          # start your project")
+  print("  yae build BUILD_PLATFORM  # build your project")
+  print("  yae clean                 # clean temporary data for your project")
+  print("  yae update                # update your project's runtime version and dependencies")
+  print("  yae forceupdate           # force update your project's runtime version and dependencies")
+  print("  yae version               # print current compiler version")
   print("")
+  print("PROJECT can be any string (default 'My Project')")
   print("PLATFORM can be 'desktop', 'android' or 'ios' (default 'desktop')")
+  print("BUILD_PLATFORM can be 'desktop', 'android' 'ios', 'windows', 'linux', 'mac' (default 'desktop')")
   os.exit(-1)
 end
 
@@ -102,6 +104,12 @@ if arg[1] == "build" then
     exec("update updateAndroid android:dist")
   elseif arg[2] == "ios" then
     exec("update updateIOS ios:dist")
+  elseif arg[2] == "windows" then
+    exec("update updateDesktop desktop:dist desktop:windows")
+  elseif arg[2] == "linux" then
+    exec("update updateDesktop desktop:dist desktop:linux")
+  elseif arg[2] == "mac" then
+    exec("update updateDesktop desktop:dist desktop:mac")
   else
     help()
   end
