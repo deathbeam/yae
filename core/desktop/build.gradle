@@ -19,7 +19,7 @@ task windows() << {
   config.jdk = "https://bitbucket.org/alexkasko/openjdk-unofficial-builds/downloads/openjdk-1.7.0-u80-unofficial-windows-i586-image.zip"
   config.executable = appName
   config.jar = file("build/libs/desktop-${version}.jar").absolutePath
-  config.mainClass = project.mainClassName
+  config.mainClass = project.mainClassName.replace(".", "/")
   config.vmArgs = ["-Xmx1G"]
   config.outDir = file("../../build/windows").absolutePath
   new Packr().pack(config)
@@ -31,7 +31,7 @@ task linux() << {
   config.jdk = "https://bitbucket.org/alexkasko/openjdk-unofficial-builds/downloads/openjdk-1.7.0-u80-unofficial-linux-i586-image.zip"
   config.executable = appName
   config.jar = file("build/libs/desktop-${version}.jar").absolutePath
-  config.mainClass = project.mainClassName
+  config.mainClass = project.mainClassName.replace(".", "/")
   config.vmArgs = ["-Xmx1G"]
   config.outDir = file("../../build/linux32").absolutePath
   new Packr().pack(config)
@@ -48,7 +48,7 @@ task mac() << {
   config.jdk = "https://bitbucket.org/alexkasko/openjdk-unofficial-builds/downloads/openjdk-1.7.0-u80-unofficial-macosx-x86_64-image.zip"
   config.executable = appName
   config.jar = file("build/libs/desktop-${version}.jar").absolutePath
-  config.mainClass = project.mainClassName
+  config.mainClass = project.mainClassName.replace(".", "/")
   config.vmArgs = ["-Xmx1G"]
   config.outDir = file("../../build/mac").absolutePath + "/${appName} v${version}.app"
   new Packr().pack(config)
