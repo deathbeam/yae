@@ -157,7 +157,8 @@ task init() << {
         "version: 1.0"
 
     new File("../project.yml").text = text
-    copy { from "res"; into "../assets"; include "main.moon"; include ".gitignore" }
+    copy { from "res"; into "../assets"; include "main.moon" }
+    copy { from "res"; into "../"; include ".gitignore" }
 }
 
 task rocks() << {
