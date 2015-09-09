@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+<url>
+  <loc>http://yae.io/</loc>
+  <lastmod>2015-08-20T16:01:38+00:00</lastmod>
+</url>
+<url>
+  <loc>http://yae.io/doc/index.html</loc>
+  <lastmod>2015-08-20T16:01:38+00:00</lastmod>
+</url>
+<url>
+  <loc>http://yae.io/doc/modules/yae.accelerometer.html</loc>
+  <lastmod>2015-08-20T16:01:38+00:00</lastmod>
+</url>
+<url>
+  <loc>http://yae.io/doc/modules/yae.audio.html</loc>
+  <lastmod>2015-08-20T16:01:38+00:00</lastmod>
+</url>
+<url>
+  <loc>http://yae.io/doc/modules/yae.compass.html</loc>
+  <lastmod>2015-08-20T16:01:38+00:00</lastmod>
+</url>
+<url>
+  <loc>http://yae.io/doc/modules/yae.filesystem.html</loc>
+  <lastmod>2015-08-20T16:01:38+00:00</lastmod>
+</url>
+<url>
+  <loc>http://yae.io/doc/modules/yae.graphics.html</loc>
+  <lastmod>2015-08-20T16:01:38+00:00</lastmod>
+</url>
+<url>
+  <loc>http://yae.io/doc/modules/yae.java.html</loc>
+  <lastmod>2015-08-20T16:01:38+00:00</lastmod>
+</url>
+<url>
+  <loc>http://yae.io/doc/modules/yae.keyboard.html</loc>
+  <lastmod>2015-08-20T16:01:38+00:00</lastmod>
+</url>
+<url>
+  <loc>http://yae.io/doc/modules/yae.mouse.html</loc>
+  <lastmod>2015-08-20T16:01:38+00:00</lastmod>
+</url>
+<url>
+  <loc>http://yae.io/doc/modules/yae.system.html</loc>
+  <lastmod>2015-08-20T16:01:38+00:00</lastmod>
+</url>
+<url>
+  <loc>http://yae.io/doc/modules/yae.timer.html</loc>
+  <lastmod>2015-08-20T16:01:38+00:00</lastmod>
+</url>
+<url>
+  <loc>http://yae.io/doc/modules/yae.touch.html</loc>
+  <lastmod>2015-08-20T16:01:38+00:00</lastmod>
+</url>
+<url>
+  <loc>http://yae.io/doc/modules/yae.window.html</loc>
+  <lastmod>2015-08-20T16:01:38+00:00</lastmod>
+</url>
+<url>
+  <loc>http://yae.io/doc/classes/yae.File.html</loc>
+  <lastmod>2015-08-20T16:01:38+00:00</lastmod>
+</url>
+<url>
+  <loc>http://yae.io/doc/classes/yae.Font.html</loc>
+  <lastmod>2015-08-20T16:01:38+00:00</lastmod>
+</url>
+<url>
+  <loc>http://yae.io/doc/classes/yae.Image.html</loc>
+  <lastmod>2015-08-20T16:01:38+00:00</lastmod>
+</url>
+<url>
+  <loc>http://yae.io/doc/classes/yae.Quad.html</loc>
+  <lastmod>2015-08-20T16:01:38+00:00</lastmod>
+</url>
+<url>
+  <loc>http://yae.io/doc/classes/yae.Source.html</loc>
+  <lastmod>2015-08-20T16:01:38+00:00</lastmod>
+</url>
+<url>
+  <loc>http://yae.io/doc/topics/README.md.html</loc>
+  <lastmod>2015-08-20T16:01:38+00:00</lastmod>
+</url>
+<url>
+  <loc>http://yae.io/doc/examples/aligns.moon.html</loc>
+  <lastmod>2015-08-20T16:01:38+00:00</lastmod>
+</url>
+<url>
+  <loc>http://yae.io/doc/examples/blendmodes.moon.html</loc>
+  <lastmod>2015-08-20T16:01:38+00:00</lastmod>
+</url>
+<url>
+  <loc>http://yae.io/doc/examples/buttons.moon.html</loc>
+  <lastmod>2015-08-20T16:01:38+00:00</lastmod>
+</url>
+<url>
+  <loc>http://yae.io/doc/examples/filters.moon.html</loc>
+  <lastmod>2015-08-20T16:01:38+00:00</lastmod>
+</url>
+<url>
+  <loc>http://yae.io/doc/examples/formats.moon.html</loc>
+  <lastmod>2015-08-20T16:01:38+00:00</lastmod>
+</url>
+<url>
+  <loc>http://yae.io/doc/examples/keys.moon.html</loc>
+  <lastmod>2015-08-20T16:01:38+00:00</lastmod>
+</url>
+<url>
+  <loc>http://yae.io/doc/examples/shapetypes.moon.html</loc>
+  <lastmod>2015-08-20T16:01:38+00:00</lastmod>
+</url>
+<url>
+  <loc>http://yae.io/doc/examples/wraps.moon.html</loc>
+  <lastmod>2015-08-20T16:01:38+00:00</lastmod>
+</url>
+<url>
+  <loc>http://yae.io/doc/</loc>
+  <lastmod>2015-08-20T16:01:38+00:00</lastmod>
+</url>
+</urlset>

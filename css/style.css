@@ -1,0 +1,50 @@
+pre {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  line-height: 125%;
+}
+
+.jumbotron img {
+  width: 100%;
+}
+
+.container, .jumbotron .container {
+  width: 100%!Important;
+  max-width: 100%!Important;
+  padding-top: 15px;
+}
+
+.jumbotron .container {
+  padding-top: 0;
+}
+
+.jumbotron {
+  margin: 0!Important;
+  padding: 0!Important;
+  background: transparent;
+  border-bottom: 1px solid #c6c6c6;
+}
+
+.jumbotron img {
+  margin-left: -15px;
+}
+
+.header-nav {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+}
+
+.footer {
+  padding-top: 30px;
+  padding-bottom: 45px;
+  text-align: center;
+}
+
+@media print {
+  a[href]:after {
+    content: none !important;
+  }
+}
