@@ -173,7 +173,7 @@ task update(dependsOn: [':rocks', ':updateAssets']) << {
     def src = ".."
     def res = "res"
     def out = "android/assets/yae"
-    def files = [ "bg.png", "font.ttf" ]
+    def files = [ "icon.png", "font.ttf" ]
 
     for(fl in files) {
         if (file("$src/$fl").exists()) {

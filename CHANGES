@@ -1,6 +1,6 @@
 [0.7.0]
 - changed API to be mostly LÖVE compatible
-- renamed background.png to bg.png
+- removed bg.png
 - removed bar.png
 - removed logo.png
 - added AOT Lua and MoonScript compiler
@@ -8,7 +8,7 @@
 - drastically improved view transformations performance
 - drastically reduced build times
 - new default font (Roboto Light)
-- new icon (Acolyte)
+- new icon (Moon)
 - changed default textures filter to "Linear" (was "Nearest" before)
 - to simplify engine removed option to change native iOS splash before actual NON splash
 - reduced log output to console
@@ -34,6 +34,7 @@
 - renamed engine to "Yae"
 - added support for building native Windows, Linux and Mac OS X executables
 - updated LibGDX, RoboVM, Android and YAML runtime to latest versions
+- simplified loading screen, now it displays the icon in center and text under it
 
 [0.6.4]
 - fixed documentation for methods that returns multiple values
