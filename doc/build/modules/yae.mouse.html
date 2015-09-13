@@ -1,0 +1,391 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Yae documentation</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>Yae</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../modules/yae.accelerometer.html">yae.accelerometer</a></li>
+  <li><a href="../modules/yae.audio.html">yae.audio</a></li>
+  <li><a href="../modules/yae.compass.html">yae.compass</a></li>
+  <li><a href="../modules/yae.filesystem.html">yae.filesystem</a></li>
+  <li><a href="../modules/yae.graphics.html">yae.graphics</a></li>
+  <li><a href="../modules/yae.java.html">yae.java</a></li>
+  <li><a href="../modules/yae.keyboard.html">yae.keyboard</a></li>
+  <li><strong>yae.mouse</strong></li>
+  <li><a href="../modules/yae.system.html">yae.system</a></li>
+  <li><a href="../modules/yae.timer.html">yae.timer</a></li>
+  <li><a href="../modules/yae.touch.html">yae.touch</a></li>
+  <li><a href="../modules/yae.window.html">yae.window</a></li>
+</ul>
+<h2>Classes</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../classes/yae.File.html">yae.File</a></li>
+  <li><a href="../classes/yae.Font.html">yae.Font</a></li>
+  <li><a href="../classes/yae.Image.html">yae.Image</a></li>
+  <li><a href="../classes/yae.Quad.html">yae.Quad</a></li>
+  <li><a href="../classes/yae.Source.html">yae.Source</a></li>
+</ul>
+<h2>Topics</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../topics/README.md.html">README</a></li>
+</ul>
+<h2>Examples</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../examples/aligns.moon.html">aligns.moon</a></li>
+  <li><a href="../examples/blendmodes.moon.html">blendmodes.moon</a></li>
+  <li><a href="../examples/buttons.moon.html">buttons.moon</a></li>
+  <li><a href="../examples/filters.moon.html">filters.moon</a></li>
+  <li><a href="../examples/formats.moon.html">formats.moon</a></li>
+  <li><a href="../examples/keys.moon.html">keys.moon</a></li>
+  <li><a href="../examples/shapetypes.moon.html">shapetypes.moon</a></li>
+  <li><a href="../examples/wraps.moon.html">wraps.moon</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>yae.mouse</code></h1>
+<p>User input from mouse (works only on desktop devices).</p>
+<p> Mouse and touch input allow the user to point at things on the screen. Both
+ input mechanisms report the location of interaction as 2D coordinates
+ relative to the upper left corner of the screen, with the positive x-axis
+ pointing to the right and the y-axis pointing downward.</p>
+
+<p> Mouse input comes with additional information, namely which button was
+ pressed. Most mice feature a left and a right mouse button as well as a
+ middle mouse button. In addition, there's often a scroll wheel which can be
+ used for zooming or scrolling in many applications.</p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#getX">getX ()</a></td>
+	<td class="summary">Get X coordinate of mouse cursor position</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getY">getY ()</a></td>
+	<td class="summary">Get Y coordinate of mouse cursor position</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getPosition">getPosition ()</a></td>
+	<td class="summary">Get mouse cursor position</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#isDown">isDown (buttons)</a></td>
+	<td class="summary">Check if one of specified buttons is down</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#isVisible">isVisible ()</a></td>
+	<td class="summary">Check if mouse cursor is visible</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#setPosition">setPosition (x, y)</a></td>
+	<td class="summary">Set mouse cursor position</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#setVisible">setVisible (visible)</a></td>
+	<td class="summary">Change mouse cursor visibility</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#setX">setX (x)</a></td>
+	<td class="summary">Set X coordinate of mouse cursor position</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#setY">setY (y)</a></td>
+	<td class="summary">Set Y coordinate of mouse cursor position</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "getX"></a>
+    <strong>getX ()</strong>
+    </dt>
+    <dd>
+    Get X coordinate of mouse cursor position
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        x coordinate
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">x = yae.mouse.getX!</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "getY"></a>
+    <strong>getY ()</strong>
+    </dt>
+    <dd>
+    Get Y coordinate of mouse cursor position
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        y coordinate
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">y = yae.mouse.getY!</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "getPosition"></a>
+    <strong>getPosition ()</strong>
+    </dt>
+    <dd>
+    Get mouse cursor position
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">number</span></span>
+        x coordinate of the cursor</li>
+        <li>
+           <span class="types"><span class="type">number</span></span>
+        y coordinate of the cursor</li>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">x, y = yae.mouse.getPosition!</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "isDown"></a>
+    <strong>isDown (buttons)</strong>
+    </dt>
+    <dd>
+    Check if one of specified buttons is down
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">buttons</span>
+            <span class="types"><span class="type">...</span></span>
+         buttons to check for
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">bool</span></span>
+        true one of buttons is pressed
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../examples/buttons.moon.html#">buttons.moon</a>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">isDown = yae.mouse.isDown <span class="string">"left"</span>, <span class="string">"right"</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "isVisible"></a>
+    <strong>isVisible ()</strong>
+    </dt>
+    <dd>
+    Check if mouse cursor is visible
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">bool</span></span>
+        true if cursor is visible
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">visible = yae.mouse.isVisible!</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "setPosition"></a>
+    <strong>setPosition (x, y)</strong>
+    </dt>
+    <dd>
+    Set mouse cursor position
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">x</span>
+            <span class="types"><span class="type">number</span></span>
+         the x coordinate
+        </li>
+        <li><span class="parameter">y</span>
+            <span class="types"><span class="type">number</span></span>
+         the y coordinate
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">yae.mouse.setPosition <span class="number">10</span>, <span class="number">10</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "setVisible"></a>
+    <strong>setVisible (visible)</strong>
+    </dt>
+    <dd>
+    Change mouse cursor visibility
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">visible</span>
+            <span class="types"><span class="type">bool</span></span>
+         set if cursor will be visible or not
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">yae.mouse.setVisible <span class="keyword">true</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "setX"></a>
+    <strong>setX (x)</strong>
+    </dt>
+    <dd>
+    Set X coordinate of mouse cursor position
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">x</span>
+            <span class="types"><span class="type">number</span></span>
+         the x coordinate
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">yae.mouse.setX <span class="number">10</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "setY"></a>
+    <strong>setY (y)</strong>
+    </dt>
+    <dd>
+    Set Y coordinate of mouse cursor position
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">y</span>
+            <span class="types"><span class="type">number</span></span>
+         the y coordinate
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">yae.mouse.setY <span class="number">10</span></pre>
+    </ul>
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
+<i style="float:right;">Last updated 2015-09-13 13:30:50 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

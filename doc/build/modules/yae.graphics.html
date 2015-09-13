@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Yae documentation</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>Yae</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../modules/yae.accelerometer.html">yae.accelerometer</a></li>
+  <li><a href="../modules/yae.audio.html">yae.audio</a></li>
+  <li><a href="../modules/yae.compass.html">yae.compass</a></li>
+  <li><a href="../modules/yae.filesystem.html">yae.filesystem</a></li>
+  <li><strong>yae.graphics</strong></li>
+  <li><a href="../modules/yae.java.html">yae.java</a></li>
+  <li><a href="../modules/yae.keyboard.html">yae.keyboard</a></li>
+  <li><a href="../modules/yae.mouse.html">yae.mouse</a></li>
+  <li><a href="../modules/yae.system.html">yae.system</a></li>
+  <li><a href="../modules/yae.timer.html">yae.timer</a></li>
+  <li><a href="../modules/yae.touch.html">yae.touch</a></li>
+  <li><a href="../modules/yae.window.html">yae.window</a></li>
+</ul>
+<h2>Classes</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../classes/yae.File.html">yae.File</a></li>
+  <li><a href="../classes/yae.Font.html">yae.Font</a></li>
+  <li><a href="../classes/yae.Image.html">yae.Image</a></li>
+  <li><a href="../classes/yae.Quad.html">yae.Quad</a></li>
+  <li><a href="../classes/yae.Source.html">yae.Source</a></li>
+</ul>
+<h2>Topics</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../topics/README.md.html">README</a></li>
+</ul>
+<h2>Examples</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../examples/aligns.moon.html">aligns.moon</a></li>
+  <li><a href="../examples/blendmodes.moon.html">blendmodes.moon</a></li>
+  <li><a href="../examples/buttons.moon.html">buttons.moon</a></li>
+  <li><a href="../examples/filters.moon.html">filters.moon</a></li>
+  <li><a href="../examples/formats.moon.html">formats.moon</a></li>
+  <li><a href="../examples/keys.moon.html">keys.moon</a></li>
+  <li><a href="../examples/shapetypes.moon.html">shapetypes.moon</a></li>
+  <li><a href="../examples/wraps.moon.html">wraps.moon</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>yae.graphics</code></h1>
+<p>Provides simple way to load, render and draw things.</p>
+<p> The primary responsibility for the yae.graphics module is the drawing of
+ lines, shapes, text, Images and other Drawable objects onto the screen. Its
+ secondary responsibilities include loading external files (including Images
+ and Fonts) into memory and managing screen geometry.
+ Yae's coordinate system is rooted in the upper-left corner of the screen,
+ which is at location (0, 0). The x axis is horizontal: larger values are
+ further to the right. The y axis is vertical: larger values are further
+ towards the bottom.</p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#arc">arc (mode, x, y)</a></td>
+	<td class="summary">Draws a filled or unfilled arc at position (x, y).</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "arc"></a>
+    <strong>arc (mode, x, y)</strong>
+    </dt>
+    <dd>
+    Draws a filled or unfilled arc at position (x, y).  The arc is drawn from
+ angle1 to angle2 in radians.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">mode</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         How to draw the arc.
+        </li>
+        <li><span class="parameter">x</span>
+            <span class="types"><span class="type">number</span></span>
+         The position of the center along x-axis.
+        </li>
+        <li><span class="parameter">y</span>
+            <span class="types"><span class="type">number</span></span>
+         The position of the center along y-axis.
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">
+ <span class="comment">-- Drawing half a circle
+</span> yae.draw = -&gt;
+   yae.graphics.arc( <span class="string">"fill"</span>, <span class="number">400</span>, <span class="number">300</span>, <span class="number">100</span>, <span class="number">0</span>, <span class="global">math</span>.pi )
+
+ <span class="comment">-- Drawing Pacman
+</span> pacwidth = <span class="global">math</span>.pi / <span class="number">6</span> <span class="comment">-- size of his mouth
+</span> yae.draw = -&gt;
+   yae.graphics.setColor( <span class="number">255</span>, <span class="number">255</span>, <span class="number">0</span> ) <span class="comment">-- pacman needs to be yellow
+</span>   yae.graphics.arc( <span class="string">"fill"</span>, <span class="number">400</span>, <span class="number">300</span>, <span class="number">100</span>, pacwidth, (<span class="global">math</span>.pi * <span class="number">2</span>) - pacwidth )</pre>
+    </ul>
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
+<i style="float:right;">Last updated 2015-09-13 13:30:50 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Yae documentation</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>Yae</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../modules/yae.accelerometer.html">yae.accelerometer</a></li>
+  <li><a href="../modules/yae.audio.html">yae.audio</a></li>
+  <li><a href="../modules/yae.compass.html">yae.compass</a></li>
+  <li><a href="../modules/yae.filesystem.html">yae.filesystem</a></li>
+  <li><a href="../modules/yae.graphics.html">yae.graphics</a></li>
+  <li><a href="../modules/yae.java.html">yae.java</a></li>
+  <li><a href="../modules/yae.keyboard.html">yae.keyboard</a></li>
+  <li><a href="../modules/yae.mouse.html">yae.mouse</a></li>
+  <li><a href="../modules/yae.system.html">yae.system</a></li>
+  <li><strong>yae.timer</strong></li>
+  <li><a href="../modules/yae.touch.html">yae.touch</a></li>
+  <li><a href="../modules/yae.window.html">yae.window</a></li>
+</ul>
+<h2>Classes</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../classes/yae.File.html">yae.File</a></li>
+  <li><a href="../classes/yae.Font.html">yae.Font</a></li>
+  <li><a href="../classes/yae.Image.html">yae.Image</a></li>
+  <li><a href="../classes/yae.Quad.html">yae.Quad</a></li>
+  <li><a href="../classes/yae.Source.html">yae.Source</a></li>
+</ul>
+<h2>Topics</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../topics/README.md.html">README</a></li>
+</ul>
+<h2>Examples</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../examples/aligns.moon.html">aligns.moon</a></li>
+  <li><a href="../examples/blendmodes.moon.html">blendmodes.moon</a></li>
+  <li><a href="../examples/buttons.moon.html">buttons.moon</a></li>
+  <li><a href="../examples/filters.moon.html">filters.moon</a></li>
+  <li><a href="../examples/formats.moon.html">formats.moon</a></li>
+  <li><a href="../examples/keys.moon.html">keys.moon</a></li>
+  <li><a href="../examples/shapetypes.moon.html">shapetypes.moon</a></li>
+  <li><a href="../examples/wraps.moon.html">wraps.moon</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>yae.timer</code></h1>
+<p>Provides high-resolution timing functionality.</p>
+<p>
+
+</p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#getDelta">getDelta ()</a></td>
+	<td class="summary">Returns the time between the last two frames.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getFPS">getFPS ()</a></td>
+	<td class="summary">Returns the current frames per second.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getTime">getTime ()</a></td>
+	<td class="summary">Returns the value of a timer with an unspecified starting time.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#sleep">sleep (seconds)</a></td>
+	<td class="summary">Pauses the current thread for the specified amount of time.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "getDelta"></a>
+    <strong>getDelta ()</strong>
+    </dt>
+    <dd>
+    Returns the time between the last two frames.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        The time passed (in seconds).
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">dt = yae.timer.getDelta!</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "getFPS"></a>
+    <strong>getFPS ()</strong>
+    </dt>
+    <dd>
+    Returns the current frames per second.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        The current FPS.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">fps = yae.timer.getFPS!</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "getTime"></a>
+    <strong>getTime ()</strong>
+    </dt>
+    <dd>
+    Returns the value of a timer with an unspecified starting time.  This
+ function should only be used to calculate differences between points
+ in time, as the starting time of the timer is unknown.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        The time in seconds.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">time = yae.timer.getTime!</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "sleep"></a>
+    <strong>sleep (seconds)</strong>
+    </dt>
+    <dd>
+    Pauses the current thread for the specified amount of time.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">seconds</span>
+            <span class="types"><span class="type">number</span></span>
+         Seconds to sleep for.
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">yae.timer.sleep seconds</pre>
+    </ul>
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
+<i style="float:right;">Last updated 2015-09-13 13:30:50 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

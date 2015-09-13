@@ -1,0 +1,503 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Yae documentation</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>Yae</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../modules/yae.accelerometer.html">yae.accelerometer</a></li>
+  <li><a href="../modules/yae.audio.html">yae.audio</a></li>
+  <li><a href="../modules/yae.compass.html">yae.compass</a></li>
+  <li><a href="../modules/yae.filesystem.html">yae.filesystem</a></li>
+  <li><a href="../modules/yae.graphics.html">yae.graphics</a></li>
+  <li><a href="../modules/yae.java.html">yae.java</a></li>
+  <li><a href="../modules/yae.keyboard.html">yae.keyboard</a></li>
+  <li><a href="../modules/yae.mouse.html">yae.mouse</a></li>
+  <li><a href="../modules/yae.system.html">yae.system</a></li>
+  <li><a href="../modules/yae.timer.html">yae.timer</a></li>
+  <li><a href="../modules/yae.touch.html">yae.touch</a></li>
+  <li><strong>yae.window</strong></li>
+</ul>
+<h2>Classes</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../classes/yae.File.html">yae.File</a></li>
+  <li><a href="../classes/yae.Font.html">yae.Font</a></li>
+  <li><a href="../classes/yae.Image.html">yae.Image</a></li>
+  <li><a href="../classes/yae.Quad.html">yae.Quad</a></li>
+  <li><a href="../classes/yae.Source.html">yae.Source</a></li>
+</ul>
+<h2>Topics</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../topics/README.md.html">README</a></li>
+</ul>
+<h2>Examples</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../examples/aligns.moon.html">aligns.moon</a></li>
+  <li><a href="../examples/blendmodes.moon.html">blendmodes.moon</a></li>
+  <li><a href="../examples/buttons.moon.html">buttons.moon</a></li>
+  <li><a href="../examples/filters.moon.html">filters.moon</a></li>
+  <li><a href="../examples/formats.moon.html">formats.moon</a></li>
+  <li><a href="../examples/keys.moon.html">keys.moon</a></li>
+  <li><a href="../examples/shapetypes.moon.html">shapetypes.moon</a></li>
+  <li><a href="../examples/wraps.moon.html">wraps.moon</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>yae.window</code></h1>
+<p>Provides an interface for modifying and retrieving information about the
+ program's window.</p>
+<p>
+
+</p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#fromPixels">fromPixels (px, py)</a></td>
+	<td class="summary">Converts a number from pixels to density-independent units.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getDisplayModes">getDisplayModes ()</a></td>
+	<td class="summary">Gets a list of supported display modes.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getMode">getMode ()</a></td>
+	<td class="summary">Gets the display mode and properties of the window.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getHeight">getHeight ()</a></td>
+	<td class="summary">Gets the height of the window.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getPixelScale">getPixelScale ()</a></td>
+	<td class="summary">Gets the DPI scale factor associated with the window.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getTitle">getTitle ()</a></td>
+	<td class="summary">Gets the window title.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getWidth">getWidth ()</a></td>
+	<td class="summary">Gets the width of the window.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#isFullscreen">isFullscreen ()</a></td>
+	<td class="summary">Gets whether the window is fullscreen.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#setFullscreen">setFullscreen (fullscreen)</a></td>
+	<td class="summary">Enters or exits fullscreen.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#setMode">setMode (width, height[, fullscreen=false])</a></td>
+	<td class="summary">Sets the display mode and properties of the window.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#setTitle">setTitle (title)</a></td>
+	<td class="summary">Sets the window title.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#toPixels">toPixels (x, y)</a></td>
+	<td class="summary">Converts a number from density-independent units to pixels.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "fromPixels"></a>
+    <strong>fromPixels (px, py)</strong>
+    </dt>
+    <dd>
+    Converts a number from pixels to density-independent units.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">px</span>
+            <span class="types"><span class="type">number</span></span>
+         The x-axis value of a coordinate in pixels.
+        </li>
+        <li><span class="parameter">py</span>
+            <span class="types"><span class="type">number</span></span>
+         The y-axis value of a coordinate in pixels.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">number</span></span>
+        x The converted x-axis value of the coordinate, in
+ density-independent units.</li>
+        <li>
+           <span class="types"><span class="type">number</span></span>
+        y The converted y-axis value of the coordinate, in
+ density-independent units.</li>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">x, y = yae.window.fromPixels px, py</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "getDisplayModes"></a>
+    <strong>getDisplayModes ()</strong>
+    </dt>
+    <dd>
+    Gets a list of supported display modes.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+        modes A table of width/height pairs.
+ (Note that this may not be in order.)
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">modes = yae.window.getDisplayModes!</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "getMode"></a>
+    <strong>getMode ()</strong>
+    </dt>
+    <dd>
+    Gets the display mode and properties of the window.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">number</span></span>
+        width Window width</li>
+        <li>
+           <span class="types"><span class="type">number</span></span>
+        height Window height</li>
+        <li>
+           <span class="types"><span class="type">number</span></span>
+        fullscreen True if window is fullscreen</li>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">width, height, fullscreen = yae.window.getMode!</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "getHeight"></a>
+    <strong>getHeight ()</strong>
+    </dt>
+    <dd>
+    Gets the height of the window.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        The height of the window.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">height = yae.window.getHeight!</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "getPixelScale"></a>
+    <strong>getPixelScale ()</strong>
+    </dt>
+    <dd>
+    Gets the DPI scale factor associated with the window.  In Mac OS X with the
+ window in a retina screen and the highdpi window flag enabled this will be
+ 2.0, otherwise it will be 1.0.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        The pixel scale factor associated with the window.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">scale = yae.window.getPixelScale!</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "getTitle"></a>
+    <strong>getTitle ()</strong>
+    </dt>
+    <dd>
+    Gets the window title.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+        The current window title.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">title = yae.window.getTitle!</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "getWidth"></a>
+    <strong>getWidth ()</strong>
+    </dt>
+    <dd>
+    Gets the width of the window.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        The width of the window.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">width = yae.window.getWidth!</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "isFullscreen"></a>
+    <strong>isFullscreen ()</strong>
+    </dt>
+    <dd>
+    Gets whether the window is fullscreen.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">bool</span></span>
+        True if the window is fullscreen, false otherwise.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">fullscreen = yae.window.isFullscreen!</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "setFullscreen"></a>
+    <strong>setFullscreen (fullscreen)</strong>
+    </dt>
+    <dd>
+    Enters or exits fullscreen.  The display to use when entering fullscreen is
+ chosen based on which display the window is currently in, if multiple
+ monitors are connected.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">fullscreen</span>
+            <span class="types"><span class="type">bool</span></span>
+         Whether to enter or exit fullscreen mode.
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">yae.window.setFullscreen fullscreen</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "setMode"></a>
+    <strong>setMode (width, height[, fullscreen=false])</strong>
+    </dt>
+    <dd>
+    Sets the display mode and properties of the window.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">width</span>
+            <span class="types"><span class="type">number</span></span>
+         Display width.
+        </li>
+        <li><span class="parameter">height</span>
+            <span class="types"><span class="type">number</span></span>
+         Display height.
+        </li>
+        <li><span class="parameter">fullscreen</span>
+            <span class="types"><span class="type">bool</span></span>
+         Fullscreen (true), or windowed (false).
+         (<em>default</em> false)
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">yae.window.setMode width, height, fullscreen</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "setTitle"></a>
+    <strong>setTitle (title)</strong>
+    </dt>
+    <dd>
+    Sets the window title.  Do not works on Android and iOS.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">title</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         The new window title.
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">yae.window.setTitle title</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "toPixels"></a>
+    <strong>toPixels (x, y)</strong>
+    </dt>
+    <dd>
+    Converts a number from density-independent units to pixels.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">x</span>
+            <span class="types"><span class="type">number</span></span>
+         The x-axis value of a coordinate in density-independent units to
+ convert to pixels.
+        </li>
+        <li><span class="parameter">y</span>
+            <span class="types"><span class="type">number</span></span>
+         The y-axis value of a coordinate in density-independent units to
+ convert to pixels.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">number</span></span>
+        px The converted x-axis value of the coordinate, in pixels.</li>
+        <li>
+           <span class="types"><span class="type">number</span></span>
+        py The converted y-axis value of the coordinate, in pixels.</li>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">px, py = yae.window.toPixels x, y</pre>
+    </ul>
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
+<i style="float:right;">Last updated 2015-09-13 13:30:50 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

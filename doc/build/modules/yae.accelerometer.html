@@ -1,0 +1,261 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Yae documentation</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>Yae</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><strong>yae.accelerometer</strong></li>
+  <li><a href="../modules/yae.audio.html">yae.audio</a></li>
+  <li><a href="../modules/yae.compass.html">yae.compass</a></li>
+  <li><a href="../modules/yae.filesystem.html">yae.filesystem</a></li>
+  <li><a href="../modules/yae.graphics.html">yae.graphics</a></li>
+  <li><a href="../modules/yae.java.html">yae.java</a></li>
+  <li><a href="../modules/yae.keyboard.html">yae.keyboard</a></li>
+  <li><a href="../modules/yae.mouse.html">yae.mouse</a></li>
+  <li><a href="../modules/yae.system.html">yae.system</a></li>
+  <li><a href="../modules/yae.timer.html">yae.timer</a></li>
+  <li><a href="../modules/yae.touch.html">yae.touch</a></li>
+  <li><a href="../modules/yae.window.html">yae.window</a></li>
+</ul>
+<h2>Classes</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../classes/yae.File.html">yae.File</a></li>
+  <li><a href="../classes/yae.Font.html">yae.Font</a></li>
+  <li><a href="../classes/yae.Image.html">yae.Image</a></li>
+  <li><a href="../classes/yae.Quad.html">yae.Quad</a></li>
+  <li><a href="../classes/yae.Source.html">yae.Source</a></li>
+</ul>
+<h2>Topics</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../topics/README.md.html">README</a></li>
+</ul>
+<h2>Examples</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../examples/aligns.moon.html">aligns.moon</a></li>
+  <li><a href="../examples/blendmodes.moon.html">blendmodes.moon</a></li>
+  <li><a href="../examples/buttons.moon.html">buttons.moon</a></li>
+  <li><a href="../examples/filters.moon.html">filters.moon</a></li>
+  <li><a href="../examples/formats.moon.html">formats.moon</a></li>
+  <li><a href="../examples/keys.moon.html">keys.moon</a></li>
+  <li><a href="../examples/shapetypes.moon.html">shapetypes.moon</a></li>
+  <li><a href="../examples/wraps.moon.html">wraps.moon</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>yae.accelerometer</code></h1>
+<p>User input from accelerometer (works only on mobile devices).</p>
+<p> An accelerometer measures the acceleration of a device on three axes. From
+ this acceleration one can derive the tilt or orientation of the device.</p>
+
+<p> Acceleration is measured in meters per second per second (m/s²). If an axis
+ is pointing straight towards the center of the earth, its acceleration will
+ be roughly -10 m/s². If it is pointing in the opposite direction, the
+ acceleration will be 10 m/s².</p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#getX">getX ()</a></td>
+	<td class="summary">Get current X relative to the center of earth</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getY">getY ()</a></td>
+	<td class="summary">Get current Y relative to the center of earth</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getZ">getZ ()</a></td>
+	<td class="summary">Get current Z relative to the center of earth</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getRotation">getRotation ()</a></td>
+	<td class="summary">Get current X, Y and Z relative to the center of earth</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#isAvailable">isAvailable ()</a></td>
+	<td class="summary">Checks if accelerometer is available on current device</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "getX"></a>
+    <strong>getX ()</strong>
+    </dt>
+    <dd>
+    Get current X relative to the center of earth
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        x value of accelerometer
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">x = yae.accelerometer.getX!</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "getY"></a>
+    <strong>getY ()</strong>
+    </dt>
+    <dd>
+    Get current Y relative to the center of earth
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        y value of accelerometer
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">y = yae.accelerometer.getY!</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "getZ"></a>
+    <strong>getZ ()</strong>
+    </dt>
+    <dd>
+    Get current Z relative to the center of earth
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        z value of accelerometer
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">z = yae.accelerometer.getZ!</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "getRotation"></a>
+    <strong>getRotation ()</strong>
+    </dt>
+    <dd>
+    Get current X, Y and Z relative to the center of earth
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">number</span></span>
+        x value of accelerometer</li>
+        <li>
+           <span class="types"><span class="type">number</span></span>
+        y value of accelerometer</li>
+        <li>
+           <span class="types"><span class="type">number</span></span>
+        z value of accelerometer</li>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">x, y, z = yae.accelerometer.getRotation!</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "isAvailable"></a>
+    <strong>isAvailable ()</strong>
+    </dt>
+    <dd>
+    Checks if accelerometer is available on current device
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">bool</span></span>
+        True if accelerometer is available
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">available = yae.accelerometer.isAvailable!</pre>
+    </ul>
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
+<i style="float:right;">Last updated 2015-09-13 13:30:50 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

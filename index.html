@@ -3,8 +3,8 @@
 <head>
     <script type="text/javascript">
         var host = "yae.io";
-	if ((host == window.location.host) && (window.location.protocol != "https:"))
-	    window.location.protocol = "https";
+  if ((host == window.location.host) && (window.location.protocol != "https:"))
+      window.location.protocol = "https";
     </script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -43,43 +43,26 @@
 </head>
 <body style="max-width: 960px; margin: auto;">
     <header class="jumbotron">
-	  <div class="container">
-	  <div class="row" style="position: relative">
-		<div class="col-sm-4 col-xs-12">
-      <img src="img/yae.svg" onerror="this.src='img/yae.jpg'"nalt="Yae from Ganbare Goemon" class="hidden-xs">
-		</div>
-        <div class="col-sm-8 col-xs-12" style="padding: 80px">
-          <h2><b>Y</b>et <b>A</b>nother <b>E</b>ngine</h2>
-          <p>cross-platform game engine for moonscript, in moonscript</p>
-	    </div>
-		<nav></nav><ul class="list-inline h3 header-nav">
-		  <li>
-			<a href="https://github.com/yaedev/yae/wiki/Getting-started" target="_blank">install</a>
-		  </li>
-		  <li>
-			<a href="https://github.com/yaedev/yae" target="_blank">source </a>
-		  </li>
-		  <li>
-			<a href="https://github.com/yaedev/yae/wiki" target="_blank">wiki</a>
-		  </li>
-		  <li>
-			<a href="doc/index.html">docs</a>
-		  </li>
-		  <li>
-			<a href="https://gitter.im/yaedev/yae" target="_blank">chat</a>
-		  </li>
-		</ul>
-		</nav>
-	  </div>
-    </div>
-	</header>
-	  <div class="container">
-		<div class="row">
-		  <div class="col-sm-7">
+      <div class="container">
+        <div class="text-center" style="position: relative">
+          <img src="img/logo.gif" alt="Moon">
+          <ul class="list-inline h3 header-nav">
+            <li><a href="https://github.com/nondev/yae/wiki/Getting-started" target="_blank">install</a></li>
+            <li><a href="https://github.com/nondev/yae" target="_blank">source </a></li>
+            <li><a href="https://github.com/nondev/yae/wiki" target="_blank">wiki</a></li>
+            <li><a href="doc/index.html">docs</a></li>
+            <li><a href="https://gitter.im/nondev/yae" target="_blank">chat</a></li>
+          </ul>
+        </div>
+      </div>
+    </header>
+    <div class="container">
+    <div class="row">
+      <div class="col-sm-7">
         <p><b>Yae</b> is focusing on simplicity and transparency. Because of that it uses <a href="http://moonscript.org">MoonScript</a> as its scripting language. To add more transparency, Yae is also written in MoonScript, so you can have full understanding of what is engine doing by simply looking and source code you can understand.</p>
         <p><b>Yae</b> is thinking about developers in first place. To use Yae, only requirement is to have <a href="https://luarocks.org">LuaRocks</a> and <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">JDK</a> installed. No more tons of different tools just to package your project for other platforms. You can make games for Windows on Linux, for Linux on Windows, for Android on Mac and so on. You got the idea. Only limitation is that you cannot develop for iOS from other platform than Mac because of Apple limitations.
         <p><b>Yae</b> is free and open source, and this will never change. Also, to give developers full freedom, it is licensed under the <a href="https://en.wikipedia.org/wiki/MIT_License">MIT license</a>.</p>
-		</div>
+    </div>
 <div class="col-sm-5">
   <pre><span style="font-weight: bold">with</span> yae
   name <span style="font-weight: bold">=</span> <span style="font-weight: bold">.</span>project<span style="font-weight: bold">.</span>name
@@ -96,7 +79,7 @@
   <span style="font-weight: bold">.</span>quit <span style="font-weight: bold">=</span> <span style="color: #990000; font-weight: bold">-&gt;</span>
     <span style="color: #999999">print</span> <span style="color: #bb8844">&quot;Bye #{name}&quot;</span></pre></div>
 </div>
-		<hr/>
+    <hr/>
             <div class="row">
                 <div class="col-sm-4 col-xs-12">
                     <h3><i class="fa fa-fw fa-github"></i> Open Source</h3>
@@ -135,15 +118,15 @@
                     <p>Official Yae <a href="https://github.com/yaedev/yae-sublime">plugin for Sublime Text</a> allows you to develop your game in great IDE (integrated development enviroment) with build system support and autocompletions for entire Yae API.</p>
                 </div>
             </div>
-			<hr/>
-			<footer class="footer">
-		<p>Crafted with <i class="fa fa-fw fa-heart"></i> by <a href="http://deathbeam.github.io">Thomas Slusny</a></p>
-		<p>
-		  <a href="https://twitter.com" target="_blank">@_deathbeam</a> •
-		  <a href="http://deathbeam.itch.io/yae" target="_blank">itch.io</a> •
-		  <a href="http://www.indiedb.com/engines/yae" target="_blank">IndieDB</a>
-		</p>
-			</footer>
+      <hr/>
+      <footer class="footer">
+    <p>Crafted with <i class="fa fa-fw fa-heart"></i> by <a href="http://deathbeam.github.io">Thomas Slusny</a></p>
+    <p>
+      <a href="https://twitter.com" target="_blank">@_deathbeam</a> •
+      <a href="http://deathbeam.itch.io/yae" target="_blank">itch.io</a> •
+      <a href="http://www.indiedb.com/engines/yae" target="_blank">IndieDB</a>
+    </p>
+      </footer>
         </div>
     <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-55da39e3575a6187" async="async"></script>
     <script>

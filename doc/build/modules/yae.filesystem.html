@@ -1,0 +1,826 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Yae documentation</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>Yae</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../modules/yae.accelerometer.html">yae.accelerometer</a></li>
+  <li><a href="../modules/yae.audio.html">yae.audio</a></li>
+  <li><a href="../modules/yae.compass.html">yae.compass</a></li>
+  <li><strong>yae.filesystem</strong></li>
+  <li><a href="../modules/yae.graphics.html">yae.graphics</a></li>
+  <li><a href="../modules/yae.java.html">yae.java</a></li>
+  <li><a href="../modules/yae.keyboard.html">yae.keyboard</a></li>
+  <li><a href="../modules/yae.mouse.html">yae.mouse</a></li>
+  <li><a href="../modules/yae.system.html">yae.system</a></li>
+  <li><a href="../modules/yae.timer.html">yae.timer</a></li>
+  <li><a href="../modules/yae.touch.html">yae.touch</a></li>
+  <li><a href="../modules/yae.window.html">yae.window</a></li>
+</ul>
+<h2>Classes</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../classes/yae.File.html">yae.File</a></li>
+  <li><a href="../classes/yae.Font.html">yae.Font</a></li>
+  <li><a href="../classes/yae.Image.html">yae.Image</a></li>
+  <li><a href="../classes/yae.Quad.html">yae.Quad</a></li>
+  <li><a href="../classes/yae.Source.html">yae.Source</a></li>
+</ul>
+<h2>Topics</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../topics/README.md.html">README</a></li>
+</ul>
+<h2>Examples</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../examples/aligns.moon.html">aligns.moon</a></li>
+  <li><a href="../examples/blendmodes.moon.html">blendmodes.moon</a></li>
+  <li><a href="../examples/buttons.moon.html">buttons.moon</a></li>
+  <li><a href="../examples/filters.moon.html">filters.moon</a></li>
+  <li><a href="../examples/formats.moon.html">formats.moon</a></li>
+  <li><a href="../examples/keys.moon.html">keys.moon</a></li>
+  <li><a href="../examples/shapetypes.moon.html">shapetypes.moon</a></li>
+  <li><a href="../examples/wraps.moon.html">wraps.moon</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>yae.filesystem</code></h1>
+<p>Allows manipulation with files and directories.</p>
+<p> Yae applications run on three different platforms
+ * desktop systems (Windows, Linux, Mac OS X)
+ * Android
+ * and iOS.</p>
+
+<p> Each of these platforms handles file I/O a little differently.</p>
+
+<p> Each Yae file has a type which defines where the file is located.
+ The following table illustrates the availability and location of each file
+ type for each platform.</p>
+
+<p> <strong>Classpath</strong>
+ Classpath files are directly stored in your source folders. These get
+ packaged with your jars and are always <em>read-only</em>. They have their purpose,
+ but should be avoided if possible.</p>
+
+<p> <strong>Internal</strong>
+ Internal files are relative to the application’s <em>root</em> or <em>working</em>
+ directory on desktops and relative to the <em>assets</em> directory on Android.
+ These files are <em>read-only</em>. If a file can't be found on the internal storage,
+ the file module falls back to searching the file on the classpath. This file
+ type is default for Yae files.</p>
+
+<p> <strong>Local</strong>
+ Local files are stored relative to the application's <em>root</em> or <em>working</em>
+ directory on desktops and relative to the internal (private) storage of the
+ application on Android. Note that Local and internal are mostly the same on the
+ desktop.</p>
+
+<p> <strong>External</strong>
+ External files paths are relative to the
+ <a href="http =//developer.android.com/reference/android/os/Environment.html#getExternalStorageDirectory()">SD card root</a>
+ on Android and to the <a href="http =//www.roseindia.net/java/beginners/UserHomeExample.shtml">home directory</a>
+ of the current user on desktop systems.</p>
+
+<p> <strong>Absolute</strong>
+ Absolute files need to have their fully qualified paths specified. For the
+ sake of portability, this option must be used only when absolutely necessary.</p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#append">append (filename, text[, filetype="internal"])</a></td>
+	<td class="summary">Append data to an existing file.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#copy">copy (from_filename, to_filename[, from_filetype="internal"[, to_filetype="internal"]])</a></td>
+	<td class="summary">Copy file.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#createDirectory">createDirectory (filename[, filetype="internal"])</a></td>
+	<td class="summary">Creates a directory.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#exists">exists (filename[, filetype="internal"])</a></td>
+	<td class="summary">Check whether a file or directory exists.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getDirectoryItems">getDirectoryItems (filename[, filetype="internal"])</a></td>
+	<td class="summary">Returns a table with the names of files and subdirectories in the specified
+ path.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getExternalPath">getExternalPath ()</a></td>
+	<td class="summary">Get external storage path</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getLocalPath">getLocalPath ()</a></td>
+	<td class="summary">Get local storage path</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getWorkingPath">getWorkingPath ()</a></td>
+	<td class="summary">Get path to current directory</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getLastModified">getLastModified (filename[, filetype="internal"])</a></td>
+	<td class="summary">Gets the last modification time of a file.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getSize">getSize (filename[, filetype="internal"])</a></td>
+	<td class="summary">Gets the size in bytes of a file.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#isDirectory">isDirectory (filename[, filetype="internal"])</a></td>
+	<td class="summary">Check whether something is a directory.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#isFile">isFile (filename[, filetype="internal"])</a></td>
+	<td class="summary">Check whether something is a file.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#load">load (filename[, filetype="internal"])</a></td>
+	<td class="summary">Load a lua or moon file (but not run it)</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#move">move (from_filename, to_filename[, from_filetype="internal"[, to_filetype="internal"]])</a></td>
+	<td class="summary">Move file.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#newFile">newFile (filename[, filetype="internal"])</a></td>
+	<td class="summary">Creates a new File object.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#read">read (filename[, filetype="internal"])</a></td>
+	<td class="summary">Read the contents of a file</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#remove">remove (filename[, filetype="internal"])</a></td>
+	<td class="summary">Removes a file or directory.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#write">write (filename, text[, filetype="internal"])</a></td>
+	<td class="summary">Write data to an existing file.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "append"></a>
+    <strong>append (filename, text[, filetype="internal"])</strong>
+    </dt>
+    <dd>
+    Append data to an existing file.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">filename</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         The name (and path) of the file.
+        </li>
+        <li><span class="parameter">text</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         The string data to append to the file.
+        </li>
+        <li><span class="parameter">filetype</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         Type of the file
+         (<em>default</em> "internal")
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">yae.filesystem.append filename, text, filetype</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "copy"></a>
+    <strong>copy (from_filename, to_filename[, from_filetype="internal"[, to_filetype="internal"]])</strong>
+    </dt>
+    <dd>
+    Copy file.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">from_filename</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         The name (and path) of the source file.
+        </li>
+        <li><span class="parameter">to_filename</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         The name (and path) of the destination file.
+        </li>
+        <li><span class="parameter">from_filetype</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         Type of the source file
+         (<em>default</em> "internal")
+        </li>
+        <li><span class="parameter">to_filetype</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         Type of the destination file
+         (<em>default</em> "internal")
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">yae.filesystem.copy from_filename, to_filename, from_filetype, to_filetype</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "createDirectory"></a>
+    <strong>createDirectory (filename[, filetype="internal"])</strong>
+    </dt>
+    <dd>
+    Creates a directory.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">filename</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         The name (and path) of the file.
+        </li>
+        <li><span class="parameter">filetype</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         Type of the file
+         (<em>default</em> "internal")
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">yae.filesystem.createDirectory filename, filetype</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "exists"></a>
+    <strong>exists (filename[, filetype="internal"])</strong>
+    </dt>
+    <dd>
+    Check whether a file or directory exists.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">filename</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         The name (and path) of the file.
+        </li>
+        <li><span class="parameter">filetype</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         Type of the file
+         (<em>default</em> "internal")
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">bool</span></span>
+        True if there is a file or directory with the specified name.
+ False otherwise.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">exists = yae.filesystem.exists filename, filetype</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "getDirectoryItems"></a>
+    <strong>getDirectoryItems (filename[, filetype="internal"])</strong>
+    </dt>
+    <dd>
+    Returns a table with the names of files and subdirectories in the specified
+ path.  The table is not sorted in any way; the order is undefined.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">filename</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         The name (and path) of the file.
+        </li>
+        <li><span class="parameter">filetype</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         Type of the file
+         (<em>default</em> "internal")
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+        A sequence with the names of all files and subdirectories as
+ strings.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">items = yae.filesystem.getDirectoryItems filename, filetype</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "getExternalPath"></a>
+    <strong>getExternalPath ()</strong>
+    </dt>
+    <dd>
+    Get external storage path
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+        absolute path to external storage location
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">externalPath = yae.filesystem.getExternalPath!</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "getLocalPath"></a>
+    <strong>getLocalPath ()</strong>
+    </dt>
+    <dd>
+    Get local storage path
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+        absolute path to local storage location
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">localPath = yae.filesystem.getLocalPath!</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "getWorkingPath"></a>
+    <strong>getWorkingPath ()</strong>
+    </dt>
+    <dd>
+    Get path to current directory
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+        absolute path to current directory
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">workingPath = yae.filesystem.getWorkingPath!</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "getLastModified"></a>
+    <strong>getLastModified (filename[, filetype="internal"])</strong>
+    </dt>
+    <dd>
+    Gets the last modification time of a file.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">filename</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         The name (and path) of the file.
+        </li>
+        <li><span class="parameter">filetype</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         Type of the file
+         (<em>default</em> "internal")
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        The last modification time in seconds since the unix epoch
+ or nil on failure.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">lastModified = yae.filesystem.getLastModified filename, filetype</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "getSize"></a>
+    <strong>getSize (filename[, filetype="internal"])</strong>
+    </dt>
+    <dd>
+    Gets the size in bytes of a file.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">filename</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         The name (and path) of the file.
+        </li>
+        <li><span class="parameter">filetype</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         Type of the file
+         (<em>default</em> "internal")
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        The size in bytes of the file, or nil on failure.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">size = yae.filesystem.getSize filename, filetype</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "isDirectory"></a>
+    <strong>isDirectory (filename[, filetype="internal"])</strong>
+    </dt>
+    <dd>
+    Check whether something is a directory.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">filename</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         The name (and path) of the file.
+        </li>
+        <li><span class="parameter">filetype</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         Type of the file
+         (<em>default</em> "internal")
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">bool</span></span>
+        True if there is a directory with the specified name. False
+ otherwise.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">isDirectory = yae.filesystem.isDirectory filename, filetype</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "isFile"></a>
+    <strong>isFile (filename[, filetype="internal"])</strong>
+    </dt>
+    <dd>
+    Check whether something is a file.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">filename</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         The name (and path) of the file.
+        </li>
+        <li><span class="parameter">filetype</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         Type of the file
+         (<em>default</em> "internal")
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">bool</span></span>
+        True if there is a file with the specified name. False
+ otherwise.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">isFile = yae.filesystem.isFile filename, filetype</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "load"></a>
+    <strong>load (filename[, filetype="internal"])</strong>
+    </dt>
+    <dd>
+    Load a lua or moon file (but not run it)
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">filename</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         The name (and path) of the file.
+        </li>
+        <li><span class="parameter">filetype</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         Type of the file
+         (<em>default</em> "internal")
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">function</span></span>
+        The loaded chunk
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">
+ chunk = yae.filesystem.<span class="global">load</span> filename, filetype
+ result = chunk!</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "move"></a>
+    <strong>move (from_filename, to_filename[, from_filetype="internal"[, to_filetype="internal"]])</strong>
+    </dt>
+    <dd>
+    Move file.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">from_filename</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         The name (and path) of the source file.
+        </li>
+        <li><span class="parameter">to_filename</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         The name (and path) of the destination file.
+        </li>
+        <li><span class="parameter">from_filetype</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         Type of the source file
+         (<em>default</em> "internal")
+        </li>
+        <li><span class="parameter">to_filetype</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         Type of the destination file
+         (<em>default</em> "internal")
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">yae.filesystem.move from_filename, to_filename, from_filetype, to_filetype</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "newFile"></a>
+    <strong>newFile (filename[, filetype="internal"])</strong>
+    </dt>
+    <dd>
+    Creates a new File object.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">filename</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         The name (and path) of the file.
+        </li>
+        <li><span class="parameter">filetype</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         Type of the file
+         (<em>default</em> "internal")
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="../classes/yae.File.html">File</a></span>
+        The new File object.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "read"></a>
+    <strong>read (filename[, filetype="internal"])</strong>
+    </dt>
+    <dd>
+    Read the contents of a file
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">filename</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         The name (and path) of the file.
+        </li>
+        <li><span class="parameter">filetype</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         Type of the file
+         (<em>default</em> "internal")
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+        The file contents
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">contents = yae.filesystem.read filename, filetype</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "remove"></a>
+    <strong>remove (filename[, filetype="internal"])</strong>
+    </dt>
+    <dd>
+    Removes a file or directory.
+ Write data to an existing file.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">filename</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         The name (and path) of the file.
+        </li>
+        <li><span class="parameter">filetype</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         Type of the file
+         (<em>default</em> "internal")
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">yae.filesystem.remove filename, filetype</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "write"></a>
+    <strong>write (filename, text[, filetype="internal"])</strong>
+    </dt>
+    <dd>
+    Write data to an existing file.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">filename</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         The name (and path) of the file.
+        </li>
+        <li><span class="parameter">text</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         The string data to write to the file.
+        </li>
+        <li><span class="parameter">filetype</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         Type of the file
+         (<em>default</em> "internal")
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">yae.filesystem.write filename, text, filetype</pre>
+    </ul>
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
+<i style="float:right;">Last updated 2015-09-13 13:30:50 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

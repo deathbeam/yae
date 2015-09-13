@@ -1,0 +1,579 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Yae documentation</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>Yae</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Methods">Methods</a></li>
+</ul>
+
+
+<h2>Classes</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../classes/yae.File.html">yae.File</a></li>
+  <li><a href="../classes/yae.Font.html">yae.Font</a></li>
+  <li><a href="../classes/yae.Image.html">yae.Image</a></li>
+  <li><a href="../classes/yae.Quad.html">yae.Quad</a></li>
+  <li><strong>yae.Source</strong></li>
+</ul>
+<h2>Modules</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../modules/yae.accelerometer.html">yae.accelerometer</a></li>
+  <li><a href="../modules/yae.audio.html">yae.audio</a></li>
+  <li><a href="../modules/yae.compass.html">yae.compass</a></li>
+  <li><a href="../modules/yae.filesystem.html">yae.filesystem</a></li>
+  <li><a href="../modules/yae.graphics.html">yae.graphics</a></li>
+  <li><a href="../modules/yae.java.html">yae.java</a></li>
+  <li><a href="../modules/yae.keyboard.html">yae.keyboard</a></li>
+  <li><a href="../modules/yae.mouse.html">yae.mouse</a></li>
+  <li><a href="../modules/yae.system.html">yae.system</a></li>
+  <li><a href="../modules/yae.timer.html">yae.timer</a></li>
+  <li><a href="../modules/yae.touch.html">yae.touch</a></li>
+  <li><a href="../modules/yae.window.html">yae.window</a></li>
+</ul>
+<h2>Topics</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../topics/README.md.html">README</a></li>
+</ul>
+<h2>Examples</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../examples/aligns.moon.html">aligns.moon</a></li>
+  <li><a href="../examples/blendmodes.moon.html">blendmodes.moon</a></li>
+  <li><a href="../examples/buttons.moon.html">buttons.moon</a></li>
+  <li><a href="../examples/filters.moon.html">filters.moon</a></li>
+  <li><a href="../examples/formats.moon.html">formats.moon</a></li>
+  <li><a href="../examples/keys.moon.html">keys.moon</a></li>
+  <li><a href="../examples/shapetypes.moon.html">shapetypes.moon</a></li>
+  <li><a href="../examples/wraps.moon.html">wraps.moon</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Class <code>yae.Source</code></h1>
+<p>A Source represents audio you can play back.</p>
+<p>
+
+</p>
+
+
+<h2><a href="#Methods">Methods</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#yae.Source.new">yae.Source.new (self, filename[, audiotype="stream"[, filetype="internal"]])</a></td>
+	<td class="summary">Creates a new Source from a filepath.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#yae.Source.play">yae.Source.play (self)</a></td>
+	<td class="summary">Starts playing the Source.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#yae.Source.pause">yae.Source.pause (self)</a></td>
+	<td class="summary">Pauses the Source</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#yae.Source.resume">yae.Source.resume (self)</a></td>
+	<td class="summary">Resumes a paused Source</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#yae.Source.stop">yae.Source.stop (self)</a></td>
+	<td class="summary">Stops a Source</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#yae.Source.getType">yae.Source.getType (self)</a></td>
+	<td class="summary">Returns a type of a Source</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#yae.Source.getVolume">yae.Source.getVolume (self)</a></td>
+	<td class="summary">Gets the current volume of the Source.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#yae.Source.isLooping">yae.Source.isLooping (self)</a></td>
+	<td class="summary">Returns whether the Source will loop.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#yae.Source.isPaused">yae.Source.isPaused (self)</a></td>
+	<td class="summary">Returns whether the Source is paused.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#yae.Source.isPlaying">yae.Source.isPlaying (self)</a></td>
+	<td class="summary">Returns whether the Source is playing.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#yae.Source.isStopped">yae.Source.isStopped (self)</a></td>
+	<td class="summary">Returns whether the Source is stopped.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#yae.Source.setLooping">yae.Source.setLooping (self, looping)</a></td>
+	<td class="summary">Sets whether the Source should loop.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#yae.Source.setVolume">yae.Source.setVolume (self, volume)</a></td>
+	<td class="summary">Sets the current volume of the Source.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Methods"></a>Methods</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "yae.Source.new"></a>
+    <strong>yae.Source.new (self, filename[, audiotype="stream"[, filetype="internal"]])</strong>
+    </dt>
+    <dd>
+    Creates a new Source from a filepath.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">self</span>
+            <span class="types"><a class="type" href="../classes/yae.Source.html">Source</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">filename</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         The name (and path) of the file.
+        </li>
+        <li><span class="parameter">audiotype</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         Type of the audio.
+         (<em>default</em> "stream")
+        </li>
+        <li><span class="parameter">filetype</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         Type of the file
+         (<em>default</em> "internal")
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="../classes/yae.Source.html">Source</a></span>
+        A new Source that can play the specified audio.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">source = Source(filename, audiotype, filetype)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "yae.Source.play"></a>
+    <strong>yae.Source.play (self)</strong>
+    </dt>
+    <dd>
+    Starts playing the Source.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">self</span>
+            <span class="types"><a class="type" href="../classes/yae.Source.html">Source</a></span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">Source\play!</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "yae.Source.pause"></a>
+    <strong>yae.Source.pause (self)</strong>
+    </dt>
+    <dd>
+    Pauses the Source
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">self</span>
+            <span class="types"><a class="type" href="../classes/yae.Source.html">Source</a></span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">Source\pause!</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "yae.Source.resume"></a>
+    <strong>yae.Source.resume (self)</strong>
+    </dt>
+    <dd>
+    Resumes a paused Source
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">self</span>
+            <span class="types"><a class="type" href="../classes/yae.Source.html">Source</a></span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">Source\resume!</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "yae.Source.stop"></a>
+    <strong>yae.Source.stop (self)</strong>
+    </dt>
+    <dd>
+    Stops a Source
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">self</span>
+            <span class="types"><a class="type" href="../classes/yae.Source.html">Source</a></span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">Source\stop!</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "yae.Source.getType"></a>
+    <strong>yae.Source.getType (self)</strong>
+    </dt>
+    <dd>
+    Returns a type of a Source
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">self</span>
+            <span class="types"><a class="type" href="../classes/yae.Source.html">Source</a></span>
+
+
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+        Type of a Source ("static" or "stram")
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="global">type</span> = Source\getType!</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "yae.Source.getVolume"></a>
+    <strong>yae.Source.getVolume (self)</strong>
+    </dt>
+    <dd>
+    Gets the current volume of the Source.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">self</span>
+            <span class="types"><a class="type" href="../classes/yae.Source.html">Source</a></span>
+
+
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        Volume of a Source
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">volume = Source\getVolume!</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "yae.Source.isLooping"></a>
+    <strong>yae.Source.isLooping (self)</strong>
+    </dt>
+    <dd>
+    Returns whether the Source will loop.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">self</span>
+            <span class="types"><a class="type" href="../classes/yae.Source.html">Source</a></span>
+
+
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">bool</span></span>
+        True if the Source will loop, false otherwise.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">loop = Source\isLooping!</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "yae.Source.isPaused"></a>
+    <strong>yae.Source.isPaused (self)</strong>
+    </dt>
+    <dd>
+    Returns whether the Source is paused.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">self</span>
+            <span class="types"><a class="type" href="../classes/yae.Source.html">Source</a></span>
+
+
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">bool</span></span>
+        True if the Source is paused, false otherwise.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">paused = Source\isPaused!</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "yae.Source.isPlaying"></a>
+    <strong>yae.Source.isPlaying (self)</strong>
+    </dt>
+    <dd>
+    Returns whether the Source is playing.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">self</span>
+            <span class="types"><a class="type" href="../classes/yae.Source.html">Source</a></span>
+
+
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">bool</span></span>
+        True if the Source is playing, false otherwise.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">playing = Source\isPlaying!</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "yae.Source.isStopped"></a>
+    <strong>yae.Source.isStopped (self)</strong>
+    </dt>
+    <dd>
+    Returns whether the Source is stopped.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">self</span>
+            <span class="types"><a class="type" href="../classes/yae.Source.html">Source</a></span>
+
+
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">bool</span></span>
+        True if the Source is stopped, false otherwise.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">stopped = Source\isStopped!</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "yae.Source.setLooping"></a>
+    <strong>yae.Source.setLooping (self, looping)</strong>
+    </dt>
+    <dd>
+    Sets whether the Source should loop.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">self</span>
+            <span class="types"><a class="type" href="../classes/yae.File.html">File</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">looping</span>
+            <span class="types"><span class="type">bool</span></span>
+         True if the source should loop, false otherwise.
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">Source\setLooping looping</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "yae.Source.setVolume"></a>
+    <strong>yae.Source.setVolume (self, volume)</strong>
+    </dt>
+    <dd>
+    Sets the current volume of the Source.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">self</span>
+            <span class="types"><a class="type" href="../classes/yae.File.html">File</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">volume</span>
+            <span class="types"><span class="type">number</span></span>
+         The volume for a Source, where 1.0 is normal volume.
+ Volume cannot be raised above 1.0.
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">Source\setVolume volume</pre>
+    </ul>
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
+<i style="float:right;">Last updated 2015-09-13 13:30:50 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

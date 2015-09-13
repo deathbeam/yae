@@ -6,10 +6,6 @@ pre {
   line-height: 125%;
 }
 
-.jumbotron img {
-  width: 100%;
-}
-
 .container, .jumbotron .container {
   width: 100%!Important;
   max-width: 100%!Important;
@@ -23,12 +19,11 @@ pre {
 .jumbotron {
   margin: 0!Important;
   padding: 0!Important;
-  background: transparent;
-  border-bottom: 1px solid #c6c6c6;
+  background: #4E358E;
 }
 
-.jumbotron img {
-  margin-left: -15px;
+.jumbotron, .jumbotron a {
+  color: white;
 }
 
 .header-nav {
