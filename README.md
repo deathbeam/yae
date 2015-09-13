@@ -8,7 +8,6 @@
 > **Kaizo**: Yeah! If I had that weapon, I could have the power of a million people! Well, give it to me! Give it to me!
 
 <br clear="both"/>
-
 An engine you can use to make games in **MoonScript**. It's free, open-source, and works on **Windows**, **Mac OS X**, **Linux**, **Android**, **iOS** and **Ouya**.
 
 ### Installation
