@@ -1,7 +1,7 @@
 # Yet Another Engine
 
 <img src="https://yae.io/img/logo.gif"
- alt="Moon" title="Moon" align="left" hspace="10" width="250px"/>
+ alt="Moon" title="Moon" align="left" hspace="10" width="130px"/>
 
 > **Kaizo**: Oh! Even someone with a tender face like yours has a great weapon like that! It doesn't fit someone like you!  
 > **Yae**: Eh? This bazooka?  
