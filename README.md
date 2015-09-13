@@ -1,15 +1,15 @@
 # Yet Another Engine
 
-<img src="http://yae.io/img/yae.jpg"
- alt="Yae logo" title="Yae from Ganbare Goemon" align="left" hspace="10" width="250px"/>
+<img src="https://yae.io/img/logo.gif"
+ alt="Moon" title="Moon" align="left" hspace="10" width="250px"/>
 
 > **Kaizo**: Oh! Even someone with a tender face like yours has a great weapon like that! It doesn't fit someone like you!  
 > **Yae**: Eh? This bazooka?  
 > **Kaizo**: Yeah! If I had that weapon, I could have the power of a million people! Well, give it to me! Give it to me!
 
-An engine you can use to make games in **MoonScript**. It's free, open-source, and works on **Windows**, **Mac OS X**, **Linux**, **Android**, **iOS** and **Ouya**.
-
 <br clear="both"/>
+
+An engine you can use to make games in **MoonScript**. It's free, open-source, and works on **Windows**, **Mac OS X**, **Linux**, **Android**, **iOS** and **Ouya**.
 
 ### Installation
 
