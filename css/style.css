@@ -26,6 +26,11 @@ pre {
   color: white;
 }
 
+.jumbotron img {
+  max-width: 100%;
+  height: auto;
+}
+
 .header-nav {
   position: absolute;
   bottom: 15px;
