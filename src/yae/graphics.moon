@@ -57,7 +57,25 @@ check = (textureBased) ->
     if batch\isDrawing! then YaeVM.util\endBatch batch
     if not shapes\isDrawing! then shapes\begin!
 
-
+---
+-- Draws a filled or unfilled arc at position (x, y). The arc is drawn from
+-- angle1 to angle2 in radians.
+-- @string mode How to draw the arc.
+-- @number x The position of the center along x-axis.
+-- @number y The position of the center along y-axis.
+-- @number radius Radius of the arc.
+-- @number angle1 The angle at which the arc begins.
+-- @number angle2 The angle at which the arc terminates.
+-- @usage
+-- -- Drawing half a circle
+-- yae.draw = ->
+--   yae.graphics.arc( "fill", 400, 300, 100, 0, math.pi )
+--  
+-- -- Drawing Pacman
+-- pacwidth = math.pi / 6 -- size of his mouth
+-- yae.draw = ->
+--   yae.graphics.setColor( 255, 255, 0 ) -- pacman needs to be yellow
+--   yae.graphics.arc( "fill", 400, 300, 100, pacwidth, (math.pi * 2) - pacwidth )
 arc = (mode, x, y, radius, angle1, angle2) ->
   check false
   shapes\set Constants.shapetypes[mode]
