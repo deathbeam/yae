@@ -170,6 +170,10 @@ task rocks() << {
 }
 
 task update(dependsOn: [':rocks', ':updateAssets']) << {
+    if (!file("shared/build/moon").exists()) {
+        file("shared/build/moon").mkdirs();
+    }
+    
     def src = ".."
     def res = "res"
     def out = "android/assets/yae"
