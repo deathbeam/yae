@@ -1,11 +1,3 @@
-pre {
-  background: transparent;
-  border: none;
-  padding: 0;
-  margin: 0;
-  line-height: 125%;
-}
-
 .container, .jumbotron .container {
   width: 100%!Important;
   max-width: 100%!Important;
@@ -17,7 +9,7 @@ pre {
 }
 
 .jumbotron {
-  margin: 0!Important;
+  margin: 0 0 15px 0!Important;
   padding: 0!Important;
   background: #4E358E;
 }
