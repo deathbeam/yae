@@ -1,6 +1,9 @@
 package yae;
 
 import java.io.InputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -183,6 +186,27 @@ public class YaeVM implements ApplicationListener, InputProcessor, ResourceFinde
 
                 Gdx.app.log(TAG, s.toString());
                 return LuaValue.NONE;
+            }});
+
+            lua.set("write", new VarArgFunction() { @Override public LuaValue invoke(Varargs args) {
+                StringBuffer s = new StringBuffer();
+
+                for (int i = 1; i <= args.narg(); i++) {
+                    if (i > 1) s.append("\t");
+                    s.append(args.arg(i).toString());
+                }
+
+                System.out.print(s.toString());
+                return LuaValue.NONE;
+            }});
+
+            lua.set("read", new VarArgFunction() { @Override public LuaValue invoke(Varargs args) {
+                try {
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+                    return LuaValue.valueOf(reader.readLine());
+                } catch(IOException e) {
+                    return LuaValue.NONE;
+                }
             }});
 
             loading.setText("Initializing the game");

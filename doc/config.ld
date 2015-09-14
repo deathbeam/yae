@@ -14,6 +14,7 @@ file = {
   '../src/yae/accelerometer.moon',
   '../src/yae/audio.moon',
   '../src/yae/compass.moon',
+  '../src/yae/console.moon',
   '../src/yae/filesystem.moon',
   '../src/yae/graphics.moon',
   '../src/yae/java.moon',

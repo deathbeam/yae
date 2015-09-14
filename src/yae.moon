@@ -7,7 +7,8 @@ export type = (value) ->
     return cls.__name if cls
   baseType
 
--- Initialize java module first
+-- Initialize java and console module first
+yae.console = require "yae.console"
 yae.java = require "yae.java"
 
 -- Initialize the objects
