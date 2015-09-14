@@ -2,13 +2,13 @@ package = "yae"
 version = "dev-1"
 
 source = {
-  url = "git://github.com/yaedev/yae.git",
+  url = "git://github.com/nondev/yae.git",
 }
 
 description = {
   summary = "Game engine for MoonScript, in MoonScript.",
-  homepage = "http://yae.io",
-  maintainer = "Thomas Slusny <slusnucky@gmail.com>",
+  homepage = "https://yae.io",
+  maintainer = "Tomas Slusny <slusnucky@gmail.com>",
   license = "MIT"
 }
 
