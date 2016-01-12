@@ -3,7 +3,7 @@
 local cfg = require("luarocks.cfg")
 local fs = require("luarocks.fs")
 local workingPath = fs.current_dir().."/"
-local enginePath = debug.getinfo(1,"S").source:match("(.*/)"):sub(2, -5)
+local enginePath = debug.getinfo(1,"S").source:match("(.*[\\/])"):sub(2, -5)
 local gradlew = cfg.platforms.windows and "gradlew" or "./gradlew"
 local tempPath = ".yae/"
 local configFile = "project.yml"
